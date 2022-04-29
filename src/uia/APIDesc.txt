@@ -1,0 +1,45 @@
+This sheet is intended to give a brief presentation of UIa API.
+
+--------------------
+   UIa structure
+--------------------
+
+UIa is structured into 4 layers: (starting from bottom)
+
+1) Context responsible to rendering and handling Pages
+2) Page    responsible to rendering and handling Views
+3) View    responsible to provide a common ground to draw and manage widgets
+4) Widget
+
+
+------------------------------
+   Widget hierarchy schema
+------------------------------
+
+          View
+           ^
+           | <- TextView      <-   EditView
+           | <- ViewGroup     <-   ListView
+           | <- Button        <-   Menu
+           | <- GraphicView   <-   BoardView
+           | <- HorView
+           | <- CalendarView
+           | <- ProgressBar   <-   ScrollBar
+           | <- IconView
+
+
+-----------------------------
+   Shape hierarchy schema
+-----------------------------
+
+         Figure (Abstract)
+           ^
+           | <- Arrow
+           | <- Delete
+           | <- Oval
+           | <- Plus
+           | <- Rect
+           | <- RectPause
+           | <- RectSmooth
+           | <- Triangle
+           | <- TriangleSmooth
