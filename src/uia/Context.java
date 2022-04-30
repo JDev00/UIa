@@ -123,7 +123,7 @@ public interface Context {
     /**
      * Open a {@link Page}.
      * <b>Note that:
-     * 1) if there is a Page already open, it will be closed and enqueued.
+     * 1) if a Page is already open, it will be closed and enqueued.
      * 2) if the given Page is already enqueued, it will be taken on top.</b>
      *
      * @param page a not null page
