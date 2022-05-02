@@ -1,8 +1,8 @@
-# UIa Beta Version
-Desktop UI Library for Java
+# UIa (Beta Version)
+UI cross-platform API for Java
 
 Warning!
-Repository under construction.
+Repository under construction. Currenlty, 3 out of 4 layers are supported and only Desktop environment is supported.
 
 # Brief description:
 
