@@ -1,6 +1,7 @@
 package uia.core;
 
 import uia.core.animator.NodeEv;
+import uia.core.figure.Oval;
 import uia.core.utility.KeyEnc;
 import uia.core.utility.Pointer;
 import uia.core.utility.TextSuite;
@@ -489,8 +490,9 @@ public class StdContext implements Context {
             float dx = 0.2f * dx();
             float dy = 0.2f * dy();
 
-            TextView view = new TextView(context, 0, 0, dx, dy);
-            view.setColor(new Color(150, 120, 255));
+            TextView view = new TextView(context, 0, 0, dx, dx);
+            view.setFigure(Oval.create());
+            view.setColor(new Color(150, 100, 255));
             view.setText("Loading");
             view.getTextSuite().setAlignY(TextSuite.AlignY.CENTER);
             view.setupAnimator(View.ANIMATOR_TYPE.DIM, a -> {
