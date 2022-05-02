@@ -35,9 +35,9 @@ public interface Context {
     void asyncSetup(int w, int h);
 
     /**
-     * Start and show this context
+     * Start and show this Context
      *
-     * @return true if the context isn't started yet
+     * @return true if this Context begins; false if it has already started
      */
 
     boolean start();
@@ -45,7 +45,7 @@ public interface Context {
     /**
      * Stop this Context
      *
-     * @return true if the context has been stopped
+     * @return true if this Context stops; false if it has already stopped
      */
 
     boolean stop();
@@ -66,6 +66,50 @@ public interface Context {
 
     /*
      *
+     * Stored pages
+     *
+     */
+
+    /**
+     * Store a new Page.
+     * <b>This functionality is used to create complex applications. Every page is initially stored and then
+     * accessed and displayed with {@link Context#getStoredPage(int)} and {@link Context#open(Page)}<b/>
+     *
+     * @param page a not null Page
+     */
+
+    void storePage(Page page);
+
+    /**
+     * Remove a stored Page.
+     *
+     * @param i the index of the page to remove
+     */
+
+    void removeStoredPage(int i);
+
+    /**
+     * @return the number of stored pages
+     */
+
+    int storedPages();
+
+    /**
+     * @param page a not null Page you are looking for
+     * @return the position of the given page or -1 if it isn't stored
+     */
+
+    int indexOfStoredPage(Page page);
+
+    /**
+     * @param i the position of the Page you are looking for
+     * @return the specified Page
+     */
+
+    Page getStoredPage(int i);
+
+    /*
+     *
      * Pages
      *
      */
@@ -77,44 +121,46 @@ public interface Context {
     void clear();
 
     /**
-     * Open a {@link Page} on top others.
-     * <b>Note that if a Page is already stacked it will be taken to the top of others.</b>
+     * Open a {@link Page}.
+     * <b>Note that:
+     * 1) if a Page is already open, it will be closed and enqueued.
+     * 2) if the given Page is already enqueued, it will be taken on top.</b>
      *
-     * @param page a non-null page
+     * @param page a not null page
      */
 
     void open(final Page page);
 
     /**
-     * Close and remove the current {@link Page} from the stack
+     * Close and dequeue the current {@link Page}
      *
-     * @return if {@code {@link StdContext#size()} > 0} the removed page otherwise null
+     * @return the removed page otherwise null
      */
 
     Page close();
 
     /**
-     * @return the number of stacked pages
+     * @return the number of enqueued pages
      */
 
     int size();
 
     /**
-     * @param page a non-null {@link Page} to search
-     * @return if exists the index of the page otherwise -1
+     * @param page a not null {@link Page} you are looking for
+     * @return the position of the given Page otherwise -1
      */
 
     int indexOf(Page page);
 
     /**
      * @param i the position of the page
-     * @return if exists the {@link Page} specified by the given index otherwise null
+     * @return the specified {@link Page} otherwise null
      */
 
     Page get(int i);
 
     /**
-     * @return the {@link Page} used when Context is loading
+     * @return the {@link Page} displayed when Context is loading
      */
 
     Page getLoadPage();
@@ -174,7 +220,7 @@ public interface Context {
     boolean isRunning();
 
     /**
-     * @return the amount of pointers over the window
+     * @return the number of pointers inside this window
      */
 
     int pointerSize();
@@ -198,14 +244,14 @@ public interface Context {
     boolean isMousePressed();
 
     /**
-     * @param font a non-null {@link Font}
-     * @return the metrics of the given font
+     * @param font a not null {@link Font}
+     * @return the font metrics
      */
 
     FontMetrics getFontMetrics(Font font);
 
     /**
-     * @return the native Context window; it could be null
+     * @return the native window; it could be null
      */
 
     Object getNative();
@@ -232,7 +278,7 @@ public interface Context {
     /**
      * Run a new asynchronously task
      *
-     * @param runnable a non-null {@link Runnable} instance
+     * @param runnable a not null {@link Runnable} instance
      * @return the created {@link Thread}
      */
 
@@ -243,7 +289,7 @@ public interface Context {
     }
 
     /**
-     * @return the size of the screen
+     * @return the screen size
      */
 
     static Dimension getScreenSize() {
@@ -253,8 +299,8 @@ public interface Context {
     /**
      * Load an image
      *
-     * @param path the path of the image to load
-     * @return if exists the image otherwise null
+     * @param path the image path
+     * @return the loaded image otherwise null
      */
 
     static Image loadImage(String path) {
@@ -262,7 +308,6 @@ public interface Context {
             try {
                 return ImageIO.read(new File(path));
             } catch (IOException ignored) {
-                //
             }
         }
 
@@ -270,9 +315,9 @@ public interface Context {
     }
 
     /**
-     * Method used to copy a string inside the system clipboard
+     * Copy a string inside the system clipboard
      *
-     * @param string a string to copy
+     * @param string a not null string to copy
      */
 
     static void copy(String string) {
@@ -284,9 +329,9 @@ public interface Context {
     }
 
     /**
-     * Method used to get the content from the system clipboard
+     * Return the content of the system clipboard
      *
-     * @return the content of the clipboard as a string
+     * @return the clipboard content
      */
 
     static String paste() {
