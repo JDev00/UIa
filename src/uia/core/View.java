@@ -6,8 +6,8 @@ import uia.core.event.Event;
 import uia.core.animator.LinearAnimator;
 import uia.core.utility.KeyEnc;
 import uia.core.utility.Pointer;
-import uia.core.shape.Figure;
-import uia.core.shape.RectSmooth;
+import uia.core.figure.Figure;
+import uia.core.figure.RectSmooth;
 import uia.utils.Timer;
 import uia.utils.Utils;
 
@@ -33,7 +33,7 @@ import static java.lang.Math.*;
  * <br>
  * &nbsp;&nbsp;b) use {@link View#removeFocus()} to remove focus
  * <br>
- * 3) {@link View#updateState()} method is designed to be overridden, in addition it is always executed regardless of the view state (visible/not visible)
+ * 3) {@link View#update()} method is designed to be overridden, in addition it is always executed regardless of the view state (visible/not visible)
  * <br>
  * 4) <b>view's animators work only if it is visible</b>
  * <br>
@@ -122,7 +122,7 @@ public class View {
     private boolean focus = false;
     private boolean visible = true;
     private boolean imgVisible = true;
-    private boolean autoScaling = true;
+    private boolean autoAdjustment = true;
 
     public View(Context context,
                 float px, float py,
@@ -160,7 +160,7 @@ public class View {
     /**
      * Set the view {@link Context}
      *
-     * @param context a non-null Context
+     * @param context a not null Context
      */
 
     void setContext(Context context) {
@@ -175,9 +175,9 @@ public class View {
      */
 
     /**
-     * Add a new event to this view
+     * Add a new event
      *
-     * @param event a non-null {@link Event} instance
+     * @param event a not null {@link Event}
      */
 
     public final void addEvent(Event<View> event) {
@@ -238,7 +238,7 @@ public class View {
      * Replace an animator with a new one
      *
      * @param animatorType the animator to replace
-     * @param animator     a non-null {@link Animator} instance
+     * @param animator     a not null {@link Animator}
      */
 
     public final void setAnimator(ANIMATOR_TYPE animatorType, Animator animator) {
@@ -263,7 +263,7 @@ public class View {
 
     /**
      * Set an <u>offset position</u>.
-     * <b>Method used to translate view behind the scene without pollute setPos() and translate() methods.</b>
+     * <b>Method used to translate view behind the scene without use setPos() and translate() methods.</b>
      *
      * @param x the offset position along x-axis
      * @param y the offset position along y-axis
@@ -331,6 +331,20 @@ public class View {
      */
 
     public void scale(float x, float y) {
+        dx *= max(0, x);
+        dy *= max(0, y);
+
+        updateBounds();
+    }
+
+    /**
+     * Set the scale of this view
+     *
+     * @param x the scale along x-axis; if {@code x < 0}, x will be set to 0
+     * @param y the scale along y-axis; if {@code y < 0}, y will be set to 0
+     */
+
+    public void setScale(float x, float y) {
         xScale = max(0, x);
         yScale = max(0, y);
 
@@ -359,7 +373,7 @@ public class View {
 
     /**
      * Set the view expansion animation.
-     * <b>The animation start when user is over this view.</b>
+     * <b>The animation starts when user is over this view.</b>
      *
      * @param x a value between [0, 1] used to define expansion along x-axis
      * @param y a value between [0, 1] used to define expansion along y-axis
@@ -373,10 +387,9 @@ public class View {
     }
 
     /**
-     * Method used to reset the expanse animation
+     * Reset the expanse animation
      */
 
-    // @Test
     public void resetAnimation() {
         xExpanse = 1f;
         yExpanse = 1f;
@@ -385,7 +398,7 @@ public class View {
     /**
      * Set the required time to complete the expansion animation
      *
-     * @param seconds the seconds required to end up the animation; if {@code time < 0} time will be set to 0
+     * @param seconds the seconds required to end up the animation; if {@code time < 0}, time will be set to 0
      */
 
     public void setExpansionTime(float seconds) {
@@ -393,7 +406,7 @@ public class View {
     }
 
     /**
-     * Set the {@link Figure} to draw
+     * Set the {@link Figure} to render
      *
      * @param figure a figure; it could be null
      */
@@ -405,7 +418,7 @@ public class View {
     /**
      * Set the figure color
      *
-     * @param color a non-null color
+     * @param color a not null color
      */
 
     public void setColor(Color color) {
@@ -447,8 +460,8 @@ public class View {
 
     /**
      * Display or hide this view.
-     * <b>Note that when the view is set to be not visible the focus will be lost,
-     * in particular, {@link View#removeFocus()} will be automatically invoked.</b>
+     * <b>Note that when view is set to be not visible, focus will be lost.
+     * In particular, {@link View#removeFocus()} will be automatically invoked.</b>
      *
      * @param isVisible true to set this view visible
      */
@@ -463,9 +476,9 @@ public class View {
     }
 
     /**
-     * Overlay functionality acts as a wall for mouse pointer. When enabled, it consumes mouse pointer.
-     * This functionality, <u>enabled by default</u>, is useful when multiple views overlay, indeed the view on top
-     * consume the pointer with the consequence that the rest of views can't interact with user.
+     * Overlay functionality, when enabled, acts as a wall for pointers.
+     * This functionality, <u>enabled by default</u>, is useful when multiple views overlay. The view on top
+     * consumes pointers inside its area with the consequence that the rest of views can't use the same pointers to interact with user.
      *
      * @param overlay true to consume pointers
      */
@@ -475,7 +488,7 @@ public class View {
     }
 
     /**
-     * Key consumer functionality,<u>enabled by default</u>, consumes the last keyEvent that go through this view with the consequence that
+     * Key consumer functionality, <u>enabled by default</u>, consumes the last keyEvent that go through this view with the consequence that
      * all other views (inside a page) can't process the keyEvent.
      * <b>This functionality has been studied to allow just one view at a time to accept keys from keyboard.</b>
      *
@@ -487,14 +500,14 @@ public class View {
     }
 
     /**
-     * Enable or disable the auto-scaling functionality.
-     * <b>Auto-scaling is the capacity of a view to change its position and dimension according to screen resize.</b>
+     * Enable or disable the auto-adjustment functionality.
+     * <b>Auto-Adjustment is the ability of a view to change its position and dimension according to screen resize.</b>
      *
-     * @param autoScaling true to enable auto-scaling functionality
+     * @param autoAdjustment true to enable auto-adjustment functionality
      */
 
-    public void enableAutoScaling(boolean autoScaling) {
-        this.autoScaling = autoScaling;
+    public void enableAutoAdjustment(boolean autoAdjustment) {
+        this.autoAdjustment = autoAdjustment;
     }
 
     /**
@@ -518,13 +531,13 @@ public class View {
     }
 
     /**
-     * Set the image scale
+     * Scale image
      *
      * @param x a value between [0, 1] used to scale along x-axis
      * @param y a value between [0, 1] used to scale along y-axis
      */
 
-    public void setImageScale(float x, float y) {
+    public void setScaleImg(float x, float y) {
         xScaleImg = Utils.constrain(x, 0, 1);
         yScaleImg = Utils.constrain(y, 0, 1);
     }
@@ -536,7 +549,7 @@ public class View {
      */
 
     /**
-     * Method automatically invoked by the framework when window gains or loses focus.
+     * Method automatically invoked by the framework when Window gains or loses focus.
      */
 
     protected void focusDispatcher(boolean gained) {
@@ -557,8 +570,8 @@ public class View {
      * <b>Note that when view is not visible no event is executed.<b>
      * <b>If a null pointer is passed in, focus will be automatically lost.</b>
      *
-     * @param p      the pointer used by this view; if null, focus will be lost
-     * @param update true to update the touch dispatch
+     * @param p      a {@link Pointer}; if null, focus will be lost
+     * @param update true to update touch dispatcher
      */
 
     protected void touchDispatcher(Pointer p, boolean update) {
@@ -618,7 +631,7 @@ public class View {
     }
 
     /**
-     * <b>Call this method only inside a {@link Mouse} event or its subclass.</b>
+     * <b>Invoke this method only inside a {@link Mouse} event or its subclass.</b>
      *
      * @return the {@link MotionEvent} of this view
      */
@@ -658,7 +671,7 @@ public class View {
     /**
      * <b>Call this method only inside a {@link Key} event or its subclass.</b>
      *
-     * @return the last {@link KeyEnc} handled by this view
+     * @return the {@link KeyEnc} handled by this view
      */
 
     public final KeyEnc getKey() {
@@ -672,17 +685,17 @@ public class View {
      */
 
     /**
-     * Method invoked automatically before render this view.
-     * <b>Note that it will be called even if the view is not visible.</b>
+     * Method invoked automatically before {@link View#preDraw(Graphics2D)}.
+     * <b>Note that it will be invoked even when view is not visible.</b>
      */
 
-    protected void updateState() {
+    protected void update() {
 
     }
 
     /**
      * Method invoked automatically before view rendering.
-     * <b>Note that, by construction, this method is invoked only when this view is visible.</b>
+     * <b>Note that it will be invoked only when view is visible.</b>
      */
 
     protected void preDraw(Graphics2D canvas) {
@@ -691,7 +704,7 @@ public class View {
 
     /**
      * Method invoked automatically after view rendering.
-     * <b>Note that, by construction, this method is invoked only when this view is visible.</b>
+     * <b>Note that it will be invoked only when view is visible.</b>
      */
 
     protected void postDraw(Graphics2D canvas) {
@@ -704,19 +717,19 @@ public class View {
     /**
      * Draw this view on screen
      *
-     * @param canvas a non-null {@link Graphics2D} instance used to render this view
+     * @param canvas a not null {@link Graphics2D}
      */
 
     public final void draw(Graphics2D canvas) {
         // Execute the code before the drawing operation
-        updateState();
+        update();
 
         // Execute only if it is visible
         if (isVisible()) {
 
             // Update screen size factors
-            xFac = autoScaling ? context.dxFactor() : 1;
-            yFac = autoScaling ? context.dyFactor() : 1;
+            xFac = autoAdjustment ? context.dxFactor() : 1;
+            yFac = autoAdjustment ? context.dyFactor() : 1;
 
             // Update animators
             for (Animator i : animator) {
@@ -760,7 +773,7 @@ public class View {
     }
 
     /**
-     * @return the context of this view
+     * @return the view's Context
      */
 
     public final Context getContext() {
@@ -768,7 +781,7 @@ public class View {
     }
 
     /**
-     * @return view position along x-axis
+     * @return position along x-axis
      */
 
     public final float px() {
@@ -776,7 +789,7 @@ public class View {
     }
 
     /**
-     * @return view position along y-axis
+     * @return position along y-axis
      */
 
     public final float py() {
@@ -800,7 +813,7 @@ public class View {
     }
 
     /**
-     * @return view dimension along x-axis
+     * @return dimension along x-axis
      */
 
     public final float dx() {
@@ -808,7 +821,7 @@ public class View {
     }
 
     /**
-     * @return view dimension along y-axis
+     * @return dimension along y-axis
      */
 
     public final float dy() {
@@ -832,7 +845,7 @@ public class View {
     }
 
     /**
-     * @return view rotation in radians
+     * @return rotation in radians
      */
 
     public final float rot() {
@@ -840,7 +853,7 @@ public class View {
     }
 
     /**
-     * @return the minimum view dimension along x-axis <b>without the dimension animator contribute</b>
+     * @return the minimum dimension along x-axis <b>without the dimension animator contribute</b>
      */
 
     public final float xLowerBound() {
@@ -848,7 +861,7 @@ public class View {
     }
 
     /**
-     * @return the minimum view dimension along y-axis <b>without the dimension animator contribute</b>
+     * @return the minimum dimension along y-axis <b>without the dimension animator contribute</b>
      */
 
     public final float yLowerBound() {
@@ -856,7 +869,7 @@ public class View {
     }
 
     /**
-     * @return the maximum view dimension along x-axis <b>without the dimension animator contribute</b>
+     * @return the maximum dimension along x-axis <b>without the dimension animator contribute</b>
      */
 
     public final float xUpperBound() {
@@ -864,7 +877,7 @@ public class View {
     }
 
     /**
-     * @return the maximum view dimension along y-axis <b>without the dimension animator contribute</b>
+     * @return the maximum dimension along y-axis <b>without the dimension animator contribute</b>
      */
 
     public final float yUpperBound() {
@@ -888,15 +901,15 @@ public class View {
     }
 
     /**
-     * @return true if mouse pointer is over this view
+     * @return true if pointers are contained inside this view
      */
 
-    public final boolean isMouseOver() {
+    public final boolean arePointersOver() {
         return over;
     }
 
     /**
-     * @return true if this view has the overlay functionality enabled
+     * @return true if overlay functionality is enabled
      */
 
     public final boolean hasOverlay() {
@@ -904,7 +917,7 @@ public class View {
     }
 
     /**
-     * @return true if this view has the key consumer enabled
+     * @return true if key consumer functionality is enabled
      */
 
     public final boolean hasKeyConsumer() {
@@ -912,11 +925,11 @@ public class View {
     }
 
     /**
-     * @return true if this view has auto-scaling enabled
+     * @return true if auto-adjustment functionality is enabled
      */
 
-    public final boolean hasAutoScaling() {
-        return autoScaling;
+    public final boolean hasAutoAdjustment() {
+        return autoAdjustment;
     }
 
     /**
@@ -936,7 +949,7 @@ public class View {
     }
 
     /**
-     * <b>Note that by construction when the view is on focus, it must be visible</b>
+     * <b>Note that, when view is on focus, it must be visible.</b>
      *
      * @return true if this view is on focus
      */
@@ -946,7 +959,7 @@ public class View {
     }
 
     /**
-     * @return true if this view has a non-null figure
+     * @return true if this view has a not null figure
      */
 
     public final boolean hasFigure() {
@@ -954,7 +967,7 @@ public class View {
     }
 
     /**
-     * @return true if this view has a non-null image
+     * @return true if this view has a not null image
      */
 
     public final boolean hasImage() {
@@ -978,7 +991,7 @@ public class View {
     }
 
     /**
-     * @return the figure of this view
+     * @return the view's figure
      */
 
     public final Figure getFigure() {
@@ -986,7 +999,7 @@ public class View {
     }
 
     /**
-     * @return if exists, the image associated, otherwise null
+     * @return if exists, the view's image, otherwise null
      */
 
     public final Image getImage() {
@@ -995,9 +1008,10 @@ public class View {
 
     /**
      * Manually set a Context to the given view
+     * <b>Designed to be used in widget implementation.</b>
      *
-     * @param view    a non-null view
-     * @param context a non-null Context
+     * @param view    a not null view
+     * @param context a not null Context
      */
 
     public static void updateContext(View view, Context context) {
@@ -1009,9 +1023,9 @@ public class View {
      * Manually update touch dispatcher of the given view.
      * <b>Designed to be used in widget implementation.</b>
      *
-     * @param view   a non-null view
-     * @param p      the pointer used by this view
-     * @param update true to update the touch dispatch
+     * @param view   a not null view
+     * @param p      a pointer
+     * @param update true to update touch dispatcher
      */
 
     public static void updateTouchDispatcher(View view,
@@ -1024,7 +1038,7 @@ public class View {
      * Manually update key dispatcher of the given view.
      * <b>Designed to be used in widget implementation.</b>
      *
-     * @param view   a non-null view
+     * @param view   a not null view
      * @param k      the last system handled {@link KeyEnc}
      * @param update true to update key dispatcher
      */
@@ -1073,7 +1087,7 @@ public class View {
         }
 
         /**
-         * Clear this motion event
+         * Clear motion event
          */
 
         private void clear() {
@@ -1144,7 +1158,7 @@ public class View {
         }
 
         /**
-         * @return pointer x-position
+         * @return pointer's position along x-axis
          */
 
         public int getX() {
@@ -1152,7 +1166,7 @@ public class View {
         }
 
         /**
-         * @return pointer y-position
+         * @return pointer's position along y-axis
          */
 
         public int getY() {
@@ -1160,7 +1174,7 @@ public class View {
         }
 
         /**
-         * @return the action for this motion event
+         * @return the last handled action
          */
 
         public int getAction() {
@@ -1170,7 +1184,7 @@ public class View {
         /**
          * If no button has been used, it returns {@link MouseEvent#NOBUTTON}
          *
-         * @return the button used to perform this mouse action
+         * @return the button used to perform the action
          */
 
         public int getActionButton() {
@@ -1187,7 +1201,7 @@ public class View {
 
         /**
          * @param id the button id: {@see {@link MouseEvent#BUTTON1}, {@link MouseEvent#BUTTON2},{@link MouseEvent#BUTTON3}}
-         * @return true if the specified button is currently pressed
+         * @return true if the given button is currently pressed
          */
 
         public boolean isButtonPressed(int id) {
@@ -1195,7 +1209,7 @@ public class View {
         }
 
         /**
-         * @return the amount of clicks
+         * @return the number of clicks
          */
 
         public int getClicks() {
@@ -1203,7 +1217,7 @@ public class View {
         }
 
         /**
-         * @return the amount of clicks from the motion event creation
+         * @return the number of clicks since the motion event creation
          */
 
         public int getCumulativeClicks() {
@@ -1229,7 +1243,7 @@ public class View {
         /**
          * Note that if no button is pressed {@link MotionEvent#NULL} is returned
          *
-         * @return the distance along x-axis between current mouse coords and the first pressed position
+         * @return the distance along x-axis between mouse pointer and the first pressed position
          */
 
         public float getDistXPressed() {
@@ -1239,7 +1253,7 @@ public class View {
         /**
          * Note that if no button is pressed {@link MotionEvent#NULL} is returned
          *
-         * @return the distance along y-axis between mouse pointer and the first pressed entry
+         * @return the distance along y-axis between mouse pointer and the first pressed position
          */
 
         public float getDistYPressed() {
@@ -1247,7 +1261,7 @@ public class View {
         }
 
         /**
-         * @return the elapsed seconds from the start of this motion event
+         * @return the elapsed seconds from the beginning of this motion event
          */
 
         public float getTime() {

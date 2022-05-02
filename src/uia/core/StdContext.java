@@ -1,8 +1,11 @@
 package uia.core;
 
 import uia.core.animator.NodeEv;
+import uia.core.figure.Oval;
 import uia.core.utility.KeyEnc;
 import uia.core.utility.Pointer;
+import uia.core.utility.TextSuite;
+import uia.core.widget.TextView;
 import uia.utils.Timer;
 
 import javax.swing.*;
@@ -17,13 +20,7 @@ import java.util.concurrent.TimeUnit;
  * Standard Context implementation
  */
 
-// @Test new Page handler engine
-// @See LPage and fix it
 public class StdContext implements Context {
-
-    /*
-     * Attributes
-     */
 
     private ScheduledExecutorService mainThread;
 
@@ -58,6 +55,8 @@ public class StdContext implements Context {
     /*
      * Page attributes
      */
+
+    private final Stack<Page> store = new Stack<>();
 
     private final Stack<Page> pages = new Stack<>();
 
@@ -264,6 +263,32 @@ public class StdContext implements Context {
     }
 
     @Override
+    public void storePage(Page page) {
+        if (page != null)
+            store.add(page);
+    }
+
+    @Override
+    public void removeStoredPage(int i) {
+        store.remove(i);
+    }
+
+    @Override
+    public int storedPages() {
+        return store.size();
+    }
+
+    @Override
+    public int indexOfStoredPage(Page page) {
+        return store.indexOf(page);
+    }
+
+    @Override
+    public Page getStoredPage(int i) {
+        return store.get(i);
+    }
+
+    @Override
     public final void clear() {
         // Close the page on top of the stack
         if (pages.size() > 0)
@@ -465,10 +490,11 @@ public class StdContext implements Context {
             float dx = 0.2f * dx();
             float dy = 0.2f * dy();
 
-            View view = new View(context, 0, 0, dx, dy);
-            view.setColor(new Color(150, 120, 255));
-            //view.setText("Loading");
-            //view.getTextSuite().setAlignY(TextSuite.AlignY.CENTER);
+            TextView view = new TextView(context, 0, 0, dx, dx);
+            view.setFigure(Oval.create());
+            view.setColor(new Color(150, 100, 255));
+            view.setText("Loading");
+            view.getTextSuite().setAlignY(TextSuite.AlignY.CENTER);
             view.setupAnimator(View.ANIMATOR_TYPE.DIM, a -> {
                 a.addEvent((NodeEv) (v, s) -> {
                     if (s == NodeEv.LAST)

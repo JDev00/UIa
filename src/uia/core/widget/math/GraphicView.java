@@ -3,7 +3,7 @@ package uia.core.widget.math;
 import uia.core.Context;
 import uia.core.View;
 import uia.core.event.Mouse;
-import uia.core.shape.Rect;
+import uia.core.figure.Rect;
 import uia.core.widget.math.struct.Curve;
 import uia.core.widget.math.struct.VecS;
 import uia.structure.vec.Vec;

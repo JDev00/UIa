@@ -8,7 +8,7 @@ import uia.core.event.Key;
 import uia.core.event.Mouse;
 import uia.core.gesture.Scroller;
 import uia.core.gesture.WheelScroller;
-import uia.core.shape.Rect;
+import uia.core.figure.Rect;
 import uia.structure.list.Buffer;
 import uia.structure.list.BufferChar;
 import uia.structure.list.BufferInt;
@@ -510,7 +510,7 @@ public class TextView extends View {
     @Override
     protected void postDraw(Graphics2D canvas) {
         // Update scroller
-        if (isMouseOver())
+        if (arePointersOver())
             scroller.update();
 
         // Justify text when necessary
@@ -718,7 +718,7 @@ public class TextView extends View {
         }
 
         @Override
-        public void updateState() {
+        public void update() {
             super.setVisible(!time.isOver(0.5f));
 
             if (time.isOver(1f))

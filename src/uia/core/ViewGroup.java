@@ -23,7 +23,6 @@ import static java.lang.Math.*;
  * <b>Note that, if group Context changes, views Context will be changed only when they are rendered.</b>
  */
 
-// @Test
 public abstract class ViewGroup<T extends View> extends View {
     public static final int LAST = -1;
 
@@ -98,10 +97,10 @@ public abstract class ViewGroup<T extends View> extends View {
 
     /**
      * Add a view to this group.
-     * <u>Note that, for integrity reasons, the operation can be done only if the group is visible.</u>
+     * <u>Note that the operation can be done only if the group is visible.</u>
      *
      * @param i    the position where to insert the view; if {@code i == {@link ViewGroup#LAST}} the view will be added on top of others
-     * @param view a non-null view to add
+     * @param view a not null view to add
      */
 
     public void add(int i, T view) {
@@ -117,7 +116,7 @@ public abstract class ViewGroup<T extends View> extends View {
 
     /**
      * Remove a set of views from this group.
-     * <u>Note that, for integrity reasons, the operation can be done only if the group is visible.</u>
+     * <u>Note that the operation can be done only if the group is visible.</u>
      *
      * @param ind the positions of the views to remove
      */
@@ -251,7 +250,7 @@ public abstract class ViewGroup<T extends View> extends View {
     }
 
     /**
-     * @return the number of views contained by this group
+     * @return the number of views inside this group
      */
 
     public final int size() {
@@ -268,7 +267,7 @@ public abstract class ViewGroup<T extends View> extends View {
     }
 
     /**
-     * @return if exits, the i-th view of this group, otherwise null
+     * @return if exits, the specified view of this group, otherwise null
      */
 
     public final T get(int i) {
@@ -327,7 +326,7 @@ public abstract class ViewGroup<T extends View> extends View {
     public final T getOver() {
         for (T t : onScreen) {
 
-            if (t.isMouseOver())
+            if (t.arePointersOver())
                 return t;
         }
 

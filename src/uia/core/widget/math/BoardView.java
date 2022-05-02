@@ -37,7 +37,7 @@ public class BoardView extends GraphicView {
         panel = new TextView(context, 0, 0, dx / 3f, 1);
         panel.setColor(new Color(28, 28, 28, 200));
         panel.enableOverlay(false);
-        panel.enableAutoScaling(false);
+        panel.enableAutoAdjustment(false);
 
         TextSuite textSuite = panel.getTextSuite();
         textSuite.setFontSize(14);
@@ -103,7 +103,7 @@ public class BoardView extends GraphicView {
     public void postDraw(Graphics2D canvas) {
         super.postDraw(canvas);
 
-        if (isMouseOver()) {
+        if (arePointersOver()) {
             List<VecS> covered = getCovered();
 
             builder.delete(0, builder.length());

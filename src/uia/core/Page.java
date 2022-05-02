@@ -48,9 +48,9 @@ public abstract class Page {
     }
 
     /**
-     * Set a Context for this page
+     * Set the Page Context
      *
-     * @param context a non-null Context
+     * @param context a not null Context
      */
 
     private void setContext(Context context) {
@@ -61,7 +61,7 @@ public abstract class Page {
     /**
      * Open this page
      *
-     * @return true if this page has been opened
+     * @return true if this Page opens; false if it has already opened
      */
 
     private boolean open() {
@@ -76,7 +76,7 @@ public abstract class Page {
     /**
      * Close this page
      *
-     * @return true if this page has been closed
+     * @return true if this page closes; false if it has already closed
      */
 
     private boolean close() {
@@ -138,9 +138,9 @@ public abstract class Page {
     }
 
     /**
-     * Add a new view to this page
+     * Add a new view to this Page
      *
-     * @param view a non-null view
+     * @param view a not null view
      */
 
     public final void add(View view) {
@@ -149,7 +149,7 @@ public abstract class Page {
     }
 
     /**
-     * Swap the position of two specified views
+     * Swap the position of two given views
      *
      * @param i the position of the first view
      * @param j the position of the second view
@@ -162,7 +162,7 @@ public abstract class Page {
     }
 
     /**
-     * Remove the specified view from this page
+     * Remove the specified view from this Page
      *
      * @param i the position of the view to remove
      */
@@ -175,7 +175,7 @@ public abstract class Page {
     /**
      * Set the background color
      *
-     * @param color a non-null color
+     * @param color a not null color
      */
 
     public final void setColor(Color color) {
@@ -186,7 +186,7 @@ public abstract class Page {
     /**
      * Draw this page
      *
-     * @param canvas a non-null {@link Graphics2D}
+     * @param canvas a not null {@link Graphics2D}
      */
 
     public void draw(Graphics2D canvas) {
@@ -211,7 +211,7 @@ public abstract class Page {
     }
 
     /**
-     * @return true if this page is currently handled by {@link StdContext}
+     * @return true if this page is open
      */
 
     public final boolean isOpen() {
@@ -219,7 +219,7 @@ public abstract class Page {
     }
 
     /**
-     * @return the amount of handled views
+     * @return the number of handled views
      */
 
     public final int size() {
@@ -227,7 +227,7 @@ public abstract class Page {
     }
 
     /**
-     * @return the index of the specified view or -1 if it is not present
+     * @return the position of the given view otherwise -1
      */
 
     public final int indexOf(View view) {
@@ -235,7 +235,7 @@ public abstract class Page {
     }
 
     /**
-     * @param i the view position
+     * @param i the position of the view you are looking for
      * @return the specified view
      */
 
@@ -244,7 +244,7 @@ public abstract class Page {
     }
 
     /**
-     * @return the page x-dimension
+     * @return the page dimension along x-axis
      */
 
     public final float dx() {
@@ -252,7 +252,7 @@ public abstract class Page {
     }
 
     /**
-     * @return the page y-dimension
+     * @return the page dimension along y-axis
      */
 
     public final float dy() {
@@ -260,7 +260,7 @@ public abstract class Page {
     }
 
     /**
-     * @return the page Context
+     * @return the Page Context
      */
 
     public final Context getContext() {
