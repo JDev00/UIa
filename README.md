@@ -8,7 +8,7 @@ Repository under construction.
 
 UIa has been developed to provide a fast, efficent and cross-platform User Interface library.
 <br>
-It is logically structured into 4 layers: (starting from bottom)
+It is logically structured into 4 layers: (starting from the most platform-dependent one)
 
 1) Context, responsible for rendering and handling Pages
 2) Page,    responsible for rendering and handling Views
