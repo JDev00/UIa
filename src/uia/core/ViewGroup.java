@@ -1,10 +1,8 @@
 package uia.core;
 
-import uia.core.utility.KeyEnc;
-import uia.core.utility.Pointer;
+import uia.core.policy.*;
 import uia.utils.Utils;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +21,7 @@ import static java.lang.Math.*;
  * <b>Note that, if group Context changes, views Context will be changed only when they are rendered.</b>
  */
 
+// @Test
 public abstract class ViewGroup<T extends View> extends View {
     public static final int LAST = -1;
 
@@ -42,7 +41,7 @@ public abstract class ViewGroup<T extends View> extends View {
                      float dx, float dy) {
         super(context, px, py, dx, dy);
         super.setExpansion(0f, 0f);
-        super.setColor(Page.STD_COLOR);
+        super.setPaint(context.createColor(null, Context.COLOR.STD));
 
         list = new ArrayList<>();
 
@@ -158,37 +157,38 @@ public abstract class ViewGroup<T extends View> extends View {
     }
 
     @Override
-    protected void touchDispatcher(Pointer p, boolean update) {
+    protected void pointerDispatcher(boolean update) {
+        Pointer p = getContext().pointers()[0];
+
         boolean u = update
-                && (p != null && !p.isConsumed())
                 && (!hasFigure() || containsPoint(p.getX(), p.getY()));
 
         for (int i = list.size() - 1; i >= 0; i--) {
-            View.updateTouchDispatcher(list.get(i), p, u);
+            View.updatePointerDispatcher(list.get(i), u);
         }
 
-        super.touchDispatcher(p, update);
+        super.pointerDispatcher(update);
     }
 
     @Override
-    protected void keyDispatcher(KeyEnc k, boolean update) {
+    protected void keyDispatcher(boolean update) {
         for (int i = list.size() - 1; i >= 0; i--) {
-            View.updateKeyDispatcher(list.get(i), k, update);
+            View.updateKeyDispatcher(list.get(i), update);
         }
 
-        super.keyDispatcher(k, update);
+        super.keyDispatcher(update);
     }
 
     @Override
-    public void postDraw(Graphics2D canvas) {
+    public void postDraw(Render render) {
         onScreen.clear();
 
-        Shape oldClip = canvas.getClip();
+        Path oClip = render.getClip();
         boolean hasFigure = hasFigure();
 
         // Clip this group
         if (hasFigure)
-            canvas.clip(getFigure());
+            render.clip(getPath());
 
         float px = px();
         float py = py();
@@ -225,7 +225,7 @@ public abstract class ViewGroup<T extends View> extends View {
 
             if (!hasFigure ||
                     (abs(px - t.px()) <= 0.5f * (dx + t.dx()) && abs(py - t.py()) <= 0.5f * (dy + t.dy()))) {
-                t.draw(canvas);
+                t.draw(render);
 
                 if (t.isVisible())
                     onScreen.add(t);
@@ -234,7 +234,7 @@ public abstract class ViewGroup<T extends View> extends View {
 
         // Reset old clip
         if (hasFigure)
-            canvas.setClip(oldClip);
+            render.setClip(oClip);
 
         // Set scroller attributes
         xLength = hPx + hdx - dx / 2f;

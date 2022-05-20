@@ -1,7 +1,7 @@
 package uia.core.gesture;
 
 /**
- * ADT to handle a mono-dimensional scroller
+ * Mono-dimensional scroller ADT
  */
 
 public interface Scroller {

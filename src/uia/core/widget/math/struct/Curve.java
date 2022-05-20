@@ -1,14 +1,14 @@
 package uia.core.widget.math.struct;
 
+import uia.core.policy.Context;
+import uia.core.policy.Paint;
+import uia.core.policy.Path;
+import uia.core.policy.Render;
 import uia.structure.vec.Vec;
 
-import java.awt.*;
-import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-
-import static java.lang.Math.*;
 
 /**
  * Mathematical curve representation
@@ -17,9 +17,9 @@ import static java.lang.Math.*;
 public class Curve {
     private final List<VecS> points;
 
-    public Color colorLine = Color.DARK_GRAY;
-    public Color colorPoint = Color.RED;
-    public Color colorVariance = new Color(255, 100, 10, 150);
+    public Paint colorLine;
+    public Paint colorPoint;
+    public Paint colorVariance;
 
     private float mean;
     private float standardDeviation;
@@ -35,8 +35,12 @@ public class Curve {
     public boolean drawPoints = true;
     public boolean drawVariance = false;
 
-    private Curve(int size) {
-        points = new ArrayList<>(size);
+    public Curve(Context context) {
+        points = new ArrayList<>();
+
+        colorLine = context.createColor(null, 28, 28, 28);
+        colorPoint = context.createColor(null, 255, 0, 0);
+        colorVariance = context.createColor(null, 255, 100, 10, 150);
     }
 
     /**
@@ -53,7 +57,7 @@ public class Curve {
 
     public void analyse() {
         mean = (float) getMean(points);
-        standardDeviation = (float) sqrt(getVariance(mean, points));
+        standardDeviation = (float) Math.sqrt(getVariance(mean, points));
 
         // updates min and max
         minY = minY - standardDeviation;
@@ -127,6 +131,37 @@ public class Curve {
     }
 
     /**
+     * Add new points to this curve
+     *
+     * @param size the number of points to add
+     * @param f    a function used to generate each point
+     */
+
+    public void addPlot(int size, Function<Integer, VecS> f) {
+        for (int i = 0; i < size; i++) {
+            VecS v = f.apply(i);
+
+            if (v != null)
+                addPoint(v.x, v.y, v.data);
+        }
+    }
+
+    /**
+     * Add new points to this curve
+     *
+     * @param points a not null list filled with curve's points
+     */
+
+    public void addPlot(List<VecS> points) {
+        if (points != null && points.size() > 0) {
+
+            for (VecS i : points) {
+                addPoint(i.x, i.y, i.data);
+            }
+        }
+    }
+
+    /**
      * @return the amount of points
      */
 
@@ -150,6 +185,15 @@ public class Curve {
 
     public float getY(int i) {
         return points.get(i).y;
+    }
+
+    /**
+     * @param i the point index
+     * @return the data of the specified point
+     */
+
+    public String getData(int i) {
+        return points.get(i).data;
     }
 
     /**
@@ -201,38 +245,25 @@ public class Curve {
     }
 
     /**
-     * @param i the point index
-     * @return the data of the specified point
-     */
-
-    public String getData(int i) {
-        return points.get(i).data;
-    }
-
-    /**
-     * Draw the given curve on screen
+     * Draw this curve on screen
      *
-     * @param curve             a non-null {@link Curve} to draw
-     * @param canvas            a non-null {@link Graphics2D} used to draw the curve
-     * @param path              a non-null {@link GeneralPath} instance used to draw curve variance
-     * @param xCenter           the center of the curve along x-axis
-     * @param yCenter           the center of the curve along y-axis
-     * @param xScale            the curve scale along x-axis
-     * @param yScale            the curve scale along y-axis
-     * @param standardDeviation the standard deviation of the given curve
+     * @param render  a not null {@link Render} used to draw the curve
+     * @param path    a not null {@link Path} used to draw curve variance
+     * @param xCenter the center of the curve along x-axis
+     * @param yCenter the center of the curve along y-axis
+     * @param xScale  the curve scale along x-axis
+     * @param yScale  the curve scale along y-axis
      */
 
-    public static void draw(Curve curve,
-                            Graphics2D canvas, GeneralPath path,
-                            float xCenter, float yCenter,
-                            float xScale, float yScale,
-                            float standardDeviation) {
-        if (curve.drawVariance) {
+    public void draw(Render render, Path path,
+                     float xCenter, float yCenter,
+                     float xScale, float yScale) {
+        if (drawVariance) {
             path.reset();
 
-            for (int i = 0; i < curve.size(); i++) {
-                int x = (int) (xCenter + xScale * curve.getX(i));
-                int y = (int) (yCenter - yScale * (curve.getY(i) - standardDeviation));// y-axis must be inverted in computer graphics!
+            for (int i = 0; i < size(); i++) {
+                int x = (int) (xCenter + xScale * getX(i));
+                int y = (int) (yCenter - yScale * (getY(i) - standardDeviation));// y-axis must be inverted in computer graphics!
 
                 if (i == 0) {
                     path.moveTo(x, y);
@@ -241,44 +272,46 @@ public class Curve {
                 }
             }
 
-            for (int j = curve.size() - 1; j >= 0; j--) {
-                int x = (int) (xCenter + xScale * curve.getX(j));
-                int y = (int) (yCenter - yScale * (curve.getY(j) + standardDeviation));
+            for (int j = size() - 1; j >= 0; j--) {
+                int x = (int) (xCenter + xScale * getX(j));
+                int y = (int) (yCenter - yScale * (getY(j) + standardDeviation));
 
                 path.lineTo(x, y);
             }
 
-            path.closePath();
+            path.close();
 
-            canvas.setColor(curve.colorVariance);
-            canvas.fill(path);
+            render.setPaint(colorVariance);
+            render.draw(path);
         }
 
         // Draw line between points
 
-        canvas.setColor(curve.colorLine);
-        for (int i = 0; i < curve.size() - 1; i++) {
-            int x1 = (int) (xCenter + xScale * curve.getX(i));
-            int y1 = (int) (yCenter - yScale * curve.getY(i));// the y-axis must be inverted in computer graphics!
-            int x2 = (int) (xCenter + xScale * curve.getX(i + 1));
-            int y2 = (int) (yCenter - yScale * curve.getY(i + 1));
+        if (drawLines) {
+            render.setPaint(colorLine);
 
-            if (curve.drawLines)
-                canvas.drawLine(x1, y1, x2, y2);
+            for (int i = 0; i < size() - 1; i++) {
+                int x1 = (int) (xCenter + xScale * getX(i));
+                int y1 = (int) (yCenter - yScale * getY(i));// the y-axis must be inverted in computer graphics!
+                int x2 = (int) (xCenter + xScale * getX(i + 1));
+                int y2 = (int) (yCenter - yScale * getY(i + 1));
+
+                render.drawLine(x1, y1, x2, y2);
+            }
         }
 
         // Draw points
 
-        if (curve.drawPoints) {
-            int pd = (int) (curve.pointFactor * (8d - java.lang.Math.log(curve.size())));
+        if (drawPoints) {
+            int pd = (int) (pointFactor * (8d - Math.log(size())));
             int h_pd = pd / 2;
 
-            canvas.setColor(curve.colorPoint);
-            for (int i = 0; i < curve.size(); i++) {
-                int x = (int) (xCenter + xScale * curve.getX(i) - h_pd);
-                int y = (int) (yCenter - yScale * curve.getY(i) - h_pd);
+            render.setPaint(colorPoint);
+            for (int i = 0; i < size(); i++) {
+                int x = (int) (xCenter + xScale * getX(i) - h_pd);
+                int y = (int) (yCenter - yScale * getY(i) - h_pd);
 
-                canvas.fillOval(x, y, pd, pd);
+                render.drawRect(x, y, pd, pd);
             }
         }
     }
@@ -314,71 +347,12 @@ public class Curve {
     }
 
     /**
-     * Create a new Curve
-     *
-     * @param size the number of points
-     * @param fun  a function used to create each point
-     */
-
-    public static Curve create(int size, Function<Integer, VecS> fun) {
-        Curve curve = new Curve(size);
-
-        for (int i = 0; i < size; i++) {
-            VecS v = fun.apply(i);
-
-            if (v != null)
-                curve.addPoint(v.x, v.y, v.data);
-        }
-
-        return curve;
-    }
-
-    /**
-     * Create a new Curve
-     *
-     * @param size the number of points
-     * @param step a gap between the previous and the current point
-     * @param fun  a function used to create each point
-     */
-
-    public static Curve create(int size, float step, Function<Float, VecS> fun) {
-        Curve curve = new Curve(size);
-
-        for (float i = 0; i < size; i += step) {
-            VecS v = fun.apply(i);
-
-            if (v != null)
-                curve.addPoint(v.x, v.y, v.data);
-        }
-
-        return curve;
-    }
-
-    /**
-     * @return a new Curve or null if {@code list == null || list.size() == null}
-     */
-
-    public static Curve create(List<VecS> list) {
-        Curve out = null;
-
-        if (list != null && list.size() > 0) {
-            out = new Curve(list.size());
-
-            for (VecS i : list) {
-                out.addPoint(i.x, i.y, i.data);
-            }
-        }
-
-        return out;
-    }
-
-    /**
      * Create, if exists, the curve of the mean of each point
      *
      * @return if exists the mean curve otherwise null
      */
 
-    public static Curve createMean(List<Curve> curves) {
+    public static Curve createMean(Context context, List<Curve> curves) {
         if (curves.size() > 1) {
             int size = curves.get(0).size();
 
@@ -409,9 +383,9 @@ public class Curve {
 
             // Create and return mean curve
 
-            Curve mean = new Curve(size);
+            Curve mean = new Curve(context);
             mean.drawVariance = true;
-            mean.colorPoint = Color.BLUE;
+            mean.colorPoint = context.createColor(null, 0, 0, 255);
 
             for (VecS i : list) {
                 mean.addPoint(i.x, i.y, i.data);
@@ -436,12 +410,13 @@ public class Curve {
      * @return if the given curves are consistent a new curve otherwise null
      */
 
-    public static Curve join(Curve a, Curve b) {
+    public static Curve join(Context context, Curve a, Curve b) {
         if (a == null || b == null) return null;
 
-        if (a.equals(b)) return a;
+        if (a.equals(b))
+            return a;
 
-        Curve ret = new Curve(max(a.size(), b.size()));
+        Curve ret = new Curve(context);
 
         int iA = 0;
         int iB = 0;

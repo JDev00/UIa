@@ -1,15 +1,16 @@
 package uia.core.widget.math;
 
-import uia.core.Context;
 import uia.core.View;
 import uia.core.event.Mouse;
-import uia.core.figure.Rect;
+import uia.core.geometry.Rect;
+import uia.core.policy.Context;
+import uia.core.policy.Paint;
+import uia.core.policy.Path;
+import uia.core.policy.Render;
 import uia.core.widget.math.struct.Curve;
 import uia.core.widget.math.struct.VecS;
 import uia.structure.vec.Vec;
 
-import java.awt.*;
-import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +25,11 @@ public class GraphicView extends View {
 
     private final List<VecS> covered;
 
-    private final GeneralPath path;
+    private final Path path;
 
     private Curve mean = null;
 
-    public Color colorAxis = Color.RED;
+    public Paint colorAxis;
 
     protected int cmx = -1;
     protected int cmy = -6;
@@ -55,11 +56,13 @@ public class GraphicView extends View {
             cmy = e.getY();
         });
 
+        colorAxis = context.createColor(null, 255, 0, 0);
+
+        path = context.createPath();
+
         curves = new ArrayList<>();
 
         covered = new ArrayList<>();
-
-        path = new GeneralPath();
 
         reset();
     }
@@ -91,7 +94,7 @@ public class GraphicView extends View {
     }
 
     /**
-     * Clear all curves of this graphic
+     * Clear all curves and reset the mean one
      */
 
     public void clear() {
@@ -105,7 +108,7 @@ public class GraphicView extends View {
     /**
      * Add a new curve
      *
-     * @param curve a non-null curve to draw
+     * @param curve a not null curve
      */
 
     public void add(Curve curve) {
@@ -120,7 +123,7 @@ public class GraphicView extends View {
     /**
      * Remove the specified curve
      *
-     * @param i the index of the curve to remove
+     * @param i the position of the curve to remove
      * @return if exists the removed curve otherwise null
      */
 
@@ -129,13 +132,13 @@ public class GraphicView extends View {
     }
 
     /**
-     * Create/update, if exists, the curve of the mean of each point
+     * Create/update the curve of the mean of each point
      *
      * @return if exists the mean curve otherwise null
      */
 
     public Curve createMean() {
-        return (mean = Curve.createMean(curves));
+        return (mean = Curve.createMean(getContext(), curves));
     }
 
     /**
@@ -150,7 +153,7 @@ public class GraphicView extends View {
     public Curve join(int i, int j) {
         if (i < 0 || i > j || i >= size() || j >= size()) return null;
 
-        Curve ret = Curve.join(curves.remove(i), curves.remove(j));
+        Curve ret = Curve.join(getContext(), curves.remove(i), curves.remove(j));
 
         if (ret != null) {
             curves.add(ret);
@@ -187,7 +190,7 @@ public class GraphicView extends View {
     }
 
     @Override
-    public void postDraw(Graphics2D canvas) {
+    public void postDraw(Render render) {
         //v = ((max + min) / (|max| + |min|) + 1) / 2
 
         float cx = abs(minX) + abs(maxX);
@@ -217,7 +220,7 @@ public class GraphicView extends View {
             updateMaxMin(i.getMaxX(), i.getMaxY());
             updateMaxMin(i.getMinX(), i.getMinY());
 
-            Curve.draw(i, canvas, path, xCenter, yCenter, xScale, yScale, i.getStandardDeviation());
+            i.draw(render, path, xCenter, yCenter, xScale, yScale);
 
             VecS node = getNode(i, mx);
             if (node != null)
@@ -226,7 +229,7 @@ public class GraphicView extends View {
 
 
         if (mean != null) {
-            Curve.draw(mean, canvas, path, xCenter, yCenter, xScale, yScale, mean.getStandardDeviation());
+            mean.draw(render, path, xCenter, yCenter, xScale, yScale);
 
             VecS node = getNode(mean, mx);
             if (node != null)
@@ -234,12 +237,12 @@ public class GraphicView extends View {
         }
 
 
-        canvas.setColor(colorAxis);
-        canvas.drawLine(
+        render.setPaint(colorAxis);
+        render.drawLine(
                 (int) (px() - 0.99f * dx / 2d), (int) yCenter,
                 (int) (px() - 0.97f * dx / 2f), (int) yCenter);
 
-        canvas.drawLine(
+        render.drawLine(
                 (int) xCenter, (int) (py() - 0.99f * dy / 2d),
                 (int) xCenter, (int) (py() - 0.97f * dy / 2d));
     }
@@ -269,7 +272,7 @@ public class GraphicView extends View {
     }
 
     /**
-     * @return points covered by user
+     * @return the points covered by user
      */
 
     public final List<VecS> getCovered() {

@@ -3,7 +3,7 @@ package uia.core.widget.math.struct;
 import uia.structure.vec.Vec;
 
 /**
- * Data structure used to store a point and its description
+ * Data structure used to store one point with its description
  */
 
 public class VecS extends Vec {

@@ -4,15 +4,12 @@ import uia.core.animator.Animator;
 import uia.core.event.*;
 import uia.core.event.Event;
 import uia.core.animator.LinearAnimator;
-import uia.core.utility.KeyEnc;
-import uia.core.utility.Pointer;
-import uia.core.figure.Figure;
-import uia.core.figure.RectSmooth;
+import uia.core.geometry.Figure;
+import uia.core.geometry.RectSmooth;
+import uia.core.policy.*;
 import uia.utils.Timer;
 import uia.utils.Utils;
 
-import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.util.function.Consumer;
 
 import static java.lang.Math.*;
@@ -60,15 +57,15 @@ public class View {
     private static final int ANIMATOR_ROT = 2;
 
     /*
-     * Mouse attributes, Mouse handler and key management
+     * Input attributes
      */
 
     private boolean consumePointer = true;
     private boolean consumeKey = true;
 
-    private final MotionEvent motionTouch;
+    private final MotionEvent motionEvent;
 
-    private KeyEnc keyEnc;
+    private Key key;
 
     /*
      * Animator & events handler
@@ -79,20 +76,16 @@ public class View {
     private final EventHandler<View> eventHandler;
 
     /*
-     * Graphics
-     */
-
-    private Figure figure;
-
-    private Color color;
-
-    private Image image;
-
-    /*
      * Behaviour
      */
 
     private Context context;
+
+    private Paint paint;
+
+    private Path path;
+
+    private Figure figure;
 
     private float px;
     private float py;
@@ -115,19 +108,21 @@ public class View {
     private float xExpanse = 1f;
     private float yExpanse = 1f;
 
-    private float xScaleImg = 1f;
-    private float yScaleImg = 1f;
-
     private boolean over = false;
     private boolean focus = false;
     private boolean visible = true;
-    private boolean imgVisible = true;
     private boolean autoAdjustment = true;
 
     public View(Context context,
                 float px, float py,
                 float dx, float dy) {
         this.context = Context.validateContext(context);
+
+        path = context.createPath();
+
+        paint = context.createColor(null, Context.COLOR.WHITE);
+
+        figure = RectSmooth.create();
 
         this.px = px;
         this.py = py;
@@ -136,36 +131,57 @@ public class View {
 
         updateBounds();
 
-        motionTouch = new MotionEvent();
+        motionEvent = new MotionEvent();
 
         eventHandler = new EventHandler<>();
-
-        figure = RectSmooth.create(5, 0.1f);
 
         animator = new Animator[]{
                 new LinearAnimator(),
                 new LinearAnimator(),
                 new LinearAnimator()
         };
-
-        color = Color.WHITE;
     }
 
     /*
      *
-     * Context
+     * Context & figure
      *
      */
 
     /**
-     * Set the view {@link Context}
+     * Set the view {@link Context} and reset the internal {@link Path}.
+     * <b>Note that this method will work only if the given Context is different from the View one.</b>
      *
-     * @param context a not null Context
+     * @param c a not null Context
      */
 
-    void setContext(Context context) {
-        if (context != null)
-            this.context = context;
+    public void setContext(Context c) {
+        if (c != null && !context.equals(c)) {
+            context = c;
+            //paint = context.createColor();
+            path = context.createPath();
+        }
+    }
+
+    /**
+     * Set the shape of this view
+     *
+     * @param figure a {@link Figure}; it could be null
+     */
+
+    public void setFigure(Figure figure) {
+        this.figure = figure;
+    }
+
+    /**
+     * Set a Paint object used to control figure color
+     *
+     * @param paint a not null Paint object
+     */
+
+    public void setPaint(Paint paint) {
+        if (paint != null)
+            this.paint = paint;
     }
 
     /*
@@ -406,35 +422,6 @@ public class View {
     }
 
     /**
-     * Set the {@link Figure} to render
-     *
-     * @param figure a figure; it could be null
-     */
-
-    public void setFigure(Figure figure) {
-        this.figure = figure;
-    }
-
-    /**
-     * Set the figure color
-     *
-     * @param color a not null color
-     */
-
-    public void setColor(Color color) {
-        if (color != null)
-            this.color = color;
-    }
-
-    /**
-     * @return the figure color
-     */
-
-    public final Color getColor() {
-        return color;
-    }
-
-    /**
      * Request to this view to put on focus, that it means that it will be allowed to interact with user.
      * <b>Note that this operation will be done only if the view is visible and <u>isn't already on focus</u>.</b>
      */
@@ -510,37 +497,45 @@ public class View {
         this.autoAdjustment = autoAdjustment;
     }
 
-    /**
+    /*
      * Display or hide the image
      *
      * @param enableImage true to display the image
-     */
+     *
 
     public void setImageVisible(boolean enableImage) {
         imgVisible = enableImage;
     }
 
-    /**
+    /*
      * Set an image to this view
      *
-     * @param image an {@link Image} to render
-     */
+     * @param image an Image to render
+     *
 
-    public void setImage(Image image) {
+    public void setImage(Object image) {
         this.image = image;
     }
 
     /**
+     * @return if exists, the view's image, otherwise null
+     *
+
+    public final Object getImage() {
+        return image;
+    }*/
+
+    /*
      * Scale image
      *
      * @param x a value between [0, 1] used to scale along x-axis
      * @param y a value between [0, 1] used to scale along y-axis
-     */
+     *
 
     public void setScaleImg(float x, float y) {
         xScaleImg = Utils.constrain(x, 0, 1);
         yScaleImg = Utils.constrain(y, 0, 1);
-    }
+    }*/
 
     /*
      *
@@ -549,7 +544,7 @@ public class View {
      */
 
     /**
-     * Method automatically invoked by the framework when Window gains or loses focus.
+     * Method automatically invoked by the framework when Window gains or loses focus
      */
 
     protected void focusDispatcher(boolean gained) {
@@ -566,32 +561,38 @@ public class View {
     private int tClicks = 0;
 
     /**
-     * Mouse and event handler invoked automatically by the framework.
-     * <b>Note that when view is not visible no event is executed.<b>
-     * <b>If a null pointer is passed in, focus will be automatically lost.</b>
+     * Pointers handler invoked automatically by the framework.
+     * <br>
+     * Note that:
+     * <br>
+     * 1) if view is not visible, no event will be executed,
+     * <br>
+     * 2) when focus is lost, {@link View#removeFocus()} is invoked.
      *
-     * @param p      a {@link Pointer}; if null, focus will be lost
-     * @param update true to update touch dispatcher
+     * @param update true to update this dispatcher
      */
 
-    protected void touchDispatcher(Pointer p, boolean update) {
+    protected void pointerDispatcher(boolean update) {
+        // Remember to fix it!
+        Pointer p = context.pointers()[0];
+
         boolean compute = update
-                && (p != null && !p.isConsumed())
+                && !p.isConsumed()
                 && isVisible();
 
         if (compute
-                && p.getAction() != MouseEvent.MOUSE_EXITED
+                && p.getAction() != Pointer.EXITED
                 && containsPoint(p.getX(), p.getY())) {
 
             // update motion event
-            motionTouch.update(p, (int) (-px() + 0.5f * dx()), (int) (-py() + 0.5f * dy()));
+            motionEvent.update(p, (int) (-px() + 0.5f * dx()), (int) (-py() + 0.5f * dy()));
 
             // Consume pointer when consumeTouch is enabled
             if (consumePointer)
                 p.consume();
 
             // Put on focus and update FOCUS_GAINED
-            if (!focus && p.getAction() == MouseEvent.MOUSE_PRESSED) {
+            if (!focus && p.getAction() == Pointer.PRESSED) {
                 focus = true;
                 updateEvent(State.class, State.FOCUS_GAINED);
             }
@@ -606,16 +607,19 @@ public class View {
             }
 
             // Update CLICK
-            if (motionTouch.getCumulativeClicks() != tClicks) {
-                tClicks = motionTouch.getCumulativeClicks();
+            if (motionEvent.getCumulativeClicks() != tClicks) {
+                tClicks = motionEvent.getCumulativeClicks();
                 updateEvent(Mouse.class, Mouse.CLICK);
             }
         } else {
 
+            // @Test
             // Remove focus and update FOCUS_LOST
-            if (focus && (p == null || p.getAction() == MouseEvent.MOUSE_PRESSED)) {
-                focus = false;
-                updateEvent(State.class, State.FOCUS_LOST);
+            if (focus && p.getAction() == Pointer.PRESSED) {
+                removeFocus();
+
+                /*focus = false;
+                updateEvent(State.class, State.FOCUS_LOST);*/
             }
 
             // Update LEAVE
@@ -625,7 +629,7 @@ public class View {
                 if (compute)
                     updateEvent(Mouse.class, Mouse.LEAVE);
 
-                motionTouch.clear();
+                motionEvent.clear();
             }
         }
     }
@@ -637,7 +641,7 @@ public class View {
      */
 
     public final MotionEvent getMotionEvent() {
-        return motionTouch;
+        return motionEvent;
     }
 
     /*
@@ -650,32 +654,33 @@ public class View {
      * Key and event handler invoked automatically by the framework.
      * <b>Note that when view is not visible no event is executed.<b>
      *
-     * @param k      the last system handled {@link KeyEnc}
      * @param update true to update key dispatcher
      */
 
-    protected void keyDispatcher(KeyEnc k, boolean update) {
+    protected void keyDispatcher(boolean update) {
+        Key k = context.getKeyEnc();
+
         if (update
-                && (k != null && !k.isConsumed())
+                && !k.isConsumed()
                 && isVisible()
                 && isFocused()) {
-            keyEnc = k;
+            key = k;
 
             if (consumeKey)
                 k.consume();
 
-            eventHandler.update(Key.class, this, k.getAction());
+            eventHandler.update(Keyboard.class, this, k.getAction());
         }
     }
 
     /**
-     * <b>Call this method only inside a {@link Key} event or its subclass.</b>
+     * <b>Call this method only inside a {@link Keyboard} event or its subclass.</b>
      *
-     * @return the {@link KeyEnc} handled by this view
+     * @return the {@link Key} handled by this view
      */
 
-    public final KeyEnc getKey() {
-        return keyEnc;
+    public final Key getKey() {
+        return key;
     }
 
     /*
@@ -685,7 +690,7 @@ public class View {
      */
 
     /**
-     * Method invoked automatically before {@link View#preDraw(Graphics2D)}.
+     * Method invoked automatically before {@link View#preDraw(Render)}.
      * <b>Note that it will be invoked even when view is not visible.</b>
      */
 
@@ -698,7 +703,7 @@ public class View {
      * <b>Note that it will be invoked only when view is visible.</b>
      */
 
-    protected void preDraw(Graphics2D canvas) {
+    protected void preDraw(Render render) {
 
     }
 
@@ -707,7 +712,7 @@ public class View {
      * <b>Note that it will be invoked only when view is visible.</b>
      */
 
-    protected void postDraw(Graphics2D canvas) {
+    protected void postDraw(Render render) {
 
     }
 
@@ -717,10 +722,10 @@ public class View {
     /**
      * Draw this view on screen
      *
-     * @param canvas a not null {@link Graphics2D}
+     * @param render a not null {@link Render} instance
      */
 
-    public final void draw(Graphics2D canvas) {
+    public final void draw(Render render) {
         // Execute the code before the drawing operation
         update();
 
@@ -749,26 +754,17 @@ public class View {
             }
 
             // Call preDraw before shape drawing
-            preDraw(canvas);
+            preDraw(render);
 
-            // Draw shape
+            // Draw Figure
             if (figure != null) {
-                canvas.setColor(color);
-                figure.setDim(dx(), dy());
-                figure.setPos(px(), py());
-                figure.draw(canvas);
-            }
-
-            // @Revision
-            // Draw image
-            if (image != null && imgVisible) {
-                int ix = (int) (xScaleImg * dx());
-                int iy = (int) (yScaleImg * dy());
-                canvas.drawImage(image, (int) (px() - 0.5f * ix), (int) (py() - 0.5f * iy), ix, iy, null);
+                figure.build(path, px(), py(), dx(), dy(), rot());
+                render.setPaint(paint);
+                render.draw(path);
             }
 
             // Call postDraw after shape drawing
-            postDraw(canvas);
+            postDraw(render);
         }
     }
 
@@ -778,6 +774,30 @@ public class View {
 
     public final Context getContext() {
         return context;
+    }
+
+    /**
+     * @return the view's Paint
+     */
+
+    public final Paint getPaint() {
+        return paint;
+    }
+
+    /**
+     * @return the view's Path
+     */
+
+    public final Path getPath() {
+        return path;
+    }
+
+    /**
+     * @return the view's Figure
+     */
+
+    public final Figure getFigure() {
+        return figure;
     }
 
     /**
@@ -884,21 +904,21 @@ public class View {
         return yUpperBound;
     }
 
-    /**
+    /*
      * @return the image scale factor along x-axis
-     */
+     *
 
     public final float imgScaleX() {
         return xScaleImg;
     }
 
-    /**
+    /*
      * @return the image scale factor along y-axis
-     */
+     *
 
     public final float imgScaleY() {
         return yScaleImg;
-    }
+    }*/
 
     /**
      * @return true if pointers are contained inside this view
@@ -940,13 +960,13 @@ public class View {
         return visible;
     }
 
-    /**
+    /*
      * @return true if image could be rendered
-     */
+     *
 
     public final boolean isImageVisible() {
         return imgVisible;
-    }
+    }*/
 
     /**
      * <b>Note that, when view is on focus, it must be visible.</b>
@@ -966,72 +986,34 @@ public class View {
         return figure != null;
     }
 
-    /**
+    /*
      * @return true if this view has a not null image
-     */
+     *
 
     public final boolean hasImage() {
         return image != null;
-    }
-
-    /**
-     * @return true if this view contains the given point
-     */
-
-    public final boolean containsPoint(float x, float y) {
-        return figure != null && figure.contains(x, y);
-    }
+    }*/
 
     /**
      * @return true if this view contains the given point
      */
 
     public final boolean containsPoint(double x, double y) {
-        return figure != null && figure.contains(x, y);
+        return figure != null && path.contains(x, y);
     }
 
     /**
-     * @return the view's figure
-     */
-
-    public final Figure getFigure() {
-        return figure;
-    }
-
-    /**
-     * @return if exists, the view's image, otherwise null
-     */
-
-    public final Image getImage() {
-        return image;
-    }
-
-    /**
-     * Manually set a Context to the given view
-     * <b>Designed to be used in widget implementation.</b>
-     *
-     * @param view    a not null view
-     * @param context a not null Context
-     */
-
-    public static void updateContext(View view, Context context) {
-        if (view != null)
-            view.setContext(context);
-    }
-
-    /**
-     * Manually update touch dispatcher of the given view.
+     * Manually update pointer dispatcher of the given view.
      * <b>Designed to be used in widget implementation.</b>
      *
      * @param view   a not null view
-     * @param p      a pointer
-     * @param update true to update touch dispatcher
+     * @param update true to update pointer dispatcher
      */
 
-    public static void updateTouchDispatcher(View view,
-                                             Pointer p, boolean update) {
+    public static void updatePointerDispatcher(View view,
+                                               boolean update) {
         if (view != null)
-            view.touchDispatcher(p, update);
+            view.pointerDispatcher(update);
     }
 
     /**
@@ -1039,14 +1021,13 @@ public class View {
      * <b>Designed to be used in widget implementation.</b>
      *
      * @param view   a not null view
-     * @param k      the last system handled {@link KeyEnc}
      * @param update true to update key dispatcher
      */
 
     public static void updateKeyDispatcher(View view,
-                                           KeyEnc k, boolean update) {
+                                           boolean update) {
         if (view != null)
-            view.keyDispatcher(k, update);
+            view.keyDispatcher(update);
     }
 
     /*
@@ -1124,7 +1105,7 @@ public class View {
                 durationTimer.reset();
 
                 // Only if pointer is already pressed and enters this view
-                if (e.getAction() == MouseEvent.MOUSE_DRAGGED) {
+                if (e.getAction() == Pointer.DRAGGED) {
                     xStartPressed = x;
                     yStartPressed = y;
                     pressedTimer.reset();
@@ -1137,7 +1118,7 @@ public class View {
 
             switch (e.getAction()) {
 
-                case MouseEvent.MOUSE_PRESSED:
+                case Pointer.PRESSED:
                     if (e.getPressedButtonSize() == 0) {
                         xStartPressed = x;
                         yStartPressed = y;
@@ -1145,12 +1126,12 @@ public class View {
                     }
                     break;
 
-                case MouseEvent.MOUSE_RELEASED:
-                case MouseEvent.MOUSE_DRAGGED:
+                case Pointer.RELEASED:
+                case Pointer.DRAGGED:
                     pressedTime = pressedTimer.secondsFloat();
                     break;
 
-                case MouseEvent.MOUSE_CLICKED:
+                case Pointer.CLICKED:
                     clicks++;
                     cumulativeClicks++;
                     break;
@@ -1182,7 +1163,7 @@ public class View {
         }
 
         /**
-         * If no button has been used, it returns {@link MouseEvent#NOBUTTON}
+         * If no button has been used, it returns 0
          *
          * @return the button used to perform the action
          */
@@ -1200,7 +1181,7 @@ public class View {
         }
 
         /**
-         * @param id the button id: {@see {@link MouseEvent#BUTTON1}, {@link MouseEvent#BUTTON2},{@link MouseEvent#BUTTON3}}
+         * @param id the button id between {1,2,3}
          * @return true if the given button is currently pressed
          */
 
@@ -1313,7 +1294,7 @@ public class View {
          */
 
         public boolean isMouseReleased() {
-            return pointer.getAction() == MouseEvent.MOUSE_RELEASED;
+            return pointer.getAction() == pointer.RELEASED;
         }
 
         /**

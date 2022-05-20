@@ -1,45 +1,51 @@
 package uia.core.widget;
 
-import uia.core.Context;
+import uia.core.event.Keyboard;
+import uia.core.policy.*;
 import uia.core.event.State;
-import uia.core.utility.TextSuite;
 import uia.core.View;
-import uia.core.event.Key;
 import uia.core.event.Mouse;
 import uia.core.gesture.Scroller;
 import uia.core.gesture.WheelScroller;
-import uia.core.figure.Rect;
+import uia.core.geometry.Rect;
+import uia.core.event.Event;
 import uia.structure.list.Buffer;
 import uia.structure.list.BufferChar;
+import uia.structure.list.BufferFloat;
 import uia.structure.list.BufferInt;
-import uia.utils.Timer;
 import uia.utils.Utils;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
-
 import static java.lang.Math.*;
-import static uia.core.utility.TextSuite.*;
 
 /**
  * Widget designed for text rendering and text handling.
- * Note that, by construction, text properties such as: longest line, justification and so on
- * are calculated <u>only</u> when text is drawn.
+ * <br>
+ * <b>Note that text properties such as: longest line, justification and so on
+ * are calculated in render time.</b>
+ * <br>
+ * Additional features can be easily added with custom {@link Event} implementations.
+ * Some of them have been already implemented (by default are not attached to the TextView):
+ * <lu>
+ * <li>{@link TextView#funShortcut()}</li>
+ * <li>{@link TextView#funTxtSelection()} ()}</li>
+ * <li>{@link TextView#funTxtSelectedReset()} ()}</li>
+ * </lu>
+ *
+ * @see TextView#createFriendly(Context, float, float, float, float)
  */
 
-// @Test
-// @Bug see shape scaling and correlation with scroller
+// @Bug see scaling and correlation with scroller
 public class TextView extends View {
-    protected TextCursor cursor;
 
-    protected final BufferChar buffer;
-    protected final BufferInt lines;
+    /**
+     * AlignX object is used to align text along x-axis
+     */
+    public enum AlignX {LEFT, CENTER, RIGHT}
 
-    private final TextSuite textSuite;
-
-    private Scroller scroller;
-
-    private Color selectedColor = new Color(80, 120, 255);
+    /**
+     * AlignY object is used to align text along y-axis
+     */
+    public enum AlignY {TOP, CENTER}
 
     /*
      * Cursor attributes
@@ -48,12 +54,14 @@ public class TextView extends View {
     private int cLine = 1;
     private float cOffX;
 
+    protected TextCursor cursor;
+
     /*
      * Text attributes
      */
 
-    private final BufferChar dBuffer;
-    private final BufferInt dLines;
+    protected int index;
+    protected int hIndex;
 
     private int textHeight = 0;
     private int longestLine = 0;
@@ -62,10 +70,33 @@ public class TextView extends View {
 
     private boolean selected = false;
     private boolean singleLine = false;
+    private boolean autoJustification = true;
+    private boolean requestJustification = false;
 
-    protected int index;
-    protected int hIndex;
-    protected boolean justify = false;
+    private int measureSize;
+
+    private final BufferFloat measures;
+
+    private Font font;
+
+    private Paint paintText;
+
+    private Paint paintSelected;
+
+    private AlignX alignX = AlignX.CENTER;
+
+    private AlignY alignY = AlignY.TOP;
+
+    private Scroller scroller;
+
+    /*
+     * Text buffers
+     */
+
+    private final BufferChar dBuffer;
+    private final BufferInt dLines;
+    protected final BufferChar buffer;
+    protected final BufferInt lines;
 
     public TextView(Context context,
                     float px, float py,
@@ -73,53 +104,71 @@ public class TextView extends View {
         super(context, px, py, dx, dy);
         super.setFigure(new Rect());
         super.setExpansion(0f, 0f);
-        super.addEvent(textSelection());
-        super.addEvent(keyShortcuts());
+        super.addEvent((Mouse) (v, s) -> {
+            MotionEvent e = v.getMotionEvent();
+            if (e.isMouseWheeling())
+                scroller.wheelUpdate(e.getWheelRotation());
+        });
+
+        paintText = context.createColor(null, Context.COLOR.BLACK);
+
+        paintSelected = context.createColor(null, 80, 120, 255);
 
         buffer = new BufferChar(100);
 
         lines = new BufferInt(10);
-
-        textSuite = new TextSuite(context, 384);
 
         scroller = new WheelScroller(true);
 
         dBuffer = new BufferChar(100);
 
         dLines = new BufferInt(1);
+
+        measureSize = 384;
+
+        measures = new BufferFloat(measureSize);
+
+        setFont(context.createFont(null, "Arial", Font.STYLE.PLAIN, 24));
     }
 
     /**
-     * Key shortcut implementation
+     * Function used to automatically detect common key shortcuts and act to them
      */
 
-    private Key keyShortcuts() {
+    public Keyboard funShortcut() {
         return (v, s) -> {
-            KeyEvent e = (KeyEvent) v.getKey().getNative();
+            Key e = v.getKey();
 
-            if (ctrlA(e)) {
-                hIndex = 0;
-                index = buffer.size();
-            } else if (ctrlC(e) && isTextSelected()) {
-                Context.copy(String.valueOf(Buffer.getData(buffer), getMinIndex(), getSelectionCount()));
+            if (s == Keyboard.PRESSED) {
+
+                if (e.codeTextSelectionAll()) {
+                    hIndex = 0;
+                    index = buffer.size();
+                } else if (e.codeTextCopy() && isTextSelected()) {
+                    getContext().copyIntoClipboard(String.valueOf(Buffer.getData(buffer), getMinIndex(), getSelectionCount()));
+                } else if (e.codeTextSelectionLeft()) {
+                    index = max(index - 1, 0);
+                } else if (e.codeTextSelectionRight()) {
+                    index = min(index + 1, buffer.size());
+                }
             }
         };
     }
 
     /**
-     * Text selection implementation
+     * Function used to automatically select text with cursor
      */
 
-    private Mouse textSelection() {
+    public Mouse funTxtSelection() {
         return (v, s) -> {
             MotionEvent e = v.getMotionEvent();
 
             if (e.isMousePressed()) {
-                int ax = -textSuite.getAlignX().getNumber();
+                int ax = -map(alignX);
 
                 index = getIndex(
                         (int) (-ax * dx() / 2f),
-                        (int) ((textSuite.isAlignY(AlignY.TOP) ? 0 : (dy() - textHeight) / 2) - scroller.getOffset()),
+                        (int) ((isAlignY(AlignY.TOP) ? 0 : (dy() - textHeight) / 2) - scroller.getOffset()),
                         e.getX(), e.getY(), ax);
 
                 if (!selected) {
@@ -129,17 +178,15 @@ public class TextView extends View {
 
             } else if (e.isMouseReleased()) {
                 selected = false;
-            } else if (e.isMouseWheeling()) {
-                scroller.wheelUpdate(e.getWheelRotation());
             }
         };
     }
 
     /**
-     * Reset the selected text
+     * Function used to automatically reset text selection when focus is lost
      */
 
-    public State resetSelected() {
+    public State funTxtSelectedReset() {
         return (v, s) -> {
             if (s == State.FOCUS_LOST)
                 index = hIndex = 0;
@@ -147,14 +194,234 @@ public class TextView extends View {
     }
 
     /**
-     * Set a new scroller to this view
+     * Map into a number the given AlignX object
      *
-     * @param scroller a non-null scroller instance
+     * @param alignX a not null {@link AlignX} object
      */
 
-    public void setScroller(Scroller scroller) {
-        if (scroller != null)
-            this.scroller = scroller;
+    private int map(AlignX alignX) {
+        switch (alignX) {
+            case LEFT:
+                return 0;
+            case CENTER:
+                return 1;
+            case RIGHT:
+                return 2;
+            default:
+                return -1;
+        }
+    }
+
+    /*
+     *
+     * Font
+     *
+     */
+
+    /**
+     * Set the text font
+     *
+     * @param f a not null {@link Font}
+     */
+
+    public void setFont(Font f) {
+        if (f != null) {
+            font = f;
+            updateMeasure();
+        }
+    }
+
+    /**
+     * @return the text font
+     */
+
+    public Font getFont() {
+        return font;
+    }
+
+    /**
+     * Set the font size
+     *
+     * @param size a value {@code > 0}
+     */
+
+    public void setFontSize(float size) {
+        if (size > 0) {
+            font.setSize(size);
+            updateMeasure();
+        }
+    }
+
+    /**
+     * Update the measure buffer
+     */
+
+    private void updateMeasure() {
+        measures.clear();
+
+        for (int i = 0; i < measureSize; i++) {
+            measures.add(measures.size(), font.getWidth((char) i));
+        }
+    }
+
+    /**
+     * Resize the measure buffer
+     *
+     * @param size a value {@code >= 0}
+     */
+
+    public void resizeMeasureBuffer(int size) {
+        measureSize = Math.max(size, 0);
+        updateMeasure();
+    }
+
+    /**
+     * @return the amount of buffered chars
+     */
+
+    public int measureSize() {
+        return measureSize;
+    }
+
+    /**
+     * @return the font size
+     */
+
+    public float getFontSize() {
+        return font.getSize();
+    }
+
+    /**
+     * @return the width of the given char
+     */
+
+    public float getWidth(char c) {
+        return measures.getFloatAt(c);
+    }
+
+    /**
+     * @return the width of the given array of chars
+     */
+
+    public float getWidth(char[] in, int off, int len) {
+        float tot = 0;
+
+        for (int i = 0; i < len; i++) {
+            tot += measures.getFloatAt(in[off + i]);
+        }
+
+        return tot;
+    }
+
+    /**
+     * @return the width of the given array of bytes
+     */
+
+    public float getWidth(byte[] in, int off, int len) {
+        float tot = 0;
+
+        for (int i = 0; i < len; i++) {
+            tot += measures.getFloatAt((char) in[off + i]);
+        }
+
+        return tot;
+    }
+
+    /**
+     * @return the width of the given string
+     */
+
+    public float getWidth(String in) {
+        return getWidth(in.toCharArray(), 0, in.length());
+    }
+
+    /**
+     * @param off the position of the first char
+     * @param len the amount of chars to measure
+     * @return the text length
+     */
+
+    public float getWidth(int off, int len) {
+        return getWidth(Buffer.getData(buffer), off, len);
+    }
+
+    /*
+     *
+     * Text options
+     *
+     */
+
+    /**
+     * Set the text Paint
+     *
+     * @param paint a not null Paint object
+     */
+
+    public void setPaintText(Paint paint) {
+        if (paint != null)
+            paintText = paint;
+    }
+
+    /**
+     * @return the Paint object
+     */
+
+    public Paint getPaintText() {
+        return paintText;
+    }
+
+    /**
+     * Set the text x-alignment
+     *
+     * @param alignX a not null {@link AlignX} instance
+     */
+
+    public void setAlignX(AlignX alignX) {
+        if (alignX != null)
+            this.alignX = alignX;
+    }
+
+    /**
+     * Set the text y-alignment
+     *
+     * @param alignY a not null {@link AlignY} instance
+     */
+
+    public void setAlignY(AlignY alignY) {
+        if (alignY != null)
+            this.alignY = alignY;
+    }
+
+    /**
+     * @return true if the given alignX is equal to this x-alignment
+     */
+
+    public boolean isAlignX(AlignX alignX) {
+        return this.alignX.equals(alignX);
+    }
+
+    /**
+     * @return true if the given alignY is equal to this y-alignment
+     */
+
+    public boolean isAlignY(AlignY alignY) {
+        return this.alignY.equals(alignY);
+    }
+
+    /**
+     * @return the text alignment along x-axis
+     */
+
+    public AlignX getAlignX() {
+        return alignX;
+    }
+
+    /**
+     * @return the text alignment along y-axis
+     */
+
+    public AlignY getAlignY() {
+        return alignY;
     }
 
     /**
@@ -165,7 +432,25 @@ public class TextView extends View {
 
     public void enableSingleLine(boolean enableSingleLine) {
         this.singleLine = enableSingleLine;
-        justify = true;
+        requestJustification = true;
+    }
+
+    /**
+     * @return true if this view has single line mode enabled
+     */
+
+    public final boolean isSingleLineMode() {
+        return singleLine;
+    }
+
+    /**
+     * Enable or disable the auto-justification.
+     * <br>
+     * <b>Auto-justification functionality automatically justifies this text.</b>
+     */
+
+    public void enableAutoJustification(boolean autoJustification) {
+        this.autoJustification = autoJustification;
     }
 
     /**
@@ -200,26 +485,115 @@ public class TextView extends View {
     }
 
     /**
-     * Set the color for the selected text
+     * Set the Paint for the selected text
      *
-     * @param color a {@link Color} instance
+     * @param paint a not null Paint object
      */
 
-    public void setSelectedColor(Color color) {
-        if (color != null)
-            selectedColor = color;
+    public void setPaintSelected(Paint paint) {
+        if (paint != null)
+            paintSelected = paint;
     }
 
     /**
-     * Set the text cursor color
-     *
-     * @param color a non-null color
+     * @return the Paint used to color the selected text
      */
 
-    public void setCursorColor(Color color) {
-        if (color != null)
-            cursor.setColor(color);
+    public final Paint getPaintSelected() {
+        return paintSelected;
     }
+
+    /**
+     * Set the cursor Paint object
+     *
+     * @param paint a not null Paint object
+     */
+
+    public void setCursorPaint(Paint paint) {
+        if (paint != null)
+            cursor.setPaint(paint);
+    }
+
+    /**
+     * Set a new scroller to this view
+     *
+     * @param scroller a non-null scroller instance
+     */
+
+    public void setScroller(Scroller scroller) {
+        if (scroller != null)
+            this.scroller = scroller;
+    }
+
+    /**
+     * @return the scroller associated to this view
+     */
+
+    public final Scroller getScroller() {
+        return scroller;
+    }
+
+    /**
+     * @return the height of a text line
+     */
+
+    public final int getLineHeight() {
+        return (int) (lineFactor * 1.33f * getFontSize());
+    }
+
+    /**
+     * @return the number of selected chars
+     */
+
+    public final int getSelectionCount() {
+        return abs(index - hIndex);
+    }
+
+    /**
+     * @return true if the text is partially or completed selected
+     */
+
+    public final boolean isTextSelected() {
+        return getSelectionCount() != 0;
+    }
+
+    /**
+     * @return the amount of break lines
+     */
+
+    public final int getLines() {
+        return lines.size();
+    }
+
+    /**
+     * @return the text height in pixel
+     */
+
+    public final int getTextHeight() {
+        return textHeight;
+    }
+
+    /**
+     * @return the longest line in pixel
+     */
+
+    public final int getLongestLine() {
+        return longestLine;
+    }
+
+    /**
+     * @return the amount of chars including break lines and white spaces
+     */
+
+    public final int getCharCount() {
+        return buffer.size();
+    }
+
+    /*
+     *
+     * Text setting
+     *
+     */
 
     /**
      * Set a single-line string to display when no text is available
@@ -235,6 +609,14 @@ public class TextView extends View {
             dBuffer.add(0, str.toCharArray(), 0, str.length());
             dLines.add(str.length());
         }
+    }
+
+    /**
+     * Manually request to this view to justify text
+     */
+
+    public void requestJustification() {
+        requestJustification = true;
     }
 
     /**
@@ -262,7 +644,7 @@ public class TextView extends View {
 
         if (in != null) {
             buffer.add(0, in, 0, in.length);
-            justify = true;
+            requestJustification = true;
         }
     }
 
@@ -286,7 +668,7 @@ public class TextView extends View {
     public void addText(int i, char[] in) {
         if (in != null) {
             buffer.add(i, in, 0, in.length);
-            justify = true;
+            requestJustification = true;
         }
     }
 
@@ -324,6 +706,28 @@ public class TextView extends View {
     }
 
     /**
+     * @return the text handled by this view
+     */
+
+    public String getText() {
+        return buffer.toString();
+    }
+
+    /**
+     * @return the description text
+     */
+
+    public String getDescription() {
+        return dBuffer.toString();
+    }
+
+    /*
+     *
+     * Internal
+     *
+     */
+
+    /**
      * Update the cursor position params.
      * Note that the cursor will be located left-to the specified char
      *
@@ -343,12 +747,12 @@ public class TextView extends View {
 
         cLine = i;
 
-        float lineLength = textSuite.getWidth(Buffer.getData(buffer), j, index - j);
+        float lineLength = getWidth(Buffer.getData(buffer), j, index - j);
 
-        if (textSuite.isAlignX(AlignX.LEFT)) {
+        if (isAlignX(AlignX.LEFT)) {
             cOffX = lineLength;
-        } else if (textSuite.isAlignX(AlignX.CENTER)) {
-            cOffX = lineLength - textSuite.getWidth(Buffer.getData(buffer), j, br - j) / 2;
+        } else if (isAlignX(AlignX.CENTER)) {
+            cOffX = lineLength - getWidth(Buffer.getData(buffer), j, br - j) / 2;
         }
     }
 
@@ -371,14 +775,14 @@ public class TextView extends View {
     /**
      * Draw the box that highlights the text
      *
-     * @param canvas a non-null {@link Graphics2D}
-     * @param color  a non-null {@link Color}
+     * @param render a not null {@link Render} object
+     * @param paint  a not null {@link Paint} object
      * @param px     the position along x-axis
      * @param py     the position along y-axis
      * @param ax     an integer between {@code {0,1,2}} that represents the x-alignment
      */
 
-    private void drawSelected(Graphics2D canvas, Color color, int px, int py, int ax) {
+    private void drawSelected(Render render, Paint paint, int px, int py, int ax) {
         int minIndex = getMinIndex();
         int maxIndex = getMaxIndex();
         int lineHeight = getLineHeight();
@@ -395,9 +799,9 @@ public class TextView extends View {
         }
 
 
-        float offset = textSuite.getWidth(Buffer.getData(buffer), j, minIndex - j);
+        float offset = getWidth(Buffer.getData(buffer), j, minIndex - j);
 
-        canvas.setColor(color);
+        render.setPaint(paint);
 
         i -= 1;
         br = j;
@@ -406,10 +810,10 @@ public class TextView extends View {
             j = br;
             br = lines.getIntAt(i);
 
-            float lineWidth = textSuite.getWidth(Buffer.getData(buffer), j, br - j);
-            int width = (int) textSuite.getWidth(Buffer.getData(buffer), minIndex, Math.min(maxIndex, br) - minIndex);
+            float lineWidth = getWidth(Buffer.getData(buffer), j, br - j);
+            int width = (int) getWidth(Buffer.getData(buffer), minIndex, Math.min(maxIndex, br) - minIndex);
 
-            canvas.fillRect((int) (px + offset - ax * lineWidth / 2f), py + i * lineHeight, width, lineHeight);
+            render.drawRect((int) (px + offset - ax * lineWidth / 2f), py + i * lineHeight, width, lineHeight);
 
             offset = 0f;
             minIndex = br;
@@ -420,7 +824,7 @@ public class TextView extends View {
     /**
      * Helper method used to render text
      *
-     * @param canvas the graphics used to draw text
+     * @param render the {@link Render} used to draw text
      * @param bChar  the buffer of chars to draw on screen
      * @param lines  the text break lines
      * @param px     the position along x-axis
@@ -428,7 +832,7 @@ public class TextView extends View {
      * @param ax     a factor used to move text along a-axis
      */
 
-    private void drawText(Graphics2D canvas,
+    private void drawText(Render render,
                           BufferChar bChar, BufferInt lines,
                           int px, int py, int ax) {
         longestLine = 0;
@@ -436,7 +840,7 @@ public class TextView extends View {
         float top = py() - dy() / 2f;
         float bot = py() + dy() / 2f;
         int lineHeight = getLineHeight();
-        int off = (int) (textSuite.getFontSize() / 3f);
+        int off = (int) (getFontSize() / 3f);
 
         int i = 0;
         int j;
@@ -448,10 +852,10 @@ public class TextView extends View {
             j = br;
             br = lines.getIntAt(i);
 
-            int lineLength = (int) textSuite.getWidth(data, j, br - j);
+            int lineLength = (int) getWidth(data, j, br - j);
 
             if (py + (i + 2) * lineHeight >= top && py + (i - 1) * lineHeight <= bot)
-                canvas.drawChars(data, j, br - j, px - ax * lineLength / 2, py + (int) ((i + 0.5f) * lineHeight + off));
+                render.drawText(data, j, br - j, px - ax * lineLength / 2, py + (int) ((i + 0.5f) * lineHeight + off));
 
             if (lineLength > longestLine)
                 longestLine = lineLength;
@@ -462,7 +866,8 @@ public class TextView extends View {
 
     /**
      * Complexity: T(n) = Theta(n).
-     * Note that works either for multi-line and single-line.
+     * <br>
+     * <b>Note that works either for multi-line and single-line.</b>
      *
      * @return the index of the char currently user-covered
      */
@@ -485,11 +890,11 @@ public class TextView extends View {
             if (Utils.AABB(mx, my, 1, 1, dx() / 2, py + height - fSize / 2f, dx(), fSize)) {
                 float d;
                 float length = 0;
-                float xLength = 0.5f * xOff * textSuite.getWidth(Buffer.getData(buffer), j, br - j);
+                float xLength = 0.5f * xOff * getWidth(Buffer.getData(buffer), j, br - j);
 
                 // There is a problem here. Error index calculation
                 while (j < br && !Utils.AABB(mx, my, 1, 1, px + xLength + length
-                        + (d = textSuite.getWidth(buffer.getCharAt(j))) / 2, py + height - fSize / 2f, d, fSize)) {
+                        + (d = getWidth(buffer.getCharAt(j))) / 2, py + height - fSize / 2f, d, fSize)) {
                     length += d;
                     j++;
                 }
@@ -508,29 +913,29 @@ public class TextView extends View {
     private float pdy;
 
     @Override
-    protected void postDraw(Graphics2D canvas) {
+    protected void postDraw(Render render) {
         // Update scroller
         if (arePointersOver())
             scroller.update();
 
         // Justify text when necessary
-        if (justify
+        if (requestJustification
                 || Float.compare(dx(), pdx) != 0
                 || Float.compare(dy(), pdy) != 0) {
-            justify = false;
+            requestJustification = false;
 
             if (singleLine) {
                 lines.clear();
                 lines.add(buffer.size());
             } else {
-                justify(buffer, lines, textSuite, textBound * dx());
+                justify(buffer, lines, measures, autoJustification ? textBound * dx() : Float.MAX_VALUE);
             }
         }
 
-        // update text height
+        // Update text height
         textHeight = getLineHeight() * max(1, lines.size());
 
-        // update cursor params
+        // Update cursor params
         if (oIndex != index) {
             oIndex = index;
             updateCursorPosParams(index);
@@ -540,37 +945,37 @@ public class TextView extends View {
         pdx = dx();
         pdy = dy();
 
-        int ax = textSuite.getAlignX().getNumber();
+        int ax = map(alignX);
         int px = (int) (px() + (ax - 1) * dx() / 2f);
-        int py = (int) (py() - (textSuite.isAlignY(AlignY.TOP) ? dy() : textHeight) / 2f - scroller.getOffset());
+        int py = (int) (py() - (isAlignY(AlignY.TOP) ? dy() : textHeight) / 2f - scroller.getOffset());
 
-        // If shape exists & clipRegion = true -> clip this region
-        Shape oldClip = canvas.getClip();
-        canvas.clip(getFigure());
+        // Clip this region
+        Path oPath = render.getClip();
+        render.clip(getPath());
 
-        // highlight when necessary the selected text
+        // Highlight, when necessary, the selected text
         if (isTextSelected())
-            drawSelected(canvas, selectedColor, px, py, ax);
+            drawSelected(render, paintSelected, px, py, ax);
 
-        // set text font and color
-        canvas.setFont(textSuite.getFont());
-        canvas.setColor(textSuite.getColor());
+        // Set Font and Paint
+        render.setFont(font);
+        render.setPaint(paintText);
 
-        // draw text
-        drawText(canvas,
+        // Draw text
+        drawText(render,
                 buffer.size() > 0 ? buffer : dBuffer,
                 buffer.size() > 0 ? lines : dLines,
                 px, py, ax);
 
-        // draw cursor
+        // Draw cursor
         if (cursor != null && isFocused()) {
             int lineHeight = getLineHeight();
             cursor.setPos(px + cOffX, py + (cLine - 0.5f) * lineHeight);
             cursor.setDim(2, lineHeight / lineFactor);
-            cursor.draw(canvas);
+            cursor.draw(render);
         }
 
-        canvas.setClip(oldClip);
+        render.setClip(oPath);
 
         // Set scroller max length
         scroller.setMax(textHeight - 0.98f * dy());
@@ -578,151 +983,131 @@ public class TextView extends View {
     }
 
     /**
-     * @return the height of a text line
-     */
-
-    private int getLineHeight() {
-        return (int) (lineFactor * 1.33f * textSuite.getFontSize());
-    }
-
-    /**
-     * @return the text handled by this view
-     */
-
-    public String getText() {
-        return buffer.toString();
-    }
-
-    /**
-     * @return the description text
-     */
-
-    public String getDescription() {
-        return dBuffer.toString();
-    }
-
-    /**
-     * @return the number of selected chars
-     */
-
-    public int getSelectionCount() {
-        return abs(index - hIndex);
-    }
-
-    /**
-     * @return true if the text is partially or completed selected
-     */
-
-    public boolean isTextSelected() {
-        return getSelectionCount() != 0;
-    }
-
-    /**
-     * @return the color used to text selection
-     */
-
-    public Color getSelectedColor() {
-        return selectedColor;
-    }
-
-    /**
-     * @return the amount of break lines
-     */
-
-    public int getLines() {
-        return lines.size();
-    }
-
-    /**
-     * @return the text height in pixel
-     */
-
-    public int getTextHeight() {
-        return textHeight;
-    }
-
-    /**
-     * @return the longest line in pixel
-     */
-
-    public int getLongestLine() {
-        return longestLine;
-    }
-
-    /**
-     * @return the amount of chars including break lines and white spaces
-     */
-
-    public int getCharCount() {
-        return buffer.size();
-    }
-
-    /**
-     * @param off the position of the first char
-     * @param len the amount of chars to measure
-     * @return the text length
-     */
-
-    public float getWidth(int off, int len) {
-        return textSuite.getWidth(Buffer.getData(buffer), off, len);
-    }
-
-    /**
-     * @return true if this view has single line mode enabled
-     */
-
-    public final boolean isSingleLineMode() {
-        return singleLine;
-    }
-
-    /**
-     * @return the scroller associated to this view
-     */
-
-    public final Scroller getScroller() {
-        return scroller;
-    }
-
-    /**
-     * @return the text suite associated to this view
-     */
-
-    public final TextSuite getTextSuite() {
-        return textSuite;
-    }
-
-    /*
+     * Compute the position of the break lines and store them inside a given BufferInt.
+     * <br>
+     * Time required for computation: T(n) = Theta(n).
      *
-     * Text cursor
-     *
+     * @param buffer   a not null {@link BufferChar} object
+     * @param lines    a not null {@link BufferInt} object used to store break lines indices
+     * @param measures a not null {@link BufferFloat} object already filled with char measures expressed in pixels
+     * @param width    a value {@code > 0} used to set the maximum line's width in pixel
      */
+
+    public static void justify(BufferChar buffer, BufferInt lines,
+                               BufferFloat measures, float width) {
+        if (width >= 0
+                && buffer != null
+                && lines != null
+                && measures != null) {
+            char test = '\r';
+            int gap = 0;
+            float lineLength = 0;
+            float subLength = 0;
+
+            // remove the algorithm generated break lines. T(n) = Theta(n)
+            buffer.remove(test);
+
+            // clear lines
+            lines.clear();
+
+            // T(n) = Theta(n)
+            for (int i = 0; i < buffer.size(); i++) {
+                char t = buffer.getCharAt(i);
+                float w = measures.getFloatAt(t);
+
+                lineLength += w;
+                subLength += w;
+
+                if (t == '\n') {
+                    lineLength = subLength = 0;
+                } else if (lineLength > width) {
+
+                    if (subLength < width) {
+                        lines.add(gap + 1);
+                        lineLength = subLength;
+                    } else {
+                        lines.add(i);
+                        lineLength = subLength = w;
+                    }
+                }
+
+                if (t == ' ') {
+                    gap = i;
+                    subLength = 0;
+                }
+            }
+
+            // add to the buffer the algorithm generated lines. T(n) = Theta(n)
+            buffer.add(Buffer.getData(lines), 0, lines.size(), test);
+
+            lines.clear();
+
+            // T(n) = Theta(n)
+            for (int i = 0; i < buffer.size(); i++) {
+                char t = buffer.getCharAt(i);
+
+                if (t == '\n' || t == '\r')
+                    lines.add(i);
+            }
+
+            if (buffer.size() > 0)
+                lines.add(buffer.size());
+        }
+    }
 
     /**
-     * Widget used to draw a text cursor
+     * Return the longest line of the given String.
+     * <br>
+     * Time required: T(n) = Theta(n).
+     *
+     * @param v     a not null {@link TextView}
+     * @param input a not null String to measure
+     * @return the longest line in pixels according to the given TextView Font metrics
      */
 
-    public static class TextCursor extends View {
-        private final Timer time;
+    public static float longestLine(TextView v, String input) {
+        float longest = 0f;
 
-        public TextCursor(Context context,
-                          float px, float py,
-                          float dx, float dy) {
-            super(context, px, py, dx, dy);
-            super.setColor(Color.RED);
+        if (input != null && v != null) {
+            int i = 0;
+            char[] data = input.toCharArray();
 
-            time = new Timer();
+            // First control
+            for (int j = 0; j < data.length; j++) {
+
+                if (data[j] == '\n') {
+                    float pixelLength = v.getWidth(data, i, j - i);
+
+                    i = j;
+
+                    if (pixelLength > longest)
+                        longest = pixelLength;
+                }
+            }
+
+            // Last control
+            float pixelLength = v.getWidth(data, i, data.length - i);
+
+            if (pixelLength > longest)
+                longest = pixelLength;
         }
 
-        public void resetTimer() {
-            time.reset();
-        }
+        return longest;
+    }
 
-        @Override
-        public void update() {
-            super.setVisible(!time.isOver(0.5f));
+    /**
+     * Create a new TextView with standard functions already attached
+     *
+     * @see TextView#funShortcut()
+     * @see TextView#funTxtSelection()
+     */
 
-            if (time.isOver(1f))
-                time.reset();
-        }
+    public static TextView createFriendly(Context context,
+                                          float px, float py,
+                                          float dx, float dy) {
+        TextView out = new TextView(context, px, py, dx, dy);
+        out.addEvent(out.funShortcut());
+        out.addEvent(out.funTxtSelection());
+        return out;
     }
 }

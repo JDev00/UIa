@@ -1,28 +1,28 @@
 package uia.core.widget.math;
 
-import uia.core.Context;
-import uia.core.utility.Pointer;
-import uia.core.utility.TextSuite;
+import uia.core.policy.Context;
+import uia.core.policy.Paint;
+import uia.core.policy.Render;
 import uia.core.widget.TextView;
 import uia.core.View;
 import uia.core.widget.math.struct.VecS;
+import uia.core.widget.math.struct.Curve;
 import uia.utils.Utils;
 
-import java.awt.*;
 import java.util.List;
 
 /**
- * Widget used to draw {@link uia.core.widget.math.struct.Curve}s and more
+ * Widget used to draw {@link Curve}s and display data point with a built-in panel
  */
 
 public class BoardView extends GraphicView {
-    private final TextView panel;
+    private TextView panel;
 
     private final StringBuilder builder;
 
     private final String[] axisName = {"x", "y"};
 
-    public Color colorCoveredPoint = Color.GREEN;
+    public Paint colorCoveredPoint;
 
     private float xScale = 2f / 5f;
     private float yScale = 1f / 4f;
@@ -34,14 +34,14 @@ public class BoardView extends GraphicView {
                      float dx, float dy) {
         super(context, px, py, dx, dy);
 
+        colorCoveredPoint = context.createColor(null, 0, 255, 0);
+
         panel = new TextView(context, 0, 0, dx / 3f, 1);
-        panel.setColor(new Color(28, 28, 28, 200));
         panel.enableOverlay(false);
         panel.enableAutoAdjustment(false);
-
-        TextSuite textSuite = panel.getTextSuite();
-        textSuite.setFontSize(14);
-        textSuite.setColor(Color.WHITE);
+        panel.setFontSize(14);
+        panel.setPaint(context.createColor(null, 28, 28, 28, 200));
+        panel.setPaintText(context.createColor(null, Context.COLOR.WHITE));
 
         builder = new StringBuilder(1000);
     }
@@ -49,16 +49,16 @@ public class BoardView extends GraphicView {
     /**
      * Set the abscissa and ordinate names
      *
-     * @param a0 the abscissa name
-     * @param a1 the ordinate name
+     * @param x the abscissa name
+     * @param y the ordinate name
      */
 
-    public void setCouple(String a0, String a1) {
-        if (a0 != null)
-            axisName[0] = a0;
+    public void setAxisName(String x, String y) {
+        if (x != null)
+            axisName[0] = x;
 
-        if (a1 != null)
-            axisName[1] = a1;
+        if (y != null)
+            axisName[1] = y;
     }
 
     /**
@@ -85,23 +85,33 @@ public class BoardView extends GraphicView {
         yScale = Utils.constrain(y, 0, 1);
     }
 
+    /**
+     * Set a new Panel to display data points
+     *
+     * @param panel a not null {@link TextView}
+     */
+
+    public void setPanel(TextView panel) {
+        this.panel = panel;
+    }
+
     @Override
     protected void focusDispatcher(boolean gained) {
-        if (!gained)
+        if (!gained && panel != null)
             panel.removeFocus();
 
         super.focusDispatcher(gained);
     }
 
     @Override
-    protected void touchDispatcher(Pointer p, boolean update) {
-        View.updateTouchDispatcher(panel, p, update);
-        super.touchDispatcher(p, update);
+    protected void pointerDispatcher(boolean update) {
+        View.updatePointerDispatcher(panel, update);
+        super.pointerDispatcher(update);
     }
 
     @Override
-    public void postDraw(Graphics2D canvas) {
-        super.postDraw(canvas);
+    public void postDraw(Render render) {
+        super.postDraw(render);
 
         if (arePointersOver()) {
             List<VecS> covered = getCovered();
@@ -109,7 +119,7 @@ public class BoardView extends GraphicView {
             builder.delete(0, builder.length());
             builder.append("(").append(axisName[0]).append(", ").append(axisName[1]).append(") = {");
 
-            canvas.setColor(colorCoveredPoint);
+            render.setPaint(colorCoveredPoint);
             for (VecS i : covered) {
 
                 if (i.data == null) {
@@ -118,18 +128,25 @@ public class BoardView extends GraphicView {
                     builder.append("\n(").append(i.x).append(", ").append(i.y).append(", ").append(i.data).append("), ");
                 }
 
-                canvas.fillOval(
+                render.drawOval(
                         (int) (getCenterX() + getScaleX() * i.x) - 5,
                         (int) (getCenterY() - getScaleY() * i.y) - 5,
                         10, 10);
             }
 
-            panel.setPos(
-                    px() - dx() / 2f + xTranslate * panel.dx() + cmx,
-                    py() - dy() / 2f + yTranslate * panel.dy() + cmy);
-            panel.setDim(xScale * dx(), yScale * dy());
-            panel.setText(builder.append("}").toString());
-            panel.draw(canvas);
+            // Draw Panel
+            if (panel != null) {
+
+                if (!getContext().equals(panel.getContext()))
+                    panel.setContext(getContext());
+
+                panel.setPos(
+                        px() - dx() / 2f + xTranslate * panel.dx() + cmx,
+                        py() - dy() / 2f + yTranslate * panel.dy() + cmy);
+                panel.setDim(xScale * dx(), yScale * dy());
+                panel.setText(builder.append("}").toString());
+                panel.draw(render);
+            }
         }
     }
 
