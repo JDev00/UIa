@@ -6,7 +6,7 @@ Repository under construction.
 
 # Brief description:
 
-UIa has been developed to provide a fast, efficent and cross-platform User Interface library.
+UIa has been developed to provide a fast, efficent, cross-platform and cross-implementation User Interface library.
 <br>
 It is logically structured into 4 layers: (starting from the most platform-dependent one)
 
