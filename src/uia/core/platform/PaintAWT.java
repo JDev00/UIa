@@ -9,9 +9,13 @@ import java.util.List;
 public class PaintAWT implements Paint {
     private java.awt.Paint c0;
 
+    private java.awt.Paint paintStroke;
+
     private TYPE type;
 
     private final List<float[]> colors;
+
+    private boolean strokeColor = false;
 
     public PaintAWT() {
         colors = new ArrayList<>(1);
@@ -62,6 +66,29 @@ public class PaintAWT implements Paint {
     @Override
     public java.awt.Paint getNative() {
         return c0;
+    }
+
+    @Override
+    public void enableStrokeColor(boolean strokeColor) {
+        this.strokeColor = strokeColor;
+
+        if (strokeColor && paintStroke == null)
+            paintStroke = Color.BLACK;
+    }
+
+    @Override
+    public boolean hasStrokeColor() {
+        return strokeColor;
+    }
+
+    @Override
+    public void setStrokeColor(float r, float g, float b) {
+        paintStroke = new Color((int) r, (int) g, (int) b);
+    }
+
+    @Override
+    public java.awt.Paint getStrokeNative() {
+        return paintStroke;
     }
 
     @Override

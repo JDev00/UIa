@@ -136,8 +136,8 @@ public class Button extends Widget {
     @Override
     protected void postDraw(Render render) {
         textView.setPos(
-                px() + xTranslate * 0.5f * (textView.dx() + dx()),
-                py() + yTranslate * 0.5f * (textView.dy() + dy()));
+                xTranslate * 0.5f * (textView.dx() + dx()),
+                yTranslate * 0.5f * (textView.dy() + dy()));
 
         super.postDraw(render);
 

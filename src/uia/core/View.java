@@ -102,6 +102,15 @@ public class View {
     private float xUpperBound;
     private float yUpperBound;
 
+    /**
+     * X resize factor. Automatically adjusted by View when screen resizes and {@link #autoAdjustment} = true
+     */
+    private float xResFac = 1f;
+    /**
+     * Y resize factor. Automatically adjusted by View when screen resizes and {@link #autoAdjustment} = true
+     */
+    private float yResFac = 1f;
+
     private float expansionTime = 0.125f;
     private float xExpanseLimit = 1.01f;
     private float yExpanseLimit = 1.01f;
@@ -716,9 +725,6 @@ public class View {
 
     }
 
-    private float xFac;
-    private float yFac;
-
     /**
      * Draw this view on screen
      *
@@ -733,8 +739,8 @@ public class View {
         if (isVisible()) {
 
             // Update screen size factors
-            xFac = autoAdjustment ? context.dxFactor() : 1;
-            yFac = autoAdjustment ? context.dyFactor() : 1;
+            xResFac = autoAdjustment ? context.dxFactor() : 1;
+            yResFac = autoAdjustment ? context.dyFactor() : 1;
 
             // Update animators
             for (Animator i : animator) {
@@ -805,7 +811,7 @@ public class View {
      */
 
     public final float px() {
-        return xFac * px + xCenter + animator[ANIMATOR_POS].x();
+        return xResFac * px + xCenter + animator[ANIMATOR_POS].x();
     }
 
     /**
@@ -813,7 +819,7 @@ public class View {
      */
 
     public final float py() {
-        return yFac * py + yCenter + animator[ANIMATOR_POS].y();
+        return yResFac * py + yCenter + animator[ANIMATOR_POS].y();
     }
 
     /**
@@ -837,7 +843,7 @@ public class View {
      */
 
     public final float dx() {
-        return xExpanse * max(0, xFac * xScale * dx + animator[ANIMATOR_DIM].x());
+        return xExpanse * max(0, xResFac * xScale * dx + animator[ANIMATOR_DIM].x());
     }
 
     /**
@@ -845,7 +851,7 @@ public class View {
      */
 
     public final float dy() {
-        return yExpanse * max(0, yFac * yScale * dy + animator[ANIMATOR_DIM].y());
+        return yExpanse * max(0, yResFac * yScale * dy + animator[ANIMATOR_DIM].y());
     }
 
     /**

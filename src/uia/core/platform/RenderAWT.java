@@ -18,7 +18,7 @@ public class RenderAWT implements Render {
 
     private final Path path;
 
-    private final Paint paint;
+    private Paint paint;
 
     public RenderAWT() {
         g = null;
@@ -143,7 +143,7 @@ public class RenderAWT implements Render {
     @Override
     public void setPaint(Paint p) {
         if (p != null) {
-            paint.setNative(p.getNative());
+            paint = p;
             g.setPaint((java.awt.Paint) p.getNative());
         }
     }
@@ -155,8 +155,14 @@ public class RenderAWT implements Render {
 
     @Override
     public void draw(Path path) {
-        if (path != null)
+        if (path != null) {
             g.fill((Shape) path.getNative());
+
+            if (paint != null && paint.hasStrokeColor()) {
+                g.setPaint((java.awt.Paint) paint.getStrokeNative());
+                g.draw((Shape) path.getNative());
+            }
+        }
     }
 
     @Override

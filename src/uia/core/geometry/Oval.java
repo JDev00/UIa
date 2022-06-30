@@ -6,9 +6,11 @@ import static uia.utils.Utils.*;
 
 public class Oval implements Figure {
     private int vertices;
+    private float angleOffset;
 
     public Oval(int vertices) {
         this.vertices = vertices;
+        angleOffset = 0f;
     }
 
     /**
@@ -21,6 +23,14 @@ public class Oval implements Figure {
         this.vertices = Math.max(0, vertices);
     }
 
+    /**
+     * Define me!
+     */
+
+    public void setAngleOffset(float angleOffset) {
+        this.angleOffset = angleOffset;
+    }
+
     @Override
     public void build(Path path,
                       float px, float py,
@@ -30,11 +40,11 @@ public class Oval implements Figure {
         dy /= 2;
 
         path.reset();
-        path.moveTo(px + dx, py);
+        path.moveTo(px + pcos(angleOffset) * dx, py + psin(angleOffset) * dy);
 
         float a;
         for (int i = 0; i <= vertices; i++) {
-            a = TWO_PI * i / vertices;
+            a = angleOffset + TWO_PI * i / vertices;
             path.lineTo(px + pcos(a) * dx, py + psin(a) * dy);
         }
 

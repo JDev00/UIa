@@ -204,21 +204,16 @@ public class HorView extends Widget {
 
     @Override
     protected void postDraw(Render render) {
-        float px = px();
-        float py = py();
         float dx = dx();
         float dy = dy();
 
-        //System.out.println(index);
-
         left.setDim(xScaleLeft * dy, yScaleLeft * dy);
-        left.setPos(px - dx / 2 + left.dx(), py);
+        left.setPos(-dx / 2 + left.dx(), 0);
 
         right.setDim(xScaleRight * dy, yScaleRight * dy);
-        right.setPos(px + dx / 2 - right.dx(), py);
+        right.setPos(dx / 2 - right.dx(), 0);
 
         textView.setDim(dx - 2f * dy / 5, dy);
-        textView.setPos(px, py);
 
         super.postDraw(render);
     }

@@ -170,6 +170,7 @@ public class Test extends ContextAWT {
 
             HorView horView = new HorView(context, 0, 0, 200, 50);
             horView.set("Ostia!", "ciao!", "ao!", "come!");
+            horView.setPaint(context.createColor(horView.getPaint(), 255, 0, 0));
 
             add(test1);
             add(g);

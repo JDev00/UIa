@@ -18,7 +18,7 @@ public final class Utils {
     public final static float HALF_PI = PI / 2f;
 
     public final static float DEG_TO_RAD = PI / 180.0f;
-    public final static float RAD_TO_DEG = 180.0f / PI;
+    public final static float RAD_TO_DEG = 1f / DEG_TO_RAD; //180.0f / PI;
 
     private static final String P_SPACE = Pattern.quote(" ");
 
@@ -33,10 +33,10 @@ public final class Utils {
      */
 
     /**
-     * Reads a file
+     * Read a file
      *
      * @param path the file path
-     * @return the file's content if exists otherwise null
+     * @return if file exists, its content, otherwise null
      */
 
     public static String read(String path) {
@@ -61,10 +61,10 @@ public final class Utils {
     }
 
     /**
-     * Reads a file
+     * Read the lines of the given file
      *
      * @param path the file path
-     * @return the file's content as a list or null if file doesn't exist
+     * @return if file exists, its lines, otherwise null
      */
 
     public static List<String> readLines(String path) {
@@ -87,10 +87,10 @@ public final class Utils {
     }
 
     /**
-     * Writes data on disk
+     * Write the given data on disk
      *
      * @param path the file path
-     * @param data the data to write
+     * @param data the data to write on disk
      * @return true if the file has been correctly written
      */
 
@@ -109,11 +109,12 @@ public final class Utils {
     }
 
     /**
-     * Writes an array on disk.
-     * Every element will be written on a new line.
+     * Write an array on disk.
+     * <br>
+     * Note that every element will be written on a new line.
      *
      * @param path  the file path
-     * @param array an array to write
+     * @param array an array to write on disk
      * @return true if the file has been correctly written
      */
 

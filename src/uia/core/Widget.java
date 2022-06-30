@@ -41,6 +41,14 @@ public abstract class Widget extends View implements Iterable<View> {
     }
 
     /**
+     * Remove all views handled by widget or its subclasses
+     */
+
+    public void clear() {
+        views.clear();
+    }
+
+    /**
      * Remove a View from this Widget
      *
      * @param i the position of the {@link View} to remove
@@ -70,7 +78,7 @@ public abstract class Widget extends View implements Iterable<View> {
 
     /**
      * @param i the position of the {@link View} to return
-     * @return the specified View
+     * @return the specified View or null
      */
 
     public final View get(int i) {
@@ -87,7 +95,7 @@ public abstract class Widget extends View implements Iterable<View> {
     }
 
     /**
-     * Fastly modify a specified View
+     * Modify a specified View
      *
      * @param i        the position of the View to modify
      * @param consumer a function used to modify the View
@@ -132,6 +140,8 @@ public abstract class Widget extends View implements Iterable<View> {
     protected void postDraw(Render render) {
         super.postDraw(render);
 
+        float px = px();
+        float py = py();
         Context context = getContext();
 
         for (View i : views) {
@@ -140,6 +150,7 @@ public abstract class Widget extends View implements Iterable<View> {
             if (!context.equals(i.getContext()))
                 i.setContext(context);
 
+            i.setCenter(px, py);
             i.draw(render);
         }
     }
