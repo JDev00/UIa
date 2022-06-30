@@ -1,4 +1,4 @@
-# UIa (Beta Version 2)
+# UIa (Beta Version 2.1)
 User Interface, cross-platform, API for Java
 
 Warning!
