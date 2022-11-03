@@ -5,9 +5,6 @@ Key points:
 2) cross-implementation (AWT, SWING, OPENGL, ecc);
 3) easy to use.
 
-Warning!
-Project under construction.
-
 # Brief description:
 
 UIa is logically structured into 4 layers (starting from the most platform-dependent one):
