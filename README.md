@@ -1,8 +1,8 @@
-# UIa Pre-release 1.0
+# UIa 1.0
 Graphical User Interface API for Java.
 Key points:
 1) cross-platform;
-2) cross-implementation (AWT, SWING, OPENGL, ecc);
+2) cross-implementation (AWT, JavaFX, SWING, OPENGL, ecc);
 3) easy to use.
 
 # Brief description:
