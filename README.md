@@ -1,4 +1,4 @@
-# UIa 1.0
+# UIa - a User Interface Prototype
 Graphical User Interface API for Java.
 <br>
 Key points:
