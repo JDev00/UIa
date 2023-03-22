@@ -5,5 +5,3 @@ Key points:
 1) cross-platform;
 <br>
 2) cross-implementation (AWT, JavaFX, SWING, OPENGL, ecc).
-
-# The version (2) in now available.
