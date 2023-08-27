@@ -3,11 +3,8 @@ package uia.core.basement;
 import uia.core.ui.View;
 
 /**
- * Context ADT.
- * <br>
- * Context acts as application's basement. It manages a window and is responsible to update the state
- * and render the attached {@link View}. It has been intended to be a versatile layer whose implementation
- * is uia.application.platform dependent.
+ * Context acts as the basement of an application. It manages a window and is responsible for updating and rendering
+ * the managed {@link View}. It is intended to be a versatile layer whose implementation is platform dependent.
  */
 
 public interface Context {
