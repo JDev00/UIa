@@ -3,7 +3,7 @@ package uia.core.ui;
 /**
  * ViewGroup ADT.
  * <br>
- * ViewGroup is responsible to handle a group of Views.
+ * ViewGroup is responsible for managing a group of Views.
  */
 
 public interface ViewGroup extends View {
