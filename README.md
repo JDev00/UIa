@@ -7,7 +7,7 @@ highly adaptive.
 <br>
 At the moment, core package is structured as follows:
 
-![Screenshot](UIa-UML.pdf)
+![Screenshot](UIa_Core.jpg)
 
 As you can see in the above picture, two contracts are the foundamentals of UIa:
 <ul>
