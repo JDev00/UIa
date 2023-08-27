@@ -6,7 +6,7 @@ import uia.core.Paint;
 /**
  * ViewText ADT.
  * <br>
- * A ViewText is responsible to draw a String on screen.
+ * A ViewText is a specialised View responsible for drawing a text on the screen.
  */
 
 public interface ViewText extends View {
