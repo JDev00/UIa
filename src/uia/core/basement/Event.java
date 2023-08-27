@@ -1,7 +1,7 @@
 package uia.core.basement;
 
 /**
- * Generic parameterized Event.
+ * Event ADT.
  */
 
 public interface Event<T> {
