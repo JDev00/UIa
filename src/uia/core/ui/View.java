@@ -13,14 +13,14 @@ import java.util.function.BiConsumer;
 /**
  * View ADT.
  * <br>
- * A View is a special area displayed on screen with the user can interact with. Shortly, it is the basement for every
- * graphical widget built with UIa. From the architectural point of view, it is made up of three components:
+ * A View is a special area on the screen with the user can interact with. Shortly, it is the basement for
+ * every graphical widget built with UIa. From the architectural point of view, it is made up of three components:
  * <ul>
- *     <li>a {@link Geom} used to define its geometry;</li>
- *     <li>a {@link Paint} used to define the geometry's graphical aspects;</li>
- *     <li>a set of {@link Event}s used to interact with it when an input/action is detected.</li>
+ * <li>a {@link Geom} used to define its geometry;</li>
+ * <li>a {@link Paint} used to define the geometry's graphical aspects;</li>
+ * <li>a set of {@link Event}s used to interact with it when an input/action is detected.</li>
  * </ul>
- * <b>Note that a View is identified throw an ID assigned at declaration time.</b>
+ * <b>Note that a View is identified by an ID assigned at declaration time.</b>
  */
 
 public interface View {
