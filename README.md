@@ -98,7 +98,7 @@ public class HelloWorld extends WrapperViewGroup {
         // hide this popup at the beginning
         popup.setVisible(false);
         // set some text to this popup
-        popup.setText("Hi, i'm a small popup.\n Unfortunately nobody take care of\n place some widget on me ;(" +
+        popup.setText("Hi, I'm a little popup.\n Unfortunately, no one has taken care of\n placing some widgets on me ;(" +
                 "\nSo please, populate my landscape\n with some UI objects.\n\n Thanks!");
         // set text properties
         popup.setAlign(ViewText.AlignY.CENTER);
