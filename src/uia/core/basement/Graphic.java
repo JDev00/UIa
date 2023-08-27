@@ -8,9 +8,9 @@ import uia.core.Paint;
 /**
  * Graphic ADT.
  * <br>
- * A Graphic has the responsibility to draw things on screen. As consequence of the fact that the Graphic class is a bridge,
- * the native object is encapsulated inside it. The result is the possibility to access common methods from different
- * platforms or different implementations.
+ * A Graphic is responsible for drawing things on the screen. It is designed to provide a set of functionalities
+ * that are unrelated to the specific platform. Eventually, it is possible to access the native Graphic
+ * through {@link #getNative()}
  */
 
 public interface Graphic {
