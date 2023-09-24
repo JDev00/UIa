@@ -10,199 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="799e2663-4b6c-479e-923e-48003a22cdda" name="Default Changelist" comment="Beta Version">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/UIa_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/core.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/UIa.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/UIa-UML.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/core.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/gluegen-rt-natives-linux-aarch64.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/gluegen-rt-natives-linux-amd64.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/gluegen-rt-natives-linux-armv6hf.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/gluegen-rt-natives-linux-i586.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/gluegen-rt-natives-macosx-universal.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/gluegen-rt-natives-windows-amd64.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/gluegen-rt-natives-windows-i586.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/gluegen-rt.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/jogl-all-natives-linux-aarch64.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/jogl-all-natives-linux-amd64.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/jogl-all-natives-linux-armv6hf.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/jogl-all-natives-linux-i586.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/jogl-all-natives-macosx-universal.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/jogl-all-natives-windows-amd64.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/jogl-all-natives-windows-i586.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/processing/jogl-all.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/artifacts/UIa_jar/UIa.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/develop/UIListView$Aligner.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/develop/UIListView.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/tutorial/Example.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/tutorial/HelloWorld.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButton$STATE.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButton.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButtonFilled.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButtonList$OnNext.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButtonList$OnPrevious.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButtonList.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButtonSwitch.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/UICalendar$Cell.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/UICalendar$OnChange.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/UICalendar$OnSelection.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/UICalendar.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/ContextAWT$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/ContextAWT$2.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/ContextAWT$3.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/ContextAWT$4.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/ContextAWT$5.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/ContextAWT$6.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/ContextAWT$Renderer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/ContextAWT.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/FileChooserAWT.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/GraphicAWT$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/GraphicAWT.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/test/SanityBasementUITest.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/test/SanityMessageTest.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/test/SanityWidgetTest.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/test/artefacts/ComponentTracker.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/processing/ContextProcessing$Renderer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/processing/ContextProcessing.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/processing/GraphicProcessing.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/processing/test/Test3D.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/Font$Measure.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/Font$STYLE.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/Font.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/Geometry$Vertex.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/Geometry.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/Image$MODE.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/Image.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/Key$ACTION.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/Key.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/Paint$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/Paint$Color$CHANNEL.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/Paint$Color.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/Paint.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ScreenPointer$ACTION.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ScreenPointer$BUTTON.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ScreenPointer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/Shape$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/Shape$TransformedVertex.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/Shape.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/basement/Callable.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/basement/Callback.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/basement/Collider$COLLIDER_POLICY.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/basement/Collider.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/basement/Movable.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/Context$CLIPBOARD_OPERATION.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/Context$HINT.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/Context.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/Graphic.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/View$CONSUMER.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/View$DISPATCHER.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/View.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/ViewGroup.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/ViewText$AlignX.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/ViewText$AlignY.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/ViewText.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnClick.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnFocus.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnKeyPressed.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnKeyReleased.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnKeyTyped.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnMessageReceived.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnMouseEnter.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnMouseExit.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnMouseHover.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/Component$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/Component.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/ComponentGroup$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/ComponentGroup.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/ComponentImage.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/ComponentRoot.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/ComponentText.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/message/MessageStore.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/scroller/Scroller.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/scroller/WheelScroller.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/text/InlineRendererV1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/text/MultilineRendererV1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/text/TextRenderer$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/text/TextRenderer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/theme/Theme.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/theme/ThemeDarcula.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/wrapper/WrapperView.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/wrapper/WrapperViewGroup.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/physical/wrapper/WrapperViewText.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/utility/Figure.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/utility/Timer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/utility/TrigTable.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/UIa/uia/utility/Utility.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sample/img0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/develop/UIListView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/tutorial/Example.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/tutorial/HelloWorld.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/application/UIButton.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/application/UIButtonFilled.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/application/UIButtonList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/application/UIButtonSwitch.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/application/UICalendar.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/application/platform/awt/ContextAWT.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/application/platform/awt/FileChooserAWT.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/application/platform/awt/GraphicAWT.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/application/platform/awt/test/SanityBasementUITest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/application/platform/awt/test/SanityMessageTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/application/platform/awt/test/SanityWidgetTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/application/platform/awt/test/artefacts/ComponentTracker.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/application/platform/processing/ContextProcessing.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/application/platform/processing/GraphicProcessing.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/application/platform/processing/test/Test3D.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/Font.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/Geometry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/Image.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/Key.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/Paint.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/ScreenPointer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/Shape.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/basement/Callable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/basement/Callback.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/basement/Collider.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/basement/Movable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/ui/Context.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/ui/Graphic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/ui/View.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/ui/ViewGroup.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/ui/ViewText.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/ui/callbacks/OnClick.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/ui/callbacks/OnFocus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/ui/callbacks/OnKeyPressed.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/ui/callbacks/OnKeyReleased.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/ui/callbacks/OnKeyTyped.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/ui/callbacks/OnMessageReceived.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/ui/callbacks/OnMouseEnter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/ui/callbacks/OnMouseExit.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/core/ui/callbacks/OnMouseHover.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/Component.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/ComponentGroup.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/ComponentImage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/ComponentRoot.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/ComponentText.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/message/MessageStore.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/scroller/Scroller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/scroller/WheelScroller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/text/InlineRendererV1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/text/MultilineRendererV1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/text/TextRenderer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/theme/Theme.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/theme/ThemeDarcula.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/wrapper/WrapperView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/wrapper/WrapperViewGroup.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/wrapper/WrapperViewText.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/utility/Figure.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/utility/Timer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/utility/TrigTable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/utility/Utility.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -218,6 +27,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="SET_USER_NAME_GLOBALLY" value="false" />
   </component>
@@ -249,7 +63,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "1.1",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/Manu/IdeaProjects/UIa",
     "project.structure.last.edited": "Libraries",
@@ -359,11 +173,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.UIListView" />
-        <item itemvalue="Application.Example" />
         <item itemvalue="Application.SanityBasementUITest" />
-        <item itemvalue="Application.SanityWidgetTest" />
+        <item itemvalue="Application.Example" />
         <item itemvalue="Application.TrigTable" />
+        <item itemvalue="Application.SanityWidgetTest" />
+        <item itemvalue="Application.UIListView" />
       </list>
     </recent_temporary>
   </component>
@@ -383,7 +197,15 @@
       <option name="project" value="LOCAL" />
       <updated>1651233864002</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Beta Version">
+      <option name="closed" value="true" />
+      <created>1695577700164</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1695577700164</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
