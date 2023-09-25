@@ -385,25 +385,11 @@ public final class Component implements View {
         }
     }
 
-    /*
-     * Calculate width and height without rotation
-     *
-
-    /*public static float[] dimensionWithoutRotation(float[] bounds) {
-        float cos = cos(bounds[4]);
-        float sin = sin(bounds[4]);
-        return new float[]{
-                boundXneg(bounds[2], bounds[3], cos, sin),
-                boundYneg(bounds[2], bounds[3], cos, sin)
-        };
-    }*/
-
     /**
      * Build a rounded rectangle
      */
 
     public static void buildRect(Geometry geometry, float width, float height, float radius) {
-        //float[] no_rot_dim = dimensionWithoutRotation(bounds);
         Figure.rect(geometry, Figure.STD_VERT, radius, width / height);
     }
 }

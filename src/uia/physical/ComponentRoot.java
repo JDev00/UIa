@@ -120,6 +120,16 @@ public final class ComponentRoot implements View {
     }
 
     @Override
+    public float getWidth() {
+        return bounds[2];
+    }
+
+    @Override
+    public float getHeight() {
+        return bounds[3];
+    }
+
+    @Override
     public boolean contains(float x, float y) {
         return false;
     }

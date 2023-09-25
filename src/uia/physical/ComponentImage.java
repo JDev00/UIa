@@ -62,18 +62,17 @@ public final class ComponentImage extends WrapperView {
 
         if (isVisible()) {
             float[] bounds = bounds();
-            float[] dimension_no_rot = Component.dimensionWithoutRotation(bounds);
 
-            float x_off = imgBounds[0] * dimension_no_rot[0];
-            float y_off = imgBounds[1] * dimension_no_rot[1];
+            float x_off = imgBounds[0] * getWidth();
+            float y_off = imgBounds[1] * getHeight();
             float cos = cos(imgBounds[4]);
             float sin = sin(imgBounds[4]);
 
             graphic.drawImage(image,
                     bounds[0] + bounds[2] / 2f + rotX(x_off, y_off, cos, sin),
                     bounds[1] + bounds[3] / 2f + rotY(x_off, y_off, cos, sin),
-                    imgBounds[2] * dimension_no_rot[0] + 3,
-                    imgBounds[3] * dimension_no_rot[1] + 3,
+                    imgBounds[2] * getWidth() + 3,
+                    imgBounds[3] * getHeight() + 3,
                     bounds[4] + imgBounds[4]);
         }
     }

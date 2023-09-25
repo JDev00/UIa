@@ -193,11 +193,12 @@ public final class ComponentText extends WrapperView implements ViewText {
 
         if (isVisible()) {
             float[] bounds = bounds();
-            float[] dimension_no_rot = Component.dimensionWithoutRotation(bounds);
+            float w = getWidth();
+            float h = getHeight();
 
-            calculateAndSetScrollerData(dimension_no_rot[0], dimension_no_rot[1]);
-            updateTextBounds(bounds, dimension_no_rot[0], dimension_no_rot[1]);
-            updateClipShape(bounds, dimension_no_rot[0], dimension_no_rot[1]);
+            calculateAndSetScrollerData(w, h);
+            updateTextBounds(bounds, w, h);
+            updateClipShape(bounds, w, h);
         }
     }
 

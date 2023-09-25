@@ -153,10 +153,9 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     private void updateClipShape() {
         float[] bounds = bounds();
-        float[] dim_no_rot = Component.dimensionWithoutRotation(bounds);
 
         clipShape.setPosition(bounds[0] + bounds[2] / 2f, bounds[1] + bounds[3] / 2f);
-        clipShape.setDimension(dim_no_rot[0], dim_no_rot[1]);
+        clipShape.setDimension(getWidth(), getHeight());
         clipShape.setRotation(bounds[4]);
     }
 
