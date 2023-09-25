@@ -123,6 +123,16 @@ public abstract class WrapperView implements View {
     }
 
     @Override
+    public float getWidth() {
+        return view.getWidth();
+    }
+
+    @Override
+    public float getHeight() {
+        return view.getHeight();
+    }
+
+    @Override
     public float[] bounds() {
         return view.bounds();
     }
