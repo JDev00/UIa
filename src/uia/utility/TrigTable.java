@@ -88,14 +88,6 @@ public final class TrigTable {
     }
 
     /**
-     * @return rotX^-1
-     */
-
-    public static float rotXneg(float rx, float ry, float cos, float sin) {
-        return (rx * cos + ry * sin) / (cos * cos + sin * sin);
-    }
-
-    /**
      * Rotate a given point.
      * <br>
      * Time required: T(1)
@@ -111,14 +103,6 @@ public final class TrigTable {
 
     public static float rotY(float x, float y, float cos, float sin) {
         return x * sin + y * cos;
-    }
-
-    /**
-     * @return rotY^-1
-     */
-
-    public static float rotYneg(float rx, float ry, float cos, float sin) {
-        return (ry * cos - rx * sin) / (cos * cos + sin * sin);
     }
 
     /**
@@ -138,14 +122,6 @@ public final class TrigTable {
     }
 
     /**
-     * @return boundX^-1
-     */
-
-    public static float boundXneg(float bw, float bh, float cos, float sin) {
-        return abs((bh * abs(sin) - bw * abs(cos)) / (sin * sin - cos * cos));
-    }
-
-    /**
      * Time required: T(1)
      * <br>
      * Space required: O(1)
@@ -158,32 +134,6 @@ public final class TrigTable {
      */
 
     public static float boundY(float w, float h, float cos, float sin) {
-        return abs(h * cos) + abs(w * sin);
-    }
-
-    /**
-     * @return boundY^-1
-     */
-
-    public static float boundYneg(float bw, float bh, float cos, float sin) {
-        return abs((bh * abs(cos) - bw * abs(sin)) / (cos * cos - sin * sin));
-    }
-
-    //
-
-    public static void main(String[] args) {
-        for (int i = 0; i < 3; i++) {
-            float x = 100 * i;
-            float y = 100 * (float) Math.pow(i, 2);
-            float cos = cos(0.3f);
-            float sin = sin(0.3f);
-            float bx = boundX(x, y, cos, sin);
-            float by = boundY(x, y, cos, sin);
-            float bxn = boundXneg(bx, by, cos, sin);
-            float byn = boundYneg(bx, by, cos, sin);
-
-            System.out.println(Float.compare(bxn, x) == 0);
-            System.out.println(Float.compare(byn, y) == 0);
-        }
+        return abs(w * sin) + abs(h * cos);
     }
 }
