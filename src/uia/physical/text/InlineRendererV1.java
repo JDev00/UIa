@@ -21,14 +21,13 @@ public class InlineRendererV1 implements TextRenderer {
         char[] chars = text.toCharArray();
 
         float[] bounds = view.bounds();
-        float[] dimension_no_rot = Component.dimensionWithoutRotation(bounds);
 
         float lineWidth = bounds[2];
         float lineHeight = font.getLineHeight();
         float longestLine = font.getWidth(0, chars.length, chars);
 
         float off_x = TextRenderer.map(view.getAlignX()) * (lineWidth - longestLine) / 2f;
-        float off_y = TextRenderer.map(view.getAlignY()) * (dimension_no_rot[1] - 0.75f * lineHeight) / 2f + 0.75f * lineHeight;
+        float off_y = TextRenderer.map(view.getAlignY()) * (view.getHeight() - 0.75f * lineHeight) / 2f + 0.75f * lineHeight;
         float rot = bounds[4];
 
         graphic.drawText(chars, 0, chars.length,

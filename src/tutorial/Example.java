@@ -11,6 +11,9 @@ import uia.physical.theme.Theme;
 import uia.physical.wrapper.WrapperView;
 import uia.physical.wrapper.WrapperViewText;
 import uia.utility.Figure;
+import uia.utility.TrigTable;
+
+import java.util.Arrays;
 
 public class Example extends WrapperViewText {
     private final Paint paint;
@@ -28,8 +31,8 @@ public class Example extends WrapperViewText {
 
         shape = new Shape();
         shape.setPosition(210, 210);
-        shape.setDimension(400, 400);
-        //shape.setRotation(0.3f);
+        shape.setDimension(200, 400);
+        shape.setRotation(TrigTable.HALF_PI / 2f);
         Figure.rect(shape.getGeometry());
 
         //System.out.println(shape.contains(10, 10));
@@ -40,7 +43,9 @@ public class Example extends WrapperViewText {
         super.draw(graphic);
 
         graphic.setPaint(paint);
-        //graphic.drawShape(shape);
+        graphic.drawShape(shape);
+
+        //System.out.println(Arrays.toString(shape.bounds()));
     }
 
     /*

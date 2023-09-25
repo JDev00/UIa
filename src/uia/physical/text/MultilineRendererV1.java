@@ -2,9 +2,7 @@ package uia.physical.text;
 
 import uia.core.Font;
 import uia.core.ui.Graphic;
-import uia.core.ui.View;
 import uia.core.ui.ViewText;
-import uia.physical.Component;
 
 import static uia.utility.TrigTable.*;
 import static uia.utility.TrigTable.sin;
@@ -20,14 +18,11 @@ public class MultilineRendererV1 implements TextRenderer {
         Font font = view.getFont();
 
         float[] bounds = view.bounds();
-        float[] dimension_no_rot = Component.dimensionWithoutRotation(bounds);
 
         char[] chars = text.toCharArray();
         int length = chars.length;
 
-        //float top = bounds[1];
-        //float bot = bounds[1] + bounds[3];
-        float lineWidth = dimension_no_rot[0];
+        float lineWidth = view.getWidth();
         float lineHeight = font.getLineHeight();
         float longestLine = 0f;
         float textHeight = ViewText.countLines(text) * lineHeight;
@@ -37,7 +32,7 @@ public class MultilineRendererV1 implements TextRenderer {
         int eol = -1; // end of line
         int lines = 0;
 
-        float y_adj = TextRenderer.map(view.getAlignY()) * (dimension_no_rot[1] - textHeight - 0.75f * lineHeight) / 2f;
+        float y_adj = TextRenderer.map(view.getAlignY()) * (view.getHeight() - textHeight - 0.75f * lineHeight) / 2f;
         float rot = bounds[4];
 
         for (int i = 0; i <= length; i++) {

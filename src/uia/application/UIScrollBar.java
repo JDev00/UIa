@@ -14,8 +14,6 @@ import uia.physical.theme.ThemeDarcula;
 import uia.physical.wrapper.WrapperView;
 import uia.utility.Utility;
 
-import java.util.Arrays;
-
 import static uia.utility.TrigTable.*;
 import static java.lang.Math.abs;
 
@@ -35,7 +33,7 @@ public class UIScrollBar extends WrapperView {
     public UIScrollBar(View view) {
         super(new ComponentGroup(view));
 
-        buildGeometry(g -> Component.buildRect(g, bounds(), 1f), true);
+        buildGeometry(g -> Component.buildRect(g, getWidth(), getHeight(), 1f), true);
         getPaint().setColor(ThemeDarcula.W_BACKGROUND);
         addCallback((OnMouseHover) pointers -> {
             ScreenPointer pointer = pointers.get(0);
@@ -50,7 +48,7 @@ public class UIScrollBar extends WrapperView {
 
 
         cursor = new Component("CURSOR", 0.5f, 0.075f, 1f, 0.15f);
-        cursor.buildGeometry(g -> Component.buildRect(g, cursor.bounds(), 1f), true);
+        cursor.buildGeometry(g -> Component.buildRect(g, getWidth(), getHeight(), 1f), true);
         cursor.setConsumer(CONSUMER.POINTER, false);
         cursor.getPaint().setColor(Theme.RED);
 
@@ -103,7 +101,7 @@ public class UIScrollBar extends WrapperView {
         val = Utility.constrain(scroll, 0f, 1f);
         scroller.setValue(val);
 
-        float off = 0.5f * Component.dimensionWithoutRotation(cursor.bounds())[1] / Component.dimensionWithoutRotation(bounds())[1];
+        float off = 0.5f * cursor.getHeight() / getHeight();
         cursor.setPosition(0.5f, Utility.constrain(val, off, 1 - off));
     }
 
@@ -135,7 +133,7 @@ public class UIScrollBar extends WrapperView {
     @Override
     public void update(View parent) {
         super.update(parent);
-        System.out.println(Arrays.toString(Component.dimensionWithoutRotation(cursor.bounds())));
+        //System.out.println(Arrays.toString(Component.dimensionWithoutRotation(cursor.bounds())));
         //System.out.println(Arrays.toString(bounds()));
     }
 

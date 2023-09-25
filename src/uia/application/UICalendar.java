@@ -57,7 +57,7 @@ public class UICalendar extends WrapperView {
     public UICalendar(View view) {
         super(new ComponentGroup(view));
 
-        buildGeometry(g -> Component.buildRect(g, bounds(), Figure.STD_ROUND), true);
+        buildGeometry(g -> Component.buildRect(g, getWidth(), getHeight(), Figure.STD_ROUND), true);
         getPaint().setColor(ThemeDarcula.BACKGROUND);
 
         font = new Font("Arial", Font.STYLE.ITALIC, Font.FONT_SIZE_DESKTOP);
@@ -207,9 +207,8 @@ public class UICalendar extends WrapperView {
     }
 
     private void updateFontSize(float width, float height) {
-        float[] no_rot_bounds = Component.dimensionWithoutRotation(bounds());
         float fontSize = Math.min(
-                Math.min(width * no_rot_bounds[0], height * no_rot_bounds[1]),
+                Math.min(width * getWidth(), height * getHeight()),
                 Font.FONT_SIZE_DESKTOP
         );
         if (fontSize != font.getSize()) font.setSize(fontSize);

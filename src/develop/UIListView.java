@@ -14,7 +14,6 @@ import uia.physical.scroller.WheelScroller;
 import uia.physical.theme.Theme;
 import uia.physical.theme.ThemeDarcula;
 import uia.physical.wrapper.WrapperView;
-import uia.utility.TrigTable;
 
 import java.util.Iterator;
 
