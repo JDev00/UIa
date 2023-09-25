@@ -126,39 +126,24 @@ public interface View extends Callable, Movable, Collider {
     void draw(Graphic graphic);
 
     /**
+     * Returns the View's width. Note that width won't change as consequence of a rotation.
+     *
+     * @return the View's width
+     */
+
+    float getWidth();
+
+    /**
+     * Returns the View's height. Note that height won't change as consequence of a rotation.
+     *
+     * @return the View's height
+     */
+
+    float getHeight();
+
+    /**
      * @return the View's ID
      */
 
     String getID();
-
-    /*/**
-     * Return the View's bounds without rotation applied
-     *
-     * @param view a not null {@link View}
-     * @return a new array filled with View's bounds without rotation applied
-     *'/
-
-    static float[] boundsWithoutRotation(View view) {
-        float[] out = new float[5];
-
-        float rot = view.bounds()[4];
-        view.setRotation(0f);
-        System.arraycopy(view.bounds(), 0, out, 0, out.length);
-        view.setRotation(rot);
-
-        return out;
-    }*/
-
-    /*
-     * Copies the View's shape into the given one
-     *'/
-
-    /*static void fillShape(View view, Shape target) {
-        float[] no_rot_bounds = boundsWithoutRotation(view);
-
-        target.setGeometry(view.getGeometry());
-        target.setPosition(no_rot_bounds[0], no_rot_bounds[1]);
-        target.setDimension(no_rot_bounds[2], no_rot_bounds[3]);
-        target.setRotation(no_rot_bounds[4]);
-    }*/
 }
