@@ -28,6 +28,7 @@ public final class Component implements View {
 
     private final float[] expanse = {1f, 1f, 1.015f, 1.015f, 0.125f};
     private final float[] container;
+    private final float[] dimension = new float[2];
 
     private final String id;
 
@@ -274,19 +275,19 @@ public final class Component implements View {
      * @param bounds a View's bounds
      */
 
-    private void updateShape(float[] bounds) {
-        float[] dimension_no_rot = dimensionWithoutRotation(bounds);
-        float x = (container[0] - 0.5f) * dimension_no_rot[0];
-        float y = (container[1] - 0.5f) * dimension_no_rot[1];
+    private void updateShape(float[] bounds, float width, float height) {
+        float x = (container[0] - 0.5f) * width;
+        float y = (container[1] - 0.5f) * height;
+
+        // TODO: sistemare resize component alla rotazione
+        dimension[0] = expanse[0] * container[2] * width;
+        dimension[1] = expanse[1] * container[3] * height;
 
         shape.setPosition(
                 bounds[0] + 0.5f * bounds[2] + rotX(x, y, cos(bounds[4]), sin(bounds[4])),
                 bounds[1] + 0.5f * bounds[3] + rotY(x, y, cos(bounds[4]), sin(bounds[4]))
         );
-        shape.setDimension(
-                expanse[0] * container[2] * dimension_no_rot[0],
-                expanse[1] * container[3] * dimension_no_rot[1]
-        );
+        shape.setDimension(dimension[0], dimension[1]);
         shape.setRotation(container[4] + bounds[4]);
     }
 
@@ -315,7 +316,7 @@ public final class Component implements View {
             if (!parent.isOnFocus() && focus) requestFocus(false);
 
             updateExpansionAnimation();
-            updateShape(parent.bounds());
+            updateShape(parent.bounds(), parent.getWidth(), parent.getHeight());
 
             if (geomBuilder != null) geomBuilder.accept(shape.getGeometry());
         }
@@ -327,6 +328,16 @@ public final class Component implements View {
             graphic.setPaint(paint);
             graphic.drawShape(shape);
         }
+    }
+
+    @Override
+    public float getWidth() {
+        return dimension[0];
+    }
+
+    @Override
+    public float getHeight() {
+        return dimension[1];
     }
 
     @Override
@@ -374,26 +385,25 @@ public final class Component implements View {
         }
     }
 
-    /**
+    /*
      * Calculate width and height without rotation
-     */
+     *
 
-    public static float[] dimensionWithoutRotation(float[] bounds) {
+    /*public static float[] dimensionWithoutRotation(float[] bounds) {
         float cos = cos(bounds[4]);
         float sin = sin(bounds[4]);
         return new float[]{
                 boundXneg(bounds[2], bounds[3], cos, sin),
                 boundYneg(bounds[2], bounds[3], cos, sin)
         };
-    }
+    }*/
 
     /**
      * Build a rounded rectangle
      */
 
-    public static Geometry buildRect(Geometry geometry, float[] bounds, float radius) {
-        float[] no_rot_dim = dimensionWithoutRotation(bounds);
-        Figure.rect(geometry, Figure.STD_VERT, radius, no_rot_dim[0] / no_rot_dim[1]);
-        return geometry;
+    public static void buildRect(Geometry geometry, float width, float height, float radius) {
+        //float[] no_rot_dim = dimensionWithoutRotation(bounds);
+        Figure.rect(geometry, Figure.STD_VERT, radius, width / height);
     }
 }
