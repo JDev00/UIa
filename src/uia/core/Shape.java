@@ -92,6 +92,11 @@ public class Shape implements Movable, Collider {
     }
 
     @Override
+    public void setColliderPolicy(COLLIDER_POLICY policy) {
+        this.policy = policy;
+    }
+
+    @Override
     public void setPosition(float x, float y) {
         bounds[0] = x;
         bounds[1] = y;
@@ -108,9 +113,20 @@ public class Shape implements Movable, Collider {
         bounds[4] = radians % TWO_PI;
     }
 
-    @Override
-    public void setColliderPolicy(COLLIDER_POLICY policy) {
-        this.policy = policy;
+    /**
+     * @return the shape's width without rotation applied
+     */
+
+    public float getWidth() {
+        return bounds[2];
+    }
+
+    /**
+     * @return the shape's height without rotation applied
+     */
+
+    public float getHeight() {
+        return bounds[3];
     }
 
     private final float[] outBounds = new float[5];
