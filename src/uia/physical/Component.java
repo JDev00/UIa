@@ -23,7 +23,7 @@ import static uia.utility.TrigTable.*;
 public final class Component implements View {
     private final Paint paint;
     private final Shape shape;
-    private final List<Callback> callbacks = new ArrayList<>(4);
+    private final List<Callback> callbacks;
     private Consumer<Geometry> geomBuilder;
 
     private final float[] expanse = {1f, 1f, 1.015f, 1.015f, 0.125f};
@@ -42,6 +42,8 @@ public final class Component implements View {
         this.id = id;
 
         container = new float[]{x, y, width, height, 0f};
+
+        callbacks = new ArrayList<>(4);
 
         paint = new Paint().setColor(new Paint.Color(255));
 
@@ -76,9 +78,27 @@ public final class Component implements View {
         callbacks.remove(callback);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void notifyCallbacks(Class<? extends Callback> type, Object data) {
-        getInstance(callbacks, type, e -> e.onEvent(data));
+        try {
+            String name = type.getName();
+
+            callbacks.forEach(t -> {
+                Class<?> current = t.getClass();
+
+                while (current != null) {
+                    Class<?>[] interfaces = current.getInterfaces();
+
+                    for (Class<?> i : interfaces) {
+                        if (name.equals(i.getName())) t.onEvent(data);
+                    }
+
+                    current = current.getSuperclass();
+                }
+            });
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
@@ -353,36 +373,6 @@ public final class Component implements View {
     @Override
     public String getID() {
         return id;
-    }
-
-    /**
-     * Try to access the given type
-     *
-     * @param list     a not null {@link List}
-     * @param type     the type to update
-     * @param consumer a not null {@link Consumer} used to update the found type
-     */
-
-    // TODO: cambiare nome alla funzione
-    private static <T> void getInstance(List<T> list, Class<?> type, Consumer<T> consumer) {
-        try {
-            String name = type.getName();
-
-            list.forEach(t -> {
-                Class<?> current = t.getClass();
-
-                while (current != null) {
-                    Class<?>[] interfaces = current.getInterfaces();
-
-                    for (Class<?> i : interfaces) {
-                        if (name.equals(i.getName())) consumer.accept(t);
-                    }
-
-                    current = current.getSuperclass();
-                }
-            });
-        } catch (Exception ignored) {
-        }
     }
 
     /**
