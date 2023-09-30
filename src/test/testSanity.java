@@ -1,7 +1,7 @@
-package uia.application.platform.awt.test;
+package test;
 
 import uia.application.platform.awt.ContextAWT;
-import uia.application.platform.awt.test.artefacts.ComponentTracker;
+import test.artefacts.ComponentTracker;
 import uia.core.Image;
 import uia.core.ui.Context;
 import uia.core.ui.View;
@@ -14,22 +14,22 @@ import uia.physical.ComponentImage;
 import uia.physical.wrapper.WrapperViewGroup;
 import uia.utility.Utility;
 
-public class SanityBasementUITest extends WrapperViewGroup {
+public class testSanity extends WrapperViewGroup {
 
-    public SanityBasementUITest(Context context) {
-        super(new ComponentGroup(new Component("TEST0", 0.5f, 0.5f, 1f, 1f).setExpanseLimit(1f, 1f)));
+    public testSanity(Context context) {
+        super(new ComponentGroup(new Component("TEST_SANITY", 0.5f, 0.5f, 1f, 1f).setExpanseLimit(1f, 1f)));
 
         getPaint().setColor(Theme.BACKGROUND);
 
 
         ViewText text = new ComponentText(new Component("TEXT", 0.33f, 0.25f, 0.5f, 0.75f));
         text.setAlign(ViewText.AlignX.RIGHT);
-        text.setText(Utility.readAll("..\\uia\\src\\uia\\application\\platform\\awt\\test\\SanityBasementUITest.java"));
+        text.setText(Utility.readAll("src\\test\\SanityBasementUITest.java"));
         text.setRotation(0.3f);
 
 
         ComponentImage image = new ComponentImage(new Component("IMAGE", 0.7f, 0.5f, 0.33f, 0.5f));
-        image.getImage().load("..\\uia\\sample\\img0.png").setMode(Image.MODE.CENTER);
+        image.getImage().load("sample\\img0.png").setMode(Image.MODE.CENTER);
 
 
         ComponentGroup group = new ComponentGroup(new Component("GROUP", 0.4f, 0.5f, 0.5f, 0.5f)
@@ -38,9 +38,7 @@ public class SanityBasementUITest extends WrapperViewGroup {
         group.add(text, image);
 
 
-        ComponentTracker tracker = new ComponentTracker(
-                new Component("FPS", 0.05f, 0.05f, 0.1f, 0.1f), context
-        );
+        ComponentTracker tracker = new ComponentTracker(context, 0.05f, 0.05f, 0.1f, 0.1f);
 
 
         add(group, tracker);
@@ -63,6 +61,6 @@ public class SanityBasementUITest extends WrapperViewGroup {
         int[] dim = ContextAWT.getScreenSize();
         Context context = new ContextAWT(4 * dim[0] / 5, 4 * dim[1] / 5);
         context.start();
-        context.setView(new SanityBasementUITest(context));
+        context.setView(new testSanity(context));
     }
 }

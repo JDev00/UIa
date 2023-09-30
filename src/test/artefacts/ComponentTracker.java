@@ -1,8 +1,9 @@
-package uia.application.platform.awt.test.artefacts;
+package test.artefacts;
 
 import uia.core.Font;
 import uia.core.ui.Context;
 import uia.core.ui.View;
+import uia.physical.Component;
 import uia.physical.ComponentText;
 import uia.physical.wrapper.WrapperViewText;
 
@@ -13,8 +14,8 @@ import uia.physical.wrapper.WrapperViewText;
 public class ComponentTracker extends WrapperViewText {
     private final Context context;
 
-    public ComponentTracker(View view, Context context) {
-        super(new ComponentText(view));
+    public ComponentTracker(Context context, float x, float y, float w, float h) {
+        super(new ComponentText(new Component("FPS", x, y, w, h)));
 
         setAlign(AlignY.CENTER);
         getFont().setStyle(Font.STYLE.ITALIC);

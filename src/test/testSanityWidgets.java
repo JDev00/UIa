@@ -1,26 +1,21 @@
-package uia.application.platform.awt.test;
+package test;
 
 import uia.application.platform.awt.ContextAWT;
-import uia.application.platform.awt.test.artefacts.ComponentTracker;
+import test.artefacts.ComponentTracker;
 import uia.application.*;
 import uia.physical.theme.Theme;
 import uia.physical.theme.ThemeDarcula;
-import uia.core.Font;
 import uia.core.ui.Context;
 import uia.core.ui.View;
 import uia.core.ui.ViewText;
-import uia.core.ui.callbacks.OnClick;
 import uia.physical.Component;
 import uia.physical.ComponentGroup;
 import uia.physical.ComponentText;
 import uia.physical.wrapper.WrapperViewGroup;
-import uia.utility.Figure;
-import uia.utility.TrigTable;
-import uia.utility.Utility;
 
-public class SanityWidgetTest extends WrapperViewGroup {
+public class testSanityWidgets extends WrapperViewGroup {
 
-    public SanityWidgetTest(Context context) {
+    public testSanityWidgets(Context context) {
         super(new ComponentGroup(new Component("TEST", 0.5f, 0.5f, 1f, 1f).setExpanseLimit(1f, 1f)));
 
         getPaint().setColor(Theme.DARK_GREY);
@@ -59,9 +54,7 @@ public class SanityWidgetTest extends WrapperViewGroup {
         calendar.setRotation(0.05f);
 
 
-        ComponentTracker tracker = new ComponentTracker(
-                new Component("FPS", 0.05f, 0.05f, 0.1f, 0.1f), context
-        );
+        ComponentTracker tracker = new ComponentTracker(context, 0.05f, 0.05f, 0.1f, 0.1f);
 
 
         add(buttonFilled, buttonSwitch, buttonList, calendar, tracker);
@@ -82,6 +75,6 @@ public class SanityWidgetTest extends WrapperViewGroup {
         int[] dim = ContextAWT.getScreenSize();
         Context context = new ContextAWT(4 * dim[0] / 5, 4 * dim[1] / 5);
         context.start();
-        context.setView(new SanityWidgetTest(context));
+        context.setView(new testSanityWidgets(context));
     }
 }
