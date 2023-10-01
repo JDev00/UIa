@@ -1,7 +1,7 @@
-package tutorial;
+package example;
 
 import uia.application.UIButton;
-import uia.application.platform.awt.ContextAWT;
+import uia.application.awt.ContextAWT;
 import uia.core.Font;
 import uia.core.Paint;
 import uia.core.ui.Context;
@@ -15,7 +15,7 @@ import uia.physical.theme.Theme;
 import uia.physical.wrapper.WrapperViewGroup;
 
 /**
- * Demonstatrative example. Show a simple button with a showable/hideable popup.
+ * Demonstrative example. Draw a simple button that allows to show and hide a popup.
  */
 
 public class HelloWorld extends WrapperViewGroup {

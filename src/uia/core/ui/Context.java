@@ -1,14 +1,16 @@
 package uia.core.ui;
 
 /**
- * Context acts as the basement of an application. It manages a window and is responsible for updating and rendering
- * the managed {@link View}. It is intended to be a versatile layer whose implementation is platform dependent.
+ * Context is the base of the UIa framework. It is responsible for updating and rendering a single {@link View} on a {@link Window}.
+ * It is intended to be a versatile layer whose implementation is platform dependent.
+ * <br>
+ * More description to come.
  */
 
 public interface Context {
 
     /**
-     * HINT is used to specify render settings
+     * HINTS are used to change rendering settings
      */
 
     enum HINT {
@@ -18,29 +20,14 @@ public interface Context {
     }
 
     /**
-     * @return the native Context object
+     * Clipboard operations
      */
 
-    Object getNative();
+    enum CLIPBOARD_OPERATION {COPY, PASTE}
 
     /**
-     * Update and render the given View.
-     *
-     * @param view a {@link View}; it could be null
-     */
-
-    void setView(View view);
-
-    /**
-     * Set some render hints
-     *
-     * @param hint a not null array of {@link HINT}s
-     */
-
-    void setHints(HINT... hint);
-
-    /**
-     * Start this Context
+     * Start this Context and make the managed Window visible. If the Context was previously stopped, then
+     * resume the execution.
      */
 
     void start();
@@ -52,48 +39,116 @@ public interface Context {
     boolean isRunning();
 
     /**
-     * Stop this Context
+     * Stop this Context, which causes the View to stop refreshing and rendering
      */
 
     void stop();
 
     /**
-     * Set some window frame parameters
+     * Set the given rendering hints
      *
-     * @param alwaysOnTop true to set window's frame always on top
-     * @param resizable   true to allow window's frame to resize
-     * @param title       a not null window's frame title
+     * @param hint a not null array of {@link HINT}s
      */
 
-    void setWindowParams(boolean alwaysOnTop, boolean resizable, String title);
+    void setHints(HINT... hint);
 
     /**
-     * @return the current width of the drawable area
+     * Attach a View to this Context.
+     * <br>
+     * The given View will be updated and rendered by this Context.
+     *
+     * @param view a {@link View}; it could be null
      */
 
-    int getWidth();
+    void setView(View view);
 
     /**
-     * @return the current height of the drawable area
-     */
-
-    int getHeight();
-
-    /**
-     * @return the current frame rate per second
+     * @return the current frame rendering rate (frame rate per second)
      */
 
     int getFrameRate();
 
-    enum CLIPBOARD_OPERATION {COPY, PASTE}
+    /**
+     * @return the {@link Window} used to draw the attached View
+     */
+
+    Window getWindow();
 
     /**
-     * Copy a String inside the system clipboard or paste a String from the System clipboard.
+     * Copy a String in the clipboard or paste a String from the clipboard
      *
      * @param operation a not null {@link CLIPBOARD_OPERATION}
-     * @param str       a String to copy inside the system clipboard; it could be null
-     * @return null or system's clipboard content
+     * @param str       a String to copy in the clipboard; it could be null
+     * @return null or the clipboard content
      */
 
     String clipboard(CLIPBOARD_OPERATION operation, String str);
+
+    /**
+     * Window ADT.
+     * <br>
+     * Window is responsible for managing a native window (the one the user sees and interacts with when an application is running).
+     * Such a Window can be either system or third-party generated.
+     * <br>
+     * By default, a window as a specific piece dedicated to rendering. This area is automatically managed and
+     * only it's width and height can be accessed externally via {@link #getWidth()} and {@link #getHeight()}.
+     */
+
+    interface Window {
+
+        /**
+         * @return the native window object
+         */
+
+        Object getNative();
+
+        /**
+         * Set the window to always be on top of other system or third-party windows, even when it isn't in focus.
+         *
+         * @param alwaysOnTop true to set this window to always be on top
+         * @return this {@link Window}
+         */
+
+        Window setAlwaysOnTop(boolean alwaysOnTop);
+
+        /**
+         * Make the window resizable. It allows the user to resize the window in a canonical way through the GUI.
+         *
+         * @param resizable true to make this windows resizable
+         * @return this {@link Window}
+         */
+
+        Window setResizable(boolean resizable);
+
+        /**
+         * Set the window title
+         *
+         * @param title a title; it could be null
+         * @return this {@link Window}
+         */
+
+        Window setTitle(String title);
+
+        /**
+         * Resize this window to the specified width and height
+         *
+         * @param width  the new window's width; it must be greater than 150 pixels
+         * @param height the new window's height; it must be greater than 150 pixels
+         * @return this {@link Window}
+         */
+
+        Window resize(int width, int height);
+
+        /**
+         * @return the width of the drawable area
+         */
+
+        int getWidth();
+
+        /**
+         * @return the height of the drawable area
+         */
+
+        int getHeight();
+    }
 }

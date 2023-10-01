@@ -1,8 +1,8 @@
 package test;
 
-import uia.application.platform.awt.ContextAWT;
 import test.artefacts.ComponentTracker;
 import uia.application.*;
+import uia.application.awt.ContextAWT;
 import uia.physical.theme.Theme;
 import uia.physical.theme.ThemeDarcula;
 import uia.core.ui.Context;

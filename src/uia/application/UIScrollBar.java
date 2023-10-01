@@ -1,6 +1,6 @@
 package uia.application;
 
-import uia.application.platform.awt.ContextAWT;
+import uia.application.awt.ContextAWT;
 import uia.core.ScreenPointer;
 import uia.core.ui.Context;
 import uia.core.ui.View;
@@ -128,13 +128,6 @@ public class UIScrollBar extends WrapperView {
         super.setVisible(isVisible);
 
         if (!isVisible) locked = false;
-    }
-
-    @Override
-    public void update(View parent) {
-        super.update(parent);
-        //System.out.println(Arrays.toString(Component.dimensionWithoutRotation(cursor.bounds())));
-        //System.out.println(Arrays.toString(bounds()));
     }
 
     //

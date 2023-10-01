@@ -1,7 +1,7 @@
 package test;
 
-import uia.application.platform.awt.ContextAWT;
 import test.artefacts.ComponentTracker;
+import uia.application.awt.ContextAWT;
 import uia.core.Image;
 import uia.core.ui.Context;
 import uia.core.ui.View;

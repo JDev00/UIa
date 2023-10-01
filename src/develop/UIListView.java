@@ -1,6 +1,6 @@
 package develop;
 
-import uia.application.platform.awt.ContextAWT;
+import uia.application.awt.ContextAWT;
 import uia.core.ui.Context;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;

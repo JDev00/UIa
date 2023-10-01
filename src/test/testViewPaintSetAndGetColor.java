@@ -1,7 +1,7 @@
 package test;
 
 import test.artefacts.TestValidation;
-import uia.application.platform.awt.ContextAWT;
+import uia.application.awt.ContextAWT;
 import uia.core.Paint;
 import uia.core.ui.Context;
 import uia.physical.Component;
