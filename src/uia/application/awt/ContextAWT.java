@@ -22,6 +22,8 @@ import java.util.concurrent.TimeUnit;
  * {@link Context} implementation based on Java AWT/SWING
  */
 
+// TODO: to refactor
+
 public class ContextAWT implements Context {
     private ScheduledExecutorService mainThread;
     private final WindowAWT window;

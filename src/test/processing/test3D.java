@@ -1,6 +1,5 @@
-package test.processing.test;
+package test.processing;
 
-import test.processing.ContextProcessing;
 import uia.application.awt.ContextAWT;
 import processing.core.PGraphics;
 import uia.core.ui.Context;
@@ -9,10 +8,10 @@ import uia.physical.wrapper.WrapperView;
 import uia.physical.Component;
 import uia.physical.ComponentGroup;
 
-public class Test3D extends WrapperView {
+public class test3D extends WrapperView {
     private float rot = 0f;
 
-    public Test3D() {
+    public test3D() {
         super(new ComponentGroup(new Component("TEST_3D", 0.5f, 0.5f, 1f, 1f)
                 .setExpanseLimit(1f, 1f)));
     }
@@ -45,6 +44,6 @@ public class Test3D extends WrapperView {
 
         Context context = new ContextProcessing(4 * dim[0] / 5, 4 * dim[1] / 5);
         context.start();
-        context.setView(new Test3D());
+        context.setView(new test3D());
     }
 }
