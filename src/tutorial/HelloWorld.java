@@ -13,7 +13,10 @@ import uia.physical.ComponentGroup;
 import uia.physical.ComponentText;
 import uia.physical.theme.Theme;
 import uia.physical.wrapper.WrapperViewGroup;
-import uia.utility.Figure;
+
+/**
+ * Demonstatrative example. Show a simple button with a showable/hideable popup.
+ */
 
 public class HelloWorld extends WrapperViewGroup {
 
@@ -32,6 +35,7 @@ public class HelloWorld extends WrapperViewGroup {
         UIButton button = new UIButton(new ComponentText(
                 new Component("BUTTON", 0.25f, 0.5f, 0.1f, 0.1f).setExpanseLimit(1.2f, 1.2f)
         ));
+        button.buildGeometry(g -> Component.buildRect(g, button.getWidth(), button.getHeight(), 1f), true);
         // get the Paint used when the button is activated and set: a new color, stroke color and stroke width
         button.getPaint(UIButton.STATE.ENABLED)
                 .setColor(new Paint.Color(100, 200, 255, 100))
@@ -41,7 +45,7 @@ public class HelloWorld extends WrapperViewGroup {
         button.getPaint(UIButton.STATE.DISABLED)
                 .setColor(new Paint.Color(200, 100, 0, 50))
                 .setStrokeColor(Theme.RED)
-                .setStrokeWidth(8);
+                .setStrokeWidth(4);
         // get the ViewText passed to the button constructor
         ViewText viewText = ((ViewText) button.getView());
         // set the text alignment along y-axis
@@ -61,8 +65,7 @@ public class HelloWorld extends WrapperViewGroup {
         });
         // create another event to listen for messages sent to this button
         button.addCallback((OnMessageReceived) message -> {
-            if (message[1] == "POPUP")
-                viewText.setText(((String) message[0]).contains("Hey") ? "Hide\npopup!" : "Show\npopup!");
+            if (message[1] == "POPUP") viewText.setText(((String) message[0]).contains("Hey") ? "Hide\npopup!" : "Show\npopup!");
         });
 
 
@@ -72,17 +75,15 @@ public class HelloWorld extends WrapperViewGroup {
         );
         // set the popup shape: create a new rounded corner rectangle with 25 vertices.
         // Here, we will use Figure (a collection of shapes) to easily create a rounded rectangle.
-        popup.buildGeometry(g -> Figure.rect(g, Figure.STD_VERT, Figure.STD_ROUND,
-                popup.bounds()[0] / popup.bounds()[1]), true);
+        popup.buildGeometry(g -> Component.buildRect(g, popup.getWidth(), popup.getHeight(), 0.1f), true);
         // hide this popup at the beginning
         popup.setVisible(false);
         // set some text to this popup
-        popup.setText("Hi, I'm a little popup.\n Unfortunately, no one has taken care of\n placing some widgets on me ;(" +
-                "\nSo please, populate my landscape\n with some UI objects.\n\n Thanks!");
+        popup.setText("Hi, I'm a little popup!");
         // set text properties
         popup.setAlign(ViewText.AlignY.CENTER);
         popup.getFont()
-                .setSize(30)
+                .setSize(25)
                 .setStyle(Font.STYLE.ITALIC)
                 .setLeadingFactor(1.2f);
         // set text color
