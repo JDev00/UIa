@@ -1,4 +1,3 @@
-/out/
-/sample/
-/docs/
-/.idea/
+/out/*
+/sample/*
+/.idea/*
