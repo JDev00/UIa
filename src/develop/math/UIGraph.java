@@ -1,8 +1,10 @@
 package develop.math;
 
 import develop.math.data.PointDistribution;
+import uia.application.awt.ContextAWT;
 import uia.core.Geometry;
 import uia.core.Shape;
+import uia.core.ui.Context;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
 import uia.physical.Component;
@@ -37,9 +39,9 @@ public class UIGraph extends WrapperView {
     }
 
     private final List<Pair<PointDistribution, DrawableDistribution>> data;
-
     private final DrawableDistribution stdDrawable;
 
+    private final Shape axis;
     private final Paint paintAxis;
 
     private float xMax, yMax;
@@ -54,13 +56,14 @@ public class UIGraph extends WrapperView {
 
         bounds = new float[]{0f, 0f, 1f, 1f};
 
-        paintAxis = new Paint()
-                .setColor(Theme.RED)
-                .setStrokeWidth(2);
-
         stdDrawable = new DrawableDistribution();
 
         data = new ArrayList<>();
+
+        axis = new Shape();
+        axis.setGeometry(Figure.rect(axis.getGeometry()));
+
+        paintAxis = new Paint().setStrokeWidth(2);
 
         reset();
     }
@@ -76,6 +79,7 @@ public class UIGraph extends WrapperView {
      * @param store a not null {@link List} used to store the nearest points
      */
 
+    @Deprecated
     protected void nearest(float x, List<float[]> store) {
         store.clear();
 
@@ -91,7 +95,7 @@ public class UIGraph extends WrapperView {
             PointDistribution dis = i.val1;
 
             for (int j = 0; j < dis.size(); j++) {
-                int dist = (int) abs(this.bounds[0] + this.bounds[2] * dis.get(j, 0) - (x + offset));
+                int dist = (int) abs(this.bounds[0] + this.bounds[2] * dis.get(j, PointDistribution.AXIS.X) - (x + offset));
 
                 if (dist < pDist) {
                     node = j;
@@ -103,9 +107,26 @@ public class UIGraph extends WrapperView {
             if (node == -1) {
                 store.add(new float[0]);
             } else {
-                store.add(new float[]{dis.get(node, 0), dis.get(node, 1)});
+                store.add(new float[]{
+                        dis.get(node, PointDistribution.AXIS.X),
+                        dis.get(node, PointDistribution.AXIS.Y)
+                });
             }
         }
+    }
+
+    /**
+     * Update the attributes of this graphic
+     *
+     * @param x the last x point
+     * @param y the last y point
+     */
+
+    private void updateMinAndMax(float x, float y) {
+        if (x > xMax) xMax = x;
+        if (x < xMin) xMin = x;
+        if (y > yMax) yMax = y;
+        if (y < yMin) yMin = y;
     }
 
     /**
@@ -116,20 +137,6 @@ public class UIGraph extends WrapperView {
         xMax = yMax = -Integer.MAX_VALUE;
         xMin = yMin = Integer.MAX_VALUE;
         Arrays.fill(bounds, 0);
-    }
-
-    /**
-     * Update the attributes of this graphic
-     *
-     * @param x the last x point
-     * @param y the last y point
-     */
-
-    private void updateMaxMin(float x, float y) {
-        if (x > xMax) xMax = x;
-        if (x < xMin) xMin = x;
-        if (y > yMax) yMax = y;
-        if (y < yMin) yMin = y;
     }
 
     /**
@@ -159,10 +166,10 @@ public class UIGraph extends WrapperView {
 
         if (isVisible()) {
             float[] bounds = bounds();
-            float x = bounds[0] + xOff * bounds[2];
-            float y = bounds[1] + yOff * bounds[3];
-            float gWidth = gXScale * bounds[2];
-            float gHeight = gYScale * bounds[3];
+            float x = bounds[0] + 0.5f * bounds[2];
+            float y = bounds[1] + 0.5f * bounds[3];
+            float gWidth = 0.95f * bounds[2];
+            float gHeight = 0.95f * bounds[3];
 
             float cx = abs(xMin) + abs(xMax);
             float cy = abs(yMin) + abs(yMax);
@@ -170,30 +177,35 @@ public class UIGraph extends WrapperView {
             if (Float.compare(cx, 0) == 0) cx = 1;
             if (Float.compare(cy, 0) == 0) cy = 1;
 
-            bounds[2] = gWidth / cx;
-            bounds[3] = gHeight / cy;
             bounds[0] = x + gWidth * ((1 - (xMax + xMin) / cx) / 2 - 0.5f);
             bounds[1] = y + gHeight * ((1 + (yMax + yMin) / cy) / 2 - 0.5f);
+            bounds[2] = gWidth / cx;
+            bounds[3] = gHeight / cy;
 
             for (Pair<PointDistribution, DrawableDistribution> i : data) {
                 PointDistribution dis = i.val1;
-                updateMaxMin(dis.getMax(0), dis.getMax(1));
-                updateMaxMin(dis.getMin(0), dis.getMin(1));
+                updateMinAndMax(dis.getMax(PointDistribution.AXIS.X), dis.getMax(PointDistribution.AXIS.Y));
+                updateMinAndMax(dis.getMin(PointDistribution.AXIS.X), dis.getMin(PointDistribution.AXIS.Y));
 
                 DrawableDistribution drw = i.val2;
-                drw.update(bounds[0], bounds[1], bounds[2], bounds[3]);
-                drw.draw(graphic, dis);
+                drw.draw(graphic, dis, bounds[0], bounds[1], bounds[2], bounds[3]);
             }
 
-            // draw axis
-            graphic.setPaint(paintAxis);
-            graphic.openShape(x - gWidth / 2f, bounds[1]);
-            graphic.vertex(x + gWidth / 2f, bounds[1]);
-            graphic.closeShape();
 
-            graphic.openShape(bounds[0], y - gHeight / 2f);
-            graphic.vertex(bounds[0], y + gHeight / 2f);
-            graphic.closeShape();
+            // to refactor: draw ordinate axis
+            axis.setPosition(x - gWidth / 2f, y);
+            axis.setDimension(2, gHeight);
+
+            graphic.setPaint(paintAxis);
+            graphic.drawShape(axis);
+
+
+            // to refactor: draw abscissa axis
+            axis.setPosition(x, y + gHeight / 2f);
+            axis.setDimension(gWidth, 2);
+
+            graphic.setPaint(paintAxis);
+            graphic.drawShape(axis);
         }
     }
 
@@ -201,24 +213,8 @@ public class UIGraph extends WrapperView {
      * @return the number of distributions
      */
 
-    public int size() {
+    public int distributions() {
         return data.size();
-    }
-
-    /**
-     * @return a new array filled with the maximum point's coordinates
-     */
-
-    public float[] getMax() {
-        return new float[]{xMax, yMax};
-    }
-
-    /**
-     * @return a new array filled with the minimum point's coordinates
-     */
-
-    public float[] getMin() {
-        return new float[]{xMin, yMin};
     }
 
     /**
@@ -226,18 +222,18 @@ public class UIGraph extends WrapperView {
      * <br>
      * If the specified distribution doesn't exist, two policies are adopted:
      * <br>
-     * 1) if {@code i} is equal to {@link #size()}, a new distribution will be added and then returned,
+     * 1) if {@code i} is equal to {@link #distributions()}, a new distribution will be added and then returned,
      * <br>
-     * 2) if {@code i} is greater than {@link #size()}, {@code null} will be returned.
+     * 2) if {@code i} is greater than {@link #distributions()}, {@code null} will be returned.
      *
      * @param i the distribution's position
      * @return the specified distribution or null
      */
 
     public PointDistribution getDistribution(int i) {
-        if (i >= 0 && i < size()) {
+        if (i >= 0 && i < distributions()) {
             return data.get(i).val1;
-        } else if (i == size()) {
+        } else if (i == distributions()) {
             PointDistribution dis = new PointDistribution();
             data.add(new Pair<>(dis, stdDrawable));
             return dis;
@@ -261,20 +257,17 @@ public class UIGraph extends WrapperView {
 
     public static class DrawableDistribution {
         private final Shape shapeMarker;
+        private final Shape shapeLine;
 
         private final Paint cLine;
         private final Paint cPoint;
 
         private float pointDim = 4;
 
-        private final float[] bounds;
-
         private boolean enableLine = true;
         private boolean enablePoint = true;
 
         public DrawableDistribution() {
-            bounds = new float[]{0f, 0f, 1f, 1f};
-
             cLine = new Paint()
                     .setColor(Theme.BLACK)
                     .setStrokeWidth(3);
@@ -282,18 +275,10 @@ public class UIGraph extends WrapperView {
             cPoint = new Paint().setColor(Theme.RED);
 
             shapeMarker = new Shape();
-            shapeMarker.setGeometry(Figure.rect(new Geometry()));
-        }
+            shapeMarker.setGeometry(Figure.rect(shapeMarker.getGeometry()));
 
-        /**
-         * Update the drawable's bounds
-         */
-
-        public void update(float x, float y, float xScale, float yScale) {
-            bounds[0] = x;
-            bounds[1] = y;
-            bounds[2] = xScale;
-            bounds[3] = yScale;
+            shapeLine = new Shape();
+            shapeLine.setGeometry(Figure.rect(shapeLine.getGeometry()));
         }
 
         /**
@@ -345,7 +330,13 @@ public class UIGraph extends WrapperView {
          */
 
         public DrawableDistribution setMarker(Geometry marker) {
-            shapeMarker.setGeometry(marker);
+            Geometry markerGeometry = shapeMarker.getGeometry();
+            markerGeometry.clear();
+
+            for (int i = 0; i < marker.vertices(); i++) {
+                Geometry.Vertex vertex = marker.get(i);
+                markerGeometry.addVertex(vertex.getX(), vertex.getY());
+            }
             return this;
         }
 
@@ -378,12 +369,13 @@ public class UIGraph extends WrapperView {
          * @param pointDistribution the {@link PointDistribution} to draw
          */
 
-        private void draw(Graphic graphic, PointDistribution pointDistribution) {
+        private void draw(Graphic graphic, PointDistribution pointDistribution,
+                          float x, float y,
+                          float scaleX, float scaleY) {
             if (enableLine) {
                 graphic.setPaint(cLine);
 
-                // draw line between points
-                for (int i = 0; i < pointDistribution.size() - 1; i++) {
+                /*for (int i = 0; i < pointDistribution.size() - 1; i++) {
                     graphic.openShape(
                             (int) (bounds[0] + bounds[2] * pointDistribution.get(i, 0)),
                             (int) (bounds[1] - bounds[3] * pointDistribution.get(i, 1)));
@@ -391,23 +383,39 @@ public class UIGraph extends WrapperView {
                             (int) (bounds[0] + bounds[2] * pointDistribution.get(i + 1, 0)),
                             (int) (bounds[1] - bounds[3] * pointDistribution.get(i + 1, 1)));
                     graphic.closeShape();
-                }
+                }*/
             }
 
             if (enablePoint) {
                 graphic.setPaint(cPoint);
 
-                // draw points
                 for (int i = 0; i < pointDistribution.size(); i++) {
-                    float x = bounds[0] + bounds[2] * pointDistribution.get(i, 0);
-                    float y = bounds[1] - bounds[3] * pointDistribution.get(i, 1);
+                    shapeMarker.setPosition(
+                            x + scaleX * pointDistribution.get(i, PointDistribution.AXIS.X),
+                            y - scaleY * pointDistribution.get(i, PointDistribution.AXIS.Y)
+                    );
+                    shapeMarker.setDimension(pointDim, pointDim);
 
-                    marker.x = x;
-                    marker.y = y;
-                    marker.scaleX = marker.scaleY = pointDim;
-                    graphic.drawGeom(marker);
+                    graphic.drawShape(shapeMarker);
                 }
             }
         }
+    }
+
+    //
+
+    public static void main(String[] args) {
+        UIGraph uiGraph = new UIGraph(
+                new Component("", 0.5f, 0.5f, 0.5f, 0.5f)
+        );
+        uiGraph.getDistribution(0)
+                .add(0, 0)
+                .add(1000, 1000)
+                .add(2000, 1200);
+        //uiGraph.setRotation(0.5f);
+
+        Context context = new ContextAWT(1800, 900);
+        context.start();
+        context.setView(uiGraph);
     }
 }

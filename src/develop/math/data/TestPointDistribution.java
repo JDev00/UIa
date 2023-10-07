@@ -29,22 +29,22 @@ public class TestPointDistribution {
 
     public void ensureMinimumPointIsObtained() {
         TestValidation.assertThat(
-                Float.compare(pointDistribution.getMin(PointDistribution.CARTESIAN_COMPONENT.X), -4999.99f) == 0
-                        && Float.compare(pointDistribution.getMin(PointDistribution.CARTESIAN_COMPONENT.Y), -5000f) == 0,
+                Float.compare(pointDistribution.getMin(PointDistribution.AXIS.X), -4999.99f) == 0
+                        && Float.compare(pointDistribution.getMin(PointDistribution.AXIS.Y), -5000f) == 0,
                 true);
     }
 
     public void ensureMaximumPointIsObtained() {
         TestValidation.assertThat(
-                Float.compare(pointDistribution.getMax(PointDistribution.CARTESIAN_COMPONENT.X), 2345f) == 0
-                        && Float.compare(pointDistribution.getMax(PointDistribution.CARTESIAN_COMPONENT.Y), 4998.98f) == 0,
+                Float.compare(pointDistribution.getMax(PointDistribution.AXIS.X), 2345f) == 0
+                        && Float.compare(pointDistribution.getMax(PointDistribution.AXIS.Y), 4998.98f) == 0,
                 true);
     }
 
     public void ensureMeanIsCorrect() {
         TestValidation.assertThat(
-                Float.compare(pointDistribution.getMean(PointDistribution.CARTESIAN_COMPONENT.X), -1195.14833f) == 0
-                        && Float.compare(pointDistribution.getMean(PointDistribution.CARTESIAN_COMPONENT.Y), 112.66335f) == 0,
+                Float.compare(pointDistribution.getMean(PointDistribution.AXIS.X), -1195.14833f) == 0
+                        && Float.compare(pointDistribution.getMean(PointDistribution.AXIS.Y), 112.66335f) == 0,
                 true);
     }
 
@@ -52,8 +52,8 @@ public class TestPointDistribution {
 
     public void ensureStandardDeviationIsCorrect() {
         TestValidation.assertThat(
-                Float.compare(pointDistribution.getStandardDeviation(PointDistribution.CARTESIAN_COMPONENT.X), 0f) == 0
-                        && Float.compare(pointDistribution.getStandardDeviation(PointDistribution.CARTESIAN_COMPONENT.Y), 0f) == 0,
+                Float.compare(pointDistribution.getStandardDeviation(PointDistribution.AXIS.X), 0f) == 0
+                        && Float.compare(pointDistribution.getStandardDeviation(PointDistribution.AXIS.Y), 0f) == 0,
                 true);
     }
 

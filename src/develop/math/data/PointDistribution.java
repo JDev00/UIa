@@ -16,10 +16,10 @@ import java.util.Objects;
 public class PointDistribution {
 
     /**
-     * Point's cartesian component.
+     * Cartesian axis
      */
 
-    public enum CARTESIAN_COMPONENT {X, Y}
+    public enum AXIS {X, Y}
 
     private final List<float[]> data;
 
@@ -38,15 +38,15 @@ public class PointDistribution {
     }
 
     /**
-     * Map a {@link CARTESIAN_COMPONENT} to an index
+     * Map a {@link AXIS} to an index
      *
-     * @param component a not null {@link CARTESIAN_COMPONENT}
+     * @param component a not null {@link AXIS}
      * @return 0 if {@code CARTESIAN_COMPONENT == X}, 1 otherwise
      */
 
-    private static int mapCartesianComponentToIndex(CARTESIAN_COMPONENT component) {
+    private static int mapCartesianComponentToIndex(AXIS component) {
         Objects.requireNonNull(component, "Trying to operate on a null CARTESIAN_COMPONENT instance");
-        return component == CARTESIAN_COMPONENT.X ? 0 : 1;
+        return component == AXIS.X ? 0 : 1;
     }
 
     /**
@@ -204,25 +204,25 @@ public class PointDistribution {
      * Return the point's value on the specified axis
      *
      * @param i         the index of the point in this distribution
-     * @param component the not null {@link CARTESIAN_COMPONENT}
+     * @param component the not null {@link AXIS}
      * @return the point's value on the specified axis
      * @throws IndexOutOfBoundsException if {@code i < 0 || i >= size()}
      * @throws NullPointerException      if {@code component == null}
      */
 
-    public float get(int i, CARTESIAN_COMPONENT component) {
+    public float get(int i, AXIS component) {
         return data.get(i)[mapCartesianComponentToIndex(component)];
     }
 
     /**
      * Returns the point with the smallest values
      *
-     * @param component the not null {@link CARTESIAN_COMPONENT}
+     * @param component the not null {@link AXIS}
      * @return the point's value on the specified axis
      * @throws NullPointerException if {@code component == null}
      */
 
-    public float getMin(CARTESIAN_COMPONENT component) {
+    public float getMin(AXIS component) {
         if (minPoint.isCorrupted()) {
             minPoint.validateState();
             extractMinimumPoint();
@@ -233,12 +233,12 @@ public class PointDistribution {
     /**
      * Returns the point with the highest values
      *
-     * @param component the not null {@link CARTESIAN_COMPONENT}
+     * @param component the not null {@link AXIS}
      * @return the point's value on the specified axis
      * @throws NullPointerException if {@code component == null}
      */
 
-    public float getMax(CARTESIAN_COMPONENT component) {
+    public float getMax(AXIS component) {
         if (maxPoint.isCorrupted()) {
             maxPoint.validateState();
             extractMaximumPoint();
@@ -249,12 +249,12 @@ public class PointDistribution {
     /**
      * Returns the distribution's mean
      *
-     * @param component the not null {@link CARTESIAN_COMPONENT}
+     * @param component the not null {@link AXIS}
      * @return the mean's value on the specified axis
      * @throws NullPointerException if {@code component == null}
      */
 
-    public float getMean(CARTESIAN_COMPONENT component) {
+    public float getMean(AXIS component) {
         if (mean.isCorrupted()) {
             mean.validateState();
             calculateMean();
@@ -265,12 +265,12 @@ public class PointDistribution {
     /**
      * Returns the standard deviation of this distribution
      *
-     * @param component the not null {@link CARTESIAN_COMPONENT}
+     * @param component the not null {@link AXIS}
      * @return the standard deviation value on the specified axis
      * @throws NullPointerException if {@code component == null}
      */
 
-    public float getStandardDeviation(CARTESIAN_COMPONENT component) {
+    public float getStandardDeviation(AXIS component) {
         if (standardDeviation.isCorrupted()) {
             standardDeviation.validateState();
             calculateStandardDeviation(true);
