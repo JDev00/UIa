@@ -58,7 +58,7 @@ public class PointDistribution {
      */
 
     private void extractMinimumPoint() {
-        Arrays.fill(minPoint.data, 0);
+        Arrays.fill(minPoint.data, Integer.MAX_VALUE);
 
         data.forEach(point -> {
             float x = point[0];
@@ -78,7 +78,7 @@ public class PointDistribution {
      */
 
     private void extractMaximumPoint() {
-        Arrays.fill(maxPoint.data, 0);
+        Arrays.fill(maxPoint.data, Integer.MIN_VALUE);
 
         data.forEach(point -> {
             float x = point[0];

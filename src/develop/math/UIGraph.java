@@ -7,6 +7,7 @@ import uia.core.Shape;
 import uia.core.ui.Context;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
+import uia.core.ui.callbacks.OnClick;
 import uia.physical.Component;
 import uia.core.Paint;
 import uia.physical.theme.Theme;
@@ -14,13 +15,10 @@ import uia.physical.wrapper.WrapperView;
 import uia.utility.Figure;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static java.lang.Math.abs;
-
 /**
- * Component designed to draw multiple data distributions on screen
+ * Component designed to display multiple data distributions on screen
  */
 
 public class UIGraph extends WrapperView {
@@ -28,6 +26,7 @@ public class UIGraph extends WrapperView {
     /**
      * Internal data structure used to handle a pair
      */
+
     private static class Pair<T, V> {
         T val1;
         V val2;
@@ -47,14 +46,10 @@ public class UIGraph extends WrapperView {
     private float xMax, yMax;
     private float xMin, yMin;
 
-    private final float[] bounds;
-
     public UIGraph(View view) {
         super(view);
 
-        buildGeometry(g -> Component.buildRect(g, getWidth(), getHeight(), Figure.STD_ROUND), true);
-
-        bounds = new float[]{0f, 0f, 1f, 1f};
+        buildGeometry(g -> View.buildRect(g, getWidth(), getHeight(), Figure.STD_ROUND), true);
 
         stdDrawable = new DrawableDistribution();
 
@@ -68,7 +63,7 @@ public class UIGraph extends WrapperView {
         reset();
     }
 
-    /**
+    /*
      * Calculate, for every distribution, the nearest point respect to the mouse position.
      * <br>
      * Time required: T(n)
@@ -77,7 +72,7 @@ public class UIGraph extends WrapperView {
      *
      * @param x     the mouse position <b>(relative to this View)</b> along x-axis
      * @param store a not null {@link List} used to store the nearest points
-     */
+     *
 
     @Deprecated
     protected void nearest(float x, List<float[]> store) {
@@ -113,7 +108,7 @@ public class UIGraph extends WrapperView {
                 });
             }
         }
-    }
+    }*/
 
     /**
      * Update the attributes of this graphic
@@ -136,7 +131,6 @@ public class UIGraph extends WrapperView {
     private void reset() {
         xMax = yMax = -Integer.MAX_VALUE;
         xMin = yMin = Integer.MAX_VALUE;
-        Arrays.fill(bounds, 0);
     }
 
     /**
@@ -160,27 +154,60 @@ public class UIGraph extends WrapperView {
         data.get(i).val2 = drw;
     }
 
+    private static float normalize(float val, float min, float max) {
+        return (val - min) / (max - min);
+    }
+
+    private final Shape clipShape = new Shape();
+
+    private void drawAxis(Graphic graphic, float[] bounds,
+                          float width, float height, float rotation) {
+        clipShape.setGeometry(getGeometry());
+        clipShape.setPosition(bounds[0] + bounds[2] / 2f, bounds[1] + bounds[3] / 2f);
+        clipShape.setDimension(0.97f * getWidth(), 0.97f * getHeight());
+        clipShape.setRotation(bounds[4]);
+
+        float xDist = width * (normalize(0f, xMin, xMax) - 0.5f);
+        float yDist = -height * (normalize(0f, yMin, yMax) - 0.5f);
+
+        float gx = View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rotation);
+        float gy = View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rotation);
+
+        graphic.setClip(clipShape);
+
+        // to refactor: draw ordinate axis
+        axis.setRotation(rotation);
+        axis.setPosition(gx, gy);//x - gWidth / 2f, y);
+        axis.setDimension(2, 2 * height);
+        graphic.setPaint(paintAxis);
+        graphic.drawShape(axis);
+
+        // to refactor: draw abscissa axis
+        axis.setPosition(gx, gy);//x, y + gHeight / 2f);
+        axis.setDimension(2 * width, 2);
+        graphic.setPaint(paintAxis);
+        graphic.drawShape(axis);
+
+        graphic.restoreClip();
+
+        /*Shape cross = new Shape();
+            cross.setGeometry(Figure.rect(cross.getGeometry()));
+            cross.setPosition(gx, gy);
+            cross.setDimension(15, 15);
+            graphic.drawShape(cross);*/
+    }
+
     @Override
     public void draw(Graphic graphic) {
         super.draw(graphic);
 
         if (isVisible()) {
             float[] bounds = bounds();
-            float x = bounds[0] + 0.5f * bounds[2];
-            float y = bounds[1] + 0.5f * bounds[3];
-            float gWidth = 0.95f * bounds[2];
-            float gHeight = 0.95f * bounds[3];
+            float width = 0.95f * getWidth();
+            float height = 0.95f * getHeight();
+            float rot = bounds[4];
 
-            float cx = abs(xMin) + abs(xMax);
-            float cy = abs(yMin) + abs(yMax);
-
-            if (Float.compare(cx, 0) == 0) cx = 1;
-            if (Float.compare(cy, 0) == 0) cy = 1;
-
-            bounds[0] = x + gWidth * ((1 - (xMax + xMin) / cx) / 2 - 0.5f);
-            bounds[1] = y + gHeight * ((1 + (yMax + yMin) / cy) / 2 - 0.5f);
-            bounds[2] = gWidth / cx;
-            bounds[3] = gHeight / cy;
+            drawAxis(graphic, bounds, width, height, rot);
 
             for (Pair<PointDistribution, DrawableDistribution> i : data) {
                 PointDistribution dis = i.val1;
@@ -188,24 +215,8 @@ public class UIGraph extends WrapperView {
                 updateMinAndMax(dis.getMin(PointDistribution.AXIS.X), dis.getMin(PointDistribution.AXIS.Y));
 
                 DrawableDistribution drw = i.val2;
-                drw.draw(graphic, dis, bounds[0], bounds[1], bounds[2], bounds[3]);
+                drw.draw(graphic, dis, bounds, width, height, rot);
             }
-
-
-            // to refactor: draw ordinate axis
-            axis.setPosition(x - gWidth / 2f, y);
-            axis.setDimension(2, gHeight);
-
-            graphic.setPaint(paintAxis);
-            graphic.drawShape(axis);
-
-
-            // to refactor: draw abscissa axis
-            axis.setPosition(x, y + gHeight / 2f);
-            axis.setDimension(gWidth, 2);
-
-            graphic.setPaint(paintAxis);
-            graphic.drawShape(axis);
         }
     }
 
@@ -219,15 +230,9 @@ public class UIGraph extends WrapperView {
 
     /**
      * Return the specified {@link PointDistribution}.
-     * <br>
-     * If the specified distribution doesn't exist, two policies are adopted:
-     * <br>
-     * 1) if {@code i} is equal to {@link #distributions()}, a new distribution will be added and then returned,
-     * <br>
-     * 2) if {@code i} is greater than {@link #distributions()}, {@code null} will be returned.
      *
-     * @param i the distribution's position
-     * @return the specified distribution or null
+     * @param i the index of the distribution
+     * @return the specified distribution if {@code i <= distributions()} else null
      */
 
     public PointDistribution getDistribution(int i) {
@@ -252,27 +257,23 @@ public class UIGraph extends WrapperView {
     //
 
     /**
-     * TODO: define DrawableDistribution
+     * A DrawableDistribution defines the graphical settings to draw a {@link PointDistribution} on screen.
      */
 
     public static class DrawableDistribution {
-        private final Shape shapeMarker;
-        private final Shape shapeLine;
+        private final Paint paintLine, paintPoint;
+        private final Shape shapeMarker, shapeLine;
 
-        private final Paint cLine;
-        private final Paint cPoint;
-
-        private float pointDim = 4;
-
+        private float pointDimension = 4;
         private boolean enableLine = true;
         private boolean enablePoint = true;
 
         public DrawableDistribution() {
-            cLine = new Paint()
+            paintLine = new Paint()
                     .setColor(Theme.BLACK)
                     .setStrokeWidth(3);
 
-            cPoint = new Paint().setColor(Theme.RED);
+            paintPoint = new Paint().setColor(Theme.RED);
 
             shapeMarker = new Shape();
             shapeMarker.setGeometry(Figure.rect(shapeMarker.getGeometry()));
@@ -287,8 +288,8 @@ public class UIGraph extends WrapperView {
          * @param pointDim a value {@code >= 0}
          */
 
-        public DrawableDistribution setPointDim(int pointDim) {
-            this.pointDim = Math.max(pointDim, 0);
+        public DrawableDistribution setPointDimension(int pointDim) {
+            this.pointDimension = Math.max(pointDim, 0);
             return this;
         }
 
@@ -299,7 +300,7 @@ public class UIGraph extends WrapperView {
          */
 
         public DrawableDistribution setColorLine(Paint.Color color) {
-            cLine.setColor(color);
+            paintLine.setColor(color);
             return this;
         }
 
@@ -308,7 +309,7 @@ public class UIGraph extends WrapperView {
          */
 
         public DrawableDistribution setLineWidth(int val) {
-            cLine.setStrokeWidth(val);
+            paintLine.setStrokeWidth(val);
             return this;
         }
 
@@ -319,7 +320,7 @@ public class UIGraph extends WrapperView {
          */
 
         public DrawableDistribution setColorPoint(Paint.Color color) {
-            cPoint.setColor(color);
+            paintPoint.setColor(color);
             return this;
         }
 
@@ -369,11 +370,10 @@ public class UIGraph extends WrapperView {
          * @param pointDistribution the {@link PointDistribution} to draw
          */
 
-        private void draw(Graphic graphic, PointDistribution pointDistribution,
-                          float x, float y,
-                          float scaleX, float scaleY) {
+        public void draw(Graphic graphic, PointDistribution pointDistribution,
+                         float[] bounds, float width, float height, float rotation) {
             if (enableLine) {
-                graphic.setPaint(cLine);
+                graphic.setPaint(paintLine);
 
                 /*for (int i = 0; i < pointDistribution.size() - 1; i++) {
                     graphic.openShape(
@@ -387,14 +387,26 @@ public class UIGraph extends WrapperView {
             }
 
             if (enablePoint) {
-                graphic.setPaint(cPoint);
+                graphic.setPaint(paintPoint);
+
+                float xMin = pointDistribution.getMin(PointDistribution.AXIS.X);
+                float yMin = pointDistribution.getMin(PointDistribution.AXIS.Y);
+
+                float xMax = pointDistribution.getMax(PointDistribution.AXIS.X);
+                float yMax = pointDistribution.getMax(PointDistribution.AXIS.Y);
 
                 for (int i = 0; i < pointDistribution.size(); i++) {
+                    float px = pointDistribution.get(i, PointDistribution.AXIS.X);
+                    float py = pointDistribution.get(i, PointDistribution.AXIS.Y);
+
+                    float xDist = width * (normalize(px, xMin, xMax) - 0.5f);
+                    float yDist = -height * (normalize(py, yMin, yMax) - 0.5f);
+
                     shapeMarker.setPosition(
-                            x + scaleX * pointDistribution.get(i, PointDistribution.AXIS.X),
-                            y - scaleY * pointDistribution.get(i, PointDistribution.AXIS.Y)
+                            View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rotation),
+                            View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rotation)
                     );
-                    shapeMarker.setDimension(pointDim, pointDim);
+                    shapeMarker.setDimension(pointDimension, pointDimension);
 
                     graphic.drawShape(shapeMarker);
                 }
@@ -408,11 +420,15 @@ public class UIGraph extends WrapperView {
         UIGraph uiGraph = new UIGraph(
                 new Component("", 0.5f, 0.5f, 0.5f, 0.5f)
         );
+        uiGraph.addCallback((OnClick) p -> {
+            uiGraph.setRotation(uiGraph.bounds()[4] + 0.05f);
+        });
         uiGraph.getDistribution(0)
-                .add(0, 0)
-                .add(1000, 1000)
-                .add(2000, 1200);
-        //uiGraph.setRotation(0.5f);
+                .add(0f, 0f)
+                .add(-10f, -10f);
+                //.add(100, 1000);*/
+        //.add(2000, 1200);
+        //uiGraph.setRotation(0.15f);
 
         Context context = new ContextAWT(1800, 900);
         context.start();
