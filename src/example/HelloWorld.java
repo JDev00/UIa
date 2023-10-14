@@ -5,6 +5,7 @@ import uia.application.awt.ContextAWT;
 import uia.core.Font;
 import uia.core.Paint;
 import uia.core.ui.Context;
+import uia.core.ui.View;
 import uia.core.ui.ViewText;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.ui.callbacks.OnMessageReceived;
@@ -35,7 +36,7 @@ public class HelloWorld extends WrapperViewGroup {
         UIButton button = new UIButton(new ComponentText(
                 new Component("BUTTON", 0.25f, 0.5f, 0.1f, 0.1f).setExpanseLimit(1.2f, 1.2f)
         ));
-        button.buildGeometry(g -> Component.buildRect(g, button.getWidth(), button.getHeight(), 1f), true);
+        button.buildGeometry(g -> View.buildRect(g, button.getWidth(), button.getHeight(), 1f), true);
         // get the Paint used when the button is activated and set: a new color, stroke color and stroke width
         button.getPaint(UIButton.STATE.ENABLED)
                 .setColor(new Paint.Color(100, 200, 255, 100))
@@ -75,7 +76,7 @@ public class HelloWorld extends WrapperViewGroup {
         );
         // set the popup shape: create a new rounded corner rectangle with 25 vertices.
         // Here, we will use Figure (a collection of shapes) to easily create a rounded rectangle.
-        popup.buildGeometry(g -> Component.buildRect(g, popup.getWidth(), popup.getHeight(), 0.1f), true);
+        popup.buildGeometry(g -> View.buildRect(g, popup.getWidth(), popup.getHeight(), 0.1f), true);
         // hide this popup at the beginning
         popup.setVisible(false);
         // set some text to this popup
