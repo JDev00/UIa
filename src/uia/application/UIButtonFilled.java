@@ -21,7 +21,7 @@ public class UIButtonFilled extends WrapperView {
     public UIButtonFilled(View view, boolean right) {
         super(new ComponentGroup(view));
 
-        buildGeometry(g -> Component.buildRect(g, getWidth(), getHeight(), 1f), true);
+        buildGeometry(g -> View.buildRect(g, getWidth(), getHeight(), 1f), true);
 
         viewText = new ComponentText(new Component("TEXT", 0.5f + (right ? -0.05f : 0.05f), 0.5f, 0.5f, 1f)
                 .setExpanseLimit(1f, 1f));

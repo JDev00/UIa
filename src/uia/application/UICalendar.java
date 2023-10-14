@@ -57,7 +57,7 @@ public class UICalendar extends WrapperView {
     public UICalendar(View view) {
         super(new ComponentGroup(view));
 
-        buildGeometry(g -> Component.buildRect(g, getWidth(), getHeight(), Figure.STD_ROUND), true);
+        buildGeometry(g -> View.buildRect(g, getWidth(), getHeight(), Figure.STD_ROUND), true);
         getPaint().setColor(ThemeDarcula.BACKGROUND);
 
         font = new Font("Arial", Font.STYLE.ITALIC, Font.FONT_SIZE_DESKTOP);

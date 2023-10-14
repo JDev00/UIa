@@ -22,7 +22,7 @@ public class UIButtonSwitch extends WrapperView {
     public UIButtonSwitch(View view) {
         super(new ComponentGroup(view));
 
-        buildGeometry(g -> Component.buildRect(g, getWidth(), getHeight(), 1f), true);
+        buildGeometry(g -> View.buildRect(g, getWidth(), getHeight(), 1f), true);
         addCallback((OnClick) pointers -> setState(!isFirstState()));
 
         activePaint = new Paint().setColor(ThemeDarcula.W_FOREGROUND);
