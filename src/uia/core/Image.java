@@ -3,37 +3,22 @@ package uia.core;
 /**
  * Platform image abstraction.
  * <br>
- * The Image class acts as an adapter: the native image must be set with {@link #setNative(Object, float, float)}
+ * The Image class acts as an adapter: the native image must be set with {@link #setNative(Object, int, int)}.
  */
 
 public class Image {
-
-    /**
-     * Mode defines how the image will be rendered:
-     * <ul>
-     *     <li>LEFT: the image is rendered according to its top left corner;</li>
-     *     <li>CENTER: the image is rendered according to its center;</li>
-     *     <li>RIGHT: the image is rendered according to its bottom right corner</li>
-     * </ul>
-     */
-
-    public enum MODE {LEFT, CENTER, RIGHT}
-
-    private float width;
-    private float height;
-    private MODE mode;
+    private int width;
+    private int height;
     private String path;
-
     private Object nativeImage;
 
     public Image() {
-        width = 0f;
-        height = 0f;
-        mode = MODE.CENTER;
+        width = 0;
+        height = 0;
     }
 
     /**
-     * Invalidate this Image and force the system to rebuild its state
+     * Invalidates this Image and force the system to rebuild its state
      */
 
     public void invalidate() {
@@ -49,17 +34,17 @@ public class Image {
     }
 
     /**
-     * Set the native Image object
+     * Set the native image object
      */
 
-    public void setNative(Object o, float width, float height) {
+    public void setNative(Object o, int width, int height) {
         this.width = width;
         this.height = height;
         nativeImage = o;
     }
 
     /**
-     * @return the native Image object
+     * @return the native image object
      */
 
     public Object getNative() {
@@ -67,7 +52,7 @@ public class Image {
     }
 
     /**
-     * Load a new Image
+     * Loads a new image
      *
      * @param path the image path
      */
@@ -81,7 +66,7 @@ public class Image {
     }
 
     /**
-     * @return the image's path
+     * @return the image path
      */
 
     public String getPath() {
@@ -89,37 +74,18 @@ public class Image {
     }
 
     /**
-     * Set the Image render MODE
-     *
-     * @param mode a not null {@link MODE}
+     * @return the image width
      */
 
-    public Image setMode(MODE mode) {
-        if (mode != null) this.mode = mode;
-        return this;
-    }
-
-    /**
-     * @return the image's {@link MODE}
-     */
-
-    public MODE getMode() {
-        return mode;
-    }
-
-    /**
-     * @return the image's width
-     */
-
-    public float width() {
+    public int width() {
         return width;
     }
 
     /**
-     * @return the image's height
+     * @return the image height
      */
 
-    public float height() {
+    public int height() {
         return height;
     }
 }

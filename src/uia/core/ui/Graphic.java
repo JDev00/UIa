@@ -95,7 +95,7 @@ public interface Graphic {
      * The image is drawn inside the specified rectangle and is scaled if necessary.
      * Transparent pixels do not affect whatever pixels are already there.
      *
-     * @param img      a not null {@link Image} to draw
+     * @param image    a not null {@link Image} to draw
      * @param x        the <i>x</i> coordinate
      * @param y        the <i>y</i> coordinate
      * @param width    the width of the rectangle
@@ -103,5 +103,5 @@ public interface Graphic {
      * @param rotation the image's rotation around the pivot
      */
 
-    void drawImage(Image img, float x, float y, float width, float height, float rotation);
+    void drawImage(Image image, float x, float y, float width, float height, float rotation);
 }

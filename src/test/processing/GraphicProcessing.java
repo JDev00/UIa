@@ -108,7 +108,7 @@ public class GraphicProcessing implements Graphic {
     @Override
     public void drawImage(Image img, float x, float y, float width, float height, float rotation) {
         if (!img.isValid() || !(img.getNative() instanceof PImage)) {
-            img.setNative(fakeImage, 1f, 1f);
+            img.setNative(fakeImage, 1, 1);
 
             new Thread(() -> {
                 PImage image = pApplet.loadImage(img.getPath());
@@ -116,12 +116,12 @@ public class GraphicProcessing implements Graphic {
             }).start();
         }
 
-        float offset = 0;
-        if (img.getMode() == Image.MODE.CENTER) {
+        float offset = 0.5f;
+        /*if (img.getMode() == Image.MODE.CENTER) {
             offset = 0.5f;
         } else if (img.getMode() == Image.MODE.RIGHT) {
             offset = 1f;
-        }
+        }*/
 
         pGraphics.pushMatrix();
         pGraphics.translate(x, y);

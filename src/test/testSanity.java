@@ -29,7 +29,7 @@ public class testSanity extends WrapperViewGroup {
 
 
         ComponentImage image = new ComponentImage(new Component("IMAGE", 0.7f, 0.5f, 0.33f, 0.5f));
-        image.getImage().load("sample\\img0.png").setMode(Image.MODE.CENTER);
+        image.getImage().load("sample\\img0.png");
 
 
         ComponentGroup group = new ComponentGroup(new Component("GROUP", 0.4f, 0.5f, 0.5f, 0.5f)

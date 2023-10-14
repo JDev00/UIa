@@ -211,7 +211,7 @@ public class GraphicAWT implements Graphic {
 
     private void analyzeImage(Image img) {
         if (!img.isValid() || !(img.getNative() instanceof java.awt.Image)) {
-            img.setNative(fakeImage, 1f, 1f);
+            img.setNative(fakeImage, 1, 1);
 
             new Thread(() -> {
                 try {
@@ -236,12 +236,7 @@ public class GraphicAWT implements Graphic {
             g.rotate(rotation, x, y);
         }
 
-        float offset = 0;
-        if (img.getMode() == Image.MODE.CENTER) {
-            offset = 0.5f;
-        } else if (img.getMode() == Image.MODE.RIGHT) {
-            offset = 1f;
-        }
+        float offset = 0.5f;
 
         g.drawImage((java.awt.Image) img.getNative(),
                 (int) (x - offset * width), (int) (y - offset * height),

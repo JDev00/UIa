@@ -5,10 +5,8 @@ import uia.core.Image;
 import uia.core.ui.Graphic;
 import uia.physical.wrapper.WrapperView;
 
-import static uia.utility.TrigTable.*;
-
 /**
- * Component designed to draw an Image on a View.
+ * ComponentImage is designed to display an Image on a View.
  */
 
 public final class ComponentImage extends WrapperView {
@@ -25,8 +23,8 @@ public final class ComponentImage extends WrapperView {
     /**
      * Set the image relative position
      *
-     * @param x the position along x-axis
-     * @param y the position along y-axis
+     * @param x the position on x-axis
+     * @param y the position on y-axis
      */
 
     public void setImagePosition(float x, float y) {
@@ -37,8 +35,8 @@ public final class ComponentImage extends WrapperView {
     /**
      * Set the image relative dimension
      *
-     * @param x the dimension along x-axis
-     * @param y the dimension along y-axis
+     * @param x the dimension on x-axis
+     * @param y the dimension on y-axis
      */
 
     public void setImageDimension(float x, float y) {
@@ -47,7 +45,7 @@ public final class ComponentImage extends WrapperView {
     }
 
     /**
-     * Set the image rotation in radians
+     * Set the image rotation
      *
      * @param radians the rotation expressed in radians
      */
@@ -62,25 +60,23 @@ public final class ComponentImage extends WrapperView {
 
         if (isVisible()) {
             float[] bounds = bounds();
-
-            float x_off = imgBounds[0] * getWidth();
-            float y_off = imgBounds[1] * getHeight();
-            float cos = cos(imgBounds[4]);
-            float sin = sin(imgBounds[4]);
+            float xDist = imgBounds[0] * getWidth();
+            float yDist = imgBounds[1] * getHeight();
+            float rot = imgBounds[4];
 
             graphic.drawImage(image,
-                    bounds[0] + bounds[2] / 2f + rotX(x_off, y_off, cos, sin),
-                    bounds[1] + bounds[3] / 2f + rotY(x_off, y_off, cos, sin),
+                    View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rot),
+                    View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rot),
                     imgBounds[2] * getWidth() + 3,
                     imgBounds[3] * getHeight() + 3,
-                    bounds[4] + imgBounds[4]);
+                    rot + bounds[4]);
         }
     }
 
     private final float[] imgBoundsCopy = new float[imgBounds.length];
 
     /**
-     * @return the image's bounds
+     * @return the image bounds
      */
 
     public float[] boundsImage() {
