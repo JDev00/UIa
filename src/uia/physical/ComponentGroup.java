@@ -69,42 +69,64 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         Arrays.fill(cBound, 0);
     }
 
-    private final List<ScreenPointer> iScreenPointers = new ArrayList<>();
+    /**
+     * Helper function. Dispatch a message to the group children
+     */
+
+    private void dispatchMessage(Object data) {
+        for (int i = views.size() - 1; i >= 0; i--) {
+            views.get(i).dispatch(DISPATCHER.MESSAGE, data);
+        }
+    }
+
+    /**
+     * Helper function. Dispatch a Key to the group children
+     */
+
+    private void dispatchKey(Object data) {
+        if (isVisible()) {
+            for (int i = views.size() - 1; i >= 0; i--) {
+                views.get(i).dispatch(DISPATCHER.KEY, data);
+            }
+        }
+    }
+
+    private final List<ScreenPointer> screenPointers = new ArrayList<>();
+
+    /**
+     * Helper function. Dispatch ScreenPointer to the group children
+     */
+
+    private void dispatchPointers(Object data) {
+        screenPointers.clear();
+
+        if (isVisible()) {
+            List<ScreenPointer> tempScreenPointers = (List<ScreenPointer>) data;
+            tempScreenPointers.forEach(p -> {
+                if (!clip || ComponentGroup.this.contains(p.getX(), p.getY())) screenPointers.add(p);
+            });
+        }
+
+        for (int i = views.size() - 1; i >= 0; i--) {
+            views.get(i).dispatch(DISPATCHER.POINTERS, screenPointers);
+        }
+    }
 
     @Override
     public void dispatch(DISPATCHER dispatcher, Object data) {
         switch (dispatcher) {
             case MESSAGE:
                 super.dispatch(dispatcher, data);
-                for (int i = views.size() - 1; i >= 0; i--) {
-                    views.get(i).dispatch(dispatcher, data);
-                }
+                dispatchMessage(data);
                 break;
 
             case KEY:
-                if (isVisible()) {
-                    for (int i = views.size() - 1; i >= 0; i--) {
-                        views.get(i).dispatch(dispatcher, data);
-                    }
-                }
+                dispatchKey(data);
                 super.dispatch(dispatcher, data);
                 break;
 
             case POINTERS:
-                List<ScreenPointer> screenPointers = (List<ScreenPointer>) data;
-
-                iScreenPointers.clear();
-
-                if (isVisible()) {
-                    screenPointers.forEach(p -> {
-                        if (!clip || ComponentGroup.this.contains(p.getX(), p.getY())) iScreenPointers.add(p);
-                    });
-                }
-
-                for (int i = views.size() - 1; i >= 0; i--) {
-                    views.get(i).dispatch(dispatcher, iScreenPointers);
-                }
-
+                dispatchPointers(data);
                 super.dispatch(dispatcher, data);
                 break;
 
@@ -114,6 +136,10 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         }
     }
 
+    /**
+     * Helper function. Update children focus.
+     */
+
     private void updateGroupFocus(View parent) {
         int i = 0, size = views.size();
         while (i < size && !views.get(i).isOnFocus()) i++;
@@ -121,7 +147,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     }
 
     /**
-     * Update group boundaries
+     * Helper function. Update group boundaries.
      */
 
     private void updateGroupBounds() {
@@ -148,7 +174,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     }
 
     /**
-     * Update clip shape position, dimension and rotation
+     * Helper function. Update clip shape position, dimension and rotation.
      */
 
     private void updateClipShape() {
@@ -200,6 +226,11 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
             if (i.getID().equals(id)) return i;
         }
         return null;
+    }
+
+    @Override
+    public int indexOf(View view) {
+        return views.indexOf(view);
     }
 
     private final float[] copyBounds = new float[5];
