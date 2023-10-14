@@ -22,7 +22,6 @@ public interface TextRenderer {
      * @param x        the position along x-axis
      * @param y        the position along y-axis
      * @param rotation the text rotation in radians
-     * @return the longest text line in pixel
      */
 
     float draw(ViewText view, Graphic graphic, String text, float x, float y, float rotation);

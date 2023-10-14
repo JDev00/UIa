@@ -2,17 +2,20 @@ package uia.physical.text;
 
 import uia.core.Font;
 import uia.core.ui.Graphic;
+import uia.core.ui.View;
 import uia.core.ui.ViewText;
 
 import static uia.utility.TrigTable.*;
 import static uia.utility.TrigTable.sin;
 
 /**
- * Implementation of {@link TextRenderer} for multi line text
+ * Multi line text renderer
  */
 
 public class MultilineRendererV1 implements TextRenderer {
 
+    // TODO: improve performance
+    // TODO: improve code
     @Override
     public float draw(ViewText view, Graphic graphic, String text, float x, float y, float rotation) {
         Font font = view.getFont();
@@ -43,14 +46,16 @@ public class MultilineRendererV1 implements TextRenderer {
 
                 float lineLength = font.getWidth(sol, eol - sol, chars);
 
-                // TODO: improve performance
                 //if (y + (lines + 2) * lineHeight >= top && y + (lines - 1) * lineHeight <= bot) {
                 float off_x = TextRenderer.map(view.getAlignX()) * (lineWidth - lineLength) / 2f;
                 float off_y = (lines + 0.75f) * lineHeight + y_adj;
-                float tx = rotX(off_x, off_y, cos(rot), sin(rot));
-                float ty = rotY(off_x, off_y, cos(rot), sin(rot));
+                float xDist = rotX(off_x, off_y, cos(rot), sin(rot));
+                float yDist = rotY(off_x, off_y, cos(rot), sin(rot));
 
-                graphic.drawText(chars, sol, eol - sol, x + tx, y + ty, rotation);
+                graphic.drawText(chars, sol, eol - sol,
+                        View.getPositionOnX(x, 0f, xDist, yDist, rot),
+                        View.getPositionOnY(y, 0f, xDist, yDist, rot),
+                        rotation);
                 //}
 
                 if (lineLength > longestLine) longestLine = lineLength;

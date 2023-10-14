@@ -14,8 +14,6 @@ import uia.physical.text.TextRenderer;
 import uia.physical.text.InlineRendererV1;
 import uia.physical.wrapper.WrapperView;
 
-import static uia.utility.TrigTable.*;
-
 /**
  * Implementation of {@link ViewText}
  * <br>
@@ -167,14 +165,15 @@ public final class ComponentText extends WrapperView implements ViewText {
      */
 
     private void updateTextBounds(float[] bounds, float width, float height) {
-        float d_x = -width / 2f + (TextRenderer.map(alignX) - 1f) * (scroller[0].getValue() - 4f);
-        float d_y = -height / 2f - scroller[1].getValue();
+        float xDist = -width / 2f + (TextRenderer.map(alignX) - 1f) * (scroller[0].getValue() - 4f);
+        float yDist = -height / 2f - scroller[1].getValue();
+        float rot = bounds[4];
         float n_lines = singleLine ? 1 : lines;
 
-        textBounds[0] = bounds[0] + bounds[2] / 2f + rotX(d_x, d_y, cos(bounds[4]), sin(bounds[4]));
-        textBounds[1] = bounds[1] + bounds[3] / 2f + rotY(d_x, d_y, cos(bounds[4]), sin(bounds[4]));
+        textBounds[0] = View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rot);
+        textBounds[1] = View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rot);
         textBounds[3] = n_lines * font.getLineHeight();
-        textBounds[4] = bounds[4];
+        textBounds[4] = rot;
     }
 
     /**

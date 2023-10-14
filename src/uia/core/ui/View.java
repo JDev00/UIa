@@ -6,8 +6,12 @@ import uia.core.basement.Callback;
 import uia.core.basement.Callable;
 import uia.core.basement.Collider;
 import uia.core.basement.Movable;
+import uia.utility.Figure;
 
 import java.util.function.Consumer;
+
+import static uia.utility.TrigTable.*;
+import static uia.utility.TrigTable.sin;
 
 /**
  * View ADT.
@@ -146,4 +150,44 @@ public interface View extends Callable, Movable, Collider {
      */
 
     String getID();
+
+    /**
+     * Calculate the component position on the x-axis
+     *
+     * @param xLeft   the container position on x-axis
+     * @param width   the container width
+     * @param xDist   the component distance from the container center on the x-axis
+     * @param yDist   the component distance from the container center on the y-axis
+     * @param radians the component rotation in radians
+     * @return the component position on x-axis
+     */
+
+    static float getPositionOnX(float xLeft, float width,
+                                float xDist, float yDist, float radians) {
+        return xLeft + 0.5f * width + rotX(xDist, yDist, cos(radians), sin(radians));
+    }
+
+    /**
+     * Calculate the component position on the y-axis
+     *
+     * @param yTop    the container position on y-axis
+     * @param height  the container height
+     * @param xDist   the component distance from the container center on the x-axis
+     * @param yDist   the component distance from the container center on the y-axis
+     * @param radians the component rotation in radians
+     * @return the component position on x-axis
+     */
+
+    static float getPositionOnY(float yTop, float height,
+                                float xDist, float yDist, float radians) {
+        return yTop + 0.5f * height + rotY(xDist, yDist, cos(radians), sin(radians));
+    }
+
+    /**
+     * Build a rounded rectangle
+     */
+
+    static void buildRect(Geometry geometry, float width, float height, float radius) {
+        Figure.rect(geometry, Figure.STD_VERT, radius, width / height);
+    }
 }

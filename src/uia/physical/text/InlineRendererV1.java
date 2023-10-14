@@ -4,12 +4,9 @@ import uia.core.Font;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
 import uia.core.ui.ViewText;
-import uia.physical.Component;
-
-import static uia.utility.TrigTable.*;
 
 /**
- * Implementation of {@link TextRenderer} for single line text
+ * Single line text renderer
  */
 
 public class InlineRendererV1 implements TextRenderer {
@@ -26,13 +23,15 @@ public class InlineRendererV1 implements TextRenderer {
         float lineHeight = font.getLineHeight();
         float longestLine = font.getWidth(0, chars.length, chars);
 
-        float off_x = TextRenderer.map(view.getAlignX()) * (lineWidth - longestLine) / 2f;
-        float off_y = TextRenderer.map(view.getAlignY()) * (view.getHeight() - 0.75f * lineHeight) / 2f + 0.75f * lineHeight;
+        float xDist = TextRenderer.map(view.getAlignX()) * (lineWidth - longestLine) / 2f;
+        float yDist = TextRenderer.map(view.getAlignY()) * (view.getHeight() - 0.75f * lineHeight) / 2f + 0.75f * lineHeight;
         float rot = bounds[4];
 
         graphic.drawText(chars, 0, chars.length,
-                x + rotX(off_x, off_y, cos(rot), sin(rot)),
-                y + rotY(off_x, off_y, cos(rot), sin(rot)),
+                View.getPositionOnX(x, 0f, xDist, yDist, rot),
+                View.getPositionOnY(y, 0f, xDist, yDist, rot),
+                //x + rotX(off_x, off_y, cos(rot), sin(rot)),
+                //y + rotY(off_x, off_y, cos(rot), sin(rot)),
                 rotation);
 
         return longestLine;

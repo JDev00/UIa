@@ -296,23 +296,24 @@ public final class Component implements View {
      */
 
     private void updateShape(float[] bounds, float width, float height) {
-        float x = (container[0] - 0.5f) * width;
-        float y = (container[1] - 0.5f) * height;
+        float xDist = width * (container[0] - 0.5f);
+        float yDist = height * (container[1] - 0.5f);
+        float rot = bounds[4];
 
         // TODO: sistemare resize component alla rotazione
         dimension[0] = expanse[0] * container[2] * width;
         dimension[1] = expanse[1] * container[3] * height;
 
         shape.setPosition(
-                bounds[0] + 0.5f * bounds[2] + rotX(x, y, cos(bounds[4]), sin(bounds[4])),
-                bounds[1] + 0.5f * bounds[3] + rotY(x, y, cos(bounds[4]), sin(bounds[4]))
+                View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rot),
+                View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rot)
         );
         shape.setDimension(dimension[0], dimension[1]);
-        shape.setRotation(container[4] + bounds[4]);
+        shape.setRotation(rot + container[4]);
     }
 
     /**
-     * Update expansion animation
+     * Update the expansion animation
      */
 
     private void updateExpansionAnimation() {
@@ -373,13 +374,5 @@ public final class Component implements View {
     @Override
     public String getID() {
         return id;
-    }
-
-    /**
-     * Build a rounded rectangle
-     */
-
-    public static void buildRect(Geometry geometry, float width, float height, float radius) {
-        Figure.rect(geometry, Figure.STD_VERT, radius, width / height);
     }
 }
