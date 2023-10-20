@@ -1,4 +1,4 @@
-package test.processing;
+package example.processing;
 
 import processing.core.*;
 
