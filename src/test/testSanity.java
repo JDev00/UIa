@@ -53,7 +53,7 @@ public class testSanity {
         Context context = createAWTContext();
         context.setView(root);
 
-        ViewText text = createViewText("TEXT", 0.33f, 0.25f, 0.5f, 0.75f);
+        ViewText text = createViewText("TEXT", 0.33f, 0.45f, 0.5f, 0.75f);
         text.setAlign(ViewText.AlignX.RIGHT);
         text.setText(Utility.readAll("src\\test\\testSanity.java"));
         text.setRotation(0.3f);
@@ -64,7 +64,7 @@ public class testSanity {
 
         ViewGroup group = createViewGroup("GROUP", 0.4f, 0.5f, 0.5f, 0.5f);
         group.getPaint().setColor(Theme.DARK_GREY);
-        group.add(text, image);
+        group.add(image, text);
 
         ViewText tracker = createTracker(context);
 
