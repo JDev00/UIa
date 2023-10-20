@@ -18,7 +18,7 @@ public class Paint {
     private final int[] colorStroke = {0, 0, 0};
     private int strokeWidth = NO_STROKE;
 
-    public final Object[] natives = new Object[3];
+    private final Object[] natives = new Object[3];
 
     /**
      * Invalidate this Paint and force the system to rebuild its state
