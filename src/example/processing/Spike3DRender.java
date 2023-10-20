@@ -1,4 +1,4 @@
-package test.processing;
+package example.processing;
 
 import uia.application.awt.ContextAWT;
 import processing.core.PGraphics;
@@ -8,11 +8,11 @@ import uia.physical.wrapper.WrapperView;
 import uia.physical.Component;
 import uia.physical.ComponentGroup;
 
-public class test3D extends WrapperView {
+public class Spike3DRender extends WrapperView {
     private float rot = 0f;
 
-    public test3D() {
-        super(new ComponentGroup(new Component("TEST_3D", 0.5f, 0.5f, 1f, 1f)
+    public Spike3DRender() {
+        super(new ComponentGroup(new Component("SPIKE_3D", 0.5f, 0.5f, 1f, 1f)
                 .setExpanseLimit(1f, 1f)));
     }
 
@@ -37,13 +37,11 @@ public class test3D extends WrapperView {
         rot += 0.01f;
     }
 
-    //
-
     public static void main(String[] args) {
         int[] dim = ContextAWT.getScreenSize();
 
         Context context = new ContextProcessing(4 * dim[0] / 5, 4 * dim[1] / 5);
         context.start();
-        context.setView(new test3D());
+        context.setView(new Spike3DRender());
     }
 }
