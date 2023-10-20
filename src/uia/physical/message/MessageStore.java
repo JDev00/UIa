@@ -56,6 +56,14 @@ public final class MessageStore {
     }
 
     /**
+     * @return the number of stored messages
+     */
+
+    public int size() {
+        return list.size();
+    }
+
+    /**
      * @return the Storage instance
      */
 
