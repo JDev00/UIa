@@ -3,6 +3,10 @@ package test;
 import test.artefacts.TestValidation;
 import uia.core.Paint;
 
+/**
+ * Unit test
+ */
+
 public class testPaint {
 
     public static void testSetColorAndStrokeColor() {
