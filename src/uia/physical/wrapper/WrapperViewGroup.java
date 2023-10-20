@@ -59,6 +59,11 @@ public abstract class WrapperViewGroup extends WrapperView implements ViewGroup 
     }
 
     @Override
+    public int indexOf(View view) {
+        return viewGroup.indexOf(view);
+    }
+
+    @Override
     public float[] boundsContent() {
         return viewGroup.boundsContent();
     }
