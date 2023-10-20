@@ -27,7 +27,6 @@ public class UIButtonSwitch extends WrapperView {
 
         activePaint = new Paint().setColor(ThemeDarcula.W_FOREGROUND);
 
-
         ViewText v1 = createView("LEFT", 0.25f);
         v1.setText("Left");
         v1.getPaint().set(activePaint);

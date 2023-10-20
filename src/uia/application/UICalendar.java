@@ -81,7 +81,7 @@ public class UICalendar extends WrapperView {
                     paint.set(paintCell[1]);
                 } else {
                     paint.set(paintCell[2]);
-                    notifyCallbacks(OnSelection.class, getDate()[0]);
+                    notifyCallbacks(OnSelect.class, getDate()[0]);
                 }
             });
             cell.addCallback((OnMouseEnter) pointers -> {
@@ -105,7 +105,6 @@ public class UICalendar extends WrapperView {
         int[] date = Utility.getDate();
         setDate(date[0], date[1], date[2]);
 
-
         ComponentGroup group = (ComponentGroup) getView();
         group.add(listUI);
         group.add(cells);
@@ -114,16 +113,16 @@ public class UICalendar extends WrapperView {
     /**
      * Event called when a day has been select.
      * <br>
-     * It provides a View and the selected day.
+     * It provides the selected day.
      */
 
-    public interface OnSelection extends Callback<Integer> {
+    public interface OnSelect extends Callback<Integer> {
     }
 
     /**
      * Event called when a change in calendar's month and/or year is detected.
      * <br>
-     * It provides a View and the new date as an array made of: day, month and year.
+     * It provides the new date as an array made of: day, month and year.
      */
 
     public interface OnChange extends Callback<Integer[]> {

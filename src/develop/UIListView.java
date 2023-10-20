@@ -1,6 +1,7 @@
 package develop;
 
 import uia.application.awt.ContextAWT;
+import uia.core.basement.Callback;
 import uia.core.ui.Context;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
@@ -18,7 +19,7 @@ import uia.physical.wrapper.WrapperView;
 import java.util.Iterator;
 
 /**
- * Define me!
+ * UIListView has been designed to handle a set of views.
  */
 
 public class UIListView extends WrapperView implements ViewGroup {
@@ -28,7 +29,7 @@ public class UIListView extends WrapperView implements ViewGroup {
     private final ViewGroup containerGroup;
     private final ViewGroup containerList;
 
-    private Aligner aligner;
+    private ViewPositioner viewPositioner;
 
     private Scroller scroller = new WheelScroller();
 
@@ -36,7 +37,7 @@ public class UIListView extends WrapperView implements ViewGroup {
         super(new ComponentGroup(view));
 
         float[] sum = {0f};
-        aligner = (v, i) -> {
+        viewPositioner = (v, i) -> {
             float[] bounds = bounds();
             if (bounds[3] != 0) {
                 float h = 1.1f * v.bounds()[3] / (2 * bounds[3]);
@@ -70,19 +71,33 @@ public class UIListView extends WrapperView implements ViewGroup {
     }
 
     /**
-     * Align views inside a ListView
+     * ViewPositioner has been designed to position a set of views
      */
 
-    public interface Aligner {
+    public interface ViewPositioner {
 
         /**
-         * Align the given View
+         * Place the specified View
          *
-         * @param view a not null {@link View}
-         * @param i    the View's position inside the List
+         * @param view a not null {@link View} to be placed
+         * @param i    the View's position (index)
          */
 
-        void align(View view, int i);
+        void place(View view, int i);
+    }
+
+    /**
+     * OnAdd is called when a new View is added to a ListView
+     */
+
+    public interface OnAdd extends Callback<View> {
+    }
+
+    /**
+     * OnRemove is called when a View is removed from a ListView
+     */
+
+    public interface OnRemove extends Callback<View> {
     }
 
     @Override
@@ -103,6 +118,9 @@ public class UIListView extends WrapperView implements ViewGroup {
     @Override
     public void add(int i, View view) {
         containerList.add(i, view);
+
+        if (containerList.indexOf(view) != -1)
+            notifyCallbacks(OnAdd.class, view);
     }
 
     @Override
@@ -131,6 +149,11 @@ public class UIListView extends WrapperView implements ViewGroup {
     }
 
     @Override
+    public int indexOf(View view) {
+        return containerList.indexOf(view);
+    }
+
+    @Override
     public float[] boundsContent() {
         return containerList.boundsContent();
     }
@@ -141,13 +164,13 @@ public class UIListView extends WrapperView implements ViewGroup {
     }
 
     /**
-     * Set a new Aligner
+     * Set a new ViewPositioner
      *
-     * @param aligner an {@link Aligner}; it could be null
+     * @param viewPositioner a {@link ViewPositioner}; it could be null
      */
 
-    public void setAligner(Aligner aligner) {
-        this.aligner = aligner;
+    public void setViewPositioner(ViewPositioner viewPositioner) {
+        this.viewPositioner = viewPositioner;
     }
 
     public void setScroll(float x, float y) {
@@ -157,10 +180,10 @@ public class UIListView extends WrapperView implements ViewGroup {
 
     @Override
     public void update(View parent) {
-        if (aligner != null) {
+        if (viewPositioner != null) {
 
             for (int i = 0; i < size(); i++) {
-                aligner.align(get(i), i);
+                viewPositioner.place(get(i), i);
             }
         }
 

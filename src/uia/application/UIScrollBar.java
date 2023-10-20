@@ -1,8 +1,6 @@
 package uia.application;
 
-import uia.application.awt.ContextAWT;
 import uia.core.ScreenPointer;
-import uia.core.ui.Context;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnMouseHover;
 import uia.physical.Component;
@@ -33,7 +31,7 @@ public class UIScrollBar extends WrapperView {
     public UIScrollBar(View view) {
         super(new ComponentGroup(view));
 
-        buildGeometry(g -> Component.buildRect(g, getWidth(), getHeight(), 1f), true);
+        buildGeometry(g -> View.buildRect(g, getWidth(), getHeight(), 1f), true);
         getPaint().setColor(ThemeDarcula.W_BACKGROUND);
         addCallback((OnMouseHover) pointers -> {
             ScreenPointer pointer = pointers.get(0);
@@ -46,17 +44,14 @@ public class UIScrollBar extends WrapperView {
             }
         });
 
-
         cursor = new Component("CURSOR", 0.5f, 0.075f, 1f, 0.15f);
-        cursor.buildGeometry(g -> Component.buildRect(g, getWidth(), getHeight(), 1f), true);
+        cursor.buildGeometry(g -> View.buildRect(g, getWidth(), getHeight(), 1f), true);
         cursor.setConsumer(CONSUMER.POINTER, false);
         cursor.getPaint().setColor(Theme.RED);
-
 
         scroller = new WheelScroller();
         scroller.setFactor(0.1f);
         scroller.setMax(1f);
-
 
         ((ComponentGroup) getView()).add(cursor);
     }
@@ -128,16 +123,5 @@ public class UIScrollBar extends WrapperView {
         super.setVisible(isVisible);
 
         if (!isVisible) locked = false;
-    }
-
-    //
-
-    public static void main(String[] args) {
-        View view = new UIScrollBar(new Component("TEST", 0.5f, 0.5f, 0.1f, 0.5f));
-        view.setRotation(HALF_PI / 2f);
-
-        Context context = new ContextAWT(1000, 500);
-        context.start();
-        context.setView(view);
     }
 }
