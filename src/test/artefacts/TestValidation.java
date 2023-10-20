@@ -1,22 +1,40 @@
 package test.artefacts;
 
 public class TestValidation {
+    private Object subject;
+    private int passedAssertions = 0;
 
     /**
-     * Assert that the given message is equal to the answer.
-     * <br>
-     * If message and answer are null, then the assertion will be True.
+     * Set an Object to control
+     *
+     * @param subject the Object to control; it could be null
+     * @return the TestValidation instance
      */
 
-    public static void assertThat(Object message, Object answer) {
-        System.out.print("TEST result: ");
+    public TestValidation expect(Object subject) {
+        this.subject = subject;
+        return this;
+    }
 
-        if (message == answer) {
-            System.out.println("PASSED");
-            System.exit(0);
+    /**
+     * Check that the subject is equal to the given value
+     *
+     * @throws RuntimeException if {@code subject != value}
+     */
+
+    public void toBeEqual(Object value) {
+        if ((subject == null && value != null) || !subject.equals(value)) {
+            throw new RuntimeException(value + " is not equal to " + subject);
         } else {
-            System.out.println("FAILED");
-            System.exit(1);
+            passedAssertions++;
         }
+    }
+
+    /**
+     * @return the number of passed assertions
+     */
+
+    public int getPassedAssertions() {
+        return passedAssertions;
     }
 }
