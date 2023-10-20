@@ -9,6 +9,7 @@ import uia.application.awt.ContextAWT;
 import uia.core.ui.Context;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
+import uia.core.ui.callbacks.OnClick;
 import uia.physical.Component;
 import uia.physical.ComponentGroup;
 import uia.physical.ComponentImage;
@@ -61,6 +62,7 @@ public class Sanity {
 
         ComponentImage image = new ComponentImage(new Component("IMAGE", 0.7f, 0.5f, 0.33f, 0.5f));
         image.getImage().load("sample\\img0.png");
+        image.addCallback((OnClick) pointers -> System.out.println("ComponentImage clicked!"));
 
         ViewGroup group = createViewGroup("GROUP", 0.4f, 0.5f, 0.5f, 0.5f);
         group.getPaint().setColor(Theme.DARK_GREY);
