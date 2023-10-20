@@ -263,7 +263,7 @@ public class PointDistribution {
     }
 
     /**
-     * Returns the standard deviation of this distribution
+     * Returns the correct standard deviation of this distribution
      *
      * @param component the not null {@link AXIS}
      * @return the standard deviation value on the specified axis
