@@ -1,6 +1,6 @@
 package test;
 
-import develop.math.data.PointDistribution;
+import develop.math.PointDistribution;
 import test.artefacts.TestValidation;
 
 /**

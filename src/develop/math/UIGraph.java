@@ -1,6 +1,5 @@
 package develop.math;
 
-import develop.math.data.PointDistribution;
 import uia.application.awt.ContextAWT;
 import uia.core.Geometry;
 import uia.core.Shape;

@@ -1,4 +1,4 @@
-package develop.math.data;
+package develop.math;
 
 import java.util.ArrayList;
 import java.util.Arrays;
