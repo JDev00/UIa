@@ -16,7 +16,7 @@ import uia.physical.ComponentText;
 import uia.physical.theme.Theme;
 import uia.utility.Utility;
 
-public class testSanity {
+public class Sanity {
 
     public static ViewText createViewText(String id, float x, float y, float width, float height) {
         return new ComponentText(
