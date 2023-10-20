@@ -17,7 +17,7 @@ import static java.lang.Math.min;
 import static uia.utility.TrigTable.*;
 
 /**
- * Implementation of {@link View}
+ * UIa built-in {@link View} implementation.
  */
 
 public final class Component implements View {
