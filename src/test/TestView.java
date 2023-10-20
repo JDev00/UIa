@@ -6,6 +6,7 @@ import test.artefacts.TestValidation;
 import uia.core.ui.Context;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
+import uia.core.ui.callbacks.OnClick;
 import uia.core.ui.callbacks.OnMessageReceived;
 import uia.physical.Component;
 
@@ -79,6 +80,24 @@ public class TestView {
         };
     }
 
+    public static TestCase clickInsideViewShouldEmitAnEvent() {
+        return () -> {
+            TestValidation validation = new TestValidation();
+
+            View root = createRoot();
+            root.addCallback((OnClick) pointers -> validation.expect(true));
+
+            Context context = createAWTContext();
+            context.setView(root);
+
+            TestUtils.sleep(10);
+
+            validation.toBeEqual(true);
+
+            return validation;
+        };
+    }
+
     public static TestCase viewShouldBeAbleToSendAMessageToAnotherView() {
         return () -> {
             String MESSAGE = "hello";
@@ -107,5 +126,6 @@ public class TestView {
         TestUtils.runTest(boundsWidthAndHeightShouldBeDifferentAfterRotation());
         TestUtils.runTest(viewWidthAndHeightShouldNotChangeAfterRotation());
         TestUtils.runTest(viewShouldBeAbleToSendAMessageToAnotherView());
+        TestUtils.runTest(clickInsideViewShouldEmitAnEvent());
     }
 }

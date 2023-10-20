@@ -179,6 +179,7 @@ public final class Component implements View {
             case POINTER:
                 consumePointer = enableConsumer;
                 break;
+
             case KEY:
                 consumeKey = enableConsumer;
                 break;
@@ -190,33 +191,32 @@ public final class Component implements View {
         MessageStore.getInstance().add(new Object[]{message, getID(), destID});
     }
 
-    @Override
-    public void dispatch(DISPATCHER dispatcher, Object data) {
-        switch (dispatcher) {
-            case MESSAGE:
-                Object[] dataArray = (Object[]) data;
-                dispatch((String) dataArray[2], (String) dataArray[1], dataArray[0]);
-                break;
-            case POINTERS:
-                dispatch((List<ScreenPointer>) data);
-                break;
-            case KEY:
-                dispatch((Key) data);
-                break;
-        }
-    }
+    /**
+     * Helper function. Dispatch a message to this View.
+     */
 
-    private void dispatch(String destID, String sourceID, Object message) {
-        if (id.equals(destID) || (destID == null && !id.equals(sourceID)))
+    private void dispatchMessage(Object data) {
+        Object[] dataArray = (Object[]) data;
+        String destinationID = (String) dataArray[2];
+        String sourceID = (String) dataArray[1];
+        Object message = dataArray[0];
+
+        if (id.equals(destinationID) || (destinationID == null && !id.equals(sourceID))) {
             notifyCallbacks(OnMessageReceived.class, new Object[]{message, sourceID});
+        }
     }
 
     private final List<ScreenPointer> curScreenPointers = new ArrayList<>();
 
-    private void dispatch(List<ScreenPointer> screenPointers) {
+    /**
+     * Helper function. Dispatch a list of screen pointers to this View.
+     */
+
+    private void dispatchScreenPointers(Object data) {
+        List<ScreenPointer> screenPointers = (List<ScreenPointer>) data;
+
         float[] bounds = shape.bounds();
-        int xOff = -(int) (bounds[0]);
-        int yOff = -(int) (bounds[1]);
+        int[] offset = {-(int) (bounds[0]), -(int) (bounds[1])};
 
         curScreenPointers.clear();
 
@@ -225,7 +225,7 @@ public final class Component implements View {
                 if (!p.isConsumed()
                         && p.getAction() != ScreenPointer.ACTION.EXITED
                         && contains(p.getX(), p.getY())) {
-                    p.translate(xOff, yOff);
+                    p.translate(offset[0], offset[1]);
                     curScreenPointers.add(p);
                     // consume pointer when necessary
                     if (consumePointer) p.consume();
@@ -254,7 +254,7 @@ public final class Component implements View {
 
             // restore pointers to original position
             for (ScreenPointer i : curScreenPointers) {
-                i.translate(-xOff, -yOff);
+                i.translate(-offset[0], -offset[1]);
             }
         } else {
             // remove focus when necessary
@@ -270,7 +270,13 @@ public final class Component implements View {
         }
     }
 
-    private void dispatch(Key key) {
+    /**
+     * Helper function. Dispatch a Key to this View.
+     */
+
+    private void dispatchKey(Object data) {
+        Key key = (Key) data;
+
         if (!key.isConsumed() && visible && focus) {
 
             if (consumeKey) key.consume();
@@ -279,13 +285,32 @@ public final class Component implements View {
                 case PRESSED:
                     notifyCallbacks(OnKeyPressed.class, key);
                     break;
+
                 case TYPED:
                     notifyCallbacks(OnKeyTyped.class, key);
                     break;
+
                 case RELEASED:
                     notifyCallbacks(OnKeyReleased.class, key);
                     break;
             }
+        }
+    }
+
+    @Override
+    public void dispatch(DISPATCHER dispatcher, Object data) {
+        switch (dispatcher) {
+            case MESSAGE:
+                dispatchMessage(data);
+                break;
+
+            case POINTERS:
+                dispatchScreenPointers(data);
+                break;
+
+            case KEY:
+                dispatchKey(data);
+                break;
         }
     }
 
