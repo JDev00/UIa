@@ -19,7 +19,16 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Framework built-in {@link Context} implementation based on Java AWT and SWING
+ * Framework built-in {@link Context} implementation based on Java AWT and SWING.
+ * <br><br>
+ * <b>Usage example:</b>
+ * <br><br>
+ * <code>
+ * <p>
+ * Context context = new ContextAWT(1000, 500);
+ * context.getWindow().show();
+ * context.start();
+ * </code>
  */
 
 public class ContextAWT implements Context {
@@ -32,6 +41,8 @@ public class ContextAWT implements Context {
         window = new WindowAWT(x, y);
 
         artificialInput = new ArtificialInput() {
+            private static final int MAX_EVENT_EMISSION = 30;
+
             @Override
             public ArtificialInput click(int x, int y) {
                 window.dispatchMousePointer(x, y, 0, null, ScreenPointer.ACTION.CLICKED);
@@ -40,7 +51,12 @@ public class ContextAWT implements Context {
 
             @Override
             public ArtificialInput moveOnScreen(int xStart, int yStart, int xEnd, int yEnd, float duration) {
-                throw new UnsupportedOperationException("Not implemented yet");
+                for (int i = 0; i <= MAX_EVENT_EMISSION; i++) {
+                    int x = xStart + i * (xEnd - xStart) / MAX_EVENT_EMISSION;
+                    int y = yStart + i * (yEnd - yStart) / MAX_EVENT_EMISSION;
+                    window.dispatchMousePointer(x, y, 0, null, ScreenPointer.ACTION.MOVED);
+                }
+                return this;
             }
 
             @Override
@@ -79,14 +95,11 @@ public class ContextAWT implements Context {
     @Override
     public void start() {
         if (!isRunning) {
-            isRunning = true;
-
-            window.show();
-
             int period = 1000 / 60;
-
             mainThread = Executors.newSingleThreadScheduledExecutor();
             mainThread.scheduleAtFixedRate(window::draw, 0, period, TimeUnit.MILLISECONDS);
+
+            isRunning = true;
         }
     }
 
@@ -95,12 +108,30 @@ public class ContextAWT implements Context {
         return isRunning;
     }
 
+    /**
+     * Helper function
+     */
+
+    private void killRenderingProcess() {
+        try {
+            mainThread.shutdownNow();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void stop() {
         if (isRunning) {
-            mainThread.shutdownNow();
+            killRenderingProcess();
             isRunning = false;
         }
+    }
+
+    @Override
+    public void kill() {
+        killRenderingProcess();
+        System.exit(1);
     }
 
     @Override
@@ -305,10 +336,6 @@ public class ContextAWT implements Context {
             }
         }
 
-        private void show() {
-            jFrame.setVisible(true);
-        }
-
         private void draw() {
             renderer.repaint();
         }
@@ -333,6 +360,18 @@ public class ContextAWT implements Context {
         @Override
         public Window setTitle(String title) {
             jFrame.setTitle(title);
+            return this;
+        }
+
+        @Override
+        public Window show() {
+            jFrame.setVisible(true);
+            return this;
+        }
+
+        @Override
+        public Window hide() {
+            jFrame.setVisible(false);
             return this;
         }
 

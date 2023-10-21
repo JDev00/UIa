@@ -48,6 +48,7 @@ public class TestUtils {
      * @param testSuite a not null {@link TestSuite} to execute
      */
 
+    @Deprecated
     public static void runTestSuite(TestSuite testSuite) {
         new Thread(() -> {
             for (TestCase testCase : testSuite) {

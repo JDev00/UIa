@@ -41,7 +41,7 @@ public class Sanity {
         return new ComponentTracker(context, 0.95f, 0.95f, 0.1f, 0.1f);
     }
 
-    public static Context createAWTContext() {
+    public static Context createMockContext() {
         int[] dim = ContextAWT.getScreenSize();
         Context context = new ContextAWT(4 * dim[0] / 5, 4 * dim[1] / 5);
         context.start();
@@ -51,7 +51,8 @@ public class Sanity {
     public static void showBaseComponents() {
         ViewGroup root = createRoot();
 
-        Context context = createAWTContext();
+        Context context = createMockContext();
+        context.getWindow().show();
         context.setView(root);
 
         ViewText text = createViewText("TEXT", 0.33f, 0.45f, 0.5f, 0.75f);
@@ -76,7 +77,8 @@ public class Sanity {
     public static void showWidgets() {
         ViewGroup root = createRoot();
 
-        Context context = createAWTContext();
+        Context context = createMockContext();
+        context.getWindow().show();
         context.setView(root);
 
         UIButtonFilled buttonFilled = new UIButtonFilled(

@@ -24,7 +24,7 @@ public class TestValidation {
 
     public void toBeEqual(Object value) {
         if ((subject == null && value != null) || !subject.equals(value)) {
-            throw new RuntimeException(value + " is not equal to " + subject);
+            throw new RuntimeException("expected " + subject + " to be " + value + " but it wasn't");
         } else {
             passedAssertions++;
         }

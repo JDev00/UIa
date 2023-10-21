@@ -8,6 +8,7 @@ import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.ui.callbacks.OnMessageReceived;
+import uia.core.ui.callbacks.OnMouseHover;
 import uia.physical.Component;
 
 import static test.Sanity.*;
@@ -26,7 +27,7 @@ public class TestView {
             View root = createRoot();
             root.setRotation(ROTATION);
 
-            Context context = createAWTContext();
+            Context context = createMockContext();
             context.setView(root);
 
             TestUtils.sleep(200);
@@ -56,7 +57,7 @@ public class TestView {
 
             View root = createRoot();
 
-            Context context = createAWTContext();
+            Context context = createMockContext();
             context.setView(root);
 
             TestUtils.sleep(200);
@@ -80,25 +81,6 @@ public class TestView {
         };
     }
 
-    public static TestCase clickingOnViewShouldEmitAnEvent() {
-        return () -> {
-            TestValidation validation = new TestValidation();
-
-            View root = createRoot();
-            root.addCallback((OnClick) pointers -> validation.expect(true));
-
-            Context context = createAWTContext();
-            context.setView(root);
-            context.getArtificialInput().click(100, 100);
-
-            TestUtils.sleep(100);
-
-            validation.toBeEqual(true);
-
-            return validation;
-        };
-    }
-
     public static TestCase viewShouldBeAbleToSendAMessageToAnotherView() {
         return () -> {
             String MESSAGE = "hello";
@@ -113,11 +95,53 @@ public class TestView {
             root.add(receiver);
             root.sendMessage(MESSAGE, DESTINATION);
 
-            Context context = createAWTContext();
+            Context context = createMockContext();
             context.setView(root);
 
-            TestUtils.sleep(10);
+            TestUtils.sleep(100);
             validation.toBeEqual(MESSAGE);
+
+            return validation;
+        };
+    }
+
+    public static TestCase clickingOnViewShouldEmitAnEvent() {
+        return () -> {
+            TestValidation validation = new TestValidation();
+
+            View root = createRoot();
+            root.addCallback((OnClick) pointers -> validation.expect(true));
+
+            Context context = createMockContext();
+            context.setView(root);
+            context.getArtificialInput().click(100, 100);
+
+            TestUtils.sleep(150);
+
+            validation.toBeEqual(true);
+
+            return validation;
+        };
+    }
+
+    public static TestCase mouseOnFocusedViewShouldEmitAnEvent() {
+        return () -> {
+            TestValidation validation = new TestValidation();
+
+            View root = createRoot();
+            root.addCallback((OnMouseHover) pointers -> validation.expect(true));
+
+            Context context = createMockContext();
+            context.setView(root);
+            context.getArtificialInput().moveOnScreen(
+                    100, 100,
+                    110, 110,
+                    0.1f
+            );
+
+            TestUtils.sleep(150);
+
+            validation.toBeEqual(true);
 
             return validation;
         };
@@ -128,5 +152,6 @@ public class TestView {
         TestUtils.runTest(viewWidthAndHeightShouldNotChangeAfterRotation());
         TestUtils.runTest(viewShouldBeAbleToSendAMessageToAnotherView());
         TestUtils.runTest(clickingOnViewShouldEmitAnEvent());
+        TestUtils.runTest(mouseOnFocusedViewShouldEmitAnEvent());
     }
 }

@@ -194,6 +194,11 @@ public class ContextProcessing implements Context {
     }
 
     @Override
+    public void kill() {
+
+    }
+
+    @Override
     public int getFrameRate() {
         return (int) renderer.frameRate;
     }
@@ -241,6 +246,16 @@ public class ContextProcessing implements Context {
 
         @Override
         public Window setTitle(String title) {
+            return null;
+        }
+
+        @Override
+        public Window show() {
+            return null;
+        }
+
+        @Override
+        public Window hide() {
             return null;
         }
 

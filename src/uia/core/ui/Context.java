@@ -43,6 +43,12 @@ public interface Context {
     void stop();
 
     /**
+     * Stop and kill this Context process
+     */
+
+    void kill();
+
+    /**
      * Set the given rendering hints
      *
      * @param hint a not null array of {@link HINT}s
@@ -132,6 +138,18 @@ public interface Context {
          */
 
         Window setTitle(String title);
+
+        /**
+         * Make this Window visible on the screen
+         */
+
+        Window show();
+
+        /**
+         * Hide this Window
+         */
+
+        Window hide();
 
         /**
          * Resize this window to the specified width and height
