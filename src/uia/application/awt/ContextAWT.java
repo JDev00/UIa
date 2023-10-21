@@ -19,18 +19,49 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * {@link Context} implementation based on Java AWT/SWING
+ * Framework built-in {@link Context} implementation based on Java AWT and SWING
  */
-
-// TODO: to refactor
 
 public class ContextAWT implements Context {
     private ScheduledExecutorService mainThread;
     private final WindowAWT window;
+    private final ArtificialInput artificialInput;
     private boolean isRunning = false;
 
     public ContextAWT(int x, int y) {
         window = new WindowAWT(x, y);
+
+        artificialInput = new ArtificialInput() {
+            @Override
+            public ArtificialInput click(int x, int y) {
+                window.dispatchMousePointer(x, y, 0, null, ScreenPointer.ACTION.CLICKED);
+                return this;
+            }
+
+            @Override
+            public ArtificialInput moveOnScreen(int xStart, int yStart, int xEnd, int yEnd, float duration) {
+                throw new UnsupportedOperationException("Not implemented yet");
+            }
+
+            @Override
+            public ArtificialInput dragOnScreen(int xStart, int yStart, int xEnd, int yEnd, float duration) {
+                throw new UnsupportedOperationException("Not implemented yet");
+            }
+
+            @Override
+            public ArtificialInput sendKey(char key) {
+                int keyCode = KeyEvent.getExtendedKeyCodeForChar(key);
+                window.dispatchKey(key, keyCode, 0, Key.ACTION.RELEASED);
+                return this;
+            }
+
+            @Override
+            public ArtificialInput sendKeyCode(int keyCode) {
+                // TODO: check if '(char) keyCode' is correct
+                window.dispatchKey((char) keyCode, keyCode, 0, Key.ACTION.RELEASED);
+                return this;
+            }
+        };
     }
 
     @Override
@@ -55,7 +86,7 @@ public class ContextAWT implements Context {
             int period = 1000 / 60;
 
             mainThread = Executors.newSingleThreadScheduledExecutor();
-            mainThread.scheduleAtFixedRate(window::repaint, 0, period, TimeUnit.MILLISECONDS);
+            mainThread.scheduleAtFixedRate(window::draw, 0, period, TimeUnit.MILLISECONDS);
         }
     }
 
@@ -75,6 +106,11 @@ public class ContextAWT implements Context {
     @Override
     public Window getWindow() {
         return window;
+    }
+
+    @Override
+    public ArtificialInput getArtificialInput() {
+        return artificialInput;
     }
 
     @Override
@@ -117,9 +153,10 @@ public class ContextAWT implements Context {
         private final Renderer renderer;
         private View view;
 
+        private final List<ScreenPointer> screenPointers = new ArrayList<>();
         private final List<HINT> hints;
 
-        private final int[] screen_size = new int[2];
+        private final int[] screenSize = new int[2];
         private int frameRate;
         private boolean focus = true;
 
@@ -137,8 +174,8 @@ public class ContextAWT implements Context {
                 @Override
                 public void componentResized(ComponentEvent e) {
                     Container container = jFrame.getContentPane();
-                    screen_size[0] = container.getWidth();
-                    screen_size[1] = container.getHeight();
+                    screenSize[0] = container.getWidth();
+                    screenSize[1] = container.getHeight();
                 }
             });
             jFrame.addFocusListener(new FocusListener() {
@@ -155,33 +192,33 @@ public class ContextAWT implements Context {
             jFrame.addKeyListener(new KeyListener() {
                 @Override
                 public void keyTyped(KeyEvent e) {
-                    dispatch(e, Key.ACTION.TYPED);
+                    dispatchKey(e.getKeyChar(), e.getKeyCode(), e.getModifiers(), Key.ACTION.TYPED);
                 }
 
                 @Override
                 public void keyPressed(KeyEvent e) {
-                    dispatch(e, Key.ACTION.PRESSED);
+                    dispatchKey(e.getKeyChar(), e.getKeyCode(), e.getModifiers(), Key.ACTION.PRESSED);
                 }
 
                 @Override
                 public void keyReleased(KeyEvent e) {
-                    dispatch(e, Key.ACTION.RELEASED);
+                    dispatchKey(e.getKeyChar(), e.getKeyCode(), e.getModifiers(), Key.ACTION.RELEASED);
                 }
             });
             jFrame.addMouseListener(new MouseListener() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    dispatch(e, ScreenPointer.ACTION.PRESSED);
+                    dispatchMousePointer(e, 0, ScreenPointer.ACTION.PRESSED);
                 }
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    dispatch(e, ScreenPointer.ACTION.RELEASED);
+                    dispatchMousePointer(e, 0, ScreenPointer.ACTION.RELEASED);
                 }
 
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    dispatch(e, ScreenPointer.ACTION.CLICKED);
+                    dispatchMousePointer(e, 0, ScreenPointer.ACTION.CLICKED);
                 }
 
                 @Override
@@ -190,21 +227,21 @@ public class ContextAWT implements Context {
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    dispatch(e, ScreenPointer.ACTION.EXITED);
+                    dispatchMousePointer(e, 0, ScreenPointer.ACTION.EXITED);
                 }
             });
             jFrame.addMouseMotionListener(new MouseMotionListener() {
                 @Override
                 public void mouseDragged(MouseEvent e) {
-                    dispatch(e, ScreenPointer.ACTION.DRAGGED);
+                    dispatchMousePointer(e, 0, ScreenPointer.ACTION.DRAGGED);
                 }
 
                 @Override
                 public void mouseMoved(MouseEvent e) {
-                    dispatch(e, ScreenPointer.ACTION.MOVED);
+                    dispatchMousePointer(e, 0, ScreenPointer.ACTION.MOVED);
                 }
             });
-            jFrame.addMouseWheelListener(e -> dispatch(e, ScreenPointer.ACTION.WHEEL));
+            jFrame.addMouseWheelListener(e -> dispatchMousePointer(e, e.getWheelRotation(), ScreenPointer.ACTION.WHEEL));
 
 
             hints = new ArrayList<>();
@@ -212,49 +249,67 @@ public class ContextAWT implements Context {
         }
 
         /**
-         * Dispatch keys
+         * Helper function. Dispatch mouse attributes to the handled View.
          */
 
-        private void dispatch(KeyEvent e, Key.ACTION action) {
-            if (view != null)
-                view.dispatch(View.DISPATCHER.KEY, new Key(action, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
-        }
-
-        private final List<ScreenPointer> screenPointers = new ArrayList<>();
-
-        /**
-         * Dispatch pointers
-         */
-
-        private void dispatch(MouseEvent e, ScreenPointer.ACTION action) {
-            int ox = e.getX() - jFrame.getInsets().left;
-            int oy = e.getY() - jFrame.getInsets().top;
-            int wheel = (e instanceof MouseWheelEvent) ? ((MouseWheelEvent) e).getWheelRotation() : 0;
-
-            ScreenPointer.BUTTON button = null;
-            switch (e.getButton()) {
-                case 1:
-                    button = ScreenPointer.BUTTON.LEFT;
-                    break;
-                case 2:
-                    button = ScreenPointer.BUTTON.CENTER;
-                    break;
-                case 3:
-                    button = ScreenPointer.BUTTON.RIGHT;
-                    break;
-            }
+        protected void dispatchMousePointer(int x, int y, int wheelRotation,
+                                            ScreenPointer.BUTTON button, ScreenPointer.ACTION action) {
+            int[] position = {x - jFrame.getInsets().left, y - jFrame.getInsets().top};
 
             screenPointers.clear();
-            screenPointers.add(new ScreenPointer(action, button, ox, oy, wheel));
+            screenPointers.add(new ScreenPointer(action, button, position[0], position[1], wheelRotation));
 
-            if (view != null) view.dispatch(View.DISPATCHER.POINTERS, screenPointers);
+            if (view != null) {
+                view.dispatch(View.DISPATCHER.POINTERS, screenPointers);
+            }
+        }
+
+        /**
+         * @return the corresponding {@link uia.core.ScreenPointer.BUTTON} or null
+         */
+
+        private static ScreenPointer.BUTTON convertNativeMouseButton(int button) {
+            switch (button) {
+                case 1:
+                    return ScreenPointer.BUTTON.LEFT;
+                case 2:
+                    return ScreenPointer.BUTTON.CENTER;
+                case 3:
+                    return ScreenPointer.BUTTON.RIGHT;
+                default:
+                    return null;
+            }
+        }
+
+        /**
+         * Helper function. Dispatch mouse attributes to the handled View.
+         */
+
+        private void dispatchMousePointer(MouseEvent mouseEvent, int wheelRotation, ScreenPointer.ACTION action) {
+            dispatchMousePointer(
+                    mouseEvent.getX(),
+                    mouseEvent.getY(),
+                    wheelRotation,
+                    convertNativeMouseButton(mouseEvent.getButton()),
+                    action
+            );
+        }
+
+        /**
+         * Helper function. Dispatch a key to the handled View.
+         */
+
+        protected void dispatchKey(char keyChar, int keyCode, int modifiers, Key.ACTION action) {
+            if (view != null) {
+                view.dispatch(View.DISPATCHER.KEY, new Key(action, modifiers, keyChar, keyCode));
+            }
         }
 
         private void show() {
             jFrame.setVisible(true);
         }
 
-        private void repaint() {
+        private void draw() {
             renderer.repaint();
         }
 
@@ -283,19 +338,20 @@ public class ContextAWT implements Context {
 
         @Override
         public Window resize(int width, int height) {
-            assert width >= 150 && height >= 150 : "width or height < 150 px";
+            assert width >= 200 : "window width can't be lower than 200 px";
+            assert height >= 200 : "window height can't be lower than 200 px";
             jFrame.setSize(width, height);
             return this;
         }
 
         @Override
         public int getWidth() {
-            return screen_size[0];
+            return screenSize[0];
         }
 
         @Override
         public int getHeight() {
-            return screen_size[1];
+            return screenSize[1];
         }
 
         /**
@@ -321,6 +377,10 @@ public class ContextAWT implements Context {
                 timer = new Timer();
             }
 
+            /**
+             * Helper function
+             */
+
             private void updateFrameRateAndFrameCount() {
                 frameCount++;
 
@@ -330,6 +390,10 @@ public class ContextAWT implements Context {
                     timer.reset();
                 }
             }
+
+            /**
+             * Helper function
+             */
 
             private void applyHints(Graphics2D g2d) {
                 for (HINT i : hints) {
@@ -355,6 +419,10 @@ public class ContextAWT implements Context {
                     }
                 }
             }
+
+            /**
+             * Helper function
+             */
 
             private void updateAndDrawView() {
                 if (view != null) {
@@ -385,7 +453,7 @@ public class ContextAWT implements Context {
                 graphic.setNative(g2d);
 
                 rootView.setPosition(0f, 0f);
-                rootView.setDimension(screen_size[0], screen_size[1]);
+                rootView.setDimension(screenSize[0], screenSize[1]);
                 rootView.requestFocus(focus);
 
                 updateAndDrawView();

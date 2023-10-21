@@ -41,4 +41,23 @@ public class TestUtils {
             System.exit(0);
         }).start();
     }
+
+    /**
+     * Execute the specified test suite
+     *
+     * @param testSuite a not null {@link TestSuite} to execute
+     */
+
+    public static void runTestSuite(TestSuite testSuite) {
+        new Thread(() -> {
+            for (TestCase testCase : testSuite) {
+                try {
+                    testCase.run();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            System.exit(0);
+        }).start();
+    }
 }

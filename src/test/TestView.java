@@ -80,7 +80,7 @@ public class TestView {
         };
     }
 
-    public static TestCase clickInsideViewShouldEmitAnEvent() {
+    public static TestCase clickingOnViewShouldEmitAnEvent() {
         return () -> {
             TestValidation validation = new TestValidation();
 
@@ -89,8 +89,9 @@ public class TestView {
 
             Context context = createAWTContext();
             context.setView(root);
+            context.getArtificialInput().click(100, 100);
 
-            TestUtils.sleep(10);
+            TestUtils.sleep(100);
 
             validation.toBeEqual(true);
 
@@ -126,6 +127,6 @@ public class TestView {
         TestUtils.runTest(boundsWidthAndHeightShouldBeDifferentAfterRotation());
         TestUtils.runTest(viewWidthAndHeightShouldNotChangeAfterRotation());
         TestUtils.runTest(viewShouldBeAbleToSendAMessageToAnotherView());
-        TestUtils.runTest(clickInsideViewShouldEmitAnEvent());
+        TestUtils.runTest(clickingOnViewShouldEmitAnEvent());
     }
 }

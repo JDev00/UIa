@@ -204,6 +204,11 @@ public class ContextProcessing implements Context {
     }
 
     @Override
+    public ArtificialInput getArtificialInput() {
+        return null;
+    }
+
+    @Override
     public boolean isRunning() {
         return renderer.isLooping();
     }

@@ -3,8 +3,6 @@ package uia.core.ui;
 /**
  * Context is the base of the UIa framework. It is responsible for updating and rendering a single {@link View} on a {@link Window}.
  * It is intended to be a versatile layer whose implementation is platform dependent.
- * <br>
- * More description to come.
  */
 
 public interface Context {
@@ -73,6 +71,12 @@ public interface Context {
      */
 
     Window getWindow();
+
+    /**
+     * @return the {@link ArtificialInput} of this Context
+     */
+
+    ArtificialInput getArtificialInput();
 
     /**
      * Copy a String in the clipboard or paste a String from the clipboard
@@ -150,5 +154,72 @@ public interface Context {
          */
 
         int getHeight();
+    }
+
+    /**
+     * ArtificialInput is designed to artificially simulate an input from mouse and from keyboard.
+     * <br>
+     * It is useful to simulate the interaction between user and a graphical component.
+     */
+
+    interface ArtificialInput {
+
+        /**
+         * Simulate a click on screen
+         *
+         * @param x the click position on the x-axis
+         * @param y the click position on the y-axis
+         * @return this ArtificialInput
+         */
+
+        ArtificialInput click(int x, int y);
+
+        /**
+         * Simulate a mouse moving (without pressing buttons) on screen.
+         * <br>
+         * It is guaranteed to generate at least 30 event emissions between the starting and ending point.
+         *
+         * @param xStart   the movement starting point on the x-axis
+         * @param yStart   the movement starting point on the y-axis
+         * @param xEnd     the movement ending point on the x-axis
+         * @param yEnd     the movement ending point on the y-axis
+         * @param duration the time > 0 required to complete the movement in seconds
+         * @return this ArtificialInput
+         */
+
+        ArtificialInput moveOnScreen(int xStart, int yStart, int xEnd, int yEnd, float duration);
+
+        /**
+         * Simulate a mouse dragging on screen.
+         * <br>
+         * It is guaranteed to generate at least 30 event emissions between the starting and ending point.
+         *
+         * @param xStart   the dragging starting point on the x-axis
+         * @param yStart   the dragging starting point on the y-axis
+         * @param xEnd     the dragging ending point on the x-axis
+         * @param yEnd     the dragging ending point on the y-axis
+         * @param duration the time > 0 required to complete the movement in seconds
+         * @return this ArtificialInput
+         */
+
+        ArtificialInput dragOnScreen(int xStart, int yStart, int xEnd, int yEnd, float duration);
+
+        /**
+         * Simulate a key pressed on keyboard
+         *
+         * @param key the pressed key
+         * @return this ArtificialInput
+         */
+
+        ArtificialInput sendKey(char key);
+
+        /**
+         * Simulate a keyCode pressed on keyboard
+         *
+         * @param keyCode the pressed keyCode
+         * @return this ArtificialInput
+         */
+
+        ArtificialInput sendKeyCode(int keyCode);
     }
 }
