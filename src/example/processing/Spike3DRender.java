@@ -41,6 +41,7 @@ public class Spike3DRender extends WrapperView {
         int[] dim = ContextAWT.getScreenSize();
 
         Context context = new ContextProcessing(4 * dim[0] / 5, 4 * dim[1] / 5);
+        context.getWindow().show();
         context.start();
         context.setView(new Spike3DRender());
     }

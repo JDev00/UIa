@@ -31,7 +31,6 @@ public class HelloWorld extends WrapperViewGroup {
         // get the Paint object used by Component to colour our background
         getPaint().setColor(Theme.BACKGROUND);
 
-
         // let us create a new specialised View: a Button
         UIButton button = new UIButton(new ComponentText(
                 new Component("BUTTON", 0.25f, 0.5f, 0.1f, 0.1f).setExpanseLimit(1.2f, 1.2f)
@@ -69,7 +68,6 @@ public class HelloWorld extends WrapperViewGroup {
             if (message[1] == "POPUP") viewText.setText(((String) message[0]).contains("Hey") ? "Hide\npopup!" : "Show\npopup!");
         });
 
-
         // now, let us create a viewText. We will use it to emulate a simple popup.
         ViewText popup = new ComponentText(
                 new Component("POPUP", 0.66f, 0.5f, 0.33f, 0.5f).setExpanseLimit(1.1f, 1.1f)
@@ -101,7 +99,6 @@ public class HelloWorld extends WrapperViewGroup {
             }
         });
 
-
         // adds button and popup to the HelloWorld group
         add(button, popup);
     }
@@ -113,7 +110,9 @@ public class HelloWorld extends WrapperViewGroup {
 
         // creates a new AWT Context.
         Context context = new ContextAWT(4 * screenSize[0] / 5, 4 * screenSize[1] / 5);
-        // starts and shows the created context
+        // shows the created Context
+        context.getWindow().show();
+        // starts the created context
         context.start();
         // let our Context manage HelloWorld
         context.setView(new HelloWorld());
