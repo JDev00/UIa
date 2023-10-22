@@ -4,7 +4,7 @@ import uia.application.UIButton;
 import uia.application.awt.ContextAWT;
 import uia.core.Font;
 import uia.core.Paint;
-import uia.core.ui.Context;
+import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.ViewText;
 import uia.core.ui.callbacks.OnClick;
@@ -25,7 +25,7 @@ public class HelloWorld extends WrapperViewGroup {
         // default components are based on the decorator pattern, so you need to pass the smallest UI unit
         // (in this example: Component).
         // Here we will create a ComponentGroup that will allow us to easily manage a set of views.
-        super(new ComponentGroup(new Component("HELLOWORLD", 0.5f, 0.5f, 1f, 1f)
+        super(new ComponentGroup(new Component("HELLO_WORLD", 0.5f, 0.5f, 1f, 1f)
                 .setExpanseLimit(1f, 1f)));
 
         // get the Paint object used by Component to colour our background
@@ -61,11 +61,12 @@ public class HelloWorld extends WrapperViewGroup {
         // now comes for the interesting part of the job: showing and hiding a component without creating bad dependencies.
         // remember: events are typically called after View's state is updated.
         button.addCallback((OnClick) pointers -> {
-            button.sendMessage(button.isEnabled() ? "Ehy Bro, wake up!" : "Sleep now :)", "POPUP");
+            button.sendMessage(button.isEnabled() ? "Wake up!" : "Sleep now :)", "POPUP");
         });
         // create another event to listen for messages sent to this button
         button.addCallback((OnMessageReceived) message -> {
-            if (message[1] == "POPUP") viewText.setText(((String) message[0]).contains("Hey") ? "Hide\npopup!" : "Show\npopup!");
+            if (message[1] == "POPUP")
+                viewText.setText(((String) message[0]).contains("Hey") ? "Hide\npopup!" : "Show\npopup!");
         });
 
         // now, let us create a viewText. We will use it to emulate a simple popup.
@@ -78,7 +79,7 @@ public class HelloWorld extends WrapperViewGroup {
         // hide this popup at the beginning
         popup.setVisible(false);
         // set some text to this popup
-        popup.setText("Hi, I'm a little popup!");
+        popup.setText("Hi, I'm a popup!");
         // set text properties
         popup.setAlign(ViewText.AlignY.CENTER);
         popup.getFont()
@@ -91,7 +92,7 @@ public class HelloWorld extends WrapperViewGroup {
         popup.addCallback((OnMessageReceived) message -> {
             // if sender ID is 'BUTTON'
             if (message[1] == "BUTTON") {
-                boolean visibility = ((String) message[0]).contains("wake up");
+                boolean visibility = ((String) message[0]).contains("Wake up");
                 // shows or hides this popup
                 popup.setVisible(visibility);
                 // sends a message to BUTTON to inform it that popup woke up or went to sleep
@@ -102,8 +103,6 @@ public class HelloWorld extends WrapperViewGroup {
         // adds button and popup to the HelloWorld group
         add(button, popup);
     }
-
-    //
 
     public static void main(String[] args) {
         int[] screenSize = ContextAWT.getScreenSize();

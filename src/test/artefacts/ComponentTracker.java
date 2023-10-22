@@ -1,7 +1,7 @@
 package test.artefacts;
 
 import uia.core.Font;
-import uia.core.ui.Context;
+import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.physical.Component;
 import uia.physical.ComponentText;

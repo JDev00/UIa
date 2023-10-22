@@ -5,6 +5,4 @@ package test.artefacts;
  */
 
 public interface TestSuite extends Iterable<TestCase> {
-
-    void addTestCase(TestCase testCase);
 }

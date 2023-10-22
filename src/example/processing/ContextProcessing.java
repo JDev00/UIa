@@ -6,9 +6,11 @@ import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 import uia.core.Key;
 import uia.core.ScreenPointer;
-import uia.core.ui.Context;
+import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.Graphic;
+import uia.core.ui.context.InputEmulator;
+import uia.core.ui.context.Window;
 import uia.physical.ComponentRoot;
 import uia.physical.message.MessageStore;
 
@@ -19,7 +21,7 @@ import java.util.List;
  * {@link Context} implementation based on Processing
  */
 
-// TODO: implement context correctly
+// TODO: to implement correctly
 
 public class ContextProcessing implements Context {
     private final Window window;
@@ -29,7 +31,7 @@ public class ContextProcessing implements Context {
     private static final String RENDERER = PConstants.P3D;
 
     public ContextProcessing(int w, int h) {
-        window = new WindowPro();
+        window = new WindowProcessing();
 
         initScreenDim[0] = w;
         initScreenDim[1] = h;
@@ -209,7 +211,7 @@ public class ContextProcessing implements Context {
     }
 
     @Override
-    public ArtificialInput getArtificialInput() {
+    public InputEmulator getInputEmulator() {
         return null;
     }
 
@@ -227,7 +229,7 @@ public class ContextProcessing implements Context {
      *
      */
 
-    private static class WindowPro implements Window {
+    private static class WindowProcessing implements Window {
 
         @Override
         public Object getNative() {
@@ -272,6 +274,11 @@ public class ContextProcessing implements Context {
         @Override
         public int getHeight() {
             return 0;
+        }
+
+        @Override
+        public int[] getInsets() {
+            return null;
         }
     }
 }

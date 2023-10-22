@@ -9,8 +9,8 @@ public interface TestCase {
     /**
      * Run this test case
      *
-     * @return a not null {@link TestValidation}
+     * @param testAssertion a not null {@link TestAssertion}
      */
 
-    TestValidation run();
+    void run(TestAssertion testAssertion);
 }

@@ -1,13 +1,19 @@
 package test;
 
 import develop.math.PointDistribution;
-import test.artefacts.TestValidation;
+import test.artefacts.TestCase;
+import test.artefacts.TestSuite;
+import test.artefacts.TestUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Unit test
  */
 
-public class TestPointDistribution {
+public class TestPointDistribution implements TestSuite {
     static PointDistribution pointDistribution = new PointDistribution();
 
     static {
@@ -25,34 +31,45 @@ public class TestPointDistribution {
         }
     }
 
-    public static void minimumPointShouldBeObtained() {
-        TestValidation control = new TestValidation();
-        control.expect(pointDistribution.getMin(PointDistribution.AXIS.X)).toBeEqual(-4999.99f);
-        control.expect(pointDistribution.getMin(PointDistribution.AXIS.Y)).toBeEqual(-5000f);
+    public static TestCase minimumPointShouldBeObtained() {
+        return (testAssertion) -> {
+            testAssertion.expect(pointDistribution.getMin(PointDistribution.AXIS.X)).toBeEqual(-4999.99f);
+            testAssertion.expect(pointDistribution.getMin(PointDistribution.AXIS.Y)).toBeEqual(-5000f);
+        };
     }
 
-    public static void maximumPointShouldBeObtained() {
-        TestValidation control = new TestValidation();
-        control.expect(pointDistribution.getMax(PointDistribution.AXIS.X)).toBeEqual(2345f);
-        control.expect(pointDistribution.getMax(PointDistribution.AXIS.Y)).toBeEqual(4998.98f);
+    public static TestCase maximumPointShouldBeObtained() {
+        return (testAssertion) -> {
+            testAssertion.expect(pointDistribution.getMax(PointDistribution.AXIS.X)).toBeEqual(2345f);
+            testAssertion.expect(pointDistribution.getMax(PointDistribution.AXIS.Y)).toBeEqual(4998.98f);
+        };
     }
 
-    public static void meanShouldBeObtained() {
-        TestValidation control = new TestValidation();
-        control.expect(pointDistribution.getMean(PointDistribution.AXIS.X)).toBeEqual(-1195.14833f);
-        control.expect(pointDistribution.getMean(PointDistribution.AXIS.Y)).toBeEqual(112.66335f);
+    public static TestCase meanShouldBeObtained() {
+        return (testAssertion) -> {
+            testAssertion.expect(pointDistribution.getMean(PointDistribution.AXIS.X)).toBeEqual(-1195.14833f);
+            testAssertion.expect(pointDistribution.getMean(PointDistribution.AXIS.Y)).toBeEqual(112.66335f);
+        };
     }
 
-    public static void standardDeviationShouldBeObtained() {
-        TestValidation control = new TestValidation();
-        control.expect(pointDistribution.getStandardDeviation(PointDistribution.AXIS.X)).toBeEqual(2472.1162f);
-        control.expect(pointDistribution.getStandardDeviation(PointDistribution.AXIS.Y)).toBeEqual(2682.5352f);
+    public static TestCase standardDeviationShouldBeObtained() {
+        return (testAssertion) -> {
+            testAssertion.expect(pointDistribution.getStandardDeviation(PointDistribution.AXIS.X)).toBeEqual(2472.1162f);
+            testAssertion.expect(pointDistribution.getStandardDeviation(PointDistribution.AXIS.Y)).toBeEqual(2682.5352f);
+        };
+    }
+
+    @Override
+    public Iterator<TestCase> iterator() {
+        return new ArrayList<>(Arrays.asList(
+                minimumPointShouldBeObtained(),
+                maximumPointShouldBeObtained(),
+                meanShouldBeObtained(),
+                standardDeviationShouldBeObtained()
+        )).iterator();
     }
 
     public static void main(String[] args) {
-        minimumPointShouldBeObtained();
-        maximumPointShouldBeObtained();
-        meanShouldBeObtained();
-        standardDeviationShouldBeObtained();
+        TestUtils.runTestSuite(new TestPointDistribution());
     }
 }
