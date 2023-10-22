@@ -69,7 +69,7 @@ public class Sanity {
 
         ViewText text = createViewText("TEXT", 0.33f, 0.45f, 0.5f, 0.75f);
         text.setAlign(ViewText.AlignX.RIGHT);
-        text.setText(Utility.readAll("src\\test\\testSanity.java"));
+        text.setText(Utility.readAll("src\\test\\Sanity.java"));
         text.setRotation(0.3f);
         text.setSingleLine(true);
 
