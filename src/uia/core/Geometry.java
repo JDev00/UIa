@@ -19,6 +19,13 @@ public class Geometry {
         vertices = new ArrayList<>();
     }
 
+    @Override
+    public String toString() {
+        return "Geometry{" +
+                "vertices=" + vertices +
+                '}';
+    }
+
     /**
      * Remove all vertices
      *

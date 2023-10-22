@@ -9,17 +9,18 @@ import java.util.Objects;
  */
 
 public class Font {
-
     private static final Measure NO_MEASURE = (off, len, in) -> 0;
 
     /**
      * Default Desktop Font size
      */
+
     public static final float FONT_SIZE_DESKTOP = 21f;
 
     /**
      * Font styles
      */
+
     public enum STYLE {PLAIN, BOLD, ITALIC}
 
     private String name;
@@ -54,6 +55,20 @@ public class Font {
          */
 
         float width(int off, int len, char... in);
+    }
+
+    @Override
+    public String toString() {
+        return "Font{" +
+                "name='" + name + '\'' +
+                ", style=" + style +
+                ", size=" + size +
+                ", ascent=" + ascent +
+                ", descent=" + descent +
+                ", leading=" + leading +
+                ", leadingFactor=" + leadingFactor +
+                ", nativeFont=" + nativeFont +
+                '}';
     }
 
     /**

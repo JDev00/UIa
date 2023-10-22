@@ -3,7 +3,7 @@ package develop.math;
 import uia.application.awt.ContextAWT;
 import uia.core.Geometry;
 import uia.core.Shape;
-import uia.core.ui.Context;
+import uia.core.ui.context.Context;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnClick;

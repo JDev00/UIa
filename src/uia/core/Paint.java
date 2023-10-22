@@ -20,6 +20,16 @@ public class Paint {
 
     private final Object[] natives = new Object[3];
 
+    @Override
+    public String toString() {
+        return "Paint{" +
+                "color=" + Arrays.toString(color) +
+                ", colorStroke=" + Arrays.toString(colorStroke) +
+                ", strokeWidth=" + strokeWidth +
+                ", natives=" + Arrays.toString(natives) +
+                '}';
+    }
+
     /**
      * Invalidate this Paint and force the system to rebuild its state
      */
@@ -257,8 +267,6 @@ public class Paint {
         return result;
     }
 
-    //
-
     /**
      * Color is used to represent an RGB based color format.
      */
@@ -351,12 +359,6 @@ public class Paint {
 
         public static int getChannel(int color, CHANNEL channel) {
             return (color >> channel.getOffset()) & 0xFF;
-        }
-
-        // test
-        public static void main(String[] args) {
-            int color = getDecimal("FFC8FBFE");
-            assert getChannel(color, CHANNEL.R) == 255;
         }
     }
 }

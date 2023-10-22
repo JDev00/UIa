@@ -25,6 +25,17 @@ public class Key {
         this.keyChar = keyChar;
     }
 
+    @Override
+    public String toString() {
+        return "Key{" +
+                "keyChar=" + keyChar +
+                ", keyCode=" + keyCode +
+                ", modifiers=" + modifiers +
+                ", action=" + action +
+                ", consumed=" + consumed +
+                '}';
+    }
+
     /**
      * Consume this Key.
      * <br>

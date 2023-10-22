@@ -14,7 +14,7 @@ import static uia.utility.TrigTable.*;
  * <br>
  * Shape's responsibility is to transform a Geometry object.
  * <br>
- * <b>By design, shape's geometry is centered based.</b>
+ * <b>By design, shape's geometry is center based.</b>
  */
 
 public class Shape implements Movable, Collider {

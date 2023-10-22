@@ -1,5 +1,7 @@
 package uia.core;
 
+import java.util.Arrays;
+
 /**
  * Touch/Mouse pointer representation
  */
@@ -28,6 +30,16 @@ public class ScreenPointer {
         desc = new int[]{x, y, wheel};
 
         if (action == ACTION.EXITED) consumed = true;
+    }
+
+    @Override
+    public String toString() {
+        return "ScreenPointer{" +
+                "action=" + action +
+                ", button=" + button +
+                ", data=" + Arrays.toString(desc) +
+                ", consumed=" + consumed +
+                '}';
     }
 
     /**

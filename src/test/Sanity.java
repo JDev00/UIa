@@ -6,7 +6,7 @@ import uia.application.UIButtonList;
 import uia.application.UIButtonSwitch;
 import uia.application.UICalendar;
 import uia.application.awt.ContextAWT;
-import uia.core.ui.Context;
+import uia.core.ui.context.Context;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.callbacks.OnClick;
@@ -31,6 +31,13 @@ public class Sanity {
         );
     }
 
+    /**
+     * Create a new ViewGroup that fills the entire screen.
+     * Its dimension is the screen one and is positioned at the screen center.
+     *
+     * @return a new {@link ViewGroup} instance
+     */
+
     public static ViewGroup createRoot() {
         ViewGroup result = createViewGroup("ROOT_GROUP", 0.5f, 0.5f, 1f, 1f);
         result.getPaint().setColor(Theme.BACKGROUND);
@@ -41,9 +48,14 @@ public class Sanity {
         return new ComponentTracker(context, 0.95f, 0.95f, 0.1f, 0.1f);
     }
 
+    /**
+     * Create a new ContextAWT with width: 720 and height: 540 and start it.
+     *
+     * @return a new {@link ContextAWT}
+     */
+
     public static Context createMockContext() {
-        int[] dim = ContextAWT.getScreenSize();
-        Context context = new ContextAWT(4 * dim[0] / 5, 4 * dim[1] / 5);
+        Context context = new ContextAWT(720, 540);
         context.start();
         return context;
     }

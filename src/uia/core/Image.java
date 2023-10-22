@@ -17,6 +17,16 @@ public class Image {
         height = 0;
     }
 
+    @Override
+    public String toString() {
+        return "Image{" +
+                "width=" + width +
+                ", height=" + height +
+                ", path='" + path + '\'' +
+                ", nativeImage=" + nativeImage +
+                '}';
+    }
+
     /**
      * Invalidates this Image and force the system to rebuild its state
      */

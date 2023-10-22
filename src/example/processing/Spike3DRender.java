@@ -2,7 +2,7 @@ package example.processing;
 
 import uia.application.awt.ContextAWT;
 import processing.core.PGraphics;
-import uia.core.ui.Context;
+import uia.core.ui.context.Context;
 import uia.core.ui.Graphic;
 import uia.physical.wrapper.WrapperView;
 import uia.physical.Component;

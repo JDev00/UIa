@@ -2,7 +2,7 @@ package develop;
 
 import uia.application.awt.ContextAWT;
 import uia.core.basement.Callback;
-import uia.core.ui.Context;
+import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
