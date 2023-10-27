@@ -27,6 +27,7 @@ public class HelloWorld extends WrapperViewGroup {
         // Here we will create a ComponentGroup that will allow us to easily manage a set of views.
         super(new ComponentGroup(new Component("HELLO_WORLD", 0.5f, 0.5f, 1f, 1f)
                 .setExpanseLimit(1f, 1f)));
+        getPaint().setColor(Theme.BACKGROUND);
 
         // let us create a new specialised View: a Button
         UIButton button = createCustomButton();
@@ -63,7 +64,7 @@ public class HelloWorld extends WrapperViewGroup {
 
     private static UIButton createCustomButton() {
         UIButton result = new UIButton(new ComponentText(
-                new Component("BUTTON", 0.5f, 0.5f, 0.1f, 0.1f).setExpanseLimit(1.2f, 1.2f)
+                new Component("BUTTON", 0.25f, 0.5f, 0.1f, 0.1f).setExpanseLimit(1.2f, 1.2f)
         ));
         // get the Paint used when the button is activated and set: a new color, stroke color and stroke width
         result.getPaint(UIButton.STATE.ENABLED)
