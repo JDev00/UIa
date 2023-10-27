@@ -30,7 +30,7 @@ public interface InputEmulator {
      * @return this InputEmulator
      */
 
-    InputEmulator moveOnScreen(int xStart, int yStart, int xEnd, int yEnd, int movements, float duration);
+    InputEmulator moveMouseOnScreen(int xStart, int yStart, int xEnd, int yEnd, int movements, float duration);
 
     /**
      * Emulate a mouse dragging on screen.
@@ -44,7 +44,7 @@ public interface InputEmulator {
      * @return this InputEmulator
      */
 
-    InputEmulator dragOnScreen(int xStart, int yStart, int xEnd, int yEnd, int movements, float duration);
+    InputEmulator dragMouseOnScreen(int xStart, int yStart, int xEnd, int yEnd, int movements, float duration);
 
     /**
      * Emulate a key pressed on keyboard
