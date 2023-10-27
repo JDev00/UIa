@@ -27,7 +27,8 @@ public class ComponentTracker extends WrapperViewText {
     public void update(View parent) {
         super.update(parent);
 
+        // context.getFrameRate()
         long mem = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
-        setText("FPS: " + context.getFrameRate() + "\nMem: " + mem + " MB");
+        setText("FPS: untracked" + "\nMem: " + mem + " MB");
     }
 }

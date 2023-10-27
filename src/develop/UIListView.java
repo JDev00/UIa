@@ -213,7 +213,7 @@ public class UIListView extends WrapperView implements ViewGroup {
         }
 
         Context context = new ContextAWT(1800, 900);
-        context.start();
+        context.setLifecycleStage(Context.LifecycleStage.RUN);
         context.setView(view);
     }
 

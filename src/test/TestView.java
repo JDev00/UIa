@@ -111,7 +111,7 @@ public class TestView implements TestSuite {
 
             Context context = createMockContext();
             context.setView(root);
-            context.getInputEmulator().moveOnScreen(100, 100, 110, 110, 20, 0.1f);
+            context.getInputEmulator().moveMouseOnScreen(100, 100, 110, 110, 20, 0.1f);
 
             testAssertion.toBeEqual(true, 50);
         };
@@ -124,7 +124,7 @@ public class TestView implements TestSuite {
 
             Context context = createMockContext();
             context.setView(root);
-            context.getInputEmulator().moveOnScreen(100, 100, 110, 110, 20, 0.1f);
+            context.getInputEmulator().moveMouseOnScreen(100, 100, 110, 110, 20, 0.1f);
 
             testAssertion.toBeEqual(true, 50);
         };
@@ -138,7 +138,7 @@ public class TestView implements TestSuite {
 
             Context context = createMockContext();
             context.setView(root);
-            context.getInputEmulator().moveOnScreen(340, 270, 500, 243, 20, 0.25f);
+            context.getInputEmulator().moveMouseOnScreen(340, 270, 500, 243, 20, 0.25f);
 
             testAssertion.toBeEqual(true, 300);
         };

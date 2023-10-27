@@ -108,14 +108,14 @@ public final class ArtificialInput implements InputEmulator {
     }
 
     @Override
-    public InputEmulator moveOnScreen(int xStart, int yStart, int xEnd, int yEnd, int movements, float duration) {
+    public InputEmulator moveMouseOnScreen(int xStart, int yStart, int xEnd, int yEnd, int movements, float duration) {
         putScreenPointerSequence(ScreenPointer.ACTION.MOVED, null,
                 xStart, yStart, xEnd, yEnd, movements, duration);
         return this;
     }
 
     @Override
-    public InputEmulator dragOnScreen(int xStart, int yStart, int xEnd, int yEnd, int movements, float duration) {
+    public InputEmulator dragMouseOnScreen(int xStart, int yStart, int xEnd, int yEnd, int movements, float duration) {
         putScreenPointerSequence(ScreenPointer.ACTION.DRAGGED, null,
                 xStart, yStart, xEnd, yEnd, movements, duration);
         return this;

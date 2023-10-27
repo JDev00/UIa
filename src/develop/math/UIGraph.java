@@ -430,7 +430,7 @@ public class UIGraph extends WrapperView {
         //uiGraph.setRotation(0.15f);
 
         Context context = new ContextAWT(1800, 900);
-        context.start();
+        context.setLifecycleStage(Context.LifecycleStage.RUN);
         context.setView(uiGraph);
     }
 }

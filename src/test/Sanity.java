@@ -56,7 +56,7 @@ public class Sanity {
 
     public static Context createMockContext() {
         Context context = new ContextAWT(720, 540);
-        context.start();
+        context.setLifecycleStage(Context.LifecycleStage.RUN);
         return context;
     }
 
