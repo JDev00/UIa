@@ -6,22 +6,14 @@ import uia.core.*;
 import uia.core.ui.Graphic;
 
 public class GraphicProcessing implements Graphic {
-    private PApplet pApplet;
-    private PGraphics pGraphics;
+    private final PApplet pApplet;
+    private final PGraphics pGraphics;
 
     private final PImage fakeImage = new PImage(1, 1, PConstants.RGB);
 
-    @Override
-    public void setNative(Object data) {
-        Object[] o = (Object[]) data;
-
-        pGraphics = (PGraphics) o[0];
-        pApplet = (PApplet) o[1];
-    }
-
-    @Override
-    public Object getNative() {
-        return pGraphics;
+    public GraphicProcessing(PApplet pAppletReference, PGraphics pGraphicsReference) {
+        pApplet = pAppletReference;
+        pGraphics = pGraphicsReference;
     }
 
     @Override
@@ -31,12 +23,10 @@ public class GraphicProcessing implements Graphic {
 
     @Override
     public void setClip(Shape shape) {
-        // TODO: 18/08/2023 implement functionality
     }
 
     @Override
     public void restoreClip() {
-        // TODO: 18/08/2023 implement functionality
     }
 
     @Override

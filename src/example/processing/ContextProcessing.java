@@ -18,14 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link Context} implementation based on Processing
+ * Processing based {@link Context} implementation. Just demonstrative.
  */
-
-// TODO: to implement correctly
 
 public class ContextProcessing implements Context {
     private final Window window;
-    private final Renderer renderer;
+    private final RendererEngine rendererEngine;
 
     private static final int[] initScreenDim = new int[2];
     private static final String RENDERER = PConstants.P3D;
@@ -36,16 +34,15 @@ public class ContextProcessing implements Context {
         initScreenDim[0] = w;
         initScreenDim[1] = h;
 
-        renderer = new Renderer();
+        rendererEngine = new RendererEngine();
     }
 
-    // Renderer
+    //
 
-    public static class Renderer extends PApplet {
+    public static class RendererEngine extends PApplet {
         private Graphic graphic;
 
         private static View currentView;
-
         private final View rootView = new ComponentRoot();
 
         private final List<ScreenPointer> screenPointers = new ArrayList<>();
@@ -57,18 +54,12 @@ public class ContextProcessing implements Context {
 
         @Override
         public void setup() {
-            graphic = new GraphicProcessing();
+            graphic = new GraphicProcessing(this, g);
         }
-
-        private final Object[] nativeData = new Object[2];
 
         @Override
         public void draw() {
             g.clear();
-
-            nativeData[0] = g;
-            nativeData[1] = this;
-            graphic.setNative(nativeData);
 
             rootView.setPosition(0f, 0f);
             rootView.setDimension(width, height);
@@ -177,32 +168,28 @@ public class ContextProcessing implements Context {
 
     @Override
     public void setView(View view) {
-        Renderer.currentView = view;
+        RendererEngine.currentView = view;
     }
 
     @Override
-    public void setHints(HINT... hint) {
+    public void setLifecycleStage(LifecycleStage lifecycleStage) {
+        switch (lifecycleStage) {
+            case RUN:
+                PApplet.main(rendererEngine.getClass());
+                return;
 
+            case STOP:
+                rendererEngine.stop();
+        }
     }
 
     @Override
-    public void start() {
-        PApplet.main(renderer.getClass());
+    public LifecycleStage getLifecycleStage() {
+        return null;
     }
 
     @Override
-    public void stop() {
-        renderer.stop();
-    }
-
-    @Override
-    public void kill() {
-
-    }
-
-    @Override
-    public int getFrameRate() {
-        return (int) renderer.frameRate;
+    public void setRenderingHint(RenderingHint... hint) {
     }
 
     @Override
@@ -216,25 +203,13 @@ public class ContextProcessing implements Context {
     }
 
     @Override
-    public boolean isRunning() {
-        return renderer.isLooping();
-    }
-
-    @Override
-    public String clipboard(CLIPBOARD_OPERATION operation, String str) {
+    public String clipboard(ClipboardOperation operation, String str) {
         return null;
     }
 
-    /*
-     *
-     */
+    //
 
     private static class WindowProcessing implements Window {
-
-        @Override
-        public Object getNative() {
-            return null;
-        }
 
         @Override
         public Window setAlwaysOnTop(boolean alwaysOnTop) {
