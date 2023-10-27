@@ -83,7 +83,7 @@ public abstract class WrapperView implements View {
     }
 
     @Override
-    public void setColliderPolicy(COLLIDER_POLICY policy) {
+    public void setColliderPolicy(ColliderPolicy policy) {
         view.setColliderPolicy(policy);
     }
 

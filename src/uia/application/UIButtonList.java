@@ -42,7 +42,7 @@ public class UIButtonList extends WrapperView {
 
         viewLeft = new Component("LEFT", 0.1f, 0.5f, 0.1f, 0.5f).setExpanseLimit(1.2f, 1.2f);
         viewLeft.buildGeometry(Figure::arrow, false);
-        viewLeft.setColliderPolicy(COLLIDER_POLICY.AABB);
+        viewLeft.setColliderPolicy(ColliderPolicy.AABB);
         viewLeft.setConsumer(CONSUMER.POINTER, false);
         viewLeft.getPaint().setColor(Theme.BLACK);
         viewLeft.setRotation(TrigTable.PI);
@@ -50,7 +50,7 @@ public class UIButtonList extends WrapperView {
 
         viewRight = new Component("RIGHT", 0.9f, 0.5f, 0.1f, 0.5f).setExpanseLimit(1.2f, 1.2f);
         viewRight.buildGeometry(Figure::arrow, false);
-        viewRight.setColliderPolicy(COLLIDER_POLICY.AABB);
+        viewRight.setColliderPolicy(ColliderPolicy.AABB);
         viewRight.setConsumer(CONSUMER.POINTER, false);
         viewRight.getPaint().setColor(Theme.BLACK);
         viewRight.addCallback((OnClick) pointers -> show(index + 1));

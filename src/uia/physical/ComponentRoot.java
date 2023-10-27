@@ -110,7 +110,7 @@ public final class ComponentRoot implements View {
     }
 
     @Override
-    public void setColliderPolicy(COLLIDER_POLICY policy) {
+    public void setColliderPolicy(ColliderPolicy policy) {
         throw new UnsupportedOperationException(unsupported_error);
     }
 

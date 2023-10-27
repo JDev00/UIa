@@ -33,7 +33,7 @@ public class UIButtonFilled extends WrapperView {
 
         icon = new Component("ICON", right ? 0.875f : 0.125f, 0.5f, 0.15f, 0.4f)
                 .setExpanseLimit(1.25f, 1.25f);
-        icon.setColliderPolicy(COLLIDER_POLICY.AABB);
+        icon.setColliderPolicy(ColliderPolicy.AABB);
         icon.setConsumer(CONSUMER.POINTER, false);
         icon.buildGeometry(Figure::arrow, false);
         icon.setRotation(right ? 0f : TrigTable.PI);

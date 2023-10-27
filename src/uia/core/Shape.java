@@ -3,6 +3,8 @@ package uia.core;
 import uia.core.basement.Collider;
 import uia.core.basement.Movable;
 
+import java.util.Objects;
+
 import static uia.utility.TrigTable.*;
 
 /**
@@ -19,7 +21,7 @@ import static uia.utility.TrigTable.*;
 
 public class Shape implements Movable, Collider {
     private Geometry geometry;
-    private COLLIDER_POLICY policy = COLLIDER_POLICY.SAT;
+    private ColliderPolicy policy = ColliderPolicy.SAT;
 
     private final float[] bounds;
     private float r_width, r_height;
@@ -92,8 +94,8 @@ public class Shape implements Movable, Collider {
     }
 
     @Override
-    public void setColliderPolicy(COLLIDER_POLICY policy) {
-        this.policy = policy;
+    public void setColliderPolicy(ColliderPolicy policy) {
+        this.policy = Objects.requireNonNull(policy);
     }
 
     @Override

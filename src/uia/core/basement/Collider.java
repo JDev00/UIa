@@ -3,14 +3,13 @@ package uia.core.basement;
 import static java.lang.Math.abs;
 
 /**
- * Collider can be seen as an invisible cloth that wrap an object.
- * It allows for collision detection between two objects.
+ * Collider can be seen as an invisible cloth that wrap an object. It allows for collision detection between two objects.
  */
 
 public interface Collider {
 
     /**
-     * COLLIDER_POLICY collects some common-supported collisions detection mechanisms between two objects.
+     * ColliderPolicy defines some common-supported collisions detection mechanisms between two objects.
      * <br>
      * Some notes:
      * <ul>
@@ -20,15 +19,16 @@ public interface Collider {
      * </ul>
      */
 
-    enum COLLIDER_POLICY {AABB, CIRCLE, SAT}
+    enum ColliderPolicy {AABB, CIRCLE, SAT}
 
     /**
      * Set collisions detection mechanism.
      *
-     * @param policy a not null {@link COLLIDER_POLICY} instance
+     * @param colliderPolicy a not null {@link ColliderPolicy} instance
+     * @throws NullPointerException if {@code colliderPolicy == null}
      */
 
-    void setColliderPolicy(COLLIDER_POLICY policy);
+    void setColliderPolicy(ColliderPolicy colliderPolicy);
 
     /**
      * Return the collider boundaries as a rectangle.
@@ -48,7 +48,7 @@ public interface Collider {
     /**
      * Check if the given point is inside this collider.
      * The algorithm, used to check for a collision, is selected according to the specified collision
-     * policy (set through {@link #setColliderPolicy(COLLIDER_POLICY)}).
+     * policy (set with {@link #setColliderPolicy(ColliderPolicy)}).
      *
      * @param x the point's position along x-axis
      * @param y the point's position along y-axis

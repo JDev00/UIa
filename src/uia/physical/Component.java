@@ -169,7 +169,7 @@ public final class Component implements View {
     }
 
     @Override
-    public void setColliderPolicy(COLLIDER_POLICY policy) {
+    public void setColliderPolicy(ColliderPolicy policy) {
         shape.setColliderPolicy(policy);
     }
 
