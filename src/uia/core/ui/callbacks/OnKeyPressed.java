@@ -4,9 +4,9 @@ import uia.core.basement.Callback;
 import uia.core.Key;
 
 /**
- * Event called when a key is pressed.
+ * Callback called when a key is pressed.
  * <br>
- * This event provides the {@link Key} pressed.
+ * It provides the pressed {@link Key}.
  */
 
 public interface OnKeyPressed extends Callback<Key> {

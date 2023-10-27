@@ -3,12 +3,12 @@ package uia.core.ui.callbacks;
 import uia.core.basement.Callback;
 
 /**
- * Event called when target receives the message.
+ * Callback called when recipient receives the message.
  * <br>
- * This event provides an array made of:
+ * It provides an array made of:
  * <ul>
- *     <li>the message (Object);</li>
- *     <li>the sender ID (String).</li>
+ *     <li>the message as an Object;</li>
+ *     <li>the sender ID as a String.</li>
  * </ul>
  */
 

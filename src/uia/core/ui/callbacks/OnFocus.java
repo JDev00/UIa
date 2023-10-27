@@ -3,9 +3,9 @@ package uia.core.ui.callbacks;
 import uia.core.basement.Callback;
 
 /**
- * Event called when focus is gained or lost by a View.
+ * Callback called when focus is gained or lost by a View.
  * <br>
- * This event provides a boolean whose value is True is focus is gained.
+ * It provides a Boolean whose value is True when focus is gained.
  */
 
 public interface OnFocus extends Callback<Boolean> {

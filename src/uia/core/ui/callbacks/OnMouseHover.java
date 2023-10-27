@@ -6,9 +6,9 @@ import uia.core.ScreenPointer;
 import java.util.List;
 
 /**
- * Event called by a View when at least one Pointer is inside its area.
+ * Callback called by a View when at least one ScreenPointer is within its area.
  * <br>
- * This event provides all the {@link ScreenPointer}s that are currently inside the View's area.
+ * It provides the {@link ScreenPointer}s, as a List, that are within the View's area.
  */
 
 public interface OnMouseHover extends Callback<List<ScreenPointer>> {
