@@ -12,6 +12,15 @@ import uia.core.*;
 public interface Graphic {
 
     /**
+     * Set the corresponding platform/library graphics
+     *
+     * @param nativeGraphic a not null platform Graphic Object
+     * @throws NullPointerException if {@code nativeGraphic == null}
+     */
+
+    void setNativeGraphic(Object nativeGraphic);
+
+    /**
      * Dispose of this Graphic and releases any system resources that it is using.
      * A Graphic object cannot be used after <code>dispose</code>has been called.
      */

@@ -5,15 +5,21 @@ import processing.core.*;
 import uia.core.*;
 import uia.core.ui.Graphic;
 
+import java.util.Objects;
+
 public class GraphicProcessing implements Graphic {
     private final PApplet pApplet;
-    private final PGraphics pGraphics;
+    private PGraphics pGraphics;
 
     private final PImage fakeImage = new PImage(1, 1, PConstants.RGB);
 
-    public GraphicProcessing(PApplet pAppletReference, PGraphics pGraphicsReference) {
+    public GraphicProcessing(PApplet pAppletReference) {
         pApplet = pAppletReference;
-        pGraphics = pGraphicsReference;
+    }
+
+    @Override
+    public void setNativeGraphic(Object nativeGraphic) {
+        pGraphics = (PGraphics) Objects.requireNonNull(nativeGraphic);
     }
 
     @Override

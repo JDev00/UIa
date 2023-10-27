@@ -35,10 +35,10 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class ContextAWT implements Context {
-    private ScheduledExecutorService mainThread;
+    private ScheduledExecutorService renderingThread;
+    private LifecycleStage lifecycleStage = LifecycleStage.STOP;
     private final WindowAWT window;
     private final InputEmulator inputEmulator;
-    private boolean isRunning = false;
 
     public ContextAWT(int x, int y) {
         window = new WindowAWT(x, y);
@@ -66,53 +66,56 @@ public class ContextAWT implements Context {
         window.view = view;
     }
 
-    @Override
-    public void setHints(HINT... hint) {
-        List<HINT> hints = window.hints;
-        hints.clear();
-        hints.addAll(Arrays.asList(hint));
-    }
-
-    @Override
-    public void start() {
-        if (!isRunning) {
-            int period = 1000 / 60;
-            mainThread = Executors.newSingleThreadScheduledExecutor();
-            mainThread.scheduleAtFixedRate(window::updateAndDrawComponents, 0, period, TimeUnit.MILLISECONDS);
-
-            isRunning = true;
-        }
-    }
-
-    @Override
-    public boolean isRunning() {
-        return isRunning;
-    }
-
     /**
      * Helper function. Kill the rendering process.
      */
 
-    private void killRenderingProcess() {
+    private void killRenderingThread() {
         try {
-            mainThread.shutdownNow();
+            renderingThread.shutdownNow();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void stop() {
-        if (isRunning) {
-            killRenderingProcess();
-            isRunning = false;
+    public void setLifecycleStage(LifecycleStage lifecycleStage) {
+        if (this.lifecycleStage.equals(lifecycleStage)) {
+            return;
+        }
+
+        this.lifecycleStage = Objects.requireNonNull(lifecycleStage);
+
+        switch (lifecycleStage) {
+            case RUN:
+                int repaintPeriodMillis = 1000 / 60;
+                renderingThread = Executors.newSingleThreadScheduledExecutor();
+                renderingThread.scheduleAtFixedRate(window::updateAndDrawComponents,
+                        0,
+                        repaintPeriodMillis,
+                        TimeUnit.MILLISECONDS);
+                return;
+
+            case STOP:
+                killRenderingThread();
+                return;
+
+            default:
+                killRenderingThread();
+                System.exit(1);
         }
     }
 
     @Override
-    public void kill() {
-        killRenderingProcess();
-        System.exit(1);
+    public LifecycleStage getLifecycleStage() {
+        return lifecycleStage;
+    }
+
+    @Override
+    public void setRenderingHint(RenderingHint... hint) {
+        List<RenderingHint> hints = window.hints;
+        hints.clear();
+        hints.addAll(Arrays.asList(hint));
     }
 
     @Override
@@ -126,13 +129,8 @@ public class ContextAWT implements Context {
     }
 
     @Override
-    public int getFrameRate() {
-        return window.frameRate;
-    }
-
-    @Override
-    public String clipboard(CLIPBOARD_OPERATION operation, String str) {
-        if (CLIPBOARD_OPERATION.COPY.equals(operation)) {
+    public String clipboard(ClipboardOperation operation, String str) {
+        if (ClipboardOperation.COPY.equals(operation)) {
             StringSelection selection = new StringSelection(str);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
@@ -166,7 +164,7 @@ public class ContextAWT implements Context {
         private View view;
 
         private final List<ScreenPointer> screenPointers = new ArrayList<>();
-        private final List<HINT> hints;
+        private final List<RenderingHint> hints;
 
         private final int[] screenSize = new int[2];
         private int frameRate;
@@ -259,7 +257,7 @@ public class ContextAWT implements Context {
 
 
             hints = new ArrayList<>();
-            hints.add(HINT.ANTIALIASING_ON);
+            hints.add(RenderingHint.ANTIALIASING_ON);
         }
 
         /**
@@ -323,11 +321,6 @@ public class ContextAWT implements Context {
         private void updateAndDrawComponents() {
             renderer.update();
             renderer.repaint();
-        }
-
-        @Override
-        public Object getNative() {
-            return jFrame;
         }
 
         @Override
@@ -468,7 +461,7 @@ public class ContextAWT implements Context {
              */
 
             private void applyHints(Graphics2D g2d) {
-                for (HINT i : hints) {
+                for (RenderingHint i : hints) {
                     switch (i) {
                         case ANTIALIASING_ON:
                             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -476,16 +469,16 @@ public class ContextAWT implements Context {
                         case ANTIALIASING_OFF:
                             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
                             break;
-                        case ANTIALIASING_TEXT_ON:
+                        case TEXT_ANTIALIASING_ON:
                             g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
                             break;
-                        case ANTIALIASING_TEXT_OFF:
+                        case TEXT_ANTIALIASING_OFF:
                             g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
                             break;
-                        case RENDER_QUALITY_COLOR_HIGH:
+                        case COLOR_QUALITY_HIGH:
                             g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
                             break;
-                        case RENDER_QUALITY_COLOR_LOW:
+                        case COLOR_QUALITY_LOW:
                             g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
                             break;
                     }
@@ -493,14 +486,12 @@ public class ContextAWT implements Context {
             }
 
             @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
+            protected void paintComponent(Graphics graphics) {
+                super.paintComponent(graphics);
 
-                Graphics2D g2d = (Graphics2D) g;
+                applyHints((Graphics2D) graphics);
 
-                applyHints(g2d);
-
-                graphic.setNative(g2d);
+                graphic.setNativeGraphic(graphics);
 
                 if (view != null) {
                     view.draw(graphic);

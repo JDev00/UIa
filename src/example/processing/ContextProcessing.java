@@ -54,12 +54,14 @@ public class ContextProcessing implements Context {
 
         @Override
         public void setup() {
-            graphic = new GraphicProcessing(this, g);
+            graphic = new GraphicProcessing(this);
         }
 
         @Override
         public void draw() {
             g.clear();
+
+            graphic.setNativeGraphic(g);
 
             rootView.setPosition(0f, 0f);
             rootView.setDimension(width, height);
