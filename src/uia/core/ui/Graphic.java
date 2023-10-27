@@ -5,30 +5,15 @@ import uia.core.*;
 /**
  * Graphic ADT.
  * <br>
- * A Graphic is responsible for drawing things on the screen. It is designed to provide a set of functionalities
- * that are unrelated to the specific platform. Eventually, it is possible to access the native Graphic
- * through {@link #getNative()}.
+ * A Graphic is responsible for drawing things on the screen. It is designed to provide a set of primitive functionalities
+ * that are unrelated to the specific platform.
  */
 
 public interface Graphic {
 
     /**
-     * Set the native objects
-     *
-     * @param nativeObject a not null native objects
-     */
-
-    void setNative(Object nativeObject);
-
-    /**
-     * @return the native object or null according to the implementation
-     */
-
-    Object getNative();
-
-    /**
      * Dispose of this Graphic and releases any system resources that it is using.
-     * A <code>Graphic</code> object cannot be used after <code>dispose</code>has been called.
+     * A Graphic object cannot be used after <code>dispose</code>has been called.
      */
 
     void dispose();

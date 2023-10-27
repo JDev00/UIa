@@ -13,12 +13,6 @@ package uia.core.ui.context;
 public interface Window {
 
     /**
-     * @return the native window object
-     */
-
-    Object getNative();
-
-    /**
      * Make this Window visible on the screen
      */
 
