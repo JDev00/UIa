@@ -74,6 +74,12 @@ public interface Window {
     int getHeight();
 
     /**
+     * @return true if this Window is on focus
+     */
+
+    boolean isFocused();
+
+    /**
      * @return the window frame insets (title bar height and left and right padding of the drawing area)
      */
 

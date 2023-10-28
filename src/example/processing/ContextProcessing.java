@@ -17,6 +17,7 @@ import uia.physical.message.MessageStore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Processing based {@link Context} implementation. Just demonstrative.
@@ -25,6 +26,7 @@ import java.util.List;
 public class ContextProcessing implements Context {
     private final Window window;
     private final RendererEngine rendererEngine;
+    private LifecycleStage lifecycleStage = LifecycleStage.STOP;
 
     private static final int[] initScreenDim = new int[2];
     private static final String RENDERER = PConstants.P3D;
@@ -36,6 +38,49 @@ public class ContextProcessing implements Context {
         initScreenDim[1] = h;
 
         rendererEngine = new RendererEngine();
+    }
+
+    @Override
+    public void setView(View view) {
+        RendererEngine.currentView = view;
+    }
+
+    @Override
+    public void setLifecycleStage(LifecycleStage lifecycleStage) {
+        if (this.lifecycleStage.equals(lifecycleStage)) {
+            return;
+        }
+
+        this.lifecycleStage = lifecycleStage;
+        if (Objects.requireNonNull(lifecycleStage) == LifecycleStage.RUN) {
+            PApplet.runSketch(new String[]{"RendererEngine"}, rendererEngine);
+        } else {
+            rendererEngine.stop();
+        }
+    }
+
+    @Override
+    public LifecycleStage getLifecycleStage() {
+        return lifecycleStage;
+    }
+
+    @Override
+    public void setRenderingHint(RenderingHint... hint) {
+    }
+
+    @Override
+    public Window getWindow() {
+        return window;
+    }
+
+    @Override
+    public InputEmulator getInputEmulator() {
+        return null;
+    }
+
+    @Override
+    public String clipboard(ClipboardOperation operation, String str) {
+        return null;
     }
 
     //
@@ -172,47 +217,6 @@ public class ContextProcessing implements Context {
         }
     }
 
-    @Override
-    public void setView(View view) {
-        RendererEngine.currentView = view;
-    }
-
-    @Override
-    public void setLifecycleStage(LifecycleStage lifecycleStage) {
-        switch (lifecycleStage) {
-            case RUN:
-                PApplet.main(rendererEngine.getClass());
-                return;
-
-            case STOP:
-                rendererEngine.stop();
-        }
-    }
-
-    @Override
-    public LifecycleStage getLifecycleStage() {
-        return null;
-    }
-
-    @Override
-    public void setRenderingHint(RenderingHint... hint) {
-    }
-
-    @Override
-    public Window getWindow() {
-        return window;
-    }
-
-    @Override
-    public InputEmulator getInputEmulator() {
-        return null;
-    }
-
-    @Override
-    public String clipboard(ClipboardOperation operation, String str) {
-        return null;
-    }
-
     //
 
     private static class WindowProcessing implements Window {
@@ -255,6 +259,11 @@ public class ContextProcessing implements Context {
         @Override
         public int getHeight() {
             return 0;
+        }
+
+        @Override
+        public boolean isFocused() {
+            return false;
         }
 
         @Override

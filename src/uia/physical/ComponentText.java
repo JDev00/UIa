@@ -21,9 +21,8 @@ import uia.physical.wrapper.WrapperView;
  */
 
 public final class ComponentText extends WrapperView implements ViewText {
-
     /**
-     * Not null array used to scroll text along x-axis and y-axis.
+     * Array of Scroller used to scroll text on x-axis and y-axis.
      */
     public Scroller[] scroller;
 
@@ -39,10 +38,8 @@ public final class ComponentText extends WrapperView implements ViewText {
     private String text = "";
     private String description = "";
 
-    private int lines;
-
     private final float[] textBounds = {0f, 0f, 0f, 0f, 0f};
-
+    private int lines;
     private boolean singleLine = false;
 
     public ComponentText(View view) {

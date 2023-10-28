@@ -4,23 +4,30 @@ import uia.core.ui.View;
 
 /**
  * Context is the base of the UIa framework. It is responsible for managing a single {@link View} displayed on
- * a {@link Window}. It is intended to be a versatile layer whose implementation is platform dependent.
+ * a {@link Window}. It is designed to be a versatile layer whose implementation is platform dependent.
  * <br>
  * <br>
  * <b>Lifecycle</b>
  * <p>
- * As of every application, Context has its own lifecycle. The key idea is that the single lifecycle stage can be set
- * by the programmer. There are no particular constraints on how to switch between lifecycle stages but one rule
- * has to be followed: when the Context is created it is on the {@link LifecycleStage#STOP} stage. When the Window
- * is set to be visible and the rendering process starts, Context will be on the {@link LifecycleStage#RUN} stage.
- * When the Context is definitively stopped, it will be on the {@link LifecycleStage#TERMINATE} stage.
- * </p>
+ * Like any application, Context has its own lifecycle. The key idea is that the single lifecycle stage capture
+ * a well-defined Context state. There are a few rules that must be followed when implementing lifecycle mechanism:
+ * <ul>
+ *     <li>at the {@link LifecycleStage#STOP} stage, Context stops rendering and doesn't update the view's state.
+ *     It also stops handling user input and artificially generated input;
+ *     </li>
+ *     <li>at the {@link LifecycleStage#RUN} stage, Context is fully operational: it manages a View and handles user input and
+ *     artificially generated input;
+ *     </li>
+ *     <li>at the {@link LifecycleStage#TERMINATE} stage, Context stops all its operations, including View management and closes
+ *     the window frame.
+ *     </li>
+ * </ul>
  * <br>
  * <b>Input emulation</b>
  * <p>
- * Sometimes could be useful to emulate some events (for example press a key or move mouse around) to test some assumptions
- * about event handling and so on without generate the same events manually. For this reason, Context expose the {@link InputEmulator}
- * class that has the responsibility to emulate the standard inputs based on mouse and keyboard.
+ * Sometimes it might be useful to emulate some events (ie pressing a key or moving the mouse around) to test some assumptions
+ * about event handling without having to generate the same events manually. For this reason, Context provides the {@link InputEmulator}
+ * class, which is responsible for emulating input from the mouse and keyboard.
  * </p>
  */
 

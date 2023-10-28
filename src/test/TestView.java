@@ -98,7 +98,7 @@ public class TestView implements TestSuite {
 
             Context context = createMockContext();
             context.setView(root);
-            context.getInputEmulator().click(100, 100);
+            context.getInputEmulator().clickOn(100, 100);
 
             testAssertion.toBeEqual(true, 50);
         };

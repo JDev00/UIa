@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * Framework built-in {@link Context} implementation based on Java AWT and SWING.
@@ -29,8 +30,10 @@ import java.util.concurrent.TimeUnit;
  * <code>
  * <p>
  * Context context = new ContextAWT(1000, 500);
+ * <br>
  * context.getWindow().show();
- * context.start();
+ * <br>
+ * context.setLifecycleStage(LifecycleStage.RUN);
  * </code>
  */
 
@@ -38,32 +41,46 @@ public class ContextAWT implements Context {
     private ScheduledExecutorService renderingThread;
     private LifecycleStage lifecycleStage = LifecycleStage.STOP;
     private final WindowAWT window;
+    private final Renderer renderer;
     private final InputEmulator inputEmulator;
 
     public ContextAWT(int x, int y) {
-        window = new WindowAWT(x, y);
+        renderer = new Renderer();
+
+        window = new WindowAWT(x, y, this::dispatchScreenPointers, this::dispatchKey);
+        window.registerNativeComponent(renderer);
 
         inputEmulator = new ArtificialInput(
                 screenPointer -> {
                     int[] insets = window.getInsets();
-                    window.dispatchMousePointer(
-                            screenPointer.getX() + insets[0],
-                            screenPointer.getY() + insets[1],
-                            screenPointer.getWheelRotation(),
-                            screenPointer.getButton(),
-                            screenPointer.getAction());
+                    screenPointer.translate(insets[0], insets[1]);
+                    dispatchSingleScreenPointer(screenPointer);
                 },
-                key -> window.dispatchKey(
-                        key.getKeyChar(),
-                        key.getKeyCode(),
-                        key.getModifiers(),
-                        key.getAction())
+                this::dispatchKey
         );
+    }
+
+    private void dispatchScreenPointers(List<ScreenPointer> screenPointers) {
+        View view = renderer.view;
+        if (view != null && lifecycleStage.equals(LifecycleStage.RUN)) {
+            view.dispatch(View.DISPATCHER.POINTERS, screenPointers);
+        }
+    }
+
+    private void dispatchSingleScreenPointer(ScreenPointer screenPointer) {
+        dispatchScreenPointers(Collections.singletonList(screenPointer));
+    }
+
+    private void dispatchKey(Key key) {
+        View view = renderer.view;
+        if (view != null && lifecycleStage.equals(LifecycleStage.RUN)) {
+            view.dispatch(View.DISPATCHER.KEY, key);
+        }
     }
 
     @Override
     public void setView(View view) {
-        window.view = view;
+        renderer.view = view;
     }
 
     /**
@@ -73,8 +90,7 @@ public class ContextAWT implements Context {
     private void killRenderingThread() {
         try {
             renderingThread.shutdownNow();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
         }
     }
 
@@ -83,14 +99,17 @@ public class ContextAWT implements Context {
         if (this.lifecycleStage.equals(lifecycleStage)) {
             return;
         }
-
         this.lifecycleStage = Objects.requireNonNull(lifecycleStage);
 
         switch (lifecycleStage) {
             case RUN:
                 int repaintPeriodMillis = 1000 / 60;
                 renderingThread = Executors.newSingleThreadScheduledExecutor();
-                renderingThread.scheduleAtFixedRate(window::updateAndDrawComponents,
+                renderingThread.scheduleAtFixedRate(() -> renderer.updateAndDrawView(
+                                window.getWidth(),
+                                window.getHeight(),
+                                window.isFocused()
+                        ),
                         0,
                         repaintPeriodMillis,
                         TimeUnit.MILLISECONDS);
@@ -100,9 +119,9 @@ public class ContextAWT implements Context {
                 killRenderingThread();
                 return;
 
-            default:
+            case TERMINATE:
                 killRenderingThread();
-                System.exit(1);
+                window.destroy();
         }
     }
 
@@ -113,7 +132,7 @@ public class ContextAWT implements Context {
 
     @Override
     public void setRenderingHint(RenderingHint... hint) {
-        List<RenderingHint> hints = window.hints;
+        List<RenderingHint> hints = renderer.hints;
         hints.clear();
         hints.addAll(Arrays.asList(hint));
     }
@@ -160,27 +179,19 @@ public class ContextAWT implements Context {
 
     private static class WindowAWT implements Window {
         private final JFrame jFrame;
-        private final Renderer renderer;
-        private View view;
-
-        private final List<ScreenPointer> screenPointers = new ArrayList<>();
-        private final List<RenderingHint> hints;
-
         private final int[] screenSize = new int[2];
-        private int frameRate;
-        private boolean focus = true;
+        private boolean focus = false;
 
-        public WindowAWT(int x, int y) {
+        public WindowAWT(int x, int y,
+                         Consumer<List<ScreenPointer>> screenPointersListener,
+                         Consumer<Key> keyListener) {
             screenSize[0] = x;
             screenSize[1] = y;
-
-            renderer = new Renderer();
 
             jFrame = new JFrame();
             jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             jFrame.getContentPane().setPreferredSize(new Dimension(x, y));
-            jFrame.setTitle("UIa SWING");
-            jFrame.add(renderer);
+            jFrame.setTitle("UIa Standard Window");
             jFrame.pack();
             jFrame.addComponentListener(new ComponentAdapter() {
                 @Override
@@ -204,33 +215,33 @@ public class ContextAWT implements Context {
             jFrame.addKeyListener(new KeyListener() {
                 @Override
                 public void keyTyped(KeyEvent e) {
-                    dispatchKey(e.getKeyChar(), e.getKeyCode(), e.getModifiers(), Key.ACTION.TYPED);
+                    keyListener.accept(new Key(Key.ACTION.TYPED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
                 }
 
                 @Override
                 public void keyPressed(KeyEvent e) {
-                    dispatchKey(e.getKeyChar(), e.getKeyCode(), e.getModifiers(), Key.ACTION.PRESSED);
+                    keyListener.accept(new Key(Key.ACTION.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
                 }
 
                 @Override
                 public void keyReleased(KeyEvent e) {
-                    dispatchKey(e.getKeyChar(), e.getKeyCode(), e.getModifiers(), Key.ACTION.RELEASED);
+                    keyListener.accept(new Key(Key.ACTION.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
                 }
             });
             jFrame.addMouseListener(new MouseListener() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    dispatchMousePointer(e, 0, ScreenPointer.ACTION.PRESSED);
+                    screenPointersListener.accept(getScreenPointers(e, 0, ScreenPointer.ACTION.PRESSED));
                 }
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    dispatchMousePointer(e, 0, ScreenPointer.ACTION.RELEASED);
+                    screenPointersListener.accept(getScreenPointers(e, 0, ScreenPointer.ACTION.RELEASED));
                 }
 
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    dispatchMousePointer(e, 0, ScreenPointer.ACTION.CLICKED);
+                    screenPointersListener.accept(getScreenPointers(e, 0, ScreenPointer.ACTION.CLICKED));
                 }
 
                 @Override
@@ -239,49 +250,43 @@ public class ContextAWT implements Context {
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    dispatchMousePointer(e, 0, ScreenPointer.ACTION.EXITED);
+                    screenPointersListener.accept(getScreenPointers(e, 0, ScreenPointer.ACTION.EXITED));
                 }
             });
             jFrame.addMouseMotionListener(new MouseMotionListener() {
                 @Override
                 public void mouseDragged(MouseEvent e) {
-                    dispatchMousePointer(e, 0, ScreenPointer.ACTION.DRAGGED);
+                    screenPointersListener.accept(getScreenPointers(e, 0, ScreenPointer.ACTION.DRAGGED));
                 }
 
                 @Override
                 public void mouseMoved(MouseEvent e) {
-                    dispatchMousePointer(e, 0, ScreenPointer.ACTION.MOVED);
+                    screenPointersListener.accept(getScreenPointers(e, 0, ScreenPointer.ACTION.MOVED));
                 }
             });
-            jFrame.addMouseWheelListener(e -> dispatchMousePointer(e, e.getWheelRotation(), ScreenPointer.ACTION.WHEEL));
+            jFrame.addMouseWheelListener(e -> screenPointersListener.accept(
+                    getScreenPointers(e, e.getWheelRotation(), ScreenPointer.ACTION.WHEEL))
+            );
+        }
 
-
-            hints = new ArrayList<>();
-            hints.add(RenderingHint.ANTIALIASING_ON);
+        private void registerNativeComponent(Component component) {
+            jFrame.add(component);
         }
 
         /**
-         * Helper function. Dispatch mouse attributes to the handled View.
+         * Destroy this Window
          */
 
-        protected void dispatchMousePointer(int x, int y, int wheelRotation,
-                                            ScreenPointer.BUTTON button, ScreenPointer.ACTION action) {
-            int[] insets = getInsets();
-            int[] position = {x - insets[0], y - insets[1]};
-
-            screenPointers.clear();
-            screenPointers.add(new ScreenPointer(action, button, position[0], position[1], wheelRotation));
-
-            if (view != null) {
-                view.dispatch(View.DISPATCHER.POINTERS, screenPointers);
-            }
+        private void destroy() {
+            jFrame.dispose();
+            jFrame.dispatchEvent(new WindowEvent(jFrame, WindowEvent.WINDOW_CLOSING));
         }
 
         /**
          * @return the corresponding {@link uia.core.ScreenPointer.BUTTON} or null
          */
 
-        private static ScreenPointer.BUTTON convertNativeMouseButton(int button) {
+        private static ScreenPointer.BUTTON mapNativeMouseButton(int button) {
             switch (button) {
                 case 1:
                     return ScreenPointer.BUTTON.LEFT;
@@ -294,33 +299,26 @@ public class ContextAWT implements Context {
             }
         }
 
-        /**
-         * Helper function. Dispatch mouse attributes to the handled View.
-         */
-
-        private void dispatchMousePointer(MouseEvent mouseEvent, int wheelRotation, ScreenPointer.ACTION action) {
-            dispatchMousePointer(
-                    mouseEvent.getX(),
-                    mouseEvent.getY(),
-                    wheelRotation,
-                    convertNativeMouseButton(mouseEvent.getButton()),
-                    action
-            );
-        }
+        private final List<ScreenPointer> screenPointers = new ArrayList<>();
 
         /**
-         * Helper function. Dispatch a key to the handled View.
+         * Helper function. Returns a List of ScreenPointers.
          */
 
-        protected void dispatchKey(char keyChar, int keyCode, int modifiers, Key.ACTION action) {
-            if (view != null) {
-                view.dispatch(View.DISPATCHER.KEY, new Key(action, modifiers, keyChar, keyCode));
-            }
-        }
+        private List<ScreenPointer> getScreenPointers(MouseEvent mouseEvent, int wheelRotation, ScreenPointer.ACTION action) {
+            int x = mouseEvent.getX();
+            int y = mouseEvent.getY();
+            int[] insets = getInsets();
+            int[] position = {x - insets[0], y - insets[1]};
 
-        private void updateAndDrawComponents() {
-            renderer.update();
-            renderer.repaint();
+            screenPointers.clear();
+            screenPointers.add(new ScreenPointer(
+                    action,
+                    mapNativeMouseButton(mouseEvent.getButton()),
+                    position[0],
+                    position[1],
+                    wheelRotation));
+            return screenPointers;
         }
 
         @Override
@@ -372,6 +370,11 @@ public class ContextAWT implements Context {
         }
 
         @Override
+        public boolean isFocused() {
+            return focus;
+        }
+
+        @Override
         public int[] getInsets() {
             Insets insets = jFrame.getInsets();
             return new int[]{
@@ -379,123 +382,127 @@ public class ContextAWT implements Context {
                     insets.right, insets.bottom
             };
         }
+    }
+
+    /**
+     * Renderer engine
+     */
+
+    private static class Renderer extends JPanel {
+        private static final int MAX_MESSAGES_PER_SECOND = 30000;
+
+        private final MessageStore messageStore = MessageStore.getInstance();
+        private final Timer timer;
+        private final Graphic graphic;
+        private Graphics2D nativeGraphics;
+        private final View rootView;
+        private View view;
+
+        private final List<RenderingHint> hints;
+
+        private int frameRate;
+        private int frameCount;
+        private float lastFrameCount;
+
+        public Renderer() {
+            graphic = new GraphicAWT(() -> nativeGraphics);
+
+            rootView = new ComponentRoot();
+
+            timer = new Timer();
+
+            hints = new ArrayList<>();
+            hints.add(RenderingHint.ANTIALIASING_ON);
+        }
 
         /**
-         * Renderer engine
+         * Helper function. Calculate frame rate.
          */
 
-        private class Renderer extends JPanel {
-            private static final int MAX_MESSAGES_PER_SECOND = 30000;
+        private void calculateFrameRate() {
+            frameCount++;
 
-            private final MessageStore messageStore = MessageStore.getInstance();
-            private final Timer timer;
-            private final Graphic graphic;
-            private Graphics2D nativeGraphics;
-            private final View rootView;
-
-            private int frameCount;
-            private float lastFrameCount;
-
-            public Renderer() {
-                graphic = new GraphicAWT(() -> nativeGraphics);
-
-                rootView = new ComponentRoot();
-
-                timer = new Timer();
+            if (timer.seconds() >= 1d) {
+                frameRate = (int) (frameCount - lastFrameCount);
+                lastFrameCount = frameCount;
+                timer.reset();
             }
+        }
 
-            /**
-             * Helper function. Update root component.
-             */
+        /**
+         * Helper function. Apply the rendering hints.
+         */
 
-            private void updateRoot() {
-                rootView.setPosition(0f, 0f);
-                rootView.setDimension(screenSize[0], screenSize[1]);
-                rootView.requestFocus(focus);
-            }
-
-            /**
-             * Helper function. Update the handled View.
-             */
-
-            private void updateView() {
-                if (view != null) {
-                    int counter = 0;
-                    int limit = MAX_MESSAGES_PER_SECOND / Math.max(1, frameRate);
-                    Object[] message;
-
-                    while ((message = messageStore.pop()) != null && counter < limit) {
-                        view.dispatch(View.DISPATCHER.MESSAGE, message);
-                        counter++;
-                    }
-
-                    view.update(rootView);
+        private void applyHints() {
+            for (RenderingHint i : hints) {
+                switch (i) {
+                    case ANTIALIASING_ON:
+                        nativeGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                        break;
+                    case ANTIALIASING_OFF:
+                        nativeGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+                        break;
+                    case TEXT_ANTIALIASING_ON:
+                        nativeGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                        break;
+                    case TEXT_ANTIALIASING_OFF:
+                        nativeGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+                        break;
+                    case COLOR_QUALITY_HIGH:
+                        nativeGraphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+                        break;
+                    case COLOR_QUALITY_LOW:
+                        nativeGraphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
+                        break;
                 }
             }
+        }
 
-            /**
-             * Helper function. Calculate frame rate.
-             */
+        @Override
+        protected void paintComponent(Graphics graphics) {
+            super.paintComponent(graphics);
 
-            private void calculateFrameRate() {
-                frameCount++;
+            nativeGraphics = (Graphics2D) graphics;
+            applyHints();
+            if (view != null) {
+                view.draw(graphic);
+            }
+        }
 
-                if (timer.seconds() >= 1d) {
-                    frameRate = (int) (frameCount - lastFrameCount);
-                    lastFrameCount = frameCount;
-                    timer.reset();
+        /**
+         * Helper function. Update root View.
+         */
+
+        private void updateRoot(int x, int y, boolean focus) {
+            rootView.setPosition(0f, 0f);
+            rootView.setDimension(x, y);
+            rootView.requestFocus(focus);
+        }
+
+        /**
+         * Helper function. Update the handled View.
+         */
+
+        private void updateView() {
+            if (view != null) {
+                int counter = 0;
+                int limit = MAX_MESSAGES_PER_SECOND / Math.max(1, frameRate);
+                Object[] message;
+
+                while ((message = messageStore.pop()) != null && counter < limit) {
+                    view.dispatch(View.DISPATCHER.MESSAGE, message);
+                    counter++;
                 }
+
+                view.update(rootView);
             }
+        }
 
-            /**
-             * Update the Renderer state
-             */
-
-            protected void update() {
-                calculateFrameRate();
-                updateRoot();
-                updateView();
-            }
-
-            /**
-             * Helper function. Apply the rendering hints.
-             */
-
-            private void applyHints() {
-                for (RenderingHint i : hints) {
-                    switch (i) {
-                        case ANTIALIASING_ON:
-                            nativeGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                            break;
-                        case ANTIALIASING_OFF:
-                            nativeGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-                            break;
-                        case TEXT_ANTIALIASING_ON:
-                            nativeGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-                            break;
-                        case TEXT_ANTIALIASING_OFF:
-                            nativeGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-                            break;
-                        case COLOR_QUALITY_HIGH:
-                            nativeGraphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-                            break;
-                        case COLOR_QUALITY_LOW:
-                            nativeGraphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
-                            break;
-                    }
-                }
-            }
-
-            @Override
-            protected void paintComponent(Graphics graphics) {
-                super.paintComponent(graphics);
-
-                nativeGraphics = (Graphics2D) graphics;
-                applyHints();
-                if (view != null) {
-                    view.draw(graphic);
-                }
-            }
+        private void updateAndDrawView(int screenWidth, int screenHeight, boolean screenFocus) {
+            calculateFrameRate();
+            updateRoot(screenWidth, screenHeight, screenFocus);
+            updateView();
+            repaint();
         }
     }
 }

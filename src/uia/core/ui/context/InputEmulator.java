@@ -9,14 +9,14 @@ package uia.core.ui.context;
 public interface InputEmulator {
 
     /**
-     * Emulate a click on screen
+     * Emulate a click on screen at the specified position
      *
      * @param x the click position on the x-axis
      * @param y the click position on the y-axis
      * @return this InputEmulator
      */
 
-    InputEmulator click(int x, int y);
+    InputEmulator clickOn(int x, int y);
 
     /**
      * Emulate a mouse moving (without pressing buttons) on screen.
