@@ -390,13 +390,14 @@ public class ContextAWT implements Context {
             private final MessageStore messageStore = MessageStore.getInstance();
             private final Timer timer;
             private final Graphic graphic;
+            private Graphics2D nativeGraphics;
             private final View rootView;
 
             private int frameCount;
             private float lastFrameCount;
 
             public Renderer() {
-                graphic = new GraphicAWT();
+                graphic = new GraphicAWT(() -> nativeGraphics);
 
                 rootView = new ComponentRoot();
 
@@ -457,29 +458,29 @@ public class ContextAWT implements Context {
             }
 
             /**
-             * Helper function
+             * Helper function. Apply the rendering hints.
              */
 
-            private void applyHints(Graphics2D g2d) {
+            private void applyHints() {
                 for (RenderingHint i : hints) {
                     switch (i) {
                         case ANTIALIASING_ON:
-                            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                            nativeGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                             break;
                         case ANTIALIASING_OFF:
-                            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+                            nativeGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
                             break;
                         case TEXT_ANTIALIASING_ON:
-                            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                            nativeGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
                             break;
                         case TEXT_ANTIALIASING_OFF:
-                            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+                            nativeGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
                             break;
                         case COLOR_QUALITY_HIGH:
-                            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+                            nativeGraphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
                             break;
                         case COLOR_QUALITY_LOW:
-                            g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
+                            nativeGraphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
                             break;
                     }
                 }
@@ -489,10 +490,8 @@ public class ContextAWT implements Context {
             protected void paintComponent(Graphics graphics) {
                 super.paintComponent(graphics);
 
-                applyHints((Graphics2D) graphics);
-
-                graphic.setNativeGraphic(graphics);
-
+                nativeGraphics = (Graphics2D) graphics;
+                applyHints();
                 if (view != null) {
                     view.draw(graphic);
                 }

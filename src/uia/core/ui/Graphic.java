@@ -12,15 +12,6 @@ import uia.core.*;
 public interface Graphic {
 
     /**
-     * Set the corresponding platform/library graphics
-     *
-     * @param nativeGraphic a not null platform Graphic Object
-     * @throws NullPointerException if {@code nativeGraphic == null}
-     */
-
-    void setNativeGraphic(Object nativeGraphic);
-
-    /**
      * Dispose of this Graphic and releases any system resources that it is using.
      * A Graphic object cannot be used after <code>dispose</code>has been called.
      */
@@ -49,6 +40,7 @@ public interface Graphic {
      * Every piece of Shape/text rendered after {@code setPaint(Paint)} will be affected.
      *
      * @param paint a not null {@link Paint}
+     * @throws NullPointerException if {@code paint == null}
      */
 
     void setPaint(Paint paint);
@@ -59,6 +51,7 @@ public interface Graphic {
      * Every text rendered after {@code setFont(Font)} will be affected.
      *
      * @param font a not null {@link Font}
+     * @throws NullPointerException if {@code font == null}
      */
 
     void setFont(Font font);
@@ -67,6 +60,7 @@ public interface Graphic {
      * Draw the given {@link Shape} on this Graphic.
      *
      * @param shape a not null {@link Shape} to be drawn
+     * @throws NullPointerException if {@code font == null}
      */
 
     void drawShape(Shape shape);
@@ -80,6 +74,7 @@ public interface Graphic {
      * @param x        the <i>x</i> coordinate of the baseline of the text
      * @param y        the <i>y</i> coordinate of the baseline of the text
      * @param rotation the text's rotation in radians
+     * @throws NullPointerException if {@code data == null}
      */
 
     void drawText(char[] data, int offset, int length, float x, float y, float rotation);
@@ -95,6 +90,7 @@ public interface Graphic {
      * @param width    the width of the rectangle
      * @param height   the height of the rectangle
      * @param rotation the image's rotation around the pivot
+     * @throws NullPointerException if {@code image == null}
      */
 
     void drawImage(Image image, float x, float y, float width, float height, float rotation);

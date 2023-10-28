@@ -2,6 +2,7 @@ package example.processing;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
+import processing.core.PGraphics;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 import uia.core.Key;
@@ -41,6 +42,7 @@ public class ContextProcessing implements Context {
 
     public static class RendererEngine extends PApplet {
         private Graphic graphic;
+        private PGraphics nativeGraphics;
 
         private static View currentView;
         private final View rootView = new ComponentRoot();
@@ -54,14 +56,16 @@ public class ContextProcessing implements Context {
 
         @Override
         public void setup() {
-            graphic = new GraphicProcessing(this);
+            graphic = new GraphicProcessing(
+                    () -> this,
+                    () -> nativeGraphics);
         }
 
         @Override
         public void draw() {
-            g.clear();
+            nativeGraphics = g;
 
-            graphic.setNativeGraphic(g);
+            g.clear();
 
             rootView.setPosition(0f, 0f);
             rootView.setDimension(width, height);

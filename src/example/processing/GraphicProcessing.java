@@ -5,26 +5,30 @@ import processing.core.*;
 import uia.core.*;
 import uia.core.ui.Graphic;
 
-import java.util.Objects;
+import java.util.function.Supplier;
 
 public class GraphicProcessing implements Graphic {
-    private final PApplet pApplet;
-    private PGraphics pGraphics;
-
+    private final Supplier<PApplet> pAppletSupplier;
+    private final Supplier<PGraphics> pGraphicsSupplier;
     private final PImage fakeImage = new PImage(1, 1, PConstants.RGB);
 
-    public GraphicProcessing(PApplet pAppletReference) {
-        pApplet = pAppletReference;
+    public GraphicProcessing(Supplier<PApplet> pAppletSupplier,
+                             Supplier<PGraphics> pGraphicsSupplier) {
+        this.pAppletSupplier = pAppletSupplier;
+        this.pGraphicsSupplier = pGraphicsSupplier;
     }
 
-    @Override
-    public void setNativeGraphic(Object nativeGraphic) {
-        pGraphics = (PGraphics) Objects.requireNonNull(nativeGraphic);
+    private PApplet getPApplet() {
+        return pAppletSupplier.get();
+    }
+
+    private PGraphics getGraphics() {
+        return pGraphicsSupplier.get();
     }
 
     @Override
     public void dispose() {
-        pGraphics.dispose();
+        getGraphics().dispose();
     }
 
     @Override
@@ -38,37 +42,41 @@ public class GraphicProcessing implements Graphic {
     @Override
     public void setFont(Font font) {
         if (!font.isValid() || !(font.getNative() instanceof PFont)) {
-            PFont fontNative = pApplet.createFont(font.getName(), font.getSize(), true);
-            font.setNative(fontNative, (off, len, in) -> {
+            PFont fontNative = getPApplet().createFont(font.getName(), font.getSize(), true);
+            font.setNative(fontNative,
+                    font.getSize() * fontNative.ascent(),
+                    font.getSize() * fontNative.descent(),
+                    0.05f * font.getSize(),
+                    (off, len, in) -> {
                         float count = 0;
                         for (int i = 0; i < len; i++) {
                             count += fontNative.width(in[off + i]);
                         }
                         return font.getSize() * count;
-                    },
-                    font.getSize() * fontNative.ascent(),
-                    font.getSize() * fontNative.descent(),
-                    0.05f * font.getSize());
+                    });
         }
 
-        pGraphics.textFont((PFont) font.getNative());
+        getGraphics().textFont((PFont) font.getNative());
     }
 
     @Override
     public void setPaint(Paint paint) {
-        pGraphics.fill(paint.getRed(), paint.getGreen(), paint.getBlue(), paint.getAlpha());
+        PGraphics graphics = getGraphics();
+        graphics.fill(paint.getRed(), paint.getGreen(), paint.getBlue(), paint.getAlpha());
 
         if (paint.hasStroke()) {
-            pGraphics.stroke(paint.getStrokeRed(), paint.getStrokeGreen(), paint.getStrokeBlue());
+            graphics.stroke(paint.getStrokeRed(), paint.getStrokeGreen(), paint.getStrokeBlue());
         } else {
-            pGraphics.noStroke();
+            graphics.noStroke();
         }
 
-        pGraphics.strokeWeight(paint.getStrokeWidth());
+        graphics.strokeWeight(paint.getStrokeWidth());
     }
 
     @Override
     public void drawShape(Shape shape) {
+        PGraphics graphics = getGraphics();
+
         Geometry geometry = shape.getGeometry();
         Shape.TransformedVertex target = new Shape.TransformedVertex();
 
@@ -78,25 +86,26 @@ public class GraphicProcessing implements Graphic {
             float y = target.y;
 
             if (target.primer) {
-                pGraphics.beginShape();
-                pGraphics.vertex(x, y);
+                graphics.beginShape();
+                graphics.vertex(x, y);
             } else {
-                pGraphics.vertex(x, y);
+                graphics.vertex(x, y);
             }
         }
 
-        pGraphics.endShape();
+        graphics.endShape();
     }
 
     @Override
     public void drawText(char[] data, int offset, int length, float x, float y, float rotation) {
         try {
-            pGraphics.textAlign(PConstants.LEFT);
-            pGraphics.pushMatrix();
-            pGraphics.translate(x, y);
-            pGraphics.rotate(rotation);
-            pGraphics.text(String.valueOf(data, offset, length), 0, 0);
-            pGraphics.popMatrix();
+            PGraphics graphics = getGraphics();
+            graphics.textAlign(PConstants.LEFT);
+            graphics.pushMatrix();
+            graphics.translate(x, y);
+            graphics.rotate(rotation);
+            graphics.text(String.valueOf(data, offset, length), 0, 0);
+            graphics.popMatrix();
         } catch (Exception ignored) {
         }
     }
@@ -107,22 +116,17 @@ public class GraphicProcessing implements Graphic {
             img.setNative(fakeImage, 1, 1);
 
             new Thread(() -> {
-                PImage image = pApplet.loadImage(img.getPath());
+                PImage image = getPApplet().loadImage(img.getPath());
                 img.setNative(image, image.width, image.height);
             }).start();
         }
 
         float offset = 0.5f;
-        /*if (img.getMode() == Image.MODE.CENTER) {
-            offset = 0.5f;
-        } else if (img.getMode() == Image.MODE.RIGHT) {
-            offset = 1f;
-        }*/
-
-        pGraphics.pushMatrix();
-        pGraphics.translate(x, y);
-        pGraphics.rotate(rotation);
-        pGraphics.image((PImage) img.getNative(), -offset * width, -offset * height, width, height);
-        pGraphics.popMatrix();
+        PGraphics graphics = getGraphics();
+        graphics.pushMatrix();
+        graphics.translate(x, y);
+        graphics.rotate(rotation);
+        graphics.image((PImage) img.getNative(), -offset * width, -offset * height, width, height);
+        graphics.popMatrix();
     }
 }

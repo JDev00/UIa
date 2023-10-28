@@ -20,31 +20,36 @@ import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
- * {@link Graphic} implementation based on Java AWT
+ * Java AWT base {@link Graphic} implementation.
  */
 
 public class GraphicAWT implements Graphic {
-    private Graphics2D graphics;
-    private final Path2D customPath;
+    private final Supplier<Graphics2D> graphics2DSupplier;
+    private final Path2D shapePath;
 
     private Paint paint;
 
-    public GraphicAWT() {
-        customPath = new Path2D.Float();
-
+    public GraphicAWT(Supplier<Graphics2D> graphics2DSupplier) {
         paint = new Paint();
+
+        shapePath = new Path2D.Float();
+        this.graphics2DSupplier = graphics2DSupplier;
     }
 
-    @Override
-    public void setNativeGraphic(Object nativeGraphic) {
-        graphics = (Graphics2D) Objects.requireNonNull(nativeGraphic);
+    /**
+     * Helper function. Returns the native platform graphics.
+     */
+
+    private Graphics2D getGraphics() {
+        return graphics2DSupplier.get();
     }
 
     @Override
     public void dispose() {
-        graphics.dispose();
+        getGraphics().dispose();
     }
 
     /**
@@ -77,12 +82,11 @@ public class GraphicAWT implements Graphic {
     }
 
     private final Stack<Shape> clipStack = new Stack<>();
-    private Shape clipShape = null;
     private final Path2D clipPath = new Path2D.Float();
 
     @Override
     public void setClip(Shape shape) {
-        clipShape = clipStack.push(shape);
+        Graphics2D graphics = getGraphics();
 
         if (shape != null) {
             buildPathAndStoreInto(shape, clipPath);
@@ -94,26 +98,23 @@ public class GraphicAWT implements Graphic {
 
     @Override
     public void restoreClip() {
-        if (!clipStack.isEmpty()) {
+        Graphics2D graphics = getGraphics();
+
+        try {
             clipStack.pop();
-
-            if (!clipStack.isEmpty()) {
-                clipShape = clipStack.peek();
-                buildPathAndStoreInto(clipShape, clipPath);
-                graphics.setClip(clipPath);
-                return;
-            }
+            Shape previousClipShape = clipStack.peek();
+            buildPathAndStoreInto(previousClipShape, clipPath);
+            graphics.setClip(clipPath);
+        } catch (Exception error) {
+            graphics.setClip(null);
         }
-
-        clipShape = null;
-        graphics.setClip(null);
     }
 
     /**
-     * Helper function.
+     * Helper function. Builds the given Font.
      */
 
-    private void analyzeFont(Font font) {
+    private void buildFont(Font font) {
         if (!font.isValid() || !(font.getNative() instanceof java.awt.Font)) {
             java.awt.Font fontNative = null;
 
@@ -130,23 +131,23 @@ public class GraphicAWT implements Graphic {
             }
 
             FontMetrics metrics = new Canvas().getFontMetrics(fontNative);
-
-            font.setNative(fontNative, (off, len, in) -> metrics.charsWidth(in, off, len),
-                    metrics.getAscent(), metrics.getDescent(), metrics.getLeading());
+            font.setNative(fontNative, metrics.getAscent(), metrics.getDescent(), metrics.getLeading(),
+                    (off, len, in) -> metrics.charsWidth(in, off, len));
         }
     }
 
     @Override
     public void setFont(Font font) {
-        analyzeFont(font);
+        buildFont(font);
+        Graphics2D graphics = getGraphics();
         graphics.setFont((java.awt.Font) font.getNative());
     }
 
     /**
-     * Helper function.
+     * Helper function. Builds the given Paint.
      */
 
-    private void analyzePaint(Paint paint) {
+    private void buildPaint(Paint paint) {
         if (!paint.isValid() || !(paint.getNativeColor() instanceof java.awt.Paint)) {
             paint.setNative(
                     new Color(paint.getRed(), paint.getGreen(), paint.getBlue(), paint.getAlpha()),
@@ -159,54 +160,54 @@ public class GraphicAWT implements Graphic {
     public void setPaint(Paint paint) {
         this.paint = paint;
 
-        analyzePaint(paint);
+        buildPaint(paint);
+        Graphics2D graphics = getGraphics();
         graphics.setPaint((java.awt.Paint) paint.getNativeColor());
         graphics.setStroke((Stroke) paint.getNativeStrokeWidth());
     }
 
     @Override
     public void drawShape(Shape shape) {
-        buildPathAndStoreInto(shape, customPath);
+        buildPathAndStoreInto(shape, shapePath);
 
-        graphics.fill(customPath);
+        Graphics2D graphics = getGraphics();
+        graphics.fill(shapePath);
 
-        // set stroke color
         if (paint.hasStroke()) {
-            // old paint
-            java.awt.Paint oPaint = graphics.getPaint();
+            java.awt.Paint previousPaint = graphics.getPaint();
 
             graphics.setPaint((java.awt.Paint) paint.getNativeStrokeColor());
-            graphics.draw(customPath);
+            graphics.draw(shapePath);
 
-            // restore old paint
-            graphics.setPaint(oPaint);
+            graphics.setPaint(previousPaint);
         }
     }
 
     @Override
     public void drawText(char[] data, int offset, int length, float x, float y, float rotation) {
+        Graphics2D graphics = getGraphics();
         boolean rotated = Float.compare(rotation % TrigTable.TWO_PI, 0f) != 0;
-        AffineTransform oldXForm = null;
+        AffineTransform previousMatrix = null;
 
         if (rotated) {
-            oldXForm = graphics.getTransform();
+            previousMatrix = graphics.getTransform();
             graphics.rotate(rotation, x, y);
         }
 
         graphics.drawChars(data, offset, length, (int) x, (int) y);
 
         if (rotated) {
-            graphics.setTransform(oldXForm);
+            graphics.setTransform(previousMatrix);
         }
     }
 
     private final java.awt.Image fakeImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
 
     /**
-     * Helper function.
+     * Helper function. Builds the given Image.
      */
 
-    private void analyzeImage(Image img) {
+    private void buildImage(Image img) {
         if (!img.isValid() || !(img.getNative() instanceof java.awt.Image)) {
             img.setNative(fakeImage, 1, 1);
 
@@ -222,23 +223,26 @@ public class GraphicAWT implements Graphic {
 
     @Override
     public void drawImage(Image img, float x, float y, float width, float height, float rotation) {
-        analyzeImage(img);
+        Graphics2D graphics = getGraphics();
+        buildImage(img);
 
         boolean rotated = Float.compare(rotation % TrigTable.TWO_PI, 0f) != 0;
-        AffineTransform oldXForm = null;
+        AffineTransform previousMatrix = null;
 
         if (rotated) {
-            oldXForm = graphics.getTransform();
+            previousMatrix = graphics.getTransform();
             graphics.rotate(rotation, x, y);
         }
 
         float offset = 0.5f;
         graphics.drawImage((java.awt.Image) img.getNative(),
-                (int) (x - offset * width), (int) (y - offset * height),
-                (int) width, (int) height, null);
+                (int) (x - offset * width),
+                (int) (y - offset * height),
+                (int) width,
+                (int) height, null);
 
         if (rotated) {
-            graphics.setTransform(oldXForm);
+            graphics.setTransform(previousMatrix);
         }
     }
 }

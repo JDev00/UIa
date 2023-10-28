@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Platform font abstraction.
  * <br>
- * The Font class acts as an adapter: the native font must be set with {@link #setNative(Object, Measure, float, float, float)}
+ * The Font class acts as an adapter: the native font must be set with {@link #setNative(Object, float, float, float, Measure)}.
  */
 
 public class Font {
@@ -90,13 +90,12 @@ public class Font {
     /**
      * Set the native Font and FontMetrics objects
      *
-     * @param o       the native Font object
-     * @param measure a {@link Measure} object
+     * @param nativeFont the native Font object
+     * @param measure    a {@link Measure} object
      */
 
-    public void setNative(Object o, Measure measure,
-                          float ascent, float descent, float leading) {
-        nativeFont = o;
+    public void setNative(Object nativeFont, float ascent, float descent, float leading, Measure measure) {
+        this.nativeFont = nativeFont;
         this.measure = (measure == null) ? NO_MEASURE : measure;
         this.ascent = ascent;
         this.descent = descent;
