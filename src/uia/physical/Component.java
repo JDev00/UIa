@@ -26,7 +26,7 @@ public final class Component implements View {
     private final List<Callback> callbacks;
     private Consumer<Geometry> geomBuilder;
 
-    private final float[] expanse = {1f, 1f, 1.015f, 1.015f, 0.125f};
+    private final float[] expanse = {1f, 1f, 1f, 1f, 0.125f};
     private final float[] container;
     private final float[] dimension = new float[2];
 
@@ -38,7 +38,8 @@ public final class Component implements View {
     private boolean consumePointer = true;
     private boolean consumeKey = true;
 
-    public Component(String id, float x, float y, float width, float height) {
+    public Component(String id, float x, float y, float width, float height,
+                     float animationExpansionX, float animationExpansionY) {
         this.id = id;
 
         container = new float[]{x, y, width, height, 0f};
@@ -49,6 +50,12 @@ public final class Component implements View {
 
         shape = new Shape();
         Figure.rect(shape.getGeometry());
+
+        setExpanseLimit(animationExpansionX, animationExpansionY);
+    }
+
+    public Component(String id, float x, float y, float width, float height) {
+        this(id, x, y, width, height, 1f, 1f);
     }
 
     /**
@@ -84,16 +91,15 @@ public final class Component implements View {
         try {
             String name = type.getName();
 
-            callbacks.forEach(t -> {
-                Class<?> current = t.getClass();
-
+            callbacks.forEach(callback -> {
+                Class<?> current = callback.getClass();
                 while (current != null) {
                     Class<?>[] interfaces = current.getInterfaces();
-
                     for (Class<?> i : interfaces) {
-                        if (name.equals(i.getName())) t.onEvent(data);
+                        if (name.equals(i.getName())) {
+                            callback.onEvent(data);
+                        }
                     }
-
                     current = current.getSuperclass();
                 }
             });
@@ -325,7 +331,7 @@ public final class Component implements View {
         float yDist = height * (container[1] - 0.5f);
         float rot = bounds[4];
 
-        // TODO: sistemare resize component alla rotazione
+        // TODO: adjust auto-resize when component rotates
         dimension[0] = expanse[0] * container[2] * width;
         dimension[1] = expanse[1] * container[3] * height;
 
