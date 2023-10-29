@@ -76,7 +76,7 @@ public class Sanity {
 
         ComponentImage image = new ComponentImage(new Component("IMAGE", 0.7f, 0.5f, 0.33f, 0.5f));
         image.getImage().load("sample\\img0.png");
-        image.registerCallback((OnClick) pointers -> System.out.println("ComponentImage clicked!"));
+        image.registerCallback((OnClick) touches -> System.out.println("ComponentImage clicked!"));
 
         ViewGroup group = createViewGroup("GROUP", 0.4f, 0.5f, 0.5f, 0.5f);
         group.getPaint().setColor(Theme.DARK_GREY);
@@ -117,7 +117,7 @@ public class Sanity {
         bar.setText(s -> Utility.limitDecimals(s, 1) + " %");
         bar.rotate(TrigTable.PI);
         bar.getViewText().getFont().setSize(30f).setStyle(Font.STYLE.BOLD);
-        bar.addCallback((OnClick) pointers -> bar.rotate(bar.geometryBounds()[2] + TrigTable.HALF_PI));*/
+        bar.addCallback((OnClick) touches -> bar.rotate(bar.geometryBounds()[2] + TrigTable.HALF_PI));*/
 
         UICalendar calendar = new UICalendar(new Component("CALENDAR", 0.15f, 0.7f, 0.25f, 0.5f));
         calendar.setRotation(0.05f);

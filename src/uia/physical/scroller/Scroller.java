@@ -1,6 +1,6 @@
 package uia.physical.scroller;
 
-import uia.core.ScreenPointer;
+import uia.core.ScreenTouch;
 
 import java.util.List;
 
@@ -58,11 +58,12 @@ public interface Scroller {
     /**
      * Update this scroller
      *
-     * @param screenPointer a not null List of {@link ScreenPointer}s
+     * @param screenTouches a not null List of {@link ScreenTouch}s
      * @return true if this scroller has been updated
+     * @throws NullPointerException if {@code screenTouches == null}
      */
 
-    boolean update(List<ScreenPointer> screenPointer);
+    boolean update(List<ScreenTouch> screenTouches);
 
     /**
      * @return the scroller value

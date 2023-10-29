@@ -65,8 +65,8 @@ public class UICalendar extends WrapperView {
 
 
         listUI = (UIButtonList) createHeader(font);
-        listUI.getViewRight().registerCallback((OnClick) pointers -> setDate(sDay, sMonth + 1, sYear));
-        listUI.getViewLeft().registerCallback((OnClick) pointers -> setDate(sDay, sMonth - 1, sYear));
+        listUI.getViewRight().registerCallback((OnClick) touches -> setDate(sDay, sMonth + 1, sYear));
+        listUI.getViewLeft().registerCallback((OnClick) touches -> setDate(sDay, sMonth - 1, sYear));
 
 
         for (int i = 0; i < 7; i++) {
@@ -76,7 +76,7 @@ public class UICalendar extends WrapperView {
 
         for (int i = 0; i < 31; i++) {
             Cell cell = Cell.createDay(String.valueOf(i + 1));
-            cell.registerCallback((OnClick) pointers -> {
+            cell.registerCallback((OnClick) touches -> {
                 Paint paint = cell.getPaint();
                 if (paint.equals(paintCell[2])) {
                     paint.set(paintCell[1]);
@@ -85,11 +85,11 @@ public class UICalendar extends WrapperView {
                     notifyCallbacks(OnSelect.class, getDate()[0]);
                 }
             });
-            cell.registerCallback((OnMouseEnter) pointers -> {
+            cell.registerCallback((OnMouseEnter) touches -> {
                 Paint paint = cell.getPaint();
                 if (!paint.equals(paintCell[2])) paint.set(paintCell[1]);
             });
-            cell.registerCallback((OnMouseExit) pointers -> {
+            cell.registerCallback((OnMouseExit) touches -> {
                 Paint paint = cell.getPaint();
                 if (!paint.equals(paintCell[2])) paint.set(paintCell[0]);
             });
@@ -136,7 +136,7 @@ public class UICalendar extends WrapperView {
     private static View createHeader(Font font) {
         UIButtonList view = new UIButtonList(new Component("HEADER", 0.5f, 0.15f, 0.9f, 0.2f)
                 .setExpanseLimit(1f, 1f));
-        view.setConsumer(Consumer.SCREEN_POINTER, false);
+        view.setConsumer(Consumer.SCREEN_TOUCH, false);
         view.getPaint().setColor(Theme.TRANSPARENT);
 
         ViewText text = view.getViewText();
@@ -307,7 +307,7 @@ public class UICalendar extends WrapperView {
             super(new ComponentText(new Component("Cell" + number, 0f, 0f, 0f, 0f)));
 
             setAlign(ViewText.AlignY.CENTER);
-            setConsumer(Consumer.SCREEN_POINTER, false);
+            setConsumer(Consumer.SCREEN_TOUCH, false);
         }
 
         private static int NUMBER = 0;

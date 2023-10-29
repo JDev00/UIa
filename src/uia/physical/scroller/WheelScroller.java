@@ -1,6 +1,6 @@
 package uia.physical.scroller;
 
-import uia.core.ScreenPointer;
+import uia.core.ScreenTouch;
 import uia.utility.Utility;
 
 import java.util.List;
@@ -50,9 +50,9 @@ public class WheelScroller implements Scroller {
     }
 
     @Override
-    public boolean update(List<ScreenPointer> screenPointers) {
+    public boolean update(List<ScreenTouch> screenTouches) {
         try {
-            ScreenPointer p = screenPointers.get(0);
+            ScreenTouch p = screenTouches.get(0);
             if (!pause && p.getWheelRotation() != 0) {
                 value = Utility.constrain(value + factor * p.getWheelRotation(), 0, length);
                 return true;

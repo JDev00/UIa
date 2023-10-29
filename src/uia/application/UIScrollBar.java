@@ -1,6 +1,6 @@
 package uia.application;
 
-import uia.core.ScreenPointer;
+import uia.core.ScreenTouch;
 import uia.core.basement.Drawable;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnMouseHover;
@@ -34,20 +34,20 @@ public class UIScrollBar extends WrapperView {
 
         buildGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
         getPaint().setColor(ThemeDarcula.W_BACKGROUND);
-        registerCallback((OnMouseHover) pointers -> {
-            ScreenPointer pointer = pointers.get(0);
+        registerCallback((OnMouseHover) touches -> {
+            ScreenTouch touch = touches.get(0);
 
-            if (pointer.getAction().equals(ScreenPointer.ACTION.DRAGGED)) {
+            if (touch.getAction().equals(ScreenTouch.Action.DRAGGED)) {
                 locked = true;
-                updateScroll(pointer.getX(), pointer.getY());
-            } else if (scroller.update(pointers)) {
+                updateScroll(touch.getX(), touch.getY());
+            } else if (scroller.update(touches)) {
                 setScroll(scroller.getValue());
             }
         });
 
         cursor = new Component("CURSOR", 0.5f, 0.075f, 1f, 0.15f);
         cursor.buildGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
-        cursor.setConsumer(Consumer.SCREEN_POINTER, false);
+        cursor.setConsumer(Consumer.SCREEN_TOUCH, false);
         cursor.getPaint().setColor(Theme.RED);
 
         scroller = new WheelScroller();

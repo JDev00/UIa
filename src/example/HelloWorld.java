@@ -32,7 +32,7 @@ public class HelloWorld extends WrapperViewGroup {
         UIButton button = createCustomButton();
         // now comes for the interesting part of the job: showing and hiding a View without creating dependencies.
         // remember: callbacks are typically called after View update.
-        button.registerCallback((OnClick) pointers -> {
+        button.registerCallback((OnClick) touches -> {
             button.sendMessage(button.isEnabled() ? "Wake up!" : "Sleep now :)", "POPUP");
         });
         // add another callback to listen for messages sent to this button

@@ -3,7 +3,7 @@ package uia.physical;
 import uia.core.Shape;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
-import uia.core.ScreenPointer;
+import uia.core.ScreenTouch;
 import uia.core.ui.Graphic;
 import uia.physical.wrapper.WrapperView;
 
@@ -91,24 +91,24 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         }
     }
 
-    private final List<ScreenPointer> screenPointers = new ArrayList<>();
+    private final List<ScreenTouch> screenTouches = new ArrayList<>();
 
     /**
      * Helper function. Dispatch ScreenPointer to the group children
      */
 
-    private void dispatchPointers(Object data) {
-        screenPointers.clear();
+    private void dispatchScreenTouches(Object data) {
+        screenTouches.clear();
 
         if (isVisible()) {
-            List<ScreenPointer> tempScreenPointers = (List<ScreenPointer>) data;
-            tempScreenPointers.forEach(p -> {
-                if (!clip || ComponentGroup.this.contains(p.getX(), p.getY())) screenPointers.add(p);
+            List<ScreenTouch> tempScreenTouches = (List<ScreenTouch>) data;
+            tempScreenTouches.forEach(p -> {
+                if (!clip || ComponentGroup.this.contains(p.getX(), p.getY())) screenTouches.add(p);
             });
         }
 
         for (int i = views.size() - 1; i >= 0; i--) {
-            views.get(i).dispatch(Dispatcher.SCREEN_POINTER, screenPointers);
+            views.get(i).dispatch(Dispatcher.SCREEN_TOUCH, screenTouches);
         }
     }
 
@@ -125,8 +125,8 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
                 super.dispatch(dispatcher, data);
                 break;
 
-            case SCREEN_POINTER:
-                dispatchPointers(data);
+            case SCREEN_TOUCH:
+                dispatchScreenTouches(data);
                 super.dispatch(dispatcher, data);
                 break;
 

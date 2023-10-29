@@ -181,7 +181,7 @@ public final class Component implements View {
     @Override
     public void setConsumer(Consumer consumer, boolean enableConsumer) {
         switch (consumer) {
-            case SCREEN_POINTER:
+            case SCREEN_TOUCH:
                 consumePointer = enableConsumer;
                 break;
 
@@ -211,66 +211,66 @@ public final class Component implements View {
         }
     }
 
-    private final List<ScreenPointer> curScreenPointers = new ArrayList<>();
+    private final List<ScreenTouch> curScreenTouches = new ArrayList<>();
 
     /**
-     * Helper function. Dispatch a list of screen pointers to this View.
+     * Helper function. Dispatch a list of screen touches to this View.
      */
 
-    private void dispatchScreenPointers(Object data) {
-        List<ScreenPointer> screenPointers = (List<ScreenPointer>) data;
+    private void dispatchScreenTouches(Object data) {
+        List<ScreenTouch> screenTouches = (List<ScreenTouch>) data;
 
         float[] bounds = shape.bounds();
         int[] offset = {-(int) (bounds[0]), -(int) (bounds[1])};
 
-        curScreenPointers.clear();
+        curScreenTouches.clear();
 
         if (visible) {
-            screenPointers.forEach(p -> {
+            screenTouches.forEach(p -> {
                 if (!p.isConsumed()
-                        && p.getAction() != ScreenPointer.ACTION.EXITED
+                        && p.getAction() != ScreenTouch.Action.EXITED
                         && contains(p.getX(), p.getY())) {
                     p.translate(offset[0], offset[1]);
-                    curScreenPointers.add(p);
+                    curScreenTouches.add(p);
                     // consume pointer when necessary
                     if (consumePointer) p.consume();
                 }
             });
         }
 
-        if (!curScreenPointers.isEmpty()) {
+        if (!curScreenTouches.isEmpty()) {
             // request focus when necessary
-            for (int i = 0; i < curScreenPointers.size() && !focus; i++) {
-                if (curScreenPointers.get(i).getAction() == ScreenPointer.ACTION.PRESSED) requestFocus(true);
+            for (int i = 0; i < curScreenTouches.size() && !focus; i++) {
+                if (curScreenTouches.get(i).getAction() == ScreenTouch.Action.PRESSED) requestFocus(true);
             }
 
             // notify hover when necessary
             if (!over) {
                 over = true;
-                notifyCallbacks(OnMouseEnter.class, curScreenPointers);
+                notifyCallbacks(OnMouseEnter.class, curScreenTouches);
             } else {
-                notifyCallbacks(OnMouseHover.class, curScreenPointers);
+                notifyCallbacks(OnMouseHover.class, curScreenTouches);
             }
 
             // notify click when necessary
-            curScreenPointers.forEach(p -> {
-                if (p.getAction() == ScreenPointer.ACTION.CLICKED) notifyCallbacks(OnClick.class, curScreenPointers);
+            curScreenTouches.forEach(p -> {
+                if (p.getAction() == ScreenTouch.Action.CLICKED) notifyCallbacks(OnClick.class, curScreenTouches);
             });
 
-            // restore pointers to original position
-            for (ScreenPointer i : curScreenPointers) {
+            // restore screen touches to original position
+            for (ScreenTouch i : curScreenTouches) {
                 i.translate(-offset[0], -offset[1]);
             }
         } else {
             // remove focus when necessary
-            for (int i = 0; i < screenPointers.size() && focus; i++) {
-                if (screenPointers.get(i).getAction() == ScreenPointer.ACTION.PRESSED) requestFocus(false);
+            for (int i = 0; i < screenTouches.size() && focus; i++) {
+                if (screenTouches.get(i).getAction() == ScreenTouch.Action.PRESSED) requestFocus(false);
             }
 
             // notify pointer exit when necessary
             if (over) {
                 over = false;
-                if (visible) notifyCallbacks(OnMouseExit.class, new ArrayList<ScreenPointer>(0));
+                if (visible) notifyCallbacks(OnMouseExit.class, new ArrayList<ScreenTouch>(0));
             }
         }
     }
@@ -308,11 +308,9 @@ public final class Component implements View {
             case MESSAGE:
                 dispatchMessage(data);
                 break;
-
-            case SCREEN_POINTER:
-                dispatchScreenPointers(data);
+            case SCREEN_TOUCH:
+                dispatchScreenTouches(data);
                 break;
-
             case KEY:
                 dispatchKey(data);
                 break;

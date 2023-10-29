@@ -37,24 +37,24 @@ public class UIButtonList extends WrapperView {
 
         viewText = new ComponentText(new Component("TEXT", 0.5f, 0.5f, 0.7f, 1f)
                 .setExpanseLimit(1f, 1f));
-        viewText.setConsumer(Consumer.SCREEN_POINTER, false);
+        viewText.setConsumer(Consumer.SCREEN_TOUCH, false);
         viewText.setAlign(ViewText.AlignY.CENTER);
         viewText.getPaint().setColor(Theme.TRANSPARENT);
 
         viewLeft = new Component("LEFT", 0.1f, 0.5f, 0.1f, 0.5f).setExpanseLimit(1.2f, 1.2f);
         viewLeft.buildGeometry(GeometryFactory::arrow, false);
         viewLeft.setColliderPolicy(ColliderPolicy.AABB);
-        viewLeft.setConsumer(Consumer.SCREEN_POINTER, false);
+        viewLeft.setConsumer(Consumer.SCREEN_TOUCH, false);
         viewLeft.getPaint().setColor(Theme.BLACK);
         viewLeft.setRotation(TrigTable.PI);
-        viewLeft.registerCallback((OnClick) pointers -> show(index - 1));
+        viewLeft.registerCallback((OnClick) touches -> show(index - 1));
 
         viewRight = new Component("RIGHT", 0.9f, 0.5f, 0.1f, 0.5f).setExpanseLimit(1.2f, 1.2f);
         viewRight.buildGeometry(GeometryFactory::arrow, false);
         viewRight.setColliderPolicy(ColliderPolicy.AABB);
-        viewRight.setConsumer(Consumer.SCREEN_POINTER, false);
+        viewRight.setConsumer(Consumer.SCREEN_TOUCH, false);
         viewRight.getPaint().setColor(Theme.BLACK);
-        viewRight.registerCallback((OnClick) pointers -> show(index + 1));
+        viewRight.registerCallback((OnClick) touches -> show(index + 1));
 
         ((ComponentGroup) getView()).add(viewText, viewLeft, viewRight);
     }

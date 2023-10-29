@@ -6,7 +6,7 @@ import processing.core.PGraphics;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 import uia.core.Key;
-import uia.core.ScreenPointer;
+import uia.core.ScreenTouch;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.Graphic;
@@ -92,7 +92,7 @@ public class ContextProcessing implements Context {
         private static View currentView;
         private final View rootView = new ComponentHiddenRoot();
 
-        private final List<ScreenPointer> screenPointers = new ArrayList<>();
+        private final List<ScreenTouch> screenTouches = new ArrayList<>();
 
         @Override
         public void settings() {
@@ -135,85 +135,85 @@ public class ContextProcessing implements Context {
          * Dispatch keys
          */
 
-        private void dispatch(KeyEvent event, Key.ACTION action) {
+        private void dispatch(KeyEvent event, Key.Action action) {
             Key key = new Key(action, event.getModifiers(), event.getKey(), event.getKeyCode());
             if (currentView != null)
                 currentView.dispatch(View.Dispatcher.KEY, key);
         }
 
         /**
-         * Dispatch pointers
+         * Dispatch screen touches
          */
 
-        private void dispatch(MouseEvent event, ScreenPointer.ACTION action) {
-            ScreenPointer.BUTTON button = null;
+        private void dispatch(MouseEvent event, ScreenTouch.Action action) {
+            ScreenTouch.Button button = null;
             switch (event.getButton()) {
                 case LEFT:
-                    button = ScreenPointer.BUTTON.LEFT;
+                    button = ScreenTouch.Button.LEFT;
                     break;
                 case CENTER:
-                    button = ScreenPointer.BUTTON.CENTER;
+                    button = ScreenTouch.Button.CENTER;
                     break;
                 case RIGHT:
-                    button = ScreenPointer.BUTTON.RIGHT;
+                    button = ScreenTouch.Button.RIGHT;
                     break;
             }
 
-            screenPointers.clear();
-            screenPointers.add(new ScreenPointer(action, button, event.getX(), event.getY(), event.getCount()));
+            screenTouches.clear();
+            screenTouches.add(new ScreenTouch(action, button, event.getX(), event.getY(), event.getCount()));
 
             if (currentView != null)
-                currentView.dispatch(View.Dispatcher.SCREEN_POINTER, screenPointers);
+                currentView.dispatch(View.Dispatcher.SCREEN_TOUCH, screenTouches);
         }
 
         @Override
         public void mousePressed(MouseEvent event) {
-            dispatch(event, ScreenPointer.ACTION.PRESSED);
+            dispatch(event, ScreenTouch.Action.PRESSED);
         }
 
         @Override
         public void mouseReleased(MouseEvent event) {
-            dispatch(event, ScreenPointer.ACTION.RELEASED);
+            dispatch(event, ScreenTouch.Action.RELEASED);
         }
 
         @Override
         public void mouseDragged(MouseEvent event) {
-            dispatch(event, ScreenPointer.ACTION.DRAGGED);
+            dispatch(event, ScreenTouch.Action.DRAGGED);
         }
 
         @Override
         public void mouseMoved(MouseEvent event) {
-            dispatch(event, ScreenPointer.ACTION.MOVED);
+            dispatch(event, ScreenTouch.Action.MOVED);
         }
 
         @Override
         public void mouseClicked(MouseEvent event) {
-            dispatch(event, ScreenPointer.ACTION.CLICKED);
+            dispatch(event, ScreenTouch.Action.CLICKED);
         }
 
         @Override
         public void mouseWheel(MouseEvent event) {
-            dispatch(event, ScreenPointer.ACTION.WHEEL);
+            dispatch(event, ScreenTouch.Action.WHEEL);
         }
 
         @Override
         public void mouseExited(MouseEvent event) {
-            dispatch(event, ScreenPointer.ACTION.EXITED);
+            dispatch(event, ScreenTouch.Action.EXITED);
         }
 
         @Override
         public void keyPressed(KeyEvent event) {
-            dispatch(event, Key.ACTION.PRESSED);
+            dispatch(event, Key.Action.PRESSED);
         }
 
         @Override
         public void keyReleased(KeyEvent event) {
-            dispatch(event, Key.ACTION.RELEASED);
+            dispatch(event, Key.Action.RELEASED);
         }
 
         @Override
         public void keyTyped(KeyEvent event) {
-            dispatch(event, Key.ACTION.TYPED);
+            dispatch(event, Key.Action.TYPED);
         }
     }
 

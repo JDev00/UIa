@@ -61,7 +61,7 @@ public class UIListView extends WrapperView implements ViewGroup {
         containerList = new ComponentGroup(new Component("SKELETON", 0.475f, 0.475f, 0.95f, 0.95f)
                 .setExpanseLimit(1f, 1f));
         containerList.setClip(false);
-        containerList.setConsumer(Consumer.SCREEN_POINTER, false);
+        containerList.setConsumer(Consumer.SCREEN_TOUCH, false);
         containerList.getPaint().setColor(Theme.RED);
 
 
@@ -223,7 +223,7 @@ public class UIListView extends WrapperView implements ViewGroup {
         out.setText(number + " HELLO!");
         out.setAlign(ViewText.AlignY.CENTER);
         out.getPaint().setColor(ThemeDarcula.W_FOREGROUND);
-        out.setConsumer(Consumer.SCREEN_POINTER, false);
+        out.setConsumer(Consumer.SCREEN_TOUCH, false);
         return out;
     }
 }

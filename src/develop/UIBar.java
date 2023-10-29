@@ -47,7 +47,7 @@ public class UIBar extends WrapperView {
 
         viewText = new ComponentText(new Component("TEXT", 0.5f, 1.25f, 0.225f, 0.5f));
         viewText.buildGeometry(g -> Drawable.buildRect(g, viewText.getWidth(), viewText.getHeight(), 0.5f), true);
-        viewText.setConsumer(Consumer.SCREEN_POINTER, false);
+        viewText.setConsumer(Consumer.SCREEN_TOUCH, false);
         viewText.setAlign(ComponentText.AlignY.CENTER);
         viewText.getPaint().setColor(ThemeDarcula.BACKGROUND);
         viewText.getTextPaint().setColor(ThemeDarcula.TEXT);

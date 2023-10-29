@@ -1,24 +1,20 @@
 package uia.core;
 
 /**
- * Keyboard's key representation
+ * Keyboard key representation
  */
 
 public class Key {
 
-    /**
-     * Key action
-     */
-    public enum ACTION {PRESSED, TYPED, RELEASED}
+    public enum Action {TYPED, PRESSED, RELEASED}
 
+    private final Action action;
+    private final int modifiers;
     private final char keyChar;
     private final int keyCode;
-    private final int modifiers;
-    private final ACTION action;
-
     private boolean consumed = false;
 
-    public Key(ACTION action, int modifiers, char keyChar, int keyCode) {
+    public Key(Action action, int modifiers, char keyChar, int keyCode) {
         this.action = action;
         this.modifiers = modifiers;
         this.keyCode = keyCode;
@@ -37,9 +33,7 @@ public class Key {
     }
 
     /**
-     * Consume this Key.
-     * <br>
-     * A consumed key can't be used anymore.
+     * Consumes this Key. A consumed key can't be used again.
      */
 
     public void consume() {
@@ -47,15 +41,15 @@ public class Key {
     }
 
     /**
-     * @return the Key's action
+     * @return the Key action
      */
 
-    public ACTION getAction() {
+    public Action getAction() {
         return action;
     }
 
     /**
-     * @return the Key's modifiers
+     * @return the Key modifiers
      */
 
     public int getModifiers() {
@@ -87,7 +81,7 @@ public class Key {
     }
 
     /**
-     * Check if two keys have been pressed simultaneously (ie CTRL-C).
+     * Checks if two keys have been pressed simultaneously (ie CTRL-C).
      *
      * @param mask    the mask used to compose the special code
      * @param keyCode the keyCode used to compose the special code

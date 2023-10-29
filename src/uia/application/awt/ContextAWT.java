@@ -47,28 +47,28 @@ public class ContextAWT implements Context {
     public ContextAWT(int x, int y) {
         renderer = new Renderer();
 
-        window = new WindowAWT(x, y, this::dispatchScreenPointers, this::dispatchKey);
+        window = new WindowAWT(x, y, this::dispatchScreenTouches, this::dispatchKey);
         window.registerNativeComponent(renderer);
 
         inputEmulator = new ArtificialInput(
-                screenPointer -> {
+                screenTouch -> {
                     int[] insets = window.getInsets();
-                    screenPointer.translate(insets[0], insets[1]);
-                    dispatchSingleScreenPointer(screenPointer);
+                    screenTouch.translate(insets[0], insets[1]);
+                    dispatchSingleScreenTouch(screenTouch);
                 },
                 this::dispatchKey
         );
     }
 
-    private void dispatchScreenPointers(List<ScreenPointer> screenPointers) {
+    private void dispatchScreenTouches(List<ScreenTouch> screenTouches) {
         View view = renderer.view;
         if (view != null && lifecycleStage.equals(LifecycleStage.RUN)) {
-            view.dispatch(View.Dispatcher.SCREEN_POINTER, screenPointers);
+            view.dispatch(View.Dispatcher.SCREEN_TOUCH, screenTouches);
         }
     }
 
-    private void dispatchSingleScreenPointer(ScreenPointer screenPointer) {
-        dispatchScreenPointers(Collections.singletonList(screenPointer));
+    private void dispatchSingleScreenTouch(ScreenTouch screenTouch) {
+        dispatchScreenTouches(Collections.singletonList(screenTouch));
     }
 
     private void dispatchKey(Key key) {
@@ -183,7 +183,7 @@ public class ContextAWT implements Context {
         private boolean focus = false;
 
         public WindowAWT(int x, int y,
-                         Consumer<List<ScreenPointer>> screenPointersListener,
+                         Consumer<List<ScreenTouch>> screenTouchesListener,
                          Consumer<Key> keyListener) {
             screenSize[0] = x;
             screenSize[1] = y;
@@ -215,33 +215,33 @@ public class ContextAWT implements Context {
             jFrame.addKeyListener(new KeyListener() {
                 @Override
                 public void keyTyped(KeyEvent e) {
-                    keyListener.accept(new Key(Key.ACTION.TYPED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                    keyListener.accept(new Key(Key.Action.TYPED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
                 }
 
                 @Override
                 public void keyPressed(KeyEvent e) {
-                    keyListener.accept(new Key(Key.ACTION.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                    keyListener.accept(new Key(Key.Action.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
                 }
 
                 @Override
                 public void keyReleased(KeyEvent e) {
-                    keyListener.accept(new Key(Key.ACTION.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                    keyListener.accept(new Key(Key.Action.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
                 }
             });
             jFrame.addMouseListener(new MouseListener() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    screenPointersListener.accept(getScreenPointers(e, 0, ScreenPointer.ACTION.PRESSED));
+                    screenTouchesListener.accept(getScreenTouches(e, 0, ScreenTouch.Action.PRESSED));
                 }
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    screenPointersListener.accept(getScreenPointers(e, 0, ScreenPointer.ACTION.RELEASED));
+                    screenTouchesListener.accept(getScreenTouches(e, 0, ScreenTouch.Action.RELEASED));
                 }
 
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    screenPointersListener.accept(getScreenPointers(e, 0, ScreenPointer.ACTION.CLICKED));
+                    screenTouchesListener.accept(getScreenTouches(e, 0, ScreenTouch.Action.CLICKED));
                 }
 
                 @Override
@@ -250,22 +250,22 @@ public class ContextAWT implements Context {
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    screenPointersListener.accept(getScreenPointers(e, 0, ScreenPointer.ACTION.EXITED));
+                    screenTouchesListener.accept(getScreenTouches(e, 0, ScreenTouch.Action.EXITED));
                 }
             });
             jFrame.addMouseMotionListener(new MouseMotionListener() {
                 @Override
                 public void mouseDragged(MouseEvent e) {
-                    screenPointersListener.accept(getScreenPointers(e, 0, ScreenPointer.ACTION.DRAGGED));
+                    screenTouchesListener.accept(getScreenTouches(e, 0, ScreenTouch.Action.DRAGGED));
                 }
 
                 @Override
                 public void mouseMoved(MouseEvent e) {
-                    screenPointersListener.accept(getScreenPointers(e, 0, ScreenPointer.ACTION.MOVED));
+                    screenTouchesListener.accept(getScreenTouches(e, 0, ScreenTouch.Action.MOVED));
                 }
             });
-            jFrame.addMouseWheelListener(e -> screenPointersListener.accept(
-                    getScreenPointers(e, e.getWheelRotation(), ScreenPointer.ACTION.WHEEL))
+            jFrame.addMouseWheelListener(e -> screenTouchesListener.accept(
+                    getScreenTouches(e, e.getWheelRotation(), ScreenTouch.Action.WHEEL))
             );
         }
 
@@ -283,42 +283,42 @@ public class ContextAWT implements Context {
         }
 
         /**
-         * @return the corresponding {@link uia.core.ScreenPointer.BUTTON} or null
+         * @return the corresponding {@link ScreenTouch.Button} or null
          */
 
-        private static ScreenPointer.BUTTON mapNativeMouseButton(int button) {
+        private static ScreenTouch.Button mapNativeMouseButton(int button) {
             switch (button) {
                 case 1:
-                    return ScreenPointer.BUTTON.LEFT;
+                    return ScreenTouch.Button.LEFT;
                 case 2:
-                    return ScreenPointer.BUTTON.CENTER;
+                    return ScreenTouch.Button.CENTER;
                 case 3:
-                    return ScreenPointer.BUTTON.RIGHT;
+                    return ScreenTouch.Button.RIGHT;
                 default:
                     return null;
             }
         }
 
-        private final List<ScreenPointer> screenPointers = new ArrayList<>();
+        private final List<ScreenTouch> screenTouches = new ArrayList<>();
 
         /**
-         * Helper function. Returns a List of ScreenPointers.
+         * Helper function. Returns a List of {@link ScreenTouch}s.
          */
 
-        private List<ScreenPointer> getScreenPointers(MouseEvent mouseEvent, int wheelRotation, ScreenPointer.ACTION action) {
+        private List<ScreenTouch> getScreenTouches(MouseEvent mouseEvent, int wheelRotation, ScreenTouch.Action action) {
             int x = mouseEvent.getX();
             int y = mouseEvent.getY();
             int[] insets = getInsets();
             int[] position = {x - insets[0], y - insets[1]};
 
-            screenPointers.clear();
-            screenPointers.add(new ScreenPointer(
+            screenTouches.clear();
+            screenTouches.add(new ScreenTouch(
                     action,
                     mapNativeMouseButton(mouseEvent.getButton()),
                     position[0],
                     position[1],
                     wheelRotation));
-            return screenPointers;
+            return screenTouches;
         }
 
         @Override

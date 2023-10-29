@@ -24,7 +24,7 @@ public class UIButtonSwitch extends WrapperView {
         super(new ComponentGroup(view));
 
         buildGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
-        registerCallback((OnClick) pointers -> setState(!isFirstState()));
+        registerCallback((OnClick) touches -> setState(!isFirstState()));
 
         activePaint = new Paint().setColor(ThemeDarcula.W_FOREGROUND);
 
@@ -49,7 +49,7 @@ public class UIButtonSwitch extends WrapperView {
     private static ViewText createView(String id, float x) {
         ViewText out = new ComponentText(new Component(id, x, 0.5f, 0.5f, 1f));
         out.setAlign(ViewText.AlignY.CENTER);
-        out.setConsumer(Consumer.SCREEN_POINTER, false);
+        out.setConsumer(Consumer.SCREEN_TOUCH, false);
         return out;
     }
 

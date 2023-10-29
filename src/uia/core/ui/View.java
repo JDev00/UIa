@@ -1,5 +1,6 @@
 package uia.core.ui;
 
+import uia.core.ScreenTouch;
 import uia.core.basement.*;
 
 import static uia.utility.TrigTable.*;
@@ -18,9 +19,9 @@ import static uia.utility.TrigTable.*;
 
 public interface View extends Callable, Movable, Drawable, Collider {
 
-    enum Consumer {SCREEN_POINTER, KEY}
+    enum Consumer {SCREEN_TOUCH, KEY}
 
-    enum Dispatcher {SCREEN_POINTER, KEY, MESSAGE, OTHER}
+    enum Dispatcher {SCREEN_TOUCH, KEY, MESSAGE, OTHER}
 
     /**
      * Requests or removes the View focus.
@@ -50,10 +51,10 @@ public interface View extends Callable, Movable, Drawable, Collider {
     void sendMessage(Object message, String destID);
 
     /**
-     * Consumer functionality consumes screen pointers or keys that are dispatched to this View.
+     * Consumer functionality consumes screen touches or keys that are dispatched to this View.
      *
      * @param consumer       the consumer type: see {@link Consumer}.
-     * @param enableConsumer true to consume pointers/keys managed by this View; false to disable the specified consumer.
+     * @param enableConsumer true to consume screen touches/keys managed by this View; false to disable the specified consumer.
      */
 
     void setConsumer(Consumer consumer, boolean enableConsumer);
@@ -63,7 +64,7 @@ public interface View extends Callable, Movable, Drawable, Collider {
      * <br>
      * For common input dispatching, one rule must be followed:
      * <ul>
-     *     <li>{@link uia.core.ScreenPointer}s must be provided as a {@link java.util.List};</li>
+     *     <li>{@link ScreenTouch}s must be provided as a {@link java.util.List};</li>
      *     <li>{@link uia.core.Key}s must be provided one by one;</li>
      *     <li>messages must be provided one by one.</li>
      * </ul>

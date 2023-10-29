@@ -45,7 +45,7 @@ public final class ComponentText extends WrapperView implements ViewText {
     public ComponentText(View view) {
         super(view);
 
-        registerCallback((OnMouseHover) pointers -> scroller[singleLine ? 0 : 1].update(pointers));
+        registerCallback((OnMouseHover) touches -> scroller[singleLine ? 0 : 1].update(touches));
 
         scroller = new Scroller[]{new WheelScroller(), new WheelScroller()};
 

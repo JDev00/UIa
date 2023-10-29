@@ -1,7 +1,7 @@
 package uia.physical.input;
 
 import uia.core.Key;
-import uia.core.ScreenPointer;
+import uia.core.ScreenTouch;
 import uia.core.ui.context.InputEmulator;
 
 import java.util.function.Consumer;
@@ -11,62 +11,30 @@ import java.util.function.Consumer;
  */
 
 public final class ArtificialInput implements InputEmulator {
-    /*private final SynchronousQueue<ScreenPointer> screenPointersQueue;
-    private final SynchronousQueue<Key> keyQueue;*/
-
-    private final Consumer<ScreenPointer> readScreenPointer;
+    private final Consumer<ScreenTouch> readScreenTouches;
     private final Consumer<Key> readKey;
 
-    public ArtificialInput(Consumer<ScreenPointer> readGeneratedScreenPointer,
+    public ArtificialInput(Consumer<ScreenTouch> readGeneratedScreenTouches,
                            Consumer<Key> readGeneratedKey) {
-        readScreenPointer = readGeneratedScreenPointer;
+        readScreenTouches = readGeneratedScreenTouches;
         readKey = readGeneratedKey;
-
-        /*screenPointersQueue = new SynchronousQueue<>();
-
-        ScheduledExecutorService screenPointersInputExecutor = Executors.newSingleThreadScheduledExecutor();
-        screenPointersInputExecutor.scheduleAtFixedRate(() -> {
-            try {
-                ScreenPointer result = screenPointersQueue.poll(50, TimeUnit.MILLISECONDS);
-                readGeneratedScreenPointer.accept(result);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }, 0, 10, TimeUnit.MILLISECONDS);
-
-        keyQueue = new SynchronousQueue<>();
-
-        ScheduledExecutorService keyInputExecutor = Executors.newSingleThreadScheduledExecutor();
-        keyInputExecutor.scheduleAtFixedRate(() -> {
-            try {
-                Key result = keyQueue.poll(50, TimeUnit.MILLISECONDS);
-                readGeneratedKey.accept(result);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }, 0, 10, TimeUnit.MILLISECONDS);*/
     }
 
     /**
-     * Helper function. Put a new {@link ScreenPointer} on the dedicated queue.
+     * Helper function. Put a new {@link ScreenTouch} on the dedicated queue.
      */
 
-    private void putScreenPointer(ScreenPointer.ACTION action, ScreenPointer.BUTTON button,
+    private void putScreenPointer(ScreenTouch.Action action, ScreenTouch.Button button,
                                   int x, int y, int wheelRotation) {
-        ScreenPointer result = new ScreenPointer(action, button, x, y, wheelRotation);
-        readScreenPointer.accept(result);
-        /*try {
-            screenPointersQueue.put(result);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
+        ScreenTouch result = new ScreenTouch(action, button, x, y, wheelRotation);
+        readScreenTouches.accept(result);
     }
 
     /**
-     * Helper function. Put a new sequence of {@link ScreenPointer}s on the dedicated queue.
+     * Helper function. Put a new sequence of {@link ScreenTouch}s on the dedicated queue.
      */
 
-    private void putScreenPointerSequence(ScreenPointer.ACTION action, ScreenPointer.BUTTON button,
+    private void putScreenTouchesSequence(ScreenTouch.Action action, ScreenTouch.Button button,
                                           int xStart, int yStart, int xEnd, int yEnd,
                                           int interactions, float duration) {
         int sleepMillis = (int) (1000 * duration) / interactions;
@@ -91,51 +59,46 @@ public final class ArtificialInput implements InputEmulator {
      * Helper function. Put a new {@link Key} on the dedicated queue.
      */
 
-    private void putKey(Key.ACTION action, int modifiers, char keyChar, int keyCode) {
+    private void putKey(Key.Action action, int modifiers, char keyChar, int keyCode) {
         Key result = new Key(action, modifiers, keyChar, keyCode);
         readKey.accept(result);
-        /*try {
-            keyQueue.put(result);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
     }
 
     @Override
     public InputEmulator clickOn(int x, int y) {
-        putScreenPointer(ScreenPointer.ACTION.CLICKED, null, x, y, 0);
+        putScreenPointer(ScreenTouch.Action.CLICKED, null, x, y, 0);
         return this;
     }
 
     @Override
     public InputEmulator moveMouseOnScreen(int xStart, int yStart, int xEnd, int yEnd, int movements, float duration) {
-        putScreenPointerSequence(ScreenPointer.ACTION.MOVED, null,
+        putScreenTouchesSequence(ScreenTouch.Action.MOVED, null,
                 xStart, yStart, xEnd, yEnd, movements, duration);
         return this;
     }
 
     @Override
     public InputEmulator dragMouseOnScreen(int xStart, int yStart, int xEnd, int yEnd, int movements, float duration) {
-        putScreenPointerSequence(ScreenPointer.ACTION.DRAGGED, null,
+        putScreenTouchesSequence(ScreenTouch.Action.DRAGGED, null,
                 xStart, yStart, xEnd, yEnd, movements, duration);
         return this;
     }
 
     @Override
     public InputEmulator pressKey(char key, int keyCode) {
-        putKey(Key.ACTION.PRESSED, 0, key, keyCode);
+        putKey(Key.Action.PRESSED, 0, key, keyCode);
         return this;
     }
 
     @Override
     public InputEmulator releaseKey(char key, int keyCode) {
-        putKey(Key.ACTION.RELEASED, 0, key, keyCode);
+        putKey(Key.Action.RELEASED, 0, key, keyCode);
         return this;
     }
 
     @Override
     public InputEmulator typeKey(char key, int keyCode) {
-        putKey(Key.ACTION.TYPED, 0, key, keyCode);
+        putKey(Key.Action.TYPED, 0, key, keyCode);
         return this;
     }
 }

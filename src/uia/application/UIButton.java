@@ -22,7 +22,7 @@ public class UIButton extends WrapperView {
     public UIButton(View view) {
         super(view);
 
-        registerCallback((OnClick) pointers -> enable(!isEnabled()));
+        registerCallback((OnClick) touches -> enable(!isEnabled()));
 
         paintState = new Paint[]{
                 new Paint().setColor(Theme.RED),
