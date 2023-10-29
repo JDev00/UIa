@@ -9,32 +9,113 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="799e2663-4b6c-479e-923e-48003a22cdda" name="Default Changelist" comment="Adds getWidth() and getHeight()">
+    <list default="true" id="9e94f413-5b84-4ebc-b4cb-620f91895743" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/develop/CharList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/develop/math/Matrix2D.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/UIa/develop/UIListView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/UIa/develop/UIListView.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/UIa/tutorial/Example.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/UIa/tutorial/Example.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButtonFilled.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButtonFilled.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButtonList.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButtonList.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButtonSwitch.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButtonSwitch.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/UIa_jar/UIa.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/develop/UIListView$Aligner.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/develop/UIListView.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/tutorial/Example.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/tutorial/HelloWorld.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButton$STATE.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButton.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButtonFilled.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButtonList$OnNext.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButtonList$OnPrevious.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButtonList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/UIButtonSwitch.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/UICalendar$Cell.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/UICalendar$OnChange.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/UICalendar$OnSelection.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/UICalendar.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/Context$CLIPBOARD_OPERATION.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/Context$CLIPBOARD_OPERATION.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/Context$HINT.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/Context$HINT.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/ContextAWT$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/ContextAWT$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/ContextAWT$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/ContextAWT$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/ContextAWT$5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/ContextAWT$6.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/ContextAWT$Renderer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/ContextAWT.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/FileChooserAWT.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/GraphicAWT$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/GraphicAWT.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/test/SanityBasementUITest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/test/SanityMessageTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/test/SanityWidgetTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/awt/test/artefacts/ComponentTracker.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/processing/ContextProcessing$Renderer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/processing/ContextProcessing.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/processing/GraphicProcessing.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/application/platform/processing/test/Test3D.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/Font$Measure.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/Font$STYLE.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/Font.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/Geometry$Vertex.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/Geometry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/Image$MODE.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/Image.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/Key$ACTION.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/Key.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/Paint$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/Paint$Color$CHANNEL.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/Paint$Color.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/Paint.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ScreenPointer$ACTION.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ScreenPointer$BUTTON.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ScreenPointer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/Shape$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/Shape$TransformedVertex.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/Shape.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/basement/Callable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/basement/Callback.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/basement/Collider$COLLIDER_POLICY.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/basement/Collider.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/basement/Movable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/Context$CLIPBOARD_OPERATION.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/Context$HINT.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/Context.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/Graphic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/View$CONSUMER.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/View$DISPATCHER.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/View.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/ViewGroup.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/ViewText$AlignX.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/ViewText$AlignY.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/ViewText.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnClick.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnFocus.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnKeyPressed.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnKeyReleased.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnKeyTyped.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnMessageReceived.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnMouseEnter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnMouseExit.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/core/ui/callbacks/OnMouseHover.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/Component$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/Component.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/utility/TrigTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/UIa/uia/utility/TrigTable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/develop/UIListView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/develop/UIListView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tutorial/Example.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tutorial/Example.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/application/UIButtonFilled.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/application/UIButtonFilled.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/application/UIButtonList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/application/UIButtonList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/application/UIButtonSwitch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/application/UIButtonSwitch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/application/UICalendar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/application/UICalendar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/application/UIScrollBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/application/UIScrollBar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/physical/Component.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/physical/Component.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/physical/ComponentGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/physical/ComponentGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/physical/ComponentImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/physical/ComponentImage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/physical/ComponentRoot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/physical/ComponentRoot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/physical/ComponentText.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/physical/ComponentText.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/physical/text/InlineRendererV1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/physical/text/InlineRendererV1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/physical/text/MultilineRendererV1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/physical/text/MultilineRendererV1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/ComponentGroup$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/ComponentGroup.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/ComponentImage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/ComponentRoot.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/ComponentText.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/message/MessageStore.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/scroller/Scroller.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/scroller/WheelScroller.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/text/InlineRendererV1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/text/MultilineRendererV1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/text/TextRenderer$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/text/TextRenderer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/theme/Theme.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/theme/ThemeDarcula.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/wrapper/WrapperView.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/wrapper/WrapperViewGroup.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/physical/wrapper/WrapperViewText.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/utility/Figure.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/utility/Timer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/utility/TrigTable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/UIa/uia/utility/Utility.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,8 +125,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -70,7 +151,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -86,9 +167,9 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;1.1&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;1.1.0&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Manu/IdeaProjects/UIa&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Manu/IdeaProjects/UIa/src/develop/math&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
@@ -97,18 +178,18 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Manu\IdeaProjects\UIa\src\develop\math" />
       <recent name="C:\Users\Manu\IdeaProjects\UIa\src" />
       <recent name="C:\Users\Manu\IdeaProjects\UIa\lib" />
       <recent name="C:\Users\Manu\IdeaProjects\UIa\src\uia\application\ux" />
       <recent name="C:\Users\Manu\IdeaProjects\UIa\src\uia\test\processing" />
-      <recent name="C:\Users\Manu\IdeaProjects\UIa\src\uia\core\platform\ui\advanced" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Manu\IdeaProjects\UIa\src\uia\application" />
+      <recent name="C:\Users\Manu\IdeaProjects\UIa\docs" />
+      <recent name="C:\Users\Manu\IdeaProjects\UIa\src\develop\math" />
+      <recent name="C:\Users\Manu\IdeaProjects\UIa\src\develop\math\data" />
       <recent name="C:\Users\Manu\IdeaProjects\UIa\src\develop" />
-      <recent name="C:\Users\Manu\IdeaProjects\UIa\sample" />
-      <recent name="C:\Users\Manu\IdeaProjects\UIa\lib\processing" />
-      <recent name="C:\Users\Manu\IdeaProjects\UIa\src\uia\platform\processing" />
+      <recent name="C:\Users\Manu\IdeaProjects\UIa\src\uia\application" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="uia.platform" />
@@ -121,13 +202,13 @@
       <recent name="uia.core.widget.text" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.HelloWorld">
-    <configuration name="Example" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="tutorial.Example" />
+  <component name="RunManager" selected="Application.TestView">
+    <configuration name="ContextLifecycleExample" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="example.ContextLifecycleExample" />
       <module name="UIa" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="tutorial.*" />
+          <option name="PATTERN" value="example.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -136,11 +217,11 @@
       </method>
     </configuration>
     <configuration name="HelloWorld" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="tutorial.HelloWorld" />
+      <option name="MAIN_CLASS_NAME" value="example.HelloWorld" />
       <module name="UIa" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="tutorial.*" />
+          <option name="PATTERN" value="example.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -148,12 +229,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SanityBasementUITest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="uia.application.platform.awt.test.SanityBasementUITest" />
+    <configuration name="TestPaint" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="test.TestPaint" />
       <module name="UIa" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="uia.application.platform.awt.test.artefacts.*" />
+          <option name="PATTERN" value="test.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -161,12 +242,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TrigTable" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="uia.utility.TrigTable" />
+    <configuration name="TestPointDistribution" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="test.TestPointDistribution" />
       <module name="UIa" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="uia.utility.*" />
+          <option name="PATTERN" value="test.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -174,12 +255,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UIScrollBar" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="uia.application.UIScrollBar" />
+    <configuration name="TestView" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="test.TestView" />
       <module name="UIa" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="uia.application.*" />
+          <option name="PATTERN" value="test.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -188,26 +269,26 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.TestPaint" />
+      <item itemvalue="Application.ContextLifecycleExample" />
+      <item itemvalue="Application.TestPointDistribution" />
       <item itemvalue="Application.HelloWorld" />
-      <item itemvalue="Application.UIScrollBar" />
-      <item itemvalue="Application.TrigTable" />
-      <item itemvalue="Application.Example" />
-      <item itemvalue="Application.SanityBasementUITest" />
+      <item itemvalue="Application.TestView" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.TestView" />
+        <item itemvalue="Application.TestPointDistribution" />
+        <item itemvalue="Application.TestPaint" />
         <item itemvalue="Application.HelloWorld" />
-        <item itemvalue="Application.Example" />
-        <item itemvalue="Application.TrigTable" />
-        <item itemvalue="Application.UIScrollBar" />
-        <item itemvalue="Application.SanityBasementUITest" />
+        <item itemvalue="Application.ContextLifecycleExample" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="799e2663-4b6c-479e-923e-48003a22cdda" name="Default Changelist" comment="" />
+      <changelist id="9e94f413-5b84-4ebc-b4cb-620f91895743" name="Changes" comment="" />
       <created>1620820337740</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -220,63 +301,391 @@
       <option name="project" value="LOCAL" />
       <updated>1651233864002</updated>
     </task>
-    <task id="LOCAL-00002" summary="Beta Version">
+    <task id="LOCAL-00020" summary="Fixes bug in text rotation">
       <option name="closed" value="true" />
-      <created>1695577700164</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
+      <created>1697314766604</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
-      <updated>1695577700164</updated>
+      <updated>1697314766604</updated>
     </task>
-    <task id="LOCAL-00003" summary="Beta Version">
+    <task id="LOCAL-00021" summary="Minor improvements">
       <option name="closed" value="true" />
-      <created>1695578144069</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
+      <created>1697315174525</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
       <option name="project" value="LOCAL" />
-      <updated>1695578144069</updated>
+      <updated>1697315174525</updated>
     </task>
-    <task id="LOCAL-00004" summary="restores UIScrollBar">
+    <task id="LOCAL-00022" summary="Updates readme">
       <option name="closed" value="true" />
-      <created>1695585768122</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
+      <created>1697315580248</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
       <option name="project" value="LOCAL" />
-      <updated>1695585768122</updated>
+      <updated>1697315580248</updated>
     </task>
-    <task id="LOCAL-00005" summary="Adds getWidth() and getHeight()">
+    <task id="LOCAL-00023" summary="Updates readme">
       <option name="closed" value="true" />
-      <created>1695665159288</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
+      <created>1697315641557</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
       <option name="project" value="LOCAL" />
-      <updated>1695665159288</updated>
+      <updated>1697315641557</updated>
     </task>
-    <task id="LOCAL-00006" summary="Adds getWidth() and getHeight()">
+    <task id="LOCAL-00024" summary="Adds examples of usage of basement components and widgets">
       <option name="closed" value="true" />
-      <created>1695666823611</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
+      <created>1697825748781</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
       <option name="project" value="LOCAL" />
-      <updated>1695666823611</updated>
+      <updated>1697825748781</updated>
     </task>
-    <task id="LOCAL-00007" summary="Removes dead code">
+    <task id="LOCAL-00025" summary="Adds examples of usage of basement components and widgets">
       <option name="closed" value="true" />
-      <created>1695666911723</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
+      <created>1697825826243</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
       <option name="project" value="LOCAL" />
-      <updated>1695666911723</updated>
+      <updated>1697825826243</updated>
     </task>
-    <task id="LOCAL-00008" summary="Adds getWidth() and getHeight()">
+    <task id="LOCAL-00026" summary="Tests Paint">
       <option name="closed" value="true" />
-      <created>1695666997494</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
+      <created>1697829364762</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
       <option name="project" value="LOCAL" />
-      <updated>1695666997494</updated>
+      <updated>1697829364762</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00027" summary="Make not visible an attribute">
+      <option name="closed" value="true" />
+      <created>1697829400845</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1697829400845</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Updates tests">
+      <option name="closed" value="true" />
+      <created>1697830099946</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1697830099946</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Adds testcase Interface and updates test tas">
+      <option name="closed" value="true" />
+      <created>1697834079851</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1697834079851</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Updates tests">
+      <option name="closed" value="true" />
+      <created>1697834120284</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1697834120284</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Updates Paint test">
+      <option name="closed" value="true" />
+      <created>1697834308452</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1697834308452</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Adds size() method">
+      <option name="closed" value="true" />
+      <created>1697834362084</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1697834362084</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Renames test">
+      <option name="closed" value="true" />
+      <created>1697834379878</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1697834379878</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Updates standard deviation contract">
+      <option name="closed" value="true" />
+      <created>1697834413102</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1697834413102</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Moves processing into examples folder">
+      <option name="closed" value="true" />
+      <created>1697834445382</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1697834445382</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Renames class">
+      <option name="closed" value="true" />
+      <created>1697834622665</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1697834622665</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Moves PointDistribution">
+      <option name="closed" value="true" />
+      <created>1697834749913</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1697834749913</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Refactor: extract methods. Tests View click">
+      <option name="closed" value="true" />
+      <created>1697835799254</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1697835799254</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Updates Component description">
+      <option name="closed" value="true" />
+      <created>1697835894545</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1697835894545</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Prints a message when a click happens">
+      <option name="closed" value="true" />
+      <created>1697836032229</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1697836032229</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Updates widgets">
+      <option name="closed" value="true" />
+      <created>1697836213443</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1697836213443</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Deletes files">
+      <option name="closed" value="true" />
+      <created>1697836514340</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1697836514340</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Deletes files">
+      <option name="closed" value="true" />
+      <created>1697836730972</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1697836730972</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Implements ArtificiallyInput and updates tests">
+      <option name="closed" value="true" />
+      <created>1697892257174</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1697892257174</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Shows and hides Window and updates tests">
+      <option name="closed" value="true" />
+      <created>1697895267588</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1697895267588</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Updates examples">
+      <option name="closed" value="true" />
+      <created>1697895439593</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1697895439593</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Updates tests and adds ArtificialInput to emulate inputs">
+      <option name="closed" value="true" />
+      <created>1697974447929</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1697974447929</updated>
+    </task>
+    <task id="LOCAL-00048" summary="small improvements">
+      <option name="closed" value="true" />
+      <created>1697974509437</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1697974509437</updated>
+    </task>
+    <task id="LOCAL-00049" summary="small improvements">
+      <option name="closed" value="true" />
+      <created>1697974946797</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1697974946797</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Removes methods to interact with the native Object">
+      <option name="closed" value="true" />
+      <created>1698431230159</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1698431230159</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Refactor: renames methods">
+      <option name="closed" value="true" />
+      <created>1698431301761</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1698431301761</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Refactor: renames methods and objects. Introduces the concept of Context lifecycle">
+      <option name="closed" value="true" />
+      <created>1698432921373</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1698432921373</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Updates callbacks description">
+      <option name="closed" value="true" />
+      <created>1698434469584</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1698434469584</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Implements new policies">
+      <option name="closed" value="true" />
+      <created>1698434834383</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1698434834383</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Sets the native graphics object to UIa Graphics abstraction">
+      <option name="closed" value="true" />
+      <created>1698436097204</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1698436097204</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Policies implementation and minor fixes">
+      <option name="closed" value="true" />
+      <created>1698436155464</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1698436155464</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Removes dead component">
+      <option name="closed" value="true" />
+      <created>1698436188092</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1698436188092</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Updates HelloWorld example">
+      <option name="closed" value="true" />
+      <created>1698436293743</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1698436293743</updated>
+    </task>
+    <task id="LOCAL-00059" summary="Updates example on readme">
+      <option name="closed" value="true" />
+      <created>1698436452981</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1698436452981</updated>
+    </task>
+    <task id="LOCAL-00060" summary="Updates collider policies definition">
+      <option name="closed" value="true" />
+      <created>1698436875400</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1698436875400</updated>
+    </task>
+    <task id="LOCAL-00061" summary="Removes a method used to set the native Graphics and improves existing implementations">
+      <option name="closed" value="true" />
+      <created>1698480071895</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1698480071895</updated>
+    </task>
+    <task id="LOCAL-00062" summary="Expands constructor options">
+      <option name="closed" value="true" />
+      <created>1698493880685</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1698493880685</updated>
+    </task>
+    <task id="LOCAL-00063" summary="minor improvements and window focus addition">
+      <option name="closed" value="true" />
+      <created>1698499656024</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1698499656025</updated>
+    </task>
+    <task id="LOCAL-00064" summary="Refactor: extracts component. Graphical object rotation is now available">
+      <option name="closed" value="true" />
+      <created>1698573476940</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1698573476940</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Renames ScreenPointer class">
+      <option name="closed" value="true" />
+      <created>1698574615475</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1698574615475</updated>
+    </task>
+    <task id="LOCAL-00066" summary="Preview: counts che number of passed assertions">
+      <option name="closed" value="true" />
+      <created>1698574672686</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1698574672686</updated>
+    </task>
+    <task id="LOCAL-00067" summary="Moves test core elsewhere">
+      <option name="closed" value="true" />
+      <created>1698574794812</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1698574794812</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -290,7 +699,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="master" />
+                        <option value="1.1.0" />
                       </list>
                     </value>
                   </entry>
@@ -306,11 +715,32 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Beta Version" />
-    <MESSAGE value="restore UIScrollBar" />
-    <MESSAGE value="Removes dead code" />
-    <MESSAGE value="Adds getWidth() and getHeight()" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adds getWidth() and getHeight()" />
+    <MESSAGE value="Updates widgets" />
+    <MESSAGE value="Deletes files" />
+    <MESSAGE value="Implements ArtificiallyInput and updates tests" />
+    <MESSAGE value="Shows and hides Window and updates tests" />
+    <MESSAGE value="Updates examples" />
+    <MESSAGE value="Updates tests and adds ArtificialInput to emulate inputs" />
+    <MESSAGE value="small improvements" />
+    <MESSAGE value="Removes methods to interact with the native Object" />
+    <MESSAGE value="Refactor: renames methods" />
+    <MESSAGE value="Refactor: renames methods and objects. Introduces the concept of Context lifecycle" />
+    <MESSAGE value="Updates callbacks description" />
+    <MESSAGE value="Implements new policies" />
+    <MESSAGE value="Sets the native graphics object to UIa Graphics abstraction" />
+    <MESSAGE value="Policies implementation and minor fixes" />
+    <MESSAGE value="Removes dead component" />
+    <MESSAGE value="Updates HelloWorld example" />
+    <MESSAGE value="Updates example on readme" />
+    <MESSAGE value="Updates collider policies definition" />
+    <MESSAGE value="Removes a method used to set the native Graphics and improves existing implementations" />
+    <MESSAGE value="Expands constructor options" />
+    <MESSAGE value="minor improvements and window focus addition" />
+    <MESSAGE value="Refactor: extracts component. Graphical object rotation is now available" />
+    <MESSAGE value="Renames ScreenPointer class" />
+    <MESSAGE value="Preview: counts che number of passed assertions" />
+    <MESSAGE value="Moves test core elsewhere" />
+    <option name="LAST_COMMIT_MESSAGE" value="Moves test core elsewhere" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
