@@ -7,26 +7,28 @@ package uia.core.basement;
 public interface Callable {
 
     /**
-     * Add a new Callback to this View.
+     * Registers a new Callback
      *
      * @param callback a new (not duplicated) {@link Callback}
      */
 
-    void addCallback(Callback<?> callback);
+    void registerCallback(Callback<?> callback);
 
     /**
-     * Remove the given Callback from this View.
+     * Unregisters the specified Callback
      *
-     * @param callback the {@link Callback} to remove
+     * @param callback the {@link Callback} to unregister
      */
 
-    void removeCallback(Callback<?> callback);
+    void unregisterCallback(Callback<?> callback);
 
     /**
-     * Notify the specified Callback types.
+     * Notifies the specified Callback type.
+     * <br>
+     * This operation notifies all callbacks whose type is the specified one.
      *
      * @param type the {@link Callback} type
-     * @param data a not null Object to pass to the callback
+     * @param data a not null Object to dispatch to the callbacks
      */
 
     void notifyCallbacks(Class<? extends Callback> type, Object data);

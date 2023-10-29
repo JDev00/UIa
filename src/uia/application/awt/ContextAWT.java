@@ -9,7 +9,7 @@ import uia.core.ui.Graphic;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.utility.Timer;
-import uia.physical.ComponentRoot;
+import uia.physical.ComponentHiddenRoot;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,7 +63,7 @@ public class ContextAWT implements Context {
     private void dispatchScreenPointers(List<ScreenPointer> screenPointers) {
         View view = renderer.view;
         if (view != null && lifecycleStage.equals(LifecycleStage.RUN)) {
-            view.dispatch(View.DISPATCHER.POINTERS, screenPointers);
+            view.dispatch(View.Dispatcher.SCREEN_POINTER, screenPointers);
         }
     }
 
@@ -74,7 +74,7 @@ public class ContextAWT implements Context {
     private void dispatchKey(Key key) {
         View view = renderer.view;
         if (view != null && lifecycleStage.equals(LifecycleStage.RUN)) {
-            view.dispatch(View.DISPATCHER.KEY, key);
+            view.dispatch(View.Dispatcher.KEY, key);
         }
     }
 
@@ -407,7 +407,7 @@ public class ContextAWT implements Context {
         public Renderer() {
             graphic = new GraphicAWT(() -> nativeGraphics);
 
-            rootView = new ComponentRoot();
+            rootView = new ComponentHiddenRoot();
 
             timer = new Timer();
 
@@ -490,7 +490,7 @@ public class ContextAWT implements Context {
                 Object[] message;
 
                 while ((message = messageStore.pop()) != null && counter < limit) {
-                    view.dispatch(View.DISPATCHER.MESSAGE, message);
+                    view.dispatch(View.Dispatcher.MESSAGE, message);
                     counter++;
                 }
 

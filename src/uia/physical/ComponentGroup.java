@@ -75,7 +75,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     private void dispatchMessage(Object data) {
         for (int i = views.size() - 1; i >= 0; i--) {
-            views.get(i).dispatch(DISPATCHER.MESSAGE, data);
+            views.get(i).dispatch(Dispatcher.MESSAGE, data);
         }
     }
 
@@ -86,7 +86,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     private void dispatchKey(Object data) {
         if (isVisible()) {
             for (int i = views.size() - 1; i >= 0; i--) {
-                views.get(i).dispatch(DISPATCHER.KEY, data);
+                views.get(i).dispatch(Dispatcher.KEY, data);
             }
         }
     }
@@ -108,12 +108,12 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         }
 
         for (int i = views.size() - 1; i >= 0; i--) {
-            views.get(i).dispatch(DISPATCHER.POINTERS, screenPointers);
+            views.get(i).dispatch(Dispatcher.SCREEN_POINTER, screenPointers);
         }
     }
 
     @Override
-    public void dispatch(DISPATCHER dispatcher, Object data) {
+    public void dispatch(Dispatcher dispatcher, Object data) {
         switch (dispatcher) {
             case MESSAGE:
                 super.dispatch(dispatcher, data);
@@ -125,7 +125,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
                 super.dispatch(dispatcher, data);
                 break;
 
-            case POINTERS:
+            case SCREEN_POINTER:
                 dispatchPointers(data);
                 super.dispatch(dispatcher, data);
                 break;

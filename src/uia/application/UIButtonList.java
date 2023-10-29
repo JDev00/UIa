@@ -1,12 +1,13 @@
 package uia.application;
 
+import uia.core.basement.Drawable;
 import uia.core.ui.View;
 import uia.core.basement.Callback;
 import uia.core.ui.ViewText;
 import uia.core.ui.callbacks.OnClick;
 import uia.physical.theme.Theme;
 import uia.physical.wrapper.WrapperView;
-import uia.utility.Figure;
+import uia.utility.GeometryFactory;
 import uia.physical.Component;
 import uia.physical.ComponentGroup;
 import uia.physical.ComponentText;
@@ -32,28 +33,28 @@ public class UIButtonList extends WrapperView {
     public UIButtonList(View view) {
         super(new ComponentGroup(view));
 
-        buildGeometry(g -> View.buildRect(g, getWidth(), getHeight(), 1f), true);
+        buildGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
 
         viewText = new ComponentText(new Component("TEXT", 0.5f, 0.5f, 0.7f, 1f)
                 .setExpanseLimit(1f, 1f));
-        viewText.setConsumer(CONSUMER.POINTER, false);
+        viewText.setConsumer(Consumer.SCREEN_POINTER, false);
         viewText.setAlign(ViewText.AlignY.CENTER);
         viewText.getPaint().setColor(Theme.TRANSPARENT);
 
         viewLeft = new Component("LEFT", 0.1f, 0.5f, 0.1f, 0.5f).setExpanseLimit(1.2f, 1.2f);
-        viewLeft.buildGeometry(Figure::arrow, false);
+        viewLeft.buildGeometry(GeometryFactory::arrow, false);
         viewLeft.setColliderPolicy(ColliderPolicy.AABB);
-        viewLeft.setConsumer(CONSUMER.POINTER, false);
+        viewLeft.setConsumer(Consumer.SCREEN_POINTER, false);
         viewLeft.getPaint().setColor(Theme.BLACK);
         viewLeft.setRotation(TrigTable.PI);
-        viewLeft.addCallback((OnClick) pointers -> show(index - 1));
+        viewLeft.registerCallback((OnClick) pointers -> show(index - 1));
 
         viewRight = new Component("RIGHT", 0.9f, 0.5f, 0.1f, 0.5f).setExpanseLimit(1.2f, 1.2f);
-        viewRight.buildGeometry(Figure::arrow, false);
+        viewRight.buildGeometry(GeometryFactory::arrow, false);
         viewRight.setColliderPolicy(ColliderPolicy.AABB);
-        viewRight.setConsumer(CONSUMER.POINTER, false);
+        viewRight.setConsumer(Consumer.SCREEN_POINTER, false);
         viewRight.getPaint().setColor(Theme.BLACK);
-        viewRight.addCallback((OnClick) pointers -> show(index + 1));
+        viewRight.registerCallback((OnClick) pointers -> show(index + 1));
 
         ((ComponentGroup) getView()).add(viewText, viewLeft, viewRight);
     }

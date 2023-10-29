@@ -5,13 +5,13 @@ import uia.core.Geometry;
 import static uia.utility.TrigTable.*;
 
 /**
- * Collection of figures used to easily build shapes
+ * Collection of utilities used to easily build geometries
  */
 
-public final class Figure {
+public final class GeometryFactory {
 
     /**
-     * Standard number of shape's vertices
+     * Standard number of geometry vertices
      */
     public static final int STD_VERT = 25;
 
@@ -21,9 +21,10 @@ public final class Figure {
     public static final float STD_ROUND = 0.1f;
 
     /**
-     * Build a rectangle
+     * Builds a rectangle
      *
      * @param geometry a not null {@link Geometry} to fill
+     * @throws NullPointerException if {@code geometry == null}
      */
 
     public static Geometry rect(Geometry geometry) {
@@ -37,22 +38,23 @@ public final class Figure {
     }
 
     /**
-     * Build a rectangle with rounded corners.
+     * Builds a rectangle with rounded corners.
      * <br>
-     * Note that this method must be called at runtime because of corner rounding calculation.
+     * This method must be called at runtime because of corner rounding calculation.
      *
      * @param geometry a not null {@link Geometry} to fill
-     * @param vertices the number of vertices
-     * @param a        the radius between [0,1] used to round the upper-left corner
-     * @param b        the radius between [0,1] used to round the upper-right corner
-     * @param c        the radius between [0,1] used to round the lower-right corner
-     * @param d        the radius between [0,1] used to round the lower-left corner
-     * @param ratio    the ratio between width and height
+     * @param vertices the amount of vertices (> 0) used to create the geometry
+     * @param a        the upper-left corner radius between [0,1]
+     * @param b        the upper-right corner radius between [0,1]
+     * @param c        the lower-right corner radius between [0,1]
+     * @param d        the lower-left corner radius between [0,1]
+     * @param ratio    the width to height ration between [0,1]
+     * @return the specified geometry filled with the rounded corners rectangle vertices
+     * @throws NullPointerException if {@code geometry == null}
      */
 
     public static Geometry rect(Geometry geometry, int vertices,
-                                float a, float b, float c, float d,
-                                float ratio) {
+                                float a, float b, float c, float d, float ratio) {
         geometry.clear();
 
         vertices = vertices / 4;
@@ -95,12 +97,8 @@ public final class Figure {
     }
 
     /**
-     * Build a rectangle with rounded corners
+     * Builds a rectangle with rounded corners
      *
-     * @param geometry a {@link Geometry} to fill
-     * @param vertices the number of vertices
-     * @param radius   the radius between [0,1] used to round each corner
-     * @param ratio    the ratio between width and height
      * @see #rect(Geometry, int, float, float, float, float, float)
      */
 
@@ -109,9 +107,10 @@ public final class Figure {
     }
 
     /**
-     * Build a triangle
+     * Builds a triangle
      *
      * @param geometry a not null {@link Geometry} to fill
+     * @throws NullPointerException if {@code geometry == null}
      */
 
     public static Geometry triangle(Geometry geometry) {
@@ -124,10 +123,11 @@ public final class Figure {
     }
 
     /**
-     * Build an oval
+     * Builds an oval
      *
      * @param geometry a not null {@link Geometry} to fill
-     * @param vertices the number of vertices used to create this figure
+     * @param vertices the amount of vertices (> 0) used to create the geometry
+     * @throws NullPointerException if {@code geometry == null}
      */
 
     public static Geometry oval(Geometry geometry, int vertices) {
@@ -140,9 +140,10 @@ public final class Figure {
     }
 
     /**
-     * Build a pause shape
+     * Builds a pause figure
      *
      * @param geometry a not null {@link Geometry} to fill
+     * @throws NullPointerException if {@code geometry == null}
      */
 
     public static Geometry pause(Geometry geometry) {
@@ -161,9 +162,10 @@ public final class Figure {
     }
 
     /**
-     * Build an arrow
+     * Builds an arrow
      *
      * @param geometry a not null {@link Geometry} to fill
+     * @throws NullPointerException if {@code geometry == null}
      */
 
     public static Geometry arrow(Geometry geometry) {
@@ -177,9 +179,10 @@ public final class Figure {
     }
 
     /**
-     * Build an arrow
+     * Builds an arrow
      *
      * @param geometry a not null {@link Geometry} to fill
+     * @throws NullPointerException if {@code geometry == null}
      */
 
     // TODO: sistemare vertici
@@ -199,10 +202,11 @@ public final class Figure {
     }
 
     /**
-     * Build a plus shape
+     * Builds a plus shape
      *
      * @param geometry  a not null {@link Geometry} to fill
-     * @param thickness the shape thickness
+     * @param thickness the figure thickness between [0, 0.375]
+     * @throws NullPointerException if {@code geometry == null}
      */
 
     public static Geometry plus(Geometry geometry, float thickness) {
@@ -225,10 +229,11 @@ public final class Figure {
     }
 
     /**
-     * Build a delete shape
+     * Builds a delete figure
      *
      * @param geometry  a not null {@link Geometry} to fill
-     * @param thickness the shape's thickness between [0, 1]
+     * @param thickness the shape's thickness between [0, 0.5]
+     * @throws NullPointerException if {@code geometry == null}
      */
 
     public static Geometry delete(Geometry geometry, float thickness) {

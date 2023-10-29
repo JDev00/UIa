@@ -102,7 +102,7 @@ public final class ArtificialInput implements InputEmulator {
     }
 
     @Override
-    public InputEmulator click(int x, int y) {
+    public InputEmulator clickOn(int x, int y) {
         putScreenPointer(ScreenPointer.ACTION.CLICKED, null, x, y, 0);
         return this;
     }

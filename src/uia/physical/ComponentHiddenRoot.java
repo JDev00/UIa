@@ -6,25 +6,26 @@ import uia.core.basement.Callback;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
 
-import java.util.function.Consumer;
-
 /**
- * ComponentRoot is a simple View used as root for user interface tree components.
+ * ComponentHiddenRoot is a simple View designed to be used as a root for user interface tree components.
+ * <br>
+ * <br>
+ * <b>Important:</b> do not use it directly. It is designed to be used within a Context-specific implementation.
  */
 
-public final class ComponentRoot implements View {
+public final class ComponentHiddenRoot implements View {
     private final float[] bounds = new float[5];
     private boolean focus = true;
 
     private final String unsupported_error = "method not supported by ROOT View!";
 
     @Override
-    public void addCallback(Callback<?> callback) {
+    public void registerCallback(Callback<?> callback) {
         throw new UnsupportedOperationException(unsupported_error);
     }
 
     @Override
-    public void removeCallback(Callback<?> callback) {
+    public void unregisterCallback(Callback<?> callback) {
         throw new UnsupportedOperationException(unsupported_error);
     }
 
@@ -54,17 +55,17 @@ public final class ComponentRoot implements View {
     }
 
     @Override
-    public void setConsumer(CONSUMER consumer, boolean enableConsumer) {
+    public void setConsumer(Consumer consumer, boolean enableConsumer) {
         throw new UnsupportedOperationException(unsupported_error);
     }
 
     @Override
-    public void dispatch(DISPATCHER dispatcher, Object data) {
+    public void dispatch(Dispatcher dispatcher, Object data) {
         throw new UnsupportedOperationException(unsupported_error);
     }
 
     @Override
-    public void buildGeometry(Consumer<Geometry> builder, boolean inTimeBuilding) {
+    public void buildGeometry(java.util.function.Consumer<Geometry> builder, boolean inTimeBuilding) {
         throw new UnsupportedOperationException(unsupported_error);
     }
 
@@ -130,12 +131,17 @@ public final class ComponentRoot implements View {
     }
 
     @Override
+    public float getRotation() {
+        return bounds[4];
+    }
+
+    @Override
     public boolean contains(float x, float y) {
         return false;
     }
 
     @Override
     public String getID() {
-        return "ROOT";
+        return "HIDDEN_ROOT";
     }
 }

@@ -32,11 +32,11 @@ public class HelloWorld extends WrapperViewGroup {
         UIButton button = createCustomButton();
         // now comes for the interesting part of the job: showing and hiding a View without creating dependencies.
         // remember: callbacks are typically called after View update.
-        button.addCallback((OnClick) pointers -> {
+        button.registerCallback((OnClick) pointers -> {
             button.sendMessage(button.isEnabled() ? "Wake up!" : "Sleep now :)", "POPUP");
         });
         // add another callback to listen for messages sent to this button
-        button.addCallback((OnMessageReceived) message -> {
+        button.registerCallback((OnMessageReceived) message -> {
             if (message[1] == "POPUP") {
                 ViewText viewText = (ViewText) button.getView();
                 viewText.setText(((String) message[0]).contains("Hey") ? "Hide\npopup!" : "Show\npopup!");
@@ -46,7 +46,7 @@ public class HelloWorld extends WrapperViewGroup {
         // now, creates a new simple popup View.
         View popup = createSimplePopup();
         // creates an event to listen for messages sent to this popup from other views
-        popup.addCallback((OnMessageReceived) message -> {
+        popup.registerCallback((OnMessageReceived) message -> {
             // if the sender ID is 'BUTTON'
             if (message[1] == "BUTTON") {
                 boolean visibility = ((String) message[0]).contains("Wake up");

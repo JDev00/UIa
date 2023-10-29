@@ -2,7 +2,7 @@ package uia.physical;
 
 import uia.core.*;
 import uia.physical.message.MessageStore;
-import uia.utility.Figure;
+import uia.utility.GeometryFactory;
 import uia.core.basement.Callback;
 import uia.core.ui.View;
 import uia.core.ui.Graphic;
@@ -10,7 +10,6 @@ import uia.core.ui.callbacks.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -24,7 +23,7 @@ public final class Component implements View {
     private final Paint paint;
     private final Shape shape;
     private final List<Callback> callbacks;
-    private Consumer<Geometry> geomBuilder;
+    private java.util.function.Consumer<Geometry> geometryBuilder;
 
     private final float[] expanse = {1f, 1f, 1f, 1f, 0.125f};
     private final float[] container;
@@ -49,7 +48,7 @@ public final class Component implements View {
         paint = new Paint().setColor(new Paint.Color(255));
 
         shape = new Shape();
-        Figure.rect(shape.getGeometry());
+        GeometryFactory.rect(shape.getGeometry());
 
         setExpanseLimit(animationExpansionX, animationExpansionY);
     }
@@ -76,12 +75,12 @@ public final class Component implements View {
     }
 
     @Override
-    public void addCallback(Callback<?> callback) {
+    public void registerCallback(Callback<?> callback) {
         if (!callbacks.contains(callback)) callbacks.add(callback);
     }
 
     @Override
-    public void removeCallback(Callback<?> callback) {
+    public void unregisterCallback(Callback<?> callback) {
         callbacks.remove(callback);
     }
 
@@ -97,7 +96,7 @@ public final class Component implements View {
                     Class<?>[] interfaces = current.getInterfaces();
                     for (Class<?> i : interfaces) {
                         if (name.equals(i.getName())) {
-                            callback.onEvent(data);
+                            callback.update(data);
                         }
                     }
                     current = current.getSuperclass();
@@ -108,10 +107,10 @@ public final class Component implements View {
     }
 
     @Override
-    public void buildGeometry(Consumer<Geometry> builder, boolean inTimeBuilding) {
+    public void buildGeometry(java.util.function.Consumer<Geometry> builder, boolean inTimeBuilding) {
         if (builder != null) {
             builder.accept(shape.getGeometry());
-            geomBuilder = inTimeBuilding ? builder : null;
+            geometryBuilder = inTimeBuilding ? builder : null;
         }
     }
 
@@ -180,9 +179,9 @@ public final class Component implements View {
     }
 
     @Override
-    public void setConsumer(CONSUMER consumer, boolean enableConsumer) {
+    public void setConsumer(Consumer consumer, boolean enableConsumer) {
         switch (consumer) {
-            case POINTER:
+            case SCREEN_POINTER:
                 consumePointer = enableConsumer;
                 break;
 
@@ -304,13 +303,13 @@ public final class Component implements View {
     }
 
     @Override
-    public void dispatch(DISPATCHER dispatcher, Object data) {
+    public void dispatch(Dispatcher dispatcher, Object data) {
         switch (dispatcher) {
             case MESSAGE:
                 dispatchMessage(data);
                 break;
 
-            case POINTERS:
+            case SCREEN_POINTER:
                 dispatchScreenPointers(data);
                 break;
 
@@ -365,12 +364,16 @@ public final class Component implements View {
     public void update(View parent) {
         if (visible) {
 
-            if (!parent.isOnFocus() && focus) requestFocus(false);
+            if (!parent.isOnFocus() && focus) {
+                requestFocus(false);
+            }
 
             updateExpansionAnimation();
             updateShape(parent.bounds(), parent.getWidth(), parent.getHeight());
 
-            if (geomBuilder != null) geomBuilder.accept(shape.getGeometry());
+            if (geometryBuilder != null) {
+                geometryBuilder.accept(shape.getGeometry());
+            }
         }
     }
 
@@ -390,6 +393,11 @@ public final class Component implements View {
     @Override
     public float getHeight() {
         return dimension[1];
+    }
+
+    @Override
+    public float getRotation() {
+        return container[4];
     }
 
     @Override

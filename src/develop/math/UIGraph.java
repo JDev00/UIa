@@ -3,6 +3,7 @@ package develop.math;
 import uia.application.awt.ContextAWT;
 import uia.core.Geometry;
 import uia.core.Shape;
+import uia.core.basement.Drawable;
 import uia.core.ui.context.Context;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
@@ -11,7 +12,7 @@ import uia.physical.Component;
 import uia.core.Paint;
 import uia.physical.theme.Theme;
 import uia.physical.wrapper.WrapperView;
-import uia.utility.Figure;
+import uia.utility.GeometryFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,14 +49,14 @@ public class UIGraph extends WrapperView {
     public UIGraph(View view) {
         super(view);
 
-        buildGeometry(g -> View.buildRect(g, getWidth(), getHeight(), Figure.STD_ROUND), true);
+        buildGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), GeometryFactory.STD_ROUND), true);
 
         stdDrawable = new DrawableDistribution();
 
         data = new ArrayList<>();
 
         axis = new Shape();
-        axis.setGeometry(Figure.rect(axis.getGeometry()));
+        axis.setGeometry(GeometryFactory.rect(axis.getGeometry()));
 
         paintAxis = new Paint().setStrokeWidth(2);
 
@@ -275,10 +276,10 @@ public class UIGraph extends WrapperView {
             paintPoint = new Paint().setColor(Theme.RED);
 
             shapeMarker = new Shape();
-            shapeMarker.setGeometry(Figure.rect(shapeMarker.getGeometry()));
+            shapeMarker.setGeometry(GeometryFactory.rect(shapeMarker.getGeometry()));
 
             shapeLine = new Shape();
-            shapeLine.setGeometry(Figure.rect(shapeLine.getGeometry()));
+            shapeLine.setGeometry(GeometryFactory.rect(shapeLine.getGeometry()));
         }
 
         /**
@@ -419,13 +420,13 @@ public class UIGraph extends WrapperView {
         UIGraph uiGraph = new UIGraph(
                 new Component("", 0.5f, 0.5f, 0.5f, 0.5f)
         );
-        uiGraph.addCallback((OnClick) p -> {
+        uiGraph.registerCallback((OnClick) p -> {
             uiGraph.setRotation(uiGraph.bounds()[4] + 0.05f);
         });
         uiGraph.getDistribution(0)
                 .add(0f, 0f)
                 .add(-10f, -10f);
-                //.add(100, 1000);*/
+        //.add(100, 1000);*/
         //.add(2000, 1200);
         //uiGraph.setRotation(0.15f);
 

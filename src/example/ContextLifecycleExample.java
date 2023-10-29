@@ -24,7 +24,7 @@ public class ContextLifecycleExample {
         Context context = createAWTContext();
 
         View view = createMockView();
-        view.addCallback((OnClick) pointers -> {
+        view.registerCallback((OnClick) pointers -> {
             System.out.println("Clicked!");
             context.setLifecycleStage(Context.LifecycleStage.TERMINATE);
         });

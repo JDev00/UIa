@@ -1,6 +1,7 @@
 package uia.application;
 
 import uia.core.ScreenPointer;
+import uia.core.basement.Drawable;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnMouseHover;
 import uia.physical.Component;
@@ -31,9 +32,9 @@ public class UIScrollBar extends WrapperView {
     public UIScrollBar(View view) {
         super(new ComponentGroup(view));
 
-        buildGeometry(g -> View.buildRect(g, getWidth(), getHeight(), 1f), true);
+        buildGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
         getPaint().setColor(ThemeDarcula.W_BACKGROUND);
-        addCallback((OnMouseHover) pointers -> {
+        registerCallback((OnMouseHover) pointers -> {
             ScreenPointer pointer = pointers.get(0);
 
             if (pointer.getAction().equals(ScreenPointer.ACTION.DRAGGED)) {
@@ -45,8 +46,8 @@ public class UIScrollBar extends WrapperView {
         });
 
         cursor = new Component("CURSOR", 0.5f, 0.075f, 1f, 0.15f);
-        cursor.buildGeometry(g -> View.buildRect(g, getWidth(), getHeight(), 1f), true);
-        cursor.setConsumer(CONSUMER.POINTER, false);
+        cursor.buildGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
+        cursor.setConsumer(Consumer.SCREEN_POINTER, false);
         cursor.getPaint().setColor(Theme.RED);
 
         scroller = new WheelScroller();

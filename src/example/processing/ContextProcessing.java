@@ -12,7 +12,7 @@ import uia.core.ui.View;
 import uia.core.ui.Graphic;
 import uia.core.ui.context.InputEmulator;
 import uia.core.ui.context.Window;
-import uia.physical.ComponentRoot;
+import uia.physical.ComponentHiddenRoot;
 import uia.physical.message.MessageStore;
 
 import java.util.ArrayList;
@@ -90,7 +90,7 @@ public class ContextProcessing implements Context {
         private PGraphics nativeGraphics;
 
         private static View currentView;
-        private final View rootView = new ComponentRoot();
+        private final View rootView = new ComponentHiddenRoot();
 
         private final List<ScreenPointer> screenPointers = new ArrayList<>();
 
@@ -122,7 +122,7 @@ public class ContextProcessing implements Context {
                 Object[] message;
 
                 while ((message = MessageStore.getInstance().pop()) != null && counter < limit) {
-                    currentView.dispatch(View.DISPATCHER.MESSAGE, message);
+                    currentView.dispatch(View.Dispatcher.MESSAGE, message);
                     counter++;
                 }
 
@@ -138,7 +138,7 @@ public class ContextProcessing implements Context {
         private void dispatch(KeyEvent event, Key.ACTION action) {
             Key key = new Key(action, event.getModifiers(), event.getKey(), event.getKeyCode());
             if (currentView != null)
-                currentView.dispatch(View.DISPATCHER.KEY, key);
+                currentView.dispatch(View.Dispatcher.KEY, key);
         }
 
         /**
@@ -163,7 +163,7 @@ public class ContextProcessing implements Context {
             screenPointers.add(new ScreenPointer(action, button, event.getX(), event.getY(), event.getCount()));
 
             if (currentView != null)
-                currentView.dispatch(View.DISPATCHER.POINTERS, screenPointers);
+                currentView.dispatch(View.Dispatcher.SCREEN_POINTER, screenPointers);
         }
 
         @Override

@@ -1,10 +1,11 @@
 package uia.application;
 
+import uia.core.basement.Drawable;
 import uia.core.ui.View;
 import uia.physical.theme.Theme;
 import uia.physical.wrapper.WrapperView;
 import uia.core.ui.ViewText;
-import uia.utility.Figure;
+import uia.utility.GeometryFactory;
 import uia.physical.Component;
 import uia.physical.ComponentGroup;
 import uia.physical.ComponentText;
@@ -21,11 +22,11 @@ public class UIButtonFilled extends WrapperView {
     public UIButtonFilled(View view, boolean right) {
         super(new ComponentGroup(view));
 
-        buildGeometry(g -> View.buildRect(g, getWidth(), getHeight(), 1f), true);
+        buildGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
 
         viewText = new ComponentText(new Component("TEXT", 0.5f + (right ? -0.05f : 0.05f), 0.5f, 0.5f, 1f)
                 .setExpanseLimit(1f, 1f));
-        viewText.setConsumer(CONSUMER.POINTER, false);
+        viewText.setConsumer(Consumer.SCREEN_POINTER, false);
         viewText.setAlign(right ? ComponentText.AlignX.LEFT : ComponentText.AlignX.RIGHT);
         viewText.setAlign(ComponentText.AlignY.CENTER);
         viewText.getPaint().setColor(Theme.TRANSPARENT);
@@ -34,8 +35,8 @@ public class UIButtonFilled extends WrapperView {
         icon = new Component("ICON", right ? 0.875f : 0.125f, 0.5f, 0.15f, 0.4f)
                 .setExpanseLimit(1.25f, 1.25f);
         icon.setColliderPolicy(ColliderPolicy.AABB);
-        icon.setConsumer(CONSUMER.POINTER, false);
-        icon.buildGeometry(Figure::arrow, false);
+        icon.setConsumer(Consumer.SCREEN_POINTER, false);
+        icon.buildGeometry(GeometryFactory::arrow, false);
         icon.setRotation(right ? 0f : TrigTable.PI);
         icon.getPaint().setColor(Theme.BLACK);
 

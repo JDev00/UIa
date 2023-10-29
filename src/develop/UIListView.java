@@ -61,13 +61,13 @@ public class UIListView extends WrapperView implements ViewGroup {
         containerList = new ComponentGroup(new Component("SKELETON", 0.475f, 0.475f, 0.95f, 0.95f)
                 .setExpanseLimit(1f, 1f));
         containerList.setClip(false);
-        containerList.setConsumer(CONSUMER.POINTER, false);
+        containerList.setConsumer(Consumer.SCREEN_POINTER, false);
         containerList.getPaint().setColor(Theme.RED);
 
 
         containerGroup = ((ViewGroup) getView());
         containerGroup.add(containerList);//, verBar, horBar);
-        containerGroup.addCallback((OnMouseHover) sp -> scroller.update(sp));
+        containerGroup.registerCallback((OnMouseHover) sp -> scroller.update(sp));
     }
 
     /**
@@ -223,7 +223,7 @@ public class UIListView extends WrapperView implements ViewGroup {
         out.setText(number + " HELLO!");
         out.setAlign(ViewText.AlignY.CENTER);
         out.getPaint().setColor(ThemeDarcula.W_FOREGROUND);
-        out.setConsumer(CONSUMER.POINTER, false);
+        out.setConsumer(Consumer.SCREEN_POINTER, false);
         return out;
     }
 }

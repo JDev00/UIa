@@ -6,6 +6,7 @@ import uia.application.UIButtonList;
 import uia.application.UIButtonSwitch;
 import uia.application.UICalendar;
 import uia.application.awt.ContextAWT;
+import uia.core.ui.View;
 import uia.core.ui.context.Context;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
@@ -19,16 +20,16 @@ import uia.utility.Utility;
 
 public class Sanity {
 
+    public static View createView(String id, float x, float y, float width, float height) {
+        return new Component(id, x, y, width, height);
+    }
+
     public static ViewText createViewText(String id, float x, float y, float width, float height) {
-        return new ComponentText(
-                new Component(id, x, y, width, height).setExpanseLimit(1f, 1f)
-        );
+        return new ComponentText(new Component(id, x, y, width, height));
     }
 
     public static ViewGroup createViewGroup(String id, float x, float y, float width, float height) {
-        return new ComponentGroup(
-                new Component(id, x, y, width, height).setExpanseLimit(1f, 1f)
-        );
+        return new ComponentGroup(new Component(id, x, y, width, height));
     }
 
     /**
@@ -75,7 +76,7 @@ public class Sanity {
 
         ComponentImage image = new ComponentImage(new Component("IMAGE", 0.7f, 0.5f, 0.33f, 0.5f));
         image.getImage().load("sample\\img0.png");
-        image.addCallback((OnClick) pointers -> System.out.println("ComponentImage clicked!"));
+        image.registerCallback((OnClick) pointers -> System.out.println("ComponentImage clicked!"));
 
         ViewGroup group = createViewGroup("GROUP", 0.4f, 0.5f, 0.5f, 0.5f);
         group.getPaint().setColor(Theme.DARK_GREY);

@@ -1,5 +1,6 @@
 package uia.application;
 
+import uia.core.basement.Drawable;
 import uia.physical.theme.ThemeDarcula;
 import uia.core.Paint;
 import uia.core.ui.ViewText;
@@ -22,8 +23,8 @@ public class UIButtonSwitch extends WrapperView {
     public UIButtonSwitch(View view) {
         super(new ComponentGroup(view));
 
-        buildGeometry(g -> View.buildRect(g, getWidth(), getHeight(), 1f), true);
-        addCallback((OnClick) pointers -> setState(!isFirstState()));
+        buildGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
+        registerCallback((OnClick) pointers -> setState(!isFirstState()));
 
         activePaint = new Paint().setColor(ThemeDarcula.W_FOREGROUND);
 
@@ -48,7 +49,7 @@ public class UIButtonSwitch extends WrapperView {
     private static ViewText createView(String id, float x) {
         ViewText out = new ComponentText(new Component(id, x, 0.5f, 0.5f, 1f));
         out.setAlign(ViewText.AlignY.CENTER);
-        out.setConsumer(CONSUMER.POINTER, false);
+        out.setConsumer(Consumer.SCREEN_POINTER, false);
         return out;
     }
 

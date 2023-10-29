@@ -6,8 +6,6 @@ import uia.core.Geometry;
 import uia.core.Paint;
 import uia.core.ui.View;
 
-import java.util.function.Consumer;
-
 /**
  * WrapperView enables the creation of complex graphical widgets.
  */
@@ -28,13 +26,13 @@ public abstract class WrapperView implements View {
     }
 
     @Override
-    public void addCallback(Callback<?> callback) {
-        view.addCallback(callback);
+    public void registerCallback(Callback<?> callback) {
+        view.registerCallback(callback);
     }
 
     @Override
-    public void removeCallback(Callback<?> callback) {
-        view.removeCallback(callback);
+    public void unregisterCallback(Callback<?> callback) {
+        view.unregisterCallback(callback);
     }
 
     @Override
@@ -48,7 +46,7 @@ public abstract class WrapperView implements View {
     }
 
     @Override
-    public void buildGeometry(Consumer<Geometry> builder, boolean inTimeBuilding) {
+    public void buildGeometry(java.util.function.Consumer<Geometry> builder, boolean inTimeBuilding) {
         view.buildGeometry(builder, inTimeBuilding);
     }
 
@@ -103,12 +101,12 @@ public abstract class WrapperView implements View {
     }
 
     @Override
-    public void setConsumer(CONSUMER consumer, boolean enableConsumer) {
+    public void setConsumer(Consumer consumer, boolean enableConsumer) {
         view.setConsumer(consumer, enableConsumer);
     }
 
     @Override
-    public void dispatch(DISPATCHER dispatcher, Object data) {
+    public void dispatch(Dispatcher dispatcher, Object data) {
         view.dispatch(dispatcher, data);
     }
 
@@ -130,6 +128,11 @@ public abstract class WrapperView implements View {
     @Override
     public float getHeight() {
         return view.getHeight();
+    }
+
+    @Override
+    public float getRotation() {
+        return view.getRotation();
     }
 
     @Override

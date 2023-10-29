@@ -1,6 +1,7 @@
 package develop;
 
 import uia.core.Shape;
+import uia.core.basement.Drawable;
 import uia.core.ui.View;
 import uia.core.Paint;
 import uia.core.Geometry;
@@ -37,7 +38,7 @@ public class UIBar extends WrapperView {
     public UIBar(View view) {
         super(new ComponentGroup(view));
 
-        buildGeometry(g -> View.buildRect(g, getWidth(), getHeight(), 1f), true);
+        buildGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
         getPaint().setColor(ThemeDarcula.W_BACKGROUND);
 
         shapeLine = new Shape();
@@ -45,8 +46,8 @@ public class UIBar extends WrapperView {
         paintLine = new Paint().setColor(ThemeDarcula.W_FOREGROUND);
 
         viewText = new ComponentText(new Component("TEXT", 0.5f, 1.25f, 0.225f, 0.5f));
-        viewText.buildGeometry(g -> View.buildRect(g, viewText.getWidth(), viewText.getHeight(), 0.5f), true);
-        viewText.setConsumer(CONSUMER.POINTER, false);
+        viewText.buildGeometry(g -> Drawable.buildRect(g, viewText.getWidth(), viewText.getHeight(), 0.5f), true);
+        viewText.setConsumer(Consumer.SCREEN_POINTER, false);
         viewText.setAlign(ComponentText.AlignY.CENTER);
         viewText.getPaint().setColor(ThemeDarcula.BACKGROUND);
         viewText.getTextPaint().setColor(ThemeDarcula.TEXT);
