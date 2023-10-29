@@ -8,7 +8,7 @@ public class TestUtils {
      * @param millis the freeze time (> 0) in milliseconds
      */
 
-    public static void sleep(int millis) {
+    public static void waitMillis(int millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
@@ -44,8 +44,14 @@ public class TestUtils {
         new Thread(() -> {
             for (TestCase testCase : testSuite) {
                 try {
-                    testCase.run(new TestAssertion());
-                    tests[0]++;
+                    TestAssertion testAssertion = new TestAssertion();
+                    testCase.run(testAssertion);
+                    waitMillis(300);
+                    if (testAssertion.passed()) {
+                        tests[0]++;
+                    } else {
+                        System.out.println(testCase.getClass() + " failed");
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

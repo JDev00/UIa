@@ -3,12 +3,25 @@ package test.artefacts;
 public class TestAssertion {
     private Object subject;
     private int passedAssertions = 0;
+    private int expectedAssertions = 1;
+
+    /**
+     * Set the expected assertions to be true
+     *
+     * @param assertions the number of assertions to pass to consider this test passed
+     * @return this TestAssertion
+     */
+
+    public TestAssertion assertions(int assertions) {
+        expectedAssertions = Math.max(1, assertions);
+        return this;
+    }
 
     /**
      * Set an Object to control
      *
      * @param subject the Object to control; it could be null
-     * @return the TestValidation instance
+     * @return this TestAssertion
      */
 
     public TestAssertion expect(Object subject) {
@@ -30,11 +43,11 @@ public class TestAssertion {
         }
     }
 
-    /**
+    /*
      * Check that the subject is equal to the given value
      *
      * @throws RuntimeException if {@code subject != value}
-     */
+     *
 
     public void toBeEqual(Object value, int timeoutMillis) {
         int elapsed_millis = 0;
@@ -51,13 +64,13 @@ public class TestAssertion {
         } else {
             passedAssertions++;
         }
-    }
+    }*/
 
     /**
-     * @return the number of passed assertions
+     * @return true if this TestAssertions passed all assertions
      */
 
-    public int getPassedAssertions() {
-        return passedAssertions;
+    public boolean passed() {
+        return passedAssertions >= expectedAssertions;
     }
 }
