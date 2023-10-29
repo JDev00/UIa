@@ -1,8 +1,8 @@
 package test;
 
-import test.artefacts.TestCase;
-import test.artefacts.TestSuite;
-import test.artefacts.TestUtils;
+import test.core.TestCase;
+import test.core.TestSuite;
+import test.core.TestUtils;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import static test.Sanity.*;
-import static test.artefacts.TestUtils.waitMillis;
+import static test.core.TestUtils.waitMillis;
 import static uia.utility.TrigTable.*;
 
 /**

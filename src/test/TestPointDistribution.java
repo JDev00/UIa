@@ -1,9 +1,9 @@
 package test;
 
 import develop.math.PointDistribution;
-import test.artefacts.TestCase;
-import test.artefacts.TestSuite;
-import test.artefacts.TestUtils;
+import test.core.TestCase;
+import test.core.TestSuite;
+import test.core.TestUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

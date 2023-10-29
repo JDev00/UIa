@@ -1,4 +1,4 @@
-package test.artefacts;
+package test.core;
 
 /**
  * Test case ADT.

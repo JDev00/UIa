@@ -1,8 +1,8 @@
 package test;
 
-import test.artefacts.TestCase;
-import test.artefacts.TestSuite;
-import test.artefacts.TestUtils;
+import test.core.TestCase;
+import test.core.TestSuite;
+import test.core.TestUtils;
 import uia.core.Paint;
 
 import java.util.ArrayList;

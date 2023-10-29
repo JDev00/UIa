@@ -1,4 +1,4 @@
-package test.artefacts;
+package test.core;
 
 public class TestAssertion {
     private Object subject;
