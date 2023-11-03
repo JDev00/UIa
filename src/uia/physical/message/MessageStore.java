@@ -1,18 +1,21 @@
 package uia.physical.message;
 
+import uia.core.basement.Message;
+
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Centralized storage for messages.
  * <br>
- * Version 1.1
+ * Version 1.2
  */
 
 public final class MessageStore {
     private static final MessageStore MESSAGE_STORE = new MessageStore();
 
-    private final List<Object[]> list;
+    private final List<Message> list;
 
     private MessageStore() {
         list = new LinkedList<>();
@@ -27,27 +30,24 @@ public final class MessageStore {
     }
 
     /**
-     * Add a new message data to this store.
-     * <br>
-     * The message data must have the following format:
-     * <ul>
-     *     <li>message (Object);</li>
-     *     <li>source ID (String);</li>
-     *     <li>destination ID (String).</li>
-     * </ul>
+     * Add a new message data to this store
+     *
+     * @param message a not null {@link Message}
+     * @throws NullPointerException if {message == null}
      */
 
-    public void add(Object[] data) {
-        list.add(data);
+    public void add(Message message) {
+        Objects.requireNonNull(message);
+        list.add(message);
     }
 
     /**
-     * Remove and return the first added message data
+     * Remove and return the first added message
      *
-     * @return the first added message
+     * @return the first added message or null
      */
 
-    public Object[] pop() {
+    public Message pop() {
         try {
             return list.remove(0);
         } catch (Exception e) {

@@ -1,6 +1,7 @@
 package uia.physical;
 
 import uia.core.Shape;
+import uia.core.basement.Message;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
 import uia.core.ScreenTouch;
@@ -73,9 +74,9 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
      * Helper function. Dispatch a message to the group children
      */
 
-    private void dispatchMessage(Object data) {
+    private void dispatchMessageToViews(Message message) {
         for (int i = views.size() - 1; i >= 0; i--) {
-            views.get(i).dispatch(Dispatcher.MESSAGE, data);
+            views.get(i).dispatchMessage(message);
         }
     }
 
@@ -83,10 +84,10 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
      * Helper function. Dispatch a Key to the group children
      */
 
-    private void dispatchKey(Object data) {
+    private void dispatchKey(Message message) {
         if (isVisible()) {
             for (int i = views.size() - 1; i >= 0; i--) {
-                views.get(i).dispatch(Dispatcher.KEY, data);
+                views.get(i).dispatchMessage(message);
             }
         }
     }
@@ -97,41 +98,35 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
      * Helper function. Dispatch ScreenPointer to the group children
      */
 
-    private void dispatchScreenTouches(Object data) {
+    private void dispatchScreenTouches(Message message) {
         screenTouches.clear();
 
         if (isVisible()) {
-            List<ScreenTouch> tempScreenTouches = (List<ScreenTouch>) data;
+            List<ScreenTouch> tempScreenTouches = (List<ScreenTouch>) message.getMessage();
             tempScreenTouches.forEach(p -> {
                 if (!clip || ComponentGroup.this.contains(p.getX(), p.getY())) screenTouches.add(p);
             });
         }
 
         for (int i = views.size() - 1; i >= 0; i--) {
-            views.get(i).dispatch(Dispatcher.SCREEN_TOUCH, screenTouches);
+            views.get(i).dispatchMessage(message);
         }
     }
 
     @Override
-    public void dispatch(Dispatcher dispatcher, Object data) {
-        switch (dispatcher) {
-            case MESSAGE:
-                super.dispatch(dispatcher, data);
-                dispatchMessage(data);
+    public void dispatchMessage(Message message) {
+        switch (message.getType()) {
+            case EVENT_SCREEN_TOUCH:
+                dispatchScreenTouches(message);
+                super.dispatchMessage(message);
                 break;
-
-            case KEY:
-                dispatchKey(data);
-                super.dispatch(dispatcher, data);
+            case EVENT_KEY:
+                dispatchKey(message);
+                super.dispatchMessage(message);
                 break;
-
-            case SCREEN_TOUCH:
-                dispatchScreenTouches(data);
-                super.dispatch(dispatcher, data);
-                break;
-
-            default:
-                super.dispatch(dispatcher, data);
+            case OTHER:
+                super.dispatchMessage(message);
+                dispatchMessageToViews(message);
                 break;
         }
     }

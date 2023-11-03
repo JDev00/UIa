@@ -7,6 +7,7 @@ import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.callbacks.*;
+import uia.physical.message.MessageFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,10 +88,10 @@ public class TestView implements TestSuite {
 
             // test clause
             root.get(TARGET).registerCallback((OnMessageReceived) message -> {
-                testAssertion.expect(message[0]).toBeEqual(MESSAGE);
+                testAssertion.expect(message.getMessage()).toBeEqual(MESSAGE);
                 System.out.println("ok!");
             });
-            root.sendMessage(MESSAGE, TARGET);
+            root.sendMessage(MessageFactory.createMessage(MESSAGE, TARGET));
         };
     }
 

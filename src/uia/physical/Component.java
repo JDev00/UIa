@@ -1,6 +1,7 @@
 package uia.physical;
 
 import uia.core.*;
+import uia.core.basement.Message;
 import uia.physical.message.MessageStore;
 import uia.utility.GeometryFactory;
 import uia.core.basement.Callback;
@@ -10,6 +11,7 @@ import uia.core.ui.callbacks.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -184,7 +186,6 @@ public final class Component implements View {
             case SCREEN_TOUCH:
                 consumePointer = enableConsumer;
                 break;
-
             case KEY:
                 consumeKey = enableConsumer;
                 break;
@@ -192,22 +193,19 @@ public final class Component implements View {
     }
 
     @Override
-    public void sendMessage(Object message, String destID) {
-        MessageStore.getInstance().add(new Object[]{message, getID(), destID});
+    public void sendMessage(Message message) {
+        MessageStore.getInstance().add(message);
     }
 
     /**
      * Helper function. Dispatch a message to this View.
      */
 
-    private void dispatchMessage(Object data) {
-        Object[] dataArray = (Object[]) data;
-        String destinationID = (String) dataArray[2];
-        String sourceID = (String) dataArray[1];
-        Object message = dataArray[0];
-
-        if (id.equals(destinationID) || (destinationID == null && !id.equals(sourceID))) {
-            notifyCallbacks(OnMessageReceived.class, new Object[]{message, sourceID});
+    private void readMessage(Message message) {
+        String sender = message.getSender();
+        String recipient = message.getRecipient();
+        if (Objects.equals(id, recipient) || (recipient == null && !id.equals(sender))) {
+            notifyCallbacks(OnMessageReceived.class, message);
         }
     }
 
@@ -217,7 +215,7 @@ public final class Component implements View {
      * Helper function. Dispatch a list of screen touches to this View.
      */
 
-    private void dispatchScreenTouches(Object data) {
+    private void readScreenTouches(Object data) {
         List<ScreenTouch> screenTouches = (List<ScreenTouch>) data;
 
         float[] bounds = shape.bounds();
@@ -279,22 +277,22 @@ public final class Component implements View {
      * Helper function. Dispatch a Key to this View.
      */
 
-    private void dispatchKey(Object data) {
+    private void readKey(Object data) {
         Key key = (Key) data;
 
         if (!key.isConsumed() && visible && focus) {
 
-            if (consumeKey) key.consume();
+            if (consumeKey) {
+                key.consume();
+            }
 
             switch (key.getAction()) {
                 case PRESSED:
                     notifyCallbacks(OnKeyPressed.class, key);
                     break;
-
                 case TYPED:
                     notifyCallbacks(OnKeyTyped.class, key);
                     break;
-
                 case RELEASED:
                     notifyCallbacks(OnKeyReleased.class, key);
                     break;
@@ -303,16 +301,16 @@ public final class Component implements View {
     }
 
     @Override
-    public void dispatch(Dispatcher dispatcher, Object data) {
-        switch (dispatcher) {
-            case MESSAGE:
-                dispatchMessage(data);
+    public void dispatchMessage(Message message) {
+        switch (message.getType()) {
+            case EVENT_SCREEN_TOUCH:
+                readScreenTouches(message.getMessage());
                 break;
-            case SCREEN_TOUCH:
-                dispatchScreenTouches(data);
+            case EVENT_KEY:
+                readKey(message.getMessage());
                 break;
-            case KEY:
-                dispatchKey(data);
+            case OTHER:
+                readMessage(message);
                 break;
         }
     }

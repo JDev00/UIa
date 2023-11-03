@@ -1,6 +1,5 @@
 package uia.core.ui;
 
-import uia.core.ScreenTouch;
 import uia.core.basement.*;
 
 import static uia.utility.TrigTable.*;
@@ -21,8 +20,6 @@ public interface View extends Callable, Movable, Drawable, Collider {
 
     enum Consumer {SCREEN_TOUCH, KEY}
 
-    enum Dispatcher {SCREEN_TOUCH, KEY, MESSAGE, OTHER}
-
     /**
      * Requests or removes the View focus.
      * <br>
@@ -40,17 +37,6 @@ public interface View extends Callable, Movable, Drawable, Collider {
     boolean isOnFocus();
 
     /**
-     * Sends a message to another View.
-     * <br>
-     * If a message is sent to a group, then it will be also delivered to all its children.
-     *
-     * @param message the message to be sent
-     * @param destID  the recipient's id; if it is null, the message will be sent to all Views (broadcast)
-     */
-
-    void sendMessage(Object message, String destID);
-
-    /**
      * Consumer functionality consumes screen touches or keys that are dispatched to this View.
      *
      * @param consumer       the consumer type: see {@link Consumer}.
@@ -60,25 +46,28 @@ public interface View extends Callable, Movable, Drawable, Collider {
     void setConsumer(Consumer consumer, boolean enableConsumer);
 
     /**
-     * Dispatches an object to this View.
+     * Sends a message to another View.
      * <br>
-     * For common input dispatching, one rule must be followed:
-     * <ul>
-     *     <li>{@link ScreenTouch}s must be provided as a {@link java.util.List};</li>
-     *     <li>{@link uia.core.Key}s must be provided one by one;</li>
-     *     <li>messages must be provided one by one.</li>
-     * </ul>
+     * If a message is sent to a group, then it will be also delivered to all its children.
      *
-     * @param data a not null Object
-     * @throws NullPointerException if {@code data == null}
+     * @param message the message to be sent
      */
 
-    void dispatch(Dispatcher dispatcher, Object data);
+    void sendMessage(Message message);
 
     /**
-     * Updates this View state.
+     * Dispatches a Message to this View
      *
-     * @param parent the not null parent of this View
+     * @param message a not null {@link Message}
+     * @throws NullPointerException if {@code == null}
+     */
+
+    void dispatchMessage(Message message);
+
+    /**
+     * Updates this View state
+     *
+     * @param parent  the not null parent of this View
      * @throws NullPointerException if {@code == null}
      */
 

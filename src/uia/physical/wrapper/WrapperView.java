@@ -1,6 +1,7 @@
 package uia.physical.wrapper;
 
 import uia.core.basement.Callback;
+import uia.core.basement.Message;
 import uia.core.ui.Graphic;
 import uia.core.Geometry;
 import uia.core.Paint;
@@ -38,11 +39,6 @@ public abstract class WrapperView implements View {
     @Override
     public void notifyCallbacks(Class<? extends Callback> type, Object data) {
         view.notifyCallbacks(type, data);
-    }
-
-    @Override
-    public void sendMessage(Object message, String destID) {
-        view.sendMessage(message, destID);
     }
 
     @Override
@@ -106,8 +102,13 @@ public abstract class WrapperView implements View {
     }
 
     @Override
-    public void dispatch(Dispatcher dispatcher, Object data) {
-        view.dispatch(dispatcher, data);
+    public void sendMessage(Message message) {
+        view.sendMessage(message);
+    }
+
+    @Override
+    public void dispatchMessage(Message message) {
+        view.dispatchMessage(message);
     }
 
     @Override

@@ -3,6 +3,7 @@ package uia.physical;
 import uia.core.Geometry;
 import uia.core.Paint;
 import uia.core.basement.Callback;
+import uia.core.basement.Message;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
 
@@ -60,7 +61,12 @@ public final class ComponentHiddenRoot implements View {
     }
 
     @Override
-    public void dispatch(Dispatcher dispatcher, Object data) {
+    public void sendMessage(Message message) {
+        throw new UnsupportedOperationException(unsupported_error);
+    }
+
+    @Override
+    public void dispatchMessage(Message message) {
         throw new UnsupportedOperationException(unsupported_error);
     }
 
@@ -93,11 +99,6 @@ public final class ComponentHiddenRoot implements View {
 
     @Override
     public void setRotation(float radians) {
-    }
-
-    @Override
-    public void sendMessage(Object message, String destID) {
-        throw new UnsupportedOperationException(unsupported_error);
     }
 
     @Override

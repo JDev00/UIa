@@ -7,12 +7,14 @@ import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 import uia.core.Key;
 import uia.core.ScreenTouch;
+import uia.core.basement.Message;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.Graphic;
 import uia.core.ui.context.InputEmulator;
 import uia.core.ui.context.Window;
 import uia.physical.ComponentHiddenRoot;
+import uia.physical.message.MessageFactory;
 import uia.physical.message.MessageStore;
 
 import java.util.ArrayList;
@@ -119,10 +121,10 @@ public class ContextProcessing implements Context {
             if (currentView != null) {
                 int counter = 0;
                 int limit = 30000 / (int) Math.max(1, frameRate);
-                Object[] message;
+                Message message;
 
                 while ((message = MessageStore.getInstance().pop()) != null && counter < limit) {
-                    currentView.dispatch(View.Dispatcher.MESSAGE, message);
+                    currentView.dispatchMessage(message);
                     counter++;
                 }
 
@@ -137,8 +139,9 @@ public class ContextProcessing implements Context {
 
         private void dispatch(KeyEvent event, Key.Action action) {
             Key key = new Key(action, event.getModifiers(), event.getKey(), event.getKeyCode());
-            if (currentView != null)
-                currentView.dispatch(View.Dispatcher.KEY, key);
+            if (currentView != null) {
+                currentView.dispatchMessage(MessageFactory.createKeyEventMessage(key, null));
+            }
         }
 
         /**
@@ -161,9 +164,9 @@ public class ContextProcessing implements Context {
 
             screenTouches.clear();
             screenTouches.add(new ScreenTouch(action, button, event.getX(), event.getY(), event.getCount()));
-
-            if (currentView != null)
-                currentView.dispatch(View.Dispatcher.SCREEN_TOUCH, screenTouches);
+            if (currentView != null) {
+                currentView.dispatchMessage(MessageFactory.createScreenEventMessage(screenTouches, null));
+            }
         }
 
         @Override

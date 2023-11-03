@@ -1,8 +1,10 @@
 package uia.application.awt;
 
+import uia.core.basement.Message;
 import uia.core.ui.context.InputEmulator;
 import uia.core.ui.context.Window;
 import uia.physical.input.ArtificialInput;
+import uia.physical.message.MessageFactory;
 import uia.physical.message.MessageStore;
 import uia.core.*;
 import uia.core.ui.Graphic;
@@ -20,7 +22,6 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 /**
  * Framework built-in {@link Context} implementation based on Java AWT and SWING.
@@ -47,11 +48,11 @@ public class ContextAWT implements Context {
     public ContextAWT(int x, int y) {
         renderer = new Renderer();
 
-        window = new WindowAWT(x, y, this::dispatchScreenTouches, this::dispatchKey);
+        window = new WindowAWT(x, y);
         window.registerNativeComponent(renderer);
 
         inputEmulator = new ArtificialInput(
-                screenTouch -> {
+                (screenTouch) -> {
                     int[] insets = window.getInsets();
                     screenTouch.translate(insets[0], insets[1]);
                     dispatchSingleScreenTouch(screenTouch);
@@ -63,7 +64,7 @@ public class ContextAWT implements Context {
     private void dispatchScreenTouches(List<ScreenTouch> screenTouches) {
         View view = renderer.view;
         if (view != null && lifecycleStage.equals(LifecycleStage.RUN)) {
-            view.dispatch(View.Dispatcher.SCREEN_TOUCH, screenTouches);
+            view.dispatchMessage(MessageFactory.createScreenEventMessage(screenTouches, null));
         }
     }
 
@@ -74,7 +75,7 @@ public class ContextAWT implements Context {
     private void dispatchKey(Key key) {
         View view = renderer.view;
         if (view != null && lifecycleStage.equals(LifecycleStage.RUN)) {
-            view.dispatch(View.Dispatcher.KEY, key);
+            view.dispatchMessage(MessageFactory.createKeyEventMessage(key, null));
         }
     }
 
@@ -105,23 +106,29 @@ public class ContextAWT implements Context {
             case RUN:
                 int repaintPeriodMillis = 1000 / 60;
                 renderingThread = Executors.newSingleThreadScheduledExecutor();
-                renderingThread.scheduleAtFixedRate(() -> renderer.updateAndDrawView(
-                                window.getWidth(),
-                                window.getHeight(),
-                                window.isFocused()
-                        ),
+                renderingThread.scheduleAtFixedRate(() -> {
+                            Object event = window.retrieveEvent();
+                            if (event instanceof List) {
+                                dispatchScreenTouches((List<ScreenTouch>) event);
+                            } else if (event instanceof Key) {
+                                dispatchKey((Key) event);
+                            }
+
+                            //System.out.println(event);
+
+                            renderer.updateAndDrawView(window.getWidth(), window.getHeight(), window.isFocused());
+                        },
                         0,
                         repaintPeriodMillis,
                         TimeUnit.MILLISECONDS);
-                return;
-
+                break;
             case STOP:
                 killRenderingThread();
-                return;
-
+                break;
             case TERMINATE:
                 killRenderingThread();
                 window.destroy();
+                break;
         }
     }
 
@@ -179,12 +186,11 @@ public class ContextAWT implements Context {
 
     private static class WindowAWT implements Window {
         private final JFrame jFrame;
+        private final LinkedList<Object> eventQueue = new LinkedList<>();
         private final int[] screenSize = new int[2];
         private boolean focus = false;
 
-        public WindowAWT(int x, int y,
-                         Consumer<List<ScreenTouch>> screenTouchesListener,
-                         Consumer<Key> keyListener) {
+        public WindowAWT(int x, int y) {
             screenSize[0] = x;
             screenSize[1] = y;
 
@@ -215,33 +221,36 @@ public class ContextAWT implements Context {
             jFrame.addKeyListener(new KeyListener() {
                 @Override
                 public void keyTyped(KeyEvent e) {
-                    keyListener.accept(new Key(Key.Action.TYPED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                    eventQueue.push(new Key(Key.Action.TYPED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                    //keyListener.accept(new Key(Key.Action.TYPED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
                 }
 
                 @Override
                 public void keyPressed(KeyEvent e) {
-                    keyListener.accept(new Key(Key.Action.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                    eventQueue.push(new Key(Key.Action.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                    //keyListener.accept(new Key(Key.Action.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
                 }
 
                 @Override
                 public void keyReleased(KeyEvent e) {
-                    keyListener.accept(new Key(Key.Action.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                    eventQueue.push(new Key(Key.Action.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                    //keyListener.accept(new Key(Key.Action.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
                 }
             });
             jFrame.addMouseListener(new MouseListener() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    screenTouchesListener.accept(getScreenTouches(e, 0, ScreenTouch.Action.PRESSED));
+                    eventQueue.push(getScreenTouches(e, 0, ScreenTouch.Action.PRESSED));
                 }
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    screenTouchesListener.accept(getScreenTouches(e, 0, ScreenTouch.Action.RELEASED));
+                    eventQueue.push(getScreenTouches(e, 0, ScreenTouch.Action.RELEASED));
                 }
 
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    screenTouchesListener.accept(getScreenTouches(e, 0, ScreenTouch.Action.CLICKED));
+                    eventQueue.push(getScreenTouches(e, 0, ScreenTouch.Action.CLICKED));
                 }
 
                 @Override
@@ -250,23 +259,23 @@ public class ContextAWT implements Context {
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    screenTouchesListener.accept(getScreenTouches(e, 0, ScreenTouch.Action.EXITED));
+                    eventQueue.push(getScreenTouches(e, 0, ScreenTouch.Action.EXITED));
                 }
             });
             jFrame.addMouseMotionListener(new MouseMotionListener() {
                 @Override
                 public void mouseDragged(MouseEvent e) {
-                    screenTouchesListener.accept(getScreenTouches(e, 0, ScreenTouch.Action.DRAGGED));
+                    eventQueue.push(getScreenTouches(e, 0, ScreenTouch.Action.DRAGGED));
                 }
 
                 @Override
                 public void mouseMoved(MouseEvent e) {
-                    screenTouchesListener.accept(getScreenTouches(e, 0, ScreenTouch.Action.MOVED));
+                    eventQueue.push(getScreenTouches(e, 0, ScreenTouch.Action.MOVED));
                 }
             });
-            jFrame.addMouseWheelListener(e -> screenTouchesListener.accept(
-                    getScreenTouches(e, e.getWheelRotation(), ScreenTouch.Action.WHEEL))
-            );
+            jFrame.addMouseWheelListener(e -> {
+                eventQueue.push(getScreenTouches(e, e.getWheelRotation(), ScreenTouch.Action.WHEEL));
+            });
         }
 
         private void registerNativeComponent(Component component) {
@@ -274,12 +283,26 @@ public class ContextAWT implements Context {
         }
 
         /**
+         * Test dispatcher
+         */
+
+        private Object retrieveEvent() {
+            /*Object data = eventQueue.poll();
+            if (data instanceof List) {
+                screenTouchesListener.accept((List<ScreenTouch>) data);
+            } else if (data instanceof Key) {
+                keyListener.accept((Key) data);
+            }*/
+            return eventQueue.poll();
+        }
+
+        /**
          * Destroy this Window
          */
 
         private void destroy() {
-            jFrame.dispose();
             jFrame.dispatchEvent(new WindowEvent(jFrame, WindowEvent.WINDOW_CLOSING));
+            jFrame.dispose();
         }
 
         /**
@@ -487,10 +510,10 @@ public class ContextAWT implements Context {
             if (view != null) {
                 int counter = 0;
                 int limit = MAX_MESSAGES_PER_SECOND / Math.max(1, frameRate);
-                Object[] message;
+                Message message;
 
                 while ((message = messageStore.pop()) != null && counter < limit) {
-                    view.dispatch(View.Dispatcher.MESSAGE, message);
+                    view.dispatchMessage(message);
                     counter++;
                 }
 
