@@ -16,6 +16,16 @@ public class GenericMessage implements Message {
     }
 
     @Override
+    public String toString() {
+        return "GenericMessage{" +
+                "type=" + type +
+                ", message=" + message +
+                ", source='" + source + '\'' +
+                ", recipient='" + recipient + '\'' +
+                '}';
+    }
+
+    @Override
     public String getSender() {
         return source;
     }
