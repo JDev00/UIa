@@ -6,6 +6,7 @@ import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
 import uia.core.ScreenTouch;
 import uia.core.ui.Graphic;
+import uia.physical.message.Messages;
 import uia.physical.wrapper.WrapperView;
 
 import java.util.ArrayList;
@@ -81,10 +82,10 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     }
 
     /**
-     * Helper function. Dispatch a Key to the group children
+     * Helper function. Dispatch Key event message to the group children.
      */
 
-    private void dispatchKey(Message message) {
+    private void dispatchKeyMessage(Message message) {
         if (isVisible()) {
             for (int i = views.size() - 1; i >= 0; i--) {
                 views.get(i).dispatchMessage(message);
@@ -95,21 +96,24 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     private final List<ScreenTouch> screenTouches = new ArrayList<>();
 
     /**
-     * Helper function. Dispatch ScreenPointer to the group children
+     * Helper function. Dispatch screen event to the group children.
      */
 
-    private void dispatchScreenTouches(Message message) {
+    private void dispatchScreenEventMessage(Message message) {
         screenTouches.clear();
 
         if (isVisible()) {
-            List<ScreenTouch> tempScreenTouches = (List<ScreenTouch>) message.getMessage();
-            tempScreenTouches.forEach(p -> {
-                if (!clip || ComponentGroup.this.contains(p.getX(), p.getY())) screenTouches.add(p);
+            List<ScreenTouch> tempScreenTouches = message.getMessage();
+            tempScreenTouches.forEach(screenTouch -> {
+                if (!clip || ComponentGroup.this.contains(screenTouch.getX(), screenTouch.getY())) {
+                    screenTouches.add(screenTouch);
+                }
             });
         }
 
+        Message outMessage = Messages.newScreenEventMessage(screenTouches, message.getRecipient());
         for (int i = views.size() - 1; i >= 0; i--) {
-            views.get(i).dispatchMessage(message);
+            views.get(i).dispatchMessage(outMessage);
         }
     }
 
@@ -117,11 +121,11 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     public void dispatchMessage(Message message) {
         switch (message.getType()) {
             case EVENT_SCREEN_TOUCH:
-                dispatchScreenTouches(message);
+                dispatchScreenEventMessage(message);
                 super.dispatchMessage(message);
                 break;
             case EVENT_KEY:
-                dispatchKey(message);
+                dispatchKeyMessage(message);
                 super.dispatchMessage(message);
                 break;
             case OTHER:
@@ -174,7 +178,6 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     private void updateClipShape() {
         float[] bounds = bounds();
-
         clipShape.setPosition(bounds[0] + bounds[2] / 2f, bounds[1] + bounds[3] / 2f);
         clipShape.setDimension(getWidth(), getHeight());
         clipShape.setRotation(bounds[4]);
@@ -183,7 +186,6 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     @Override
     public void update(View parent) {
         super.update(parent);
-
         updateGroupFocus(parent);
         updateGroupBounds();
         updateClipShape();
