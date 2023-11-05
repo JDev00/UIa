@@ -10,15 +10,14 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- * FileChooserAWT is used to select or save a file with JAVA file explorer
+ * FileChooserSwing is used to select or save a file with OS file explorer.
  */
 
-public class FileChooserAWT {
+public class FileChooserSwing {
     private final JFrame jFrame;
-
     private final JFileChooser jFileChooser;
 
-    public FileChooserAWT() {
+    public FileChooserSwing() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ignored) {
