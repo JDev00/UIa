@@ -14,7 +14,7 @@ import uia.core.ui.Graphic;
 import uia.core.ui.context.InputEmulator;
 import uia.core.ui.context.Window;
 import uia.physical.ComponentHiddenRoot;
-import uia.physical.message.MessageFactory;
+import uia.physical.message.Messages;
 import uia.physical.message.MessageStore;
 
 import java.util.ArrayList;
@@ -140,7 +140,7 @@ public class ContextProcessing implements Context {
         private void dispatch(KeyEvent event, Key.Action action) {
             Key key = new Key(action, event.getModifiers(), event.getKey(), event.getKeyCode());
             if (currentView != null) {
-                currentView.dispatchMessage(MessageFactory.createKeyEventMessage(key, null));
+                currentView.dispatchMessage(Messages.newKeyEventMessage(key, null));
             }
         }
 
@@ -165,7 +165,7 @@ public class ContextProcessing implements Context {
             screenTouches.clear();
             screenTouches.add(new ScreenTouch(action, button, event.getX(), event.getY(), event.getCount()));
             if (currentView != null) {
-                currentView.dispatchMessage(MessageFactory.createScreenEventMessage(screenTouches, null));
+                currentView.dispatchMessage(Messages.newScreenEventMessage(screenTouches, null));
             }
         }
 

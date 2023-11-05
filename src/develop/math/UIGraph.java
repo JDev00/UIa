@@ -1,6 +1,6 @@
 package develop.math;
 
-import uia.application.desktop.ContextAWT;
+import uia.application.desktop.ContextSwing;
 import uia.core.Geometry;
 import uia.core.Shape;
 import uia.core.basement.Drawable;
@@ -430,7 +430,7 @@ public class UIGraph extends WrapperView {
         //.add(2000, 1200);
         //uiGraph.setRotation(0.15f);
 
-        Context context = new ContextAWT(1800, 900);
+        Context context = new ContextSwing(1800, 900);
         context.setLifecycleStage(Context.LifecycleStage.RUN);
         context.setView(uiGraph);
     }

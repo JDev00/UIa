@@ -1,7 +1,7 @@
 package example;
 
 import uia.application.UIButton;
-import uia.application.desktop.ContextAWT;
+import uia.application.desktop.ContextSwing;
 import uia.core.Font;
 import uia.core.Paint;
 import uia.core.ui.context.Context;
@@ -12,7 +12,7 @@ import uia.core.ui.callbacks.OnMessageReceived;
 import uia.physical.Component;
 import uia.physical.ComponentGroup;
 import uia.physical.ComponentText;
-import uia.physical.message.MessageFactory;
+import uia.physical.message.Messages;
 import uia.physical.theme.Theme;
 import uia.physical.wrapper.WrapperViewGroup;
 
@@ -36,7 +36,7 @@ public class HelloWorld extends WrapperViewGroup {
         // now comes for the interesting part of the job: showing and hiding a View without creating dependencies.
         button.registerCallback((OnClick) touches -> {
             String message = button.isEnabled() ? "Wake up!" : "Sleep now :)";
-            button.sendMessage(MessageFactory.createMessage(message, "POPUP"));
+            button.sendMessage(Messages.createMessage(message, "POPUP"));
         });
         // add another callback to listen for messages sent to this button
         button.registerCallback((OnMessageReceived) message -> {
@@ -58,14 +58,14 @@ public class HelloWorld extends WrapperViewGroup {
                 popup.setVisible(visibility);
                 // sends a message to BUTTON to inform it that popup woke up or went to sleep
                 String messageToSend = visibility ? "Hey!" : "Bye bye";
-                popup.sendMessage(MessageFactory.createMessage(messageToSend, "BUTTON"));
+                popup.sendMessage(Messages.createMessage(messageToSend, "BUTTON"));
             }
         });
 
         // adds button and popup to the HelloWorld group
         add(button, popup);
 
-        button.sendMessage(MessageFactory.createMessage("Wake up", "POPUP"));
+        button.sendMessage(Messages.createMessage("Wake up", "POPUP"));
     }
 
     private static UIButton createCustomButton() {
@@ -118,9 +118,9 @@ public class HelloWorld extends WrapperViewGroup {
     }
 
     private static Context createContext() {
-        int[] screenSize = ContextAWT.getScreenSize();
+        int[] screenSize = ContextSwing.getScreenSize();
         // creates a new AWT Context.
-        Context result = new ContextAWT(4 * screenSize[0] / 5, 4 * screenSize[1] / 5);
+        Context result = new ContextSwing(4 * screenSize[0] / 5, 4 * screenSize[1] / 5);
         // shows the Window frame handled by this Context
         result.getWindow().show();
         // starts the created context

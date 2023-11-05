@@ -1,6 +1,6 @@
 package example;
 
-import uia.application.desktop.ContextAWT;
+import uia.application.desktop.ContextSwing;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.ui.context.Context;
@@ -13,8 +13,8 @@ public class ContextLifecycleExample {
     }
 
     public static Context createAWTContext() {
-        int[] screenSize = ContextAWT.getScreenSize();
-        Context result = new ContextAWT(4 * screenSize[0] / 5, 4 * screenSize[1] / 5);
+        int[] screenSize = ContextSwing.getScreenSize();
+        Context result = new ContextSwing(4 * screenSize[0] / 5, 4 * screenSize[1] / 5);
         result.getWindow().show();
         result.setLifecycleStage(Context.LifecycleStage.RUN);
         return result;

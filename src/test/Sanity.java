@@ -5,7 +5,7 @@ import uia.application.UIButtonFilled;
 import uia.application.UIButtonList;
 import uia.application.UIButtonSwitch;
 import uia.application.UICalendar;
-import uia.application.desktop.ContextAWT;
+import uia.application.desktop.ContextSwing;
 import uia.core.ui.View;
 import uia.core.ui.context.Context;
 import uia.core.ui.ViewGroup;
@@ -52,11 +52,11 @@ public class Sanity {
     /**
      * Create a new ContextAWT with width: 720 and height: 540 and start it.
      *
-     * @return a new {@link ContextAWT}
+     * @return a new {@link ContextSwing}
      */
 
     public static Context createMockContext() {
-        Context context = new ContextAWT(720, 540);
+        Context context = new ContextSwing(720, 540);
         context.setLifecycleStage(Context.LifecycleStage.RUN);
         return context;
     }

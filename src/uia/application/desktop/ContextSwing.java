@@ -4,7 +4,7 @@ import uia.core.basement.Message;
 import uia.core.ui.context.InputEmulator;
 import uia.core.ui.context.Window;
 import uia.physical.input.ArtificialInput;
-import uia.physical.message.MessageFactory;
+import uia.physical.message.Messages;
 import uia.physical.message.MessageStore;
 import uia.core.*;
 import uia.core.ui.Graphic;
@@ -16,7 +16,6 @@ import uia.physical.ComponentHiddenRoot;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.*;
-import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -24,7 +23,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Framework built-in {@link Context} implementation based on Java AWT and SWING.
+ * Framework built-in {@link Context} implementation based on Java Swing.
  * <br><br>
  * <b>Usage example:</b>
  * <br><br>
@@ -38,18 +37,18 @@ import java.util.concurrent.TimeUnit;
  * </code>
  */
 
-public class ContextAWT implements Context {
+public class ContextSwing implements Context {
     private ScheduledExecutorService renderingThread;
     private LifecycleStage lifecycleStage = LifecycleStage.STOP;
-    private final WindowAWT window;
+    private final WindowSwing window;
     private final RendererEngine rendererEngine;
     private final InputEmulator inputEmulator;
 
-    public ContextAWT(int x, int y) {
+    public ContextSwing(int x, int y) {
         rendererEngine = new RendererEngine();
 
-        window = new WindowAWT(x, y);
-        window.registerNativeComponent(rendererEngine);
+        window = new WindowSwing(x, y);
+        window.addUIComponent(rendererEngine);
 
         inputEmulator = new ArtificialInput(
                 (screenTouch) -> {
@@ -64,7 +63,7 @@ public class ContextAWT implements Context {
     private void dispatchScreenTouches(List<ScreenTouch> screenTouches) {
         View view = rendererEngine.view;
         if (view != null && lifecycleStage.equals(LifecycleStage.RUN)) {
-            view.dispatchMessage(MessageFactory.createScreenEventMessage(screenTouches, null));
+            view.dispatchMessage(Messages.newScreenEventMessage(screenTouches, null));
         }
     }
 
@@ -75,7 +74,7 @@ public class ContextAWT implements Context {
     private void dispatchKey(Key key) {
         View view = rendererEngine.view;
         if (view != null && lifecycleStage.equals(LifecycleStage.RUN)) {
-            view.dispatchMessage(MessageFactory.createKeyEventMessage(key, null));
+            view.dispatchMessage(Messages.newKeyEventMessage(key, null));
         }
     }
 
@@ -107,14 +106,11 @@ public class ContextAWT implements Context {
                 int repaintPeriodMillis = 1000 / 60;
                 renderingThread = Executors.newSingleThreadScheduledExecutor();
                 renderingThread.scheduleAtFixedRate(() -> {
-                            Object event = window.retrieveEvent();
-                            if (event instanceof List) {
-                                dispatchScreenTouches((List<ScreenTouch>) event);
-                            } else if (event instanceof Key) {
-                                dispatchKey((Key) event);
-                            }
+                            Message eventMessage = window.popEventMessage();
 
-                            //System.out.println(event);
+                            if (eventMessage != null) {
+                                System.out.println(eventMessage);
+                            }
 
                             rendererEngine.draw(window.getWidth(), window.getHeight(), window.isFocused());
                         },
@@ -178,246 +174,6 @@ public class ContextAWT implements Context {
     public static int[] getScreenSize() {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         return new int[]{dim.width, dim.height};
-    }
-
-    /**
-     * {@link Window} implementation
-     */
-
-    private static class WindowAWT implements Window {
-        private final JFrame jFrame;
-        private final LinkedList<Object> eventList = new LinkedList<>();
-        private final int[] screenSize = new int[2];
-        private boolean focus = false;
-
-        public WindowAWT(int x, int y) {
-            screenSize[0] = x;
-            screenSize[1] = y;
-
-            jFrame = new JFrame();
-            jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            jFrame.getContentPane().setPreferredSize(new Dimension(x, y));
-            jFrame.setTitle("UIa Standard Window");
-            jFrame.pack();
-            jFrame.addComponentListener(new ComponentAdapter() {
-                @Override
-                public void componentResized(ComponentEvent e) {
-                    Container container = jFrame.getContentPane();
-                    screenSize[0] = container.getWidth();
-                    screenSize[1] = container.getHeight();
-                }
-            });
-            jFrame.addFocusListener(new FocusListener() {
-                @Override
-                public void focusGained(FocusEvent e) {
-                    focus = true;
-                }
-
-                @Override
-                public void focusLost(FocusEvent e) {
-                    focus = false;
-                }
-            });
-            jFrame.addKeyListener(new KeyListener() {
-                @Override
-                public void keyTyped(KeyEvent e) {
-                    synchronized (eventList) {
-                        eventList.push(new Key(Key.Action.TYPED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
-                    }
-                }
-
-                @Override
-                public void keyPressed(KeyEvent e) {
-                    eventList.push(new Key(Key.Action.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
-                    //keyListener.accept(new Key(Key.Action.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
-                }
-
-                @Override
-                public void keyReleased(KeyEvent e) {
-                    eventList.push(new Key(Key.Action.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
-                    //keyListener.accept(new Key(Key.Action.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
-                }
-            });
-            jFrame.addMouseListener(new MouseListener() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    eventList.push(getScreenTouches(e, 0, ScreenTouch.Action.PRESSED));
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    eventList.push(getScreenTouches(e, 0, ScreenTouch.Action.RELEASED));
-                }
-
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    eventList.push(getScreenTouches(e, 0, ScreenTouch.Action.CLICKED));
-                }
-
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    eventList.push(getScreenTouches(e, 0, ScreenTouch.Action.EXITED));
-                }
-            });
-            jFrame.addMouseMotionListener(new MouseMotionListener() {
-                @Override
-                public void mouseDragged(MouseEvent e) {
-                    eventList.push(getScreenTouches(e, 0, ScreenTouch.Action.DRAGGED));
-                }
-
-                @Override
-                public void mouseMoved(MouseEvent e) {
-                    eventList.push(getScreenTouches(e, 0, ScreenTouch.Action.MOVED));
-                }
-            });
-            jFrame.addMouseWheelListener(e -> {
-                eventList.push(getScreenTouches(e, e.getWheelRotation(), ScreenTouch.Action.WHEEL));
-            });
-        }
-
-        private void addKeyEvent(Key key) {
-            synchronized (eventList) {
-                eventList.push(key);
-            }
-        }
-
-        private void addScreenTouchEvent(List<ScreenTouch> screenTouches) {
-            synchronized (eventList) {
-                eventList.push(screenTouches);
-            }
-        }
-
-        private void registerNativeComponent(Component component) {
-            jFrame.add(component);
-        }
-
-        /**
-         * Test dispatcher
-         */
-
-        private Object retrieveEvent() {
-            /*Object data = eventQueue.poll();
-            if (data instanceof List) {
-                screenTouchesListener.accept((List<ScreenTouch>) data);
-            } else if (data instanceof Key) {
-                keyListener.accept((Key) data);
-            }*/
-            return eventList.poll();
-        }
-
-        /**
-         * Destroy this Window
-         */
-
-        private void destroy() {
-            jFrame.dispatchEvent(new WindowEvent(jFrame, WindowEvent.WINDOW_CLOSING));
-            jFrame.dispose();
-        }
-
-        /**
-         * @return the corresponding {@link ScreenTouch.Button} or null
-         */
-
-        private static ScreenTouch.Button mapNativeMouseButton(int button) {
-            switch (button) {
-                case 1:
-                    return ScreenTouch.Button.LEFT;
-                case 2:
-                    return ScreenTouch.Button.CENTER;
-                case 3:
-                    return ScreenTouch.Button.RIGHT;
-                default:
-                    return null;
-            }
-        }
-
-        private final List<ScreenTouch> screenTouches = new ArrayList<>();
-
-        /**
-         * Helper function. Returns a List of {@link ScreenTouch}s.
-         */
-
-        private List<ScreenTouch> getScreenTouches(MouseEvent mouseEvent, int wheelRotation, ScreenTouch.Action action) {
-            int x = mouseEvent.getX();
-            int y = mouseEvent.getY();
-            int[] insets = getInsets();
-            int[] position = {x - insets[0], y - insets[1]};
-
-            screenTouches.clear();
-            screenTouches.add(new ScreenTouch(
-                    action,
-                    mapNativeMouseButton(mouseEvent.getButton()),
-                    position[0],
-                    position[1],
-                    wheelRotation));
-            return screenTouches;
-        }
-
-        @Override
-        public Window show() {
-            jFrame.setVisible(true);
-            return this;
-        }
-
-        @Override
-        public Window hide() {
-            jFrame.setVisible(false);
-            return this;
-        }
-
-        @Override
-        public Window setAlwaysOnTop(boolean alwaysOnTop) {
-            jFrame.setAlwaysOnTop(alwaysOnTop);
-            return this;
-        }
-
-        @Override
-        public Window setResizable(boolean resizable) {
-            jFrame.setResizable(resizable);
-            return this;
-        }
-
-        @Override
-        public Window setTitle(String title) {
-            jFrame.setTitle(title);
-            return this;
-        }
-
-        @Override
-        public Window resize(int width, int height) {
-            assert width >= 200 : "window width can't be lower than 200 px";
-            assert height >= 200 : "window height can't be lower than 200 px";
-            jFrame.setSize(width, height);
-            return this;
-        }
-
-        @Override
-        public int getWidth() {
-            return screenSize[0];
-        }
-
-        @Override
-        public int getHeight() {
-            return screenSize[1];
-        }
-
-        @Override
-        public boolean isFocused() {
-            return focus;
-        }
-
-        @Override
-        public int[] getInsets() {
-            Insets insets = jFrame.getInsets();
-            return new int[]{
-                    insets.left, insets.top,
-                    insets.right, insets.bottom
-            };
-        }
     }
 
     /**

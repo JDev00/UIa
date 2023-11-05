@@ -1,6 +1,6 @@
 package develop;
 
-import uia.application.desktop.ContextAWT;
+import uia.application.desktop.ContextSwing;
 import uia.core.basement.Callback;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
@@ -212,7 +212,7 @@ public class UIListView extends WrapperView implements ViewGroup {
             view.add(createView(i));
         }
 
-        Context context = new ContextAWT(1800, 900);
+        Context context = new ContextSwing(1800, 900);
         context.setLifecycleStage(Context.LifecycleStage.RUN);
         context.setView(view);
     }
