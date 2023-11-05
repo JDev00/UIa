@@ -91,7 +91,7 @@ public class TestView implements TestSuite {
                 testAssertion.expect(message.getMessage()).toBeEqual(MESSAGE);
                 System.out.println("ok!");
             });
-            root.sendMessage(Messages.createMessage(MESSAGE, TARGET));
+            root.sendMessage(Messages.newMessage(MESSAGE, TARGET));
         };
     }
 

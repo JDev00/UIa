@@ -5,7 +5,7 @@ import uia.core.basement.Message;
 public class Messages {
 
     /**
-     * Create a screen event message
+     * Create a new screen touch event message
      */
 
     public static Message newScreenEventMessage(Object message, String recipient) {
@@ -13,7 +13,7 @@ public class Messages {
     }
 
     /**
-     * Create a key event message
+     * Create a new key event message
      */
 
     public static Message newKeyEventMessage(Object message, String recipient) {
@@ -21,10 +21,10 @@ public class Messages {
     }
 
     /**
-     * Create a message
+     * Create a new message
      */
 
-    public static Message createMessage(Object message, String recipient) {
+    public static Message newMessage(Object message, String recipient) {
         return new GenericMessage(Message.Type.OTHER, message, null, recipient);
     }
 }
