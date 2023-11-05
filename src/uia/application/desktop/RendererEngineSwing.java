@@ -137,7 +137,7 @@ public class RendererEngineSwing extends JPanel {
             int limit = MAX_MESSAGES_PER_SECOND / Math.max(1, frameRate);
 
             Message message;
-            while ((message = messageStore.pop()) != null && counter < limit) {
+            while (counter < limit && (message = messageStore.pop()) != null) {
                 view.dispatchMessage(message);
                 counter++;
             }
