@@ -1,12 +1,11 @@
 package uia.application.desktop;
 
+import uia.core.ScreenTouch;
 import uia.core.basement.Message;
 import uia.core.ui.context.InputEmulator;
 import uia.core.ui.context.Window;
 import uia.physical.input.ArtificialInput;
-import uia.physical.message.Messages;
 import uia.physical.message.MessageStore;
-import uia.core.*;
 import uia.core.ui.Graphic;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
@@ -51,16 +50,18 @@ public class ContextSwing implements Context {
         window.addUIComponent(rendererEngine);
 
         inputEmulator = new ArtificialInput(
-                (screenTouch) -> {
+                (message) -> {
                     int[] insets = window.getInsets();
-                    screenTouch.translate(insets[0], insets[1]);
-                    dispatchSingleScreenTouch(screenTouch);
-                },
-                this::dispatchKey
+                    if (message.getType().equals(Message.Type.EVENT_SCREEN_TOUCH)) {
+                        ScreenTouch screenTouch = message.<List<ScreenTouch>>getMessage().get(0);
+                        screenTouch.translate(insets[0], insets[1]);
+                    }
+                    dispatchMessageToView(message);
+                }
         );
     }
 
-    private void dispatchScreenTouches(List<ScreenTouch> screenTouches) {
+    /*private void dispatchScreenTouches(List<ScreenTouch> screenTouches) {
         View view = rendererEngine.view;
         if (view != null && lifecycleStage.equals(LifecycleStage.RUN)) {
             view.dispatchMessage(Messages.newScreenEventMessage(screenTouches, null));
@@ -75,6 +76,13 @@ public class ContextSwing implements Context {
         View view = rendererEngine.view;
         if (view != null && lifecycleStage.equals(LifecycleStage.RUN)) {
             view.dispatchMessage(Messages.newKeyEventMessage(key, null));
+        }
+    }*/
+
+    private void dispatchMessageToView(Message message) {
+        View view = rendererEngine.view;
+        if (view != null && lifecycleStage.equals(LifecycleStage.RUN)) {
+            view.dispatchMessage(message);
         }
     }
 
@@ -110,6 +118,7 @@ public class ContextSwing implements Context {
 
                             if (eventMessage != null) {
                                 System.out.println(eventMessage);
+                                dispatchMessageToView(eventMessage);
                             }
 
                             rendererEngine.draw(window.getWidth(), window.getHeight(), window.isFocused());
