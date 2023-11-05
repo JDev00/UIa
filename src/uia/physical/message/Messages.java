@@ -2,6 +2,10 @@ package uia.physical.message;
 
 import uia.core.basement.Message;
 
+/**
+ * Message factory
+ */
+
 public class Messages {
 
     /**
