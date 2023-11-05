@@ -1,4 +1,4 @@
-package uia.application.awt;
+package uia.application.desktop;
 
 import uia.core.Font;
 import uia.core.Geometry;

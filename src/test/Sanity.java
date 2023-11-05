@@ -5,7 +5,7 @@ import uia.application.UIButtonFilled;
 import uia.application.UIButtonList;
 import uia.application.UIButtonSwitch;
 import uia.application.UICalendar;
-import uia.application.awt.ContextAWT;
+import uia.application.desktop.ContextAWT;
 import uia.core.ui.View;
 import uia.core.ui.context.Context;
 import uia.core.ui.ViewGroup;

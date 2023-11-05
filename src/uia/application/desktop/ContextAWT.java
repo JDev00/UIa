@@ -1,4 +1,4 @@
-package uia.application.awt;
+package uia.application.desktop;
 
 import uia.core.basement.Message;
 import uia.core.ui.context.InputEmulator;
@@ -42,14 +42,14 @@ public class ContextAWT implements Context {
     private ScheduledExecutorService renderingThread;
     private LifecycleStage lifecycleStage = LifecycleStage.STOP;
     private final WindowAWT window;
-    private final Renderer renderer;
+    private final RendererEngine rendererEngine;
     private final InputEmulator inputEmulator;
 
     public ContextAWT(int x, int y) {
-        renderer = new Renderer();
+        rendererEngine = new RendererEngine();
 
         window = new WindowAWT(x, y);
-        window.registerNativeComponent(renderer);
+        window.registerNativeComponent(rendererEngine);
 
         inputEmulator = new ArtificialInput(
                 (screenTouch) -> {
@@ -62,7 +62,7 @@ public class ContextAWT implements Context {
     }
 
     private void dispatchScreenTouches(List<ScreenTouch> screenTouches) {
-        View view = renderer.view;
+        View view = rendererEngine.view;
         if (view != null && lifecycleStage.equals(LifecycleStage.RUN)) {
             view.dispatchMessage(MessageFactory.createScreenEventMessage(screenTouches, null));
         }
@@ -73,7 +73,7 @@ public class ContextAWT implements Context {
     }
 
     private void dispatchKey(Key key) {
-        View view = renderer.view;
+        View view = rendererEngine.view;
         if (view != null && lifecycleStage.equals(LifecycleStage.RUN)) {
             view.dispatchMessage(MessageFactory.createKeyEventMessage(key, null));
         }
@@ -81,7 +81,7 @@ public class ContextAWT implements Context {
 
     @Override
     public void setView(View view) {
-        renderer.view = view;
+        rendererEngine.view = view;
     }
 
     /**
@@ -116,7 +116,7 @@ public class ContextAWT implements Context {
 
                             //System.out.println(event);
 
-                            renderer.updateAndDrawView(window.getWidth(), window.getHeight(), window.isFocused());
+                            rendererEngine.draw(window.getWidth(), window.getHeight(), window.isFocused());
                         },
                         0,
                         repaintPeriodMillis,
@@ -139,7 +139,7 @@ public class ContextAWT implements Context {
 
     @Override
     public void setRenderingHint(RenderingHint... hint) {
-        List<RenderingHint> hints = renderer.hints;
+        List<RenderingHint> hints = rendererEngine.hints;
         hints.clear();
         hints.addAll(Arrays.asList(hint));
     }
@@ -186,7 +186,7 @@ public class ContextAWT implements Context {
 
     private static class WindowAWT implements Window {
         private final JFrame jFrame;
-        private final LinkedList<Object> eventQueue = new LinkedList<>();
+        private final LinkedList<Object> eventList = new LinkedList<>();
         private final int[] screenSize = new int[2];
         private boolean focus = false;
 
@@ -221,36 +221,37 @@ public class ContextAWT implements Context {
             jFrame.addKeyListener(new KeyListener() {
                 @Override
                 public void keyTyped(KeyEvent e) {
-                    eventQueue.push(new Key(Key.Action.TYPED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
-                    //keyListener.accept(new Key(Key.Action.TYPED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                    synchronized (eventList) {
+                        eventList.push(new Key(Key.Action.TYPED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                    }
                 }
 
                 @Override
                 public void keyPressed(KeyEvent e) {
-                    eventQueue.push(new Key(Key.Action.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                    eventList.push(new Key(Key.Action.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
                     //keyListener.accept(new Key(Key.Action.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
                 }
 
                 @Override
                 public void keyReleased(KeyEvent e) {
-                    eventQueue.push(new Key(Key.Action.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                    eventList.push(new Key(Key.Action.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
                     //keyListener.accept(new Key(Key.Action.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
                 }
             });
             jFrame.addMouseListener(new MouseListener() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    eventQueue.push(getScreenTouches(e, 0, ScreenTouch.Action.PRESSED));
+                    eventList.push(getScreenTouches(e, 0, ScreenTouch.Action.PRESSED));
                 }
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    eventQueue.push(getScreenTouches(e, 0, ScreenTouch.Action.RELEASED));
+                    eventList.push(getScreenTouches(e, 0, ScreenTouch.Action.RELEASED));
                 }
 
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    eventQueue.push(getScreenTouches(e, 0, ScreenTouch.Action.CLICKED));
+                    eventList.push(getScreenTouches(e, 0, ScreenTouch.Action.CLICKED));
                 }
 
                 @Override
@@ -259,23 +260,35 @@ public class ContextAWT implements Context {
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    eventQueue.push(getScreenTouches(e, 0, ScreenTouch.Action.EXITED));
+                    eventList.push(getScreenTouches(e, 0, ScreenTouch.Action.EXITED));
                 }
             });
             jFrame.addMouseMotionListener(new MouseMotionListener() {
                 @Override
                 public void mouseDragged(MouseEvent e) {
-                    eventQueue.push(getScreenTouches(e, 0, ScreenTouch.Action.DRAGGED));
+                    eventList.push(getScreenTouches(e, 0, ScreenTouch.Action.DRAGGED));
                 }
 
                 @Override
                 public void mouseMoved(MouseEvent e) {
-                    eventQueue.push(getScreenTouches(e, 0, ScreenTouch.Action.MOVED));
+                    eventList.push(getScreenTouches(e, 0, ScreenTouch.Action.MOVED));
                 }
             });
             jFrame.addMouseWheelListener(e -> {
-                eventQueue.push(getScreenTouches(e, e.getWheelRotation(), ScreenTouch.Action.WHEEL));
+                eventList.push(getScreenTouches(e, e.getWheelRotation(), ScreenTouch.Action.WHEEL));
             });
+        }
+
+        private void addKeyEvent(Key key) {
+            synchronized (eventList) {
+                eventList.push(key);
+            }
+        }
+
+        private void addScreenTouchEvent(List<ScreenTouch> screenTouches) {
+            synchronized (eventList) {
+                eventList.push(screenTouches);
+            }
         }
 
         private void registerNativeComponent(Component component) {
@@ -293,7 +306,7 @@ public class ContextAWT implements Context {
             } else if (data instanceof Key) {
                 keyListener.accept((Key) data);
             }*/
-            return eventQueue.poll();
+            return eventList.poll();
         }
 
         /**
@@ -408,26 +421,25 @@ public class ContextAWT implements Context {
     }
 
     /**
-     * Renderer engine
+     * RendererEngine is responsible to render on the native Graphic a specified View.
      */
 
-    private static class Renderer extends JPanel {
+    private static class RendererEngine extends JPanel {
         private static final int MAX_MESSAGES_PER_SECOND = 30000;
 
         private final MessageStore messageStore = MessageStore.getInstance();
         private final Timer timer;
-        private final Graphic graphic;
         private Graphics2D nativeGraphics;
+        private final Graphic graphic;
+        private final List<RenderingHint> hints;
         private final View rootView;
         private View view;
-
-        private final List<RenderingHint> hints;
 
         private int frameRate;
         private int frameCount;
         private float lastFrameCount;
 
-        public Renderer() {
+        public RendererEngine() {
             graphic = new GraphicAWT(() -> nativeGraphics);
 
             rootView = new ComponentHiddenRoot();
@@ -439,12 +451,11 @@ public class ContextAWT implements Context {
         }
 
         /**
-         * Helper function. Calculate frame rate.
+         * Helper function. Calculate rendering metrics.
          */
 
-        private void calculateFrameRate() {
+        private void calculateMetrics() {
             frameCount++;
-
             if (timer.seconds() >= 1d) {
                 frameRate = (int) (frameCount - lastFrameCount);
                 lastFrameCount = frameCount;
@@ -481,22 +492,11 @@ public class ContextAWT implements Context {
             }
         }
 
-        @Override
-        protected void paintComponent(Graphics graphics) {
-            super.paintComponent(graphics);
-
-            nativeGraphics = (Graphics2D) graphics;
-            applyHints();
-            if (view != null) {
-                view.draw(graphic);
-            }
-        }
-
         /**
          * Helper function. Update root View.
          */
 
-        private void updateRoot(int x, int y, boolean focus) {
+        private void updateRootView(int x, int y, boolean focus) {
             rootView.setPosition(0f, 0f);
             rootView.setDimension(x, y);
             rootView.requestFocus(focus);
@@ -510,8 +510,8 @@ public class ContextAWT implements Context {
             if (view != null) {
                 int counter = 0;
                 int limit = MAX_MESSAGES_PER_SECOND / Math.max(1, frameRate);
-                Message message;
 
+                Message message;
                 while ((message = messageStore.pop()) != null && counter < limit) {
                     view.dispatchMessage(message);
                     counter++;
@@ -521,11 +521,26 @@ public class ContextAWT implements Context {
             }
         }
 
-        private void updateAndDrawView(int screenWidth, int screenHeight, boolean screenFocus) {
-            calculateFrameRate();
-            updateRoot(screenWidth, screenHeight, screenFocus);
+        /**
+         * Draw the specified View on the native Graphics.
+         */
+
+        private void draw(int screenWidth, int screenHeight, boolean screenFocus) {
+            calculateMetrics();
+            updateRootView(screenWidth, screenHeight, screenFocus);
             updateView();
             repaint();
+        }
+
+        @Override
+        protected void paintComponent(Graphics graphics) {
+            super.paintComponent(graphics);
+
+            nativeGraphics = (Graphics2D) graphics;
+            applyHints();
+            if (view != null) {
+                view.draw(graphic);
+            }
         }
     }
 }

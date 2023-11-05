@@ -1,6 +1,6 @@
 package develop;
 
-import uia.application.awt.ContextAWT;
+import uia.application.desktop.ContextAWT;
 import uia.core.basement.Callback;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;

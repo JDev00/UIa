@@ -1,6 +1,6 @@
 package example;
 
-import uia.application.awt.ContextAWT;
+import uia.application.desktop.ContextAWT;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.ui.context.Context;

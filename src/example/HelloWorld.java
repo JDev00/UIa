@@ -1,7 +1,7 @@
 package example;
 
 import uia.application.UIButton;
-import uia.application.awt.ContextAWT;
+import uia.application.desktop.ContextAWT;
 import uia.core.Font;
 import uia.core.Paint;
 import uia.core.ui.context.Context;

@@ -1,6 +1,6 @@
 package develop.math;
 
-import uia.application.awt.ContextAWT;
+import uia.application.desktop.ContextAWT;
 import uia.core.Geometry;
 import uia.core.Shape;
 import uia.core.basement.Drawable;
