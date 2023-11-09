@@ -9,23 +9,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e94f413-5b84-4ebc-b4cb-620f91895743" name="Changes" comment="Removes old files">
-      <change afterPath="$PROJECT_DIR$/src/uia/core/basement/Message.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/message/GenericMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/uia/physical/message/MessageFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+    <list default="true" id="9e94f413-5b84-4ebc-b4cb-620f91895743" name="Changes" comment="Refactor: renames method">
+      <change afterPath="$PROJECT_DIR$/src/test/core/Skip.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/core/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/example/HelloWorld.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/example/HelloWorld.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/example/processing/ContextProcessing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/example/processing/ContextProcessing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/Sanity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Sanity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/TestPaint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/TestPaint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/TestPointDistribution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/TestPointDistribution.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/TestView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/TestView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/application/awt/ContextAWT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/application/awt/ContextAWT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/core/ui/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/core/ui/View.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/core/ui/callbacks/OnMessageReceived.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/core/ui/callbacks/OnMessageReceived.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/TestViewMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/TestViewMessages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/core/TestCase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/core/TestSuite.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/core/TestUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/core/TestUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uia/application/desktop/ContextSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/application/desktop/ContextSwing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uia/application/desktop/WindowSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/application/desktop/WindowSwing.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/uia/physical/Component.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/physical/Component.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/physical/ComponentGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/physical/ComponentGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/physical/ComponentHiddenRoot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/physical/ComponentHiddenRoot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/uia/physical/message/MessageStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/physical/message/MessageStore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/physical/wrapper/WrapperView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/physical/wrapper/WrapperView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uia/physical/message/Messages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/physical/message/Messages.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +38,7 @@
       <list>
         <option value="Interface" />
         <option value="Class" />
+        <option value="AnnotationType" />
       </list>
     </option>
   </component>
@@ -73,20 +75,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "2.0.0",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Manu/IdeaProjects/UIa/src/debug",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;1.2.0&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Manu/IdeaProjects/UIa/src/debug&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="test" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Manu\IdeaProjects\UIa\src\debug" />
       <recent name="C:\Users\Manu\IdeaProjects\UIa\src\develop\math" />
@@ -101,6 +106,9 @@
       <recent name="C:\Users\Manu\IdeaProjects\UIa\src\develop" />
       <recent name="C:\Users\Manu\IdeaProjects\UIa\src\uia\application" />
     </key>
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="uia.application.desktop" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="uia.platform" />
     </key>
@@ -112,13 +120,13 @@
       <recent name="uia.core.widget.text" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.HelloWorld">
-    <configuration name="Agenda" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="debug.ui.Agenda" />
+  <component name="RunManager" selected="Application.Sanity">
+    <configuration name="Sanity" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="test.Sanity" />
       <module name="UIa" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="debug.ui.*" />
+          <option name="PATTERN" value="test.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -126,25 +134,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ContextLifecycleExample" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="example.ContextLifecycleExample" />
+    <configuration name="TestPaint" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="test.TestPaint" />
       <module name="UIa" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="example.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="HelloWorld" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="example.HelloWorld" />
-      <module name="UIa" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="example.*" />
+          <option name="PATTERN" value="test.core.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -157,7 +152,7 @@
       <module name="UIa" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="test.*" />
+          <option name="PATTERN" value="test.core.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -170,7 +165,20 @@
       <module name="UIa" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="test.*" />
+          <option name="PATTERN" value="test.core.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestViewMessages" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="test.TestViewMessages" />
+      <module name="UIa" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.core.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -179,19 +187,19 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.Agenda" />
-      <item itemvalue="Application.ContextLifecycleExample" />
+      <item itemvalue="Application.Sanity" />
+      <item itemvalue="Application.TestPaint" />
+      <item itemvalue="Application.TestViewMessages" />
       <item itemvalue="Application.TestPointDistribution" />
-      <item itemvalue="Application.HelloWorld" />
       <item itemvalue="Application.TestView" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.HelloWorld" />
-        <item itemvalue="Application.Agenda" />
+        <item itemvalue="Application.Sanity" />
         <item itemvalue="Application.TestView" />
+        <item itemvalue="Application.TestViewMessages" />
+        <item itemvalue="Application.TestPaint" />
         <item itemvalue="Application.TestPointDistribution" />
-        <item itemvalue="Application.ContextLifecycleExample" />
       </list>
     </recent_temporary>
   </component>
@@ -210,118 +218,6 @@
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
       <updated>1651233864002</updated>
-    </task>
-    <task id="LOCAL-00023" summary="Updates readme">
-      <option name="closed" value="true" />
-      <created>1697315641557</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1697315641557</updated>
-    </task>
-    <task id="LOCAL-00024" summary="Adds examples of usage of basement components and widgets">
-      <option name="closed" value="true" />
-      <created>1697825748781</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1697825748781</updated>
-    </task>
-    <task id="LOCAL-00025" summary="Adds examples of usage of basement components and widgets">
-      <option name="closed" value="true" />
-      <created>1697825826243</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1697825826243</updated>
-    </task>
-    <task id="LOCAL-00026" summary="Tests Paint">
-      <option name="closed" value="true" />
-      <created>1697829364762</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1697829364762</updated>
-    </task>
-    <task id="LOCAL-00027" summary="Make not visible an attribute">
-      <option name="closed" value="true" />
-      <created>1697829400845</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1697829400845</updated>
-    </task>
-    <task id="LOCAL-00028" summary="Updates tests">
-      <option name="closed" value="true" />
-      <created>1697830099946</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1697830099946</updated>
-    </task>
-    <task id="LOCAL-00029" summary="Adds testcase Interface and updates test tas">
-      <option name="closed" value="true" />
-      <created>1697834079851</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1697834079851</updated>
-    </task>
-    <task id="LOCAL-00030" summary="Updates tests">
-      <option name="closed" value="true" />
-      <created>1697834120284</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1697834120284</updated>
-    </task>
-    <task id="LOCAL-00031" summary="Updates Paint test">
-      <option name="closed" value="true" />
-      <created>1697834308452</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1697834308452</updated>
-    </task>
-    <task id="LOCAL-00032" summary="Adds size() method">
-      <option name="closed" value="true" />
-      <created>1697834362084</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1697834362084</updated>
-    </task>
-    <task id="LOCAL-00033" summary="Renames test">
-      <option name="closed" value="true" />
-      <created>1697834379878</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1697834379878</updated>
-    </task>
-    <task id="LOCAL-00034" summary="Updates standard deviation contract">
-      <option name="closed" value="true" />
-      <created>1697834413102</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1697834413102</updated>
-    </task>
-    <task id="LOCAL-00035" summary="Moves processing into examples folder">
-      <option name="closed" value="true" />
-      <created>1697834445382</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1697834445382</updated>
-    </task>
-    <task id="LOCAL-00036" summary="Renames class">
-      <option name="closed" value="true" />
-      <created>1697834622665</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1697834622665</updated>
     </task>
     <task id="LOCAL-00037" summary="Moves PointDistribution">
       <option name="closed" value="true" />
@@ -595,7 +491,119 @@
       <option name="project" value="LOCAL" />
       <updated>1698575665503</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="Adds Messages and updates the dispatch mechanism">
+      <option name="closed" value="true" />
+      <created>1699048249260</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1699048249260</updated>
+    </task>
+    <task id="LOCAL-00072" summary="Refactor: moves files">
+      <option name="closed" value="true" />
+      <created>1699196806416</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1699196806416</updated>
+    </task>
+    <task id="LOCAL-00073" summary="Updates version">
+      <option name="closed" value="true" />
+      <created>1699196834964</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1699196834964</updated>
+    </task>
+    <task id="LOCAL-00074" summary="Refactor: extracts object and renames it">
+      <option name="closed" value="true" />
+      <created>1699198179490</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1699198179490</updated>
+    </task>
+    <task id="LOCAL-00075" summary="Returns events as messages">
+      <option name="closed" value="true" />
+      <created>1699198664187</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1699198664187</updated>
+    </task>
+    <task id="LOCAL-00076" summary="Refactor: extracts object">
+      <option name="closed" value="true" />
+      <created>1699199393001</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1699199393001</updated>
+    </task>
+    <task id="LOCAL-00077" summary="Implements object content description">
+      <option name="closed" value="true" />
+      <created>1699199478597</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1699199478597</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Refactor: renames object">
+      <option name="closed" value="true" />
+      <created>1699199872672</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1699199872672</updated>
+    </task>
+    <task id="LOCAL-00079" summary="Refactor: renames method">
+      <option name="closed" value="true" />
+      <created>1699199956563</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1699199956563</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Adds Messages description">
+      <option name="closed" value="true" />
+      <created>1699199985888</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1699199985888</updated>
+    </task>
+    <task id="LOCAL-00081" summary="Bugfix: delivers the correct screen touches to the children">
+      <option name="closed" value="true" />
+      <created>1699203028755</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1699203028755</updated>
+    </task>
+    <task id="LOCAL-00082" summary="Bugfix: delivers all the messages">
+      <option name="closed" value="true" />
+      <created>1699204454737</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1699204454737</updated>
+    </task>
+    <task id="LOCAL-00083" summary="Adds message test">
+      <option name="closed" value="true" />
+      <created>1699557025078</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1699557025078</updated>
+    </task>
+    <task id="LOCAL-00084" summary="Refactor: renames method">
+      <option name="closed" value="true" />
+      <created>1699557506181</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1699557506181</updated>
+    </task>
+    <option name="localTasksCounter" value="85" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -625,19 +633,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Updates examples" />
-    <MESSAGE value="Updates tests and adds ArtificialInput to emulate inputs" />
-    <MESSAGE value="small improvements" />
-    <MESSAGE value="Removes methods to interact with the native Object" />
-    <MESSAGE value="Refactor: renames methods" />
-    <MESSAGE value="Refactor: renames methods and objects. Introduces the concept of Context lifecycle" />
-    <MESSAGE value="Updates callbacks description" />
-    <MESSAGE value="Implements new policies" />
-    <MESSAGE value="Sets the native graphics object to UIa Graphics abstraction" />
-    <MESSAGE value="Policies implementation and minor fixes" />
-    <MESSAGE value="Removes dead component" />
-    <MESSAGE value="Updates HelloWorld example" />
-    <MESSAGE value="Updates example on readme" />
     <MESSAGE value="Updates collider policies definition" />
     <MESSAGE value="Removes a method used to set the native Graphics and improves existing implementations" />
     <MESSAGE value="Expands constructor options" />
@@ -650,7 +645,20 @@
     <MESSAGE value="Preview: adds a list to handle an array of chars" />
     <MESSAGE value="Removes old files" />
     <MESSAGE value="ff" />
-    <option name="LAST_COMMIT_MESSAGE" value="ff" />
+    <MESSAGE value="Adds Messages and updates the dispatch mechanism" />
+    <MESSAGE value="Refactor: moves files" />
+    <MESSAGE value="Updates version" />
+    <MESSAGE value="Refactor: extracts object and renames it" />
+    <MESSAGE value="Returns events as messages" />
+    <MESSAGE value="Refactor: extracts object" />
+    <MESSAGE value="Implements object content description" />
+    <MESSAGE value="Refactor: renames object" />
+    <MESSAGE value="Adds Messages description" />
+    <MESSAGE value="Bugfix: delivers the correct screen touches to the children" />
+    <MESSAGE value="Bugfix: delivers all the messages" />
+    <MESSAGE value="Adds message test" />
+    <MESSAGE value="Refactor: renames method" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor: renames method" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
