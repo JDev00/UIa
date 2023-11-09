@@ -1,5 +1,7 @@
 package test.core;
 
+import java.lang.reflect.Method;
+
 public class TestUtils {
 
     /**
@@ -12,50 +14,36 @@ public class TestUtils {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-    }
-
-    /**
-     * Execute the specified test case in a dedicated Thread
-     *
-     * @param testcase a not null {@link TestCase} to execute
-     */
-
-    public static void runTest(TestCase testcase) {
-        new Thread(() -> {
-            try {
-                testcase.run(new TestAssertion());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
     }
 
     /**
      * Execute the specified test suite
      *
-     * @param testSuite a not null {@link TestSuite} to execute
+     * @param testSuite a not null Object with tests to execute
      */
 
-    public static void runTestSuite(TestSuite testSuite) {
+    public static void runTestSuite(Object testSuite) {
         int[] tests = {0, 0};
 
         new Thread(() -> {
-            for (TestCase testCase : testSuite) {
-                try {
+            Method[] methods = testSuite.getClass().getMethods();
+            for (Method method : methods) {
+                if (method.isAnnotationPresent(Test.class) && !method.isAnnotationPresent(Skip.class)) {
                     TestAssertion testAssertion = new TestAssertion();
-                    testCase.run(testAssertion);
-                    waitMillis(300);
+                    try {
+                        method.invoke(null, testAssertion);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     if (testAssertion.passed()) {
                         tests[0]++;
                     } else {
-                        System.out.println(testCase.getClass() + " failed");
+                        System.out.println(method.getName() + " failed");
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    tests[1]++;
                 }
-                tests[1]++;
             }
             System.out.println("TEST passed: " + tests[0] + "/" + tests[1]);
             System.exit(0);

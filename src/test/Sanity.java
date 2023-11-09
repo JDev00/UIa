@@ -111,14 +111,6 @@ public class Sanity {
         UIButtonList buttonList = new UIButtonList(new Component("BUTTON_2", 0.85f, 0.75f, 0.15f, 0.1f));
         buttonList.setText("1\n1", "2", "3", "4", "5");
 
-        /*UIBar bar = new UIBar(new Component("BAR", 0.25f, 0.15f, 0.15f, 0.01f));
-        bar.setRange(0, 1000);
-        bar.setValue(0f);
-        bar.setText(s -> Utility.limitDecimals(s, 1) + " %");
-        bar.rotate(TrigTable.PI);
-        bar.getViewText().getFont().setSize(30f).setStyle(Font.STYLE.BOLD);
-        bar.addCallback((OnClick) touches -> bar.rotate(bar.geometryBounds()[2] + TrigTable.HALF_PI));*/
-
         UICalendar calendar = new UICalendar(new Component("CALENDAR", 0.15f, 0.7f, 0.25f, 0.5f));
         calendar.setRotation(0.05f);
 

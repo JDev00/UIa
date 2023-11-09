@@ -1,53 +1,45 @@
 package test;
 
-import test.core.TestCase;
-import test.core.TestSuite;
+import test.core.Test;
+import test.core.TestAssertion;
 import test.core.TestUtils;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.callbacks.OnMessageReceived;
 import uia.core.ui.context.Context;
 import uia.physical.message.Messages;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-
 import static test.Sanity.*;
 
-public class TestViewMessages implements TestSuite {
+/**
+ * Unit tests
+ */
 
-    public static TestCase allTheSendMessagesShouldBeReceived() {
-        return (testAssertion) -> {
-            int messages = 50_000;
-            testAssertion.assertions(messages);
+public class TestViewMessages {
 
-            String MESSAGE = "hello", TARGET = "B";
+    @Test
+    public static void allTheSendMessagesShouldBeReceived(TestAssertion testAssertion) {
+        int messages = 50_000;
+        testAssertion.assertions(messages);
 
-            // test setup
-            ViewGroup root = createRoot();
-            root.add(createView(TARGET, 0f, 0f, 0.1f, 0.1f));
+        String MESSAGE = "hello", TARGET = "B";
 
-            Context context = createMockContext();
-            context.setView(root);
+        // test setup
+        ViewGroup root = createRoot();
+        root.add(createView(TARGET, 0f, 0f, 0.1f, 0.1f));
 
-            // test clause
-            root.get(TARGET).registerCallback((OnMessageReceived) message -> {
-                testAssertion.expect(message.getMessage()).toBe(MESSAGE);
-            });
+        Context context = createMockContext();
+        context.setView(root);
 
-            for (int i = 0; i < messages; i++) {
-                root.sendMessage(Messages.newMessage(MESSAGE, TARGET));
-            }
+        // test clause
+        root.get(TARGET).registerCallback((OnMessageReceived) message -> {
+            testAssertion.expect(message.getMessage()).toBe(MESSAGE);
+        });
 
-            TestUtils.waitMillis(2_100);
-        };
-    }
+        for (int i = 0; i < messages; i++) {
+            root.sendMessage(Messages.newMessage(MESSAGE, TARGET));
+        }
 
-    @Override
-    public Iterator<TestCase> iterator() {
-        return new ArrayList<>(Arrays.asList(
-                allTheSendMessagesShouldBeReceived()
-        )).iterator();
+        TestUtils.waitMillis(2_100);
     }
 
     public static void main(String[] args) {
