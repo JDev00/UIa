@@ -77,6 +77,8 @@ public class ContextSwing implements Context {
         }
     }
 
+    //private int messages = 0;
+
     @Override
     public void setLifecycleStage(LifecycleStage lifecycleStage) {
         if (this.lifecycleStage.equals(lifecycleStage)) {
@@ -89,11 +91,19 @@ public class ContextSwing implements Context {
                 int repaintPeriodMillis = 1000 / 60;
                 renderingThread = Executors.newSingleThreadScheduledExecutor();
                 renderingThread.scheduleAtFixedRate(() -> {
-                            Message eventMessage = window.popEventMessage();
+                            List<Message> eventMessages = window.popEventMessages();
 
-                            if (eventMessage != null) {
-                                System.out.println(eventMessage);
-                                dispatchMessageToView(eventMessage);
+                            if (eventMessages != null) {
+
+                                for (Message message : eventMessages) {
+                                    dispatchMessageToView(message);
+
+                                    //System.out.println(message);
+                                    //dispatchMessageToView(message);
+                                    //System.out.println(message);
+                                    //messages++;
+                                }
+                                //System.out.format("\nContext -> retrieved messages: %d", messages);
                             }
 
                             rendererEngine.draw(window.getWidth(), window.getHeight(), window.isFocused());

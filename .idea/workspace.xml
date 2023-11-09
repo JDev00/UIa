@@ -120,7 +120,7 @@
       <recent name="uia.core.widget.text" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Sanity">
+  <component name="RunManager" selected="Application.TestViewMessages">
     <configuration name="Sanity" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="test.Sanity" />
       <module name="UIa" />
@@ -195,10 +195,10 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Sanity" />
-        <item itemvalue="Application.TestView" />
         <item itemvalue="Application.TestViewMessages" />
+        <item itemvalue="Application.TestView" />
         <item itemvalue="Application.TestPaint" />
+        <item itemvalue="Application.Sanity" />
         <item itemvalue="Application.TestPointDistribution" />
       </list>
     </recent_temporary>

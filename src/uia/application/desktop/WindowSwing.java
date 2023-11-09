@@ -21,6 +21,7 @@ public class WindowSwing implements Window {
     private final JFrame jFrame;
     private final LinkedList<Message> eventMessage = new LinkedList<>();
     private final int[] screenSize = new int[2];
+    private int messages = 0;
     private boolean focus = false;
 
     public WindowSwing(int x, int y) {
@@ -111,12 +112,14 @@ public class WindowSwing implements Window {
     private void addKeyEvent(Key key) {
         synchronized (eventMessage) {
             eventMessage.push(Messages.newKeyEventMessage(key, null));
+            messages++;
         }
     }
 
     private void addScreenTouchEvent(List<ScreenTouch> screenTouches) {
         synchronized (eventMessage) {
             eventMessage.push(Messages.newScreenEventMessage(screenTouches, null));
+            messages++;
         }
     }
 
@@ -125,13 +128,29 @@ public class WindowSwing implements Window {
     }
 
     /**
-     * Get and remove the first generated Event as a {@link Message}.
+     * @return the event messages as List
      */
 
-    protected Message popEventMessage() {
+    protected List<Message> popEventMessages() {
         synchronized (eventMessage) {
-            return eventMessage.poll();
+            List<Message> result = null;
+            if (!eventMessage.isEmpty()) {
+                result = new ArrayList<>(eventMessage);
+                eventMessage.clear();
+                //System.out.format("\nWindow -> generated messages: %d", messages);
+            }
+            return result;
         }
+    }
+
+    /**
+     * This function is not thread safe.
+     *
+     * @return the amount of event messages
+     */
+
+    protected int getMessages() {
+        return messages;
     }
 
     /**

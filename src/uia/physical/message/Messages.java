@@ -31,4 +31,12 @@ public class Messages {
     public static Message newMessage(Object message, String recipient) {
         return new GenericMessage(Message.Type.OTHER, message, null, recipient);
     }
+
+    /**
+     * Create a new message
+     */
+
+    public static Message newMessage(Object message, String source, String recipient) {
+        return new GenericMessage(Message.Type.OTHER, message, source, recipient);
+    }
 }

@@ -15,7 +15,7 @@ import java.util.Objects;
 public final class MessageStore {
     private static final MessageStore MESSAGE_STORE = new MessageStore();
 
-    private final List<Message> list;
+    private final LinkedList<Message> list;
 
     private MessageStore() {
         list = new LinkedList<>();
@@ -26,7 +26,9 @@ public final class MessageStore {
      */
 
     public void clear() {
-        list.clear();
+        synchronized (list) {
+            list.clear();
+        }
     }
 
     /**
@@ -37,8 +39,10 @@ public final class MessageStore {
      */
 
     public void add(Message message) {
-        Objects.requireNonNull(message);
-        list.add(message);
+        synchronized (list) {
+            Objects.requireNonNull(message);
+            list.add(message);
+        }
     }
 
     /**
@@ -48,10 +52,12 @@ public final class MessageStore {
      */
 
     public Message pop() {
-        try {
-            return list.remove(0);
-        } catch (Exception e) {
-            return null;
+        synchronized (list) {
+            try {
+                return list.poll();
+            } catch (Exception e) {
+                return null;
+            }
         }
     }
 
