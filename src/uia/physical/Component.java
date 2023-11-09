@@ -198,7 +198,7 @@ public final class Component implements View {
     }
 
     /**
-     * Helper function. Dispatch a message to this View.
+     * Helper function. Read the given message and invoke the callbacks.
      */
 
     private void readMessage(Message message) {
@@ -212,12 +212,10 @@ public final class Component implements View {
     private final List<ScreenTouch> curScreenTouches = new ArrayList<>();
 
     /**
-     * Helper function. Dispatch a list of screen touches to this View.
+     * Helper function. Read the given screen touches and invoke the callbacks.
      */
 
-    private void readScreenTouches(Object data) {
-        List<ScreenTouch> screenTouches = (List<ScreenTouch>) data;
-
+    private void readScreenTouches(List<ScreenTouch> screenTouches) {
         float[] bounds = shape.bounds();
         int[] offset = {-(int) (bounds[0]), -(int) (bounds[1])};
 
@@ -274,12 +272,10 @@ public final class Component implements View {
     }
 
     /**
-     * Helper function. Dispatch a Key to this View.
+     * Helper function. Read the given Key and invoke the callbacks.
      */
 
-    private void readKey(Object data) {
-        Key key = (Key) data;
-
+    private void readKey(Key key) {
         if (!key.isConsumed() && visible && focus) {
 
             if (consumeKey) {
