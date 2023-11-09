@@ -1,4 +1,4 @@
-package develop;
+package uia.develop;
 
 import uia.application.desktop.ContextSwing;
 import uia.core.basement.Callback;

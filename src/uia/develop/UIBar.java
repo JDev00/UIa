@@ -1,4 +1,4 @@
-package develop;
+package uia.develop;
 
 import uia.core.Shape;
 import uia.core.basement.Drawable;

@@ -1,4 +1,4 @@
-package develop.math;
+package uia.develop.math;
 
 import uia.application.desktop.ContextSwing;
 import uia.core.Geometry;

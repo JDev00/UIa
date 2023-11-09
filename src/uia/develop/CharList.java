@@ -1,4 +1,4 @@
-package develop;
+package uia.develop;
 
 import static java.lang.Math.*;
 
