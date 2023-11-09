@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- * Unit test
+ * Unit tests
  */
 
 public class TestPointDistribution implements TestSuite {
@@ -33,29 +33,33 @@ public class TestPointDistribution implements TestSuite {
 
     public static TestCase minimumPointShouldBeObtained() {
         return (testAssertion) -> {
-            testAssertion.expect(pointDistribution.getMin(PointDistribution.AXIS.X)).toBeEqual(-4999.99f);
-            testAssertion.expect(pointDistribution.getMin(PointDistribution.AXIS.Y)).toBeEqual(-5000f);
+            testAssertion.assertions(2);
+            testAssertion.expect(pointDistribution.getMin(PointDistribution.AXIS.X)).toBe(-4999.99f);
+            testAssertion.expect(pointDistribution.getMin(PointDistribution.AXIS.Y)).toBe(-5000f);
         };
     }
 
     public static TestCase maximumPointShouldBeObtained() {
         return (testAssertion) -> {
-            testAssertion.expect(pointDistribution.getMax(PointDistribution.AXIS.X)).toBeEqual(2345f);
-            testAssertion.expect(pointDistribution.getMax(PointDistribution.AXIS.Y)).toBeEqual(4998.98f);
+            testAssertion.assertions(2);
+            testAssertion.expect(pointDistribution.getMax(PointDistribution.AXIS.X)).toBe(2345f);
+            testAssertion.expect(pointDistribution.getMax(PointDistribution.AXIS.Y)).toBe(4998.98f);
         };
     }
 
     public static TestCase meanShouldBeObtained() {
         return (testAssertion) -> {
-            testAssertion.expect(pointDistribution.getMean(PointDistribution.AXIS.X)).toBeEqual(-1195.14833f);
-            testAssertion.expect(pointDistribution.getMean(PointDistribution.AXIS.Y)).toBeEqual(112.66335f);
+            testAssertion.assertions(2);
+            testAssertion.expect(pointDistribution.getMean(PointDistribution.AXIS.X)).toBe(-1195.14833f);
+            testAssertion.expect(pointDistribution.getMean(PointDistribution.AXIS.Y)).toBe(112.66335f);
         };
     }
 
     public static TestCase standardDeviationShouldBeObtained() {
         return (testAssertion) -> {
-            testAssertion.expect(pointDistribution.getStandardDeviation(PointDistribution.AXIS.X)).toBeEqual(2472.1162f);
-            testAssertion.expect(pointDistribution.getStandardDeviation(PointDistribution.AXIS.Y)).toBeEqual(2682.5352f);
+            testAssertion.assertions(2);
+            testAssertion.expect(pointDistribution.getStandardDeviation(PointDistribution.AXIS.X)).toBe(2472.1162f);
+            testAssertion.expect(pointDistribution.getStandardDeviation(PointDistribution.AXIS.Y)).toBe(2682.5352f);
         };
     }
 

@@ -25,6 +25,8 @@ public class TestView implements TestSuite {
 
     public static TestCase boundsWidthAndHeightShouldBeDifferentAfterRotation() {
         return (testAssertion) -> {
+            testAssertion.assertions(3);
+
             View root = createRoot();
 
             Context context = createMockContext();
@@ -43,14 +45,16 @@ public class TestView implements TestSuite {
             float expectedBoundsWidth = boundX(width, height, cos(rotation), sin(rotation));
             float expectedBoundsHeight = boundY(width, height, cos(rotation), sin(rotation));
 
-            testAssertion.expect(rotation).toBeEqual(ROTATION);
-            testAssertion.expect(bounds[2]).toBeEqual(expectedBoundsWidth);
-            testAssertion.expect(bounds[3]).toBeEqual(expectedBoundsHeight);
+            testAssertion.expect(rotation).toBe(ROTATION);
+            testAssertion.expect(bounds[2]).toBe(expectedBoundsWidth);
+            testAssertion.expect(bounds[3]).toBe(expectedBoundsHeight);
         };
     }
 
     public static TestCase widthAndHeightShouldNotChangeAfterRotation() {
         return (testAssertion) -> {
+            testAssertion.assertions(3);
+
             float ROTATION = -4.501f;
             float widthPreRotation = 720;
             float heightPreRotation = 540;
@@ -67,9 +71,9 @@ public class TestView implements TestSuite {
             float height = root.getHeight();
             float rotation = root.bounds()[4];
 
-            testAssertion.expect(rotation).toBeEqual(ROTATION);
-            testAssertion.expect(width).toBeEqual(widthPreRotation);
-            testAssertion.expect(height).toBeEqual(heightPreRotation);
+            testAssertion.expect(rotation).toBe(ROTATION);
+            testAssertion.expect(width).toBe(widthPreRotation);
+            testAssertion.expect(height).toBe(heightPreRotation);
         };
     }
 
@@ -88,10 +92,9 @@ public class TestView implements TestSuite {
 
             // test clause
             root.get(TARGET).registerCallback((OnMessageReceived) message -> {
-                testAssertion.expect(message.getMessage()).toBeEqual(MESSAGE);
-                System.out.println("ok!");
+                testAssertion.expect(message.getMessage()).toBe(MESSAGE);
             });
-            root.sendMessage(Messages.newMessage(MESSAGE, TARGET));
+            root.sendMessage(Messages.newMessage(MESSAGE, root.getID(), TARGET));
         };
     }
 
@@ -100,7 +103,7 @@ public class TestView implements TestSuite {
             testAssertion.assertions(1);
 
             View root = createRoot();
-            root.registerCallback((OnClick) touches -> testAssertion.expect(true).toBeEqual(true));
+            root.registerCallback((OnClick) touches -> testAssertion.expect(true).toBe(true));
 
             Context context = createMockContext();
             context.setView(root);
@@ -113,7 +116,7 @@ public class TestView implements TestSuite {
             testAssertion.assertions(1);
 
             View root = createRoot();
-            root.registerCallback((OnMouseHover) touches -> testAssertion.expect(true).toBeEqual(true));
+            root.registerCallback((OnMouseHover) touches -> testAssertion.expect(true).toBe(true));
 
             Context context = createMockContext();
             context.setView(root);
@@ -129,7 +132,7 @@ public class TestView implements TestSuite {
             testAssertion.assertions(1);
 
             View root = createRoot();
-            root.registerCallback((OnMouseEnter) touches -> testAssertion.expect(true).toBeEqual(true));
+            root.registerCallback((OnMouseEnter) touches -> testAssertion.expect(true).toBe(true));
 
             Context context = createMockContext();
             context.setView(root);
@@ -146,7 +149,7 @@ public class TestView implements TestSuite {
 
             View root = createRoot();
             root.setDimension(0.1f, 0.1f);
-            root.registerCallback((OnMouseExit) touches -> testAssertion.expect(true).toBeEqual(true));
+            root.registerCallback((OnMouseExit) touches -> testAssertion.expect(true).toBe(true));
 
             Context context = createMockContext();
             context.setView(root);
@@ -166,7 +169,7 @@ public class TestView implements TestSuite {
 
             View root = createRoot();
             root.requestFocus(true);
-            root.registerCallback((OnKeyTyped) key -> testAssertion.expect(key.getKeyChar()).toBeEqual(KEY));
+            root.registerCallback((OnKeyTyped) key -> testAssertion.expect(key.getKeyChar()).toBe(KEY));
 
             Context context = createMockContext();
             context.setView(root);
@@ -183,7 +186,7 @@ public class TestView implements TestSuite {
 
             View root = createRoot();
             root.requestFocus(true);
-            root.registerCallback((OnKeyReleased) key -> testAssertion.expect(key.getKeyChar()).toBeEqual(KEY));
+            root.registerCallback((OnKeyReleased) key -> testAssertion.expect(key.getKeyChar()).toBe(KEY));
 
             Context context = createMockContext();
             context.setView(root);
@@ -200,7 +203,7 @@ public class TestView implements TestSuite {
 
             View root = createRoot();
             root.requestFocus(true);
-            root.registerCallback((OnKeyPressed) key -> testAssertion.expect(key.getKeyChar()).toBeEqual(KEY));
+            root.registerCallback((OnKeyPressed) key -> testAssertion.expect(key.getKeyChar()).toBe(KEY));
 
             Context context = createMockContext();
             context.setView(root);

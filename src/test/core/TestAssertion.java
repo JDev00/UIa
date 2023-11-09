@@ -1,5 +1,10 @@
 package test.core;
 
+/**
+ * TestAssertion has the responsibility to check if a specified Object is equal to another one.
+ * In addition, it registers all the passed checks.
+ */
+
 public class TestAssertion {
     private Object subject;
     private int passedAssertions = 0;
@@ -30,12 +35,12 @@ public class TestAssertion {
     }
 
     /**
-     * Check that the subject is equal to the given value
+     * Check that the subject is equal to the specified value
      *
      * @throws RuntimeException if {@code subject != value}
      */
 
-    public void toBeEqual(Object value) {
+    public void toBe(Object value) {
         if ((subject == null && value != null) || !subject.equals(value)) {
             throw new RuntimeException("expected " + subject + " to be " + value + " but it wasn't");
         } else {
@@ -43,34 +48,11 @@ public class TestAssertion {
         }
     }
 
-    /*
-     * Check that the subject is equal to the given value
-     *
-     * @throws RuntimeException if {@code subject != value}
-     *
-
-    public void toBeEqual(Object value, int timeoutMillis) {
-        int elapsed_millis = 0;
-        while (elapsed_millis < timeoutMillis && ((subject == null && value != null) || !subject.equals(value))) {
-            elapsed_millis += 10;
-            try {
-                Thread.sleep(10);
-            } catch (Exception ignored) {
-            }
-        }
-
-        if (elapsed_millis >= timeoutMillis) {
-            throw new RuntimeException("expected '" + subject + "' to be '" + value + "' but it wasn't");
-        } else {
-            passedAssertions++;
-        }
-    }*/
-
     /**
      * @return true if this TestAssertions passed all assertions
      */
 
     public boolean passed() {
-        return passedAssertions >= expectedAssertions;
+        return passedAssertions == expectedAssertions;
     }
 }
