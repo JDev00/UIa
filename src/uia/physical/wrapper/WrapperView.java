@@ -8,7 +8,7 @@ import uia.core.Paint;
 import uia.core.ui.View;
 
 /**
- * WrapperView enables the creation of complex graphical widgets.
+ * WrapperView has the responsibility to wrap a specified View implementation
  */
 
 public abstract class WrapperView implements View {
@@ -22,8 +22,9 @@ public abstract class WrapperView implements View {
      * @return the attached {@link View}
      */
 
-    public View getView() {
-        return view;
+    @SuppressWarnings("unchecked")
+    public <T extends View> T getView() {
+        return (T) view;
     }
 
     @Override
