@@ -90,24 +90,11 @@ public class ContextSwing implements Context {
             case RUN:
                 int repaintPeriodMillis = 1000 / 60;
                 renderingThread = Executors.newSingleThreadScheduledExecutor();
-                renderingThread.scheduleAtFixedRate(() -> {
-                            /*List<Message> eventMessages = window.popEventMessages();
-
-                            if (eventMessages != null) {
-
-                                for (Message message : eventMessages) {
-                                    dispatchMessageToView(message);
-
-                                    //System.out.println(message);
-                                    //dispatchMessageToView(message);
-                                    //System.out.println(message);
-                                    //messages++;
-                                }
-                                //System.out.format("\nContext -> retrieved messages: %d", messages);
-                            }*/
-
-                            rendererEngine.draw(window.getWidth(), window.getHeight(), window.isFocused());
-                        },
+                renderingThread.scheduleAtFixedRate(() -> rendererEngine.draw(
+                                window.getWidth(),
+                                window.getHeight(),
+                                window.isFocused()
+                        ),
                         0,
                         repaintPeriodMillis,
                         TimeUnit.MILLISECONDS);
