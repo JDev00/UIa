@@ -24,11 +24,7 @@ import java.util.concurrent.TimeUnit;
  * <br><br>
  * <code>
  * <p>
- * Context context = new ContextAWT(1000, 500);
- * <br>
- * context.getWindow().show();
- * <br>
- * context.setLifecycleStage(LifecycleStage.RUN);
+ * Context context = createAndStart(1000, 500);
  * </code>
  */
 
@@ -146,5 +142,20 @@ public class ContextSwing implements Context {
     public static int[] getScreenSize() {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         return new int[]{dim.width, dim.height};
+    }
+
+    /**
+     * Create a new ContextSwing, make it visible and start it
+     *
+     * @param width  the window width
+     * @param height the window height
+     * @return a new {@link ContextSwing}
+     */
+
+    public static Context createAndStart(int width, int height) {
+        Context context = new ContextSwing(width, height);
+        context.getWindow().show();
+        context.setLifecycleStage(LifecycleStage.RUN);
+        return context;
     }
 }
