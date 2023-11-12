@@ -133,15 +133,19 @@ public class RendererEngineSwing extends JPanel {
 
     private void updateView() {
         if (view != null) {
-            int counter = 0;
+            /*int counter = 0;
             int limit = MAX_MESSAGES_PER_SECOND / Math.max(1, frameRate);
-
             Message message;
             while (counter < limit && (message = messageStore.pop()) != null) {
                 view.dispatchMessage(message);
                 counter++;
-            }
+            }*/
 
+            int messagesPerFrame = MAX_MESSAGES_PER_SECOND / Math.max(1, frameRate);
+            List<Message> messages = messageStore.pop(messagesPerFrame);
+            for (Message message : messages) {
+                view.dispatchMessage(message);
+            }
             view.update(rootView);
         }
     }

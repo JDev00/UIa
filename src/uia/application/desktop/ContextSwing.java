@@ -46,7 +46,7 @@ public class ContextSwing implements Context {
         window.addUIComponent(rendererEngine);
 
         MessageStore messageStore = MessageStore.getInstance();
-        inputEmulator = new ArtificialInput((message) -> {
+        inputEmulator = new ArtificialInput(message -> {
             int[] insets = window.getInsets();
             if (message.getType().equals(Message.Type.EVENT_SCREEN_TOUCH)) {
                 ScreenTouch screenTouch = message.<List<ScreenTouch>>getMessage().get(0);
