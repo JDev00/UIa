@@ -21,11 +21,11 @@ public class TestUtils {
     /**
      * Execute the specified test suite
      *
-     * @param testSuite a not null Object with tests to execute
+     * @param testSuite a not null Object with {@link Test} marked methods to execute
      */
 
     public static void runTestSuite(Object testSuite) {
-        int[] tests = {0, 0};
+        int[] result = {0, 0};
 
         new Thread(() -> {
             Method[] methods = testSuite.getClass().getMethods();
@@ -38,14 +38,14 @@ public class TestUtils {
                         e.printStackTrace();
                     }
                     if (testAssertion.passed()) {
-                        tests[0]++;
+                        result[0]++;
                     } else {
                         System.out.println(method.getName() + " failed");
                     }
-                    tests[1]++;
+                    result[1]++;
                 }
             }
-            System.out.println("TEST passed: " + tests[0] + "/" + tests[1]);
+            System.out.println("TEST passed: " + result[0] + "/" + result[1]);
             System.exit(0);
         }).start();
     }
