@@ -3,7 +3,6 @@ package uia.physical.message;
 import uia.core.basement.Message;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 
 /**

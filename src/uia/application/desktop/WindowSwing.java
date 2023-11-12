@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -107,14 +108,6 @@ public class WindowSwing implements Window {
         });
     }
 
-    private void addKeyEvent(Key key) {
-        messageStore.add(Messages.newKeyEventMessage(key, null));
-    }
-
-    private void addScreenTouchEvent(List<ScreenTouch> screenTouches) {
-        messageStore.add(Messages.newScreenEventMessage(screenTouches, null));
-    }
-
     protected void addUIComponent(Component component) {
         jFrame.add(component);
     }
@@ -126,6 +119,14 @@ public class WindowSwing implements Window {
     protected void destroy() {
         jFrame.dispatchEvent(new WindowEvent(jFrame, WindowEvent.WINDOW_CLOSING));
         jFrame.dispose();
+    }
+
+    private void addKeyEvent(Key key) {
+        messageStore.add(Messages.newKeyEventMessage(key, null));
+    }
+
+    private void addScreenTouchEvent(List<ScreenTouch> screenTouches) {
+        messageStore.add(Messages.newScreenEventMessage(screenTouches, null));
     }
 
     /**
@@ -145,8 +146,6 @@ public class WindowSwing implements Window {
         }
     }
 
-    private final java.util.List<ScreenTouch> screenTouches = new ArrayList<>();
-
     /**
      * Helper function. Returns a List of {@link ScreenTouch}s.
      */
@@ -157,14 +156,13 @@ public class WindowSwing implements Window {
         int[] insets = getInsets();
         int[] position = {x - insets[0], y - insets[1]};
 
-        screenTouches.clear();
-        screenTouches.add(new ScreenTouch(
+        ScreenTouch screenTouch = new ScreenTouch(
                 action,
                 mapNativeMouseButton(mouseEvent.getButton()),
                 position[0],
                 position[1],
-                wheelRotation));
-        return screenTouches;
+                wheelRotation);
+        return new ArrayList<>(Collections.singletonList(screenTouch));
     }
 
     @Override
