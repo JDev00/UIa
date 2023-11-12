@@ -16,8 +16,6 @@ import uia.physical.message.Messages;
 import uia.physical.theme.Theme;
 import uia.physical.wrapper.WrapperViewGroup;
 
-import java.util.Objects;
-
 /**
  * Demonstrative example. Draw a simple button that allows to show and hide a popup.
  */
@@ -40,11 +38,9 @@ public class HelloWorld extends WrapperViewGroup {
         });
         // add another callback to listen for messages sent to this button
         button.registerCallback((OnMessageReceived) message -> {
-            if (Objects.equals(message.getRecipient(), "POPUP")) {
-                String text = message.<String>getMessage().contains("Hey") ? "Hide\npopup!" : "Show\npopup!";
-                ViewText viewText = (ViewText) button.getView();
-                viewText.setText(text);
-            }
+            String text = message.<String>getMessage().contains("Hey") ? "Hide\npopup!" : "Show\npopup!";
+            ViewText viewText = (ViewText) button.getView();
+            viewText.setText(text);
         });
 
         // now, creates a new simple popup View.
@@ -52,20 +48,16 @@ public class HelloWorld extends WrapperViewGroup {
         // creates an event to listen for messages sent to this popup from other views
         popup.registerCallback((OnMessageReceived) message -> {
             // if the sender ID is 'BUTTON'
-            if (Objects.equals(message.getSender(), "BUTTON")) {
-                boolean visibility = message.<String>getMessage().contains("Wake up");
-                // shows or hides this popup accordingly
-                popup.setVisible(visibility);
-                // sends a message to BUTTON to inform it that popup woke up or went to sleep
-                String messageToSend = visibility ? "Hey!" : "Bye bye";
-                popup.sendMessage(Messages.newMessage(messageToSend, "BUTTON"));
-            }
+            boolean visibility = message.<String>getMessage().contains("Wake up");
+            // shows or hides this popup accordingly
+            popup.setVisible(visibility);
+            // sends a message to BUTTON to inform it that popup woke up or went to sleep
+            String messageToSend = visibility ? "Hey!" : "Bye bye";
+            popup.sendMessage(Messages.newMessage(messageToSend, "BUTTON"));
         });
 
         // adds button and popup to the HelloWorld group
         add(button, popup);
-
-        button.sendMessage(Messages.newMessage("Wake up", "POPUP"));
     }
 
     private static UIButton createCustomButton() {
