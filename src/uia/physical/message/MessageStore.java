@@ -3,12 +3,13 @@ package uia.physical.message;
 import uia.core.basement.Message;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * Centralized storage for messages.
  * <br>
- * Version 1.2
+ * Version 1.3
  */
 
 public final class MessageStore {
@@ -47,7 +48,7 @@ public final class MessageStore {
     /**
      * Remove and return the first added message
      *
-     * @return the first added message or null
+     * @return the first added message or null if this store is empty
      */
 
     public Message pop() {
@@ -61,11 +62,37 @@ public final class MessageStore {
     }
 
     /**
+     * Remove and return the specified amount of messages
+     *
+     * @param size a value > 0. If the specified value is greater than this store, it returns all the available messages
+     * @return a new List of Messages
+     * @throws IllegalArgumentException if {@code size <= 0}
+     */
+
+    public List<Message> pop(int size) {
+        synchronized (list) {
+            if (size <= 0) {
+                throw new IllegalArgumentException("size must be greater than 0");
+            }
+            List<Message> out = new LinkedList<>();
+            int i = 0;
+            int length = Math.min(list.size(), size);
+            while (i < length) {
+                out.add(list.poll());
+                i++;
+            }
+            return out;
+        }
+    }
+
+    /**
      * @return the number of stored messages
      */
 
     public int size() {
-        return list.size();
+        synchronized (list) {
+            return list.size();
+        }
     }
 
     /**
