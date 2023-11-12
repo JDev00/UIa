@@ -19,7 +19,7 @@ import java.util.Objects;
  */
 
 public class RendererEngineSwing extends JPanel {
-    private static final int MAX_MESSAGES_PER_SECOND = 30000;
+    private static final int MAX_MESSAGES_PER_SECOND = 40000;
 
     private final MessageStore messageStore = MessageStore.getInstance();
     private final Timer timer;

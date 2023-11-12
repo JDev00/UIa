@@ -2,15 +2,14 @@ package uia.application.desktop;
 
 import uia.core.Key;
 import uia.core.ScreenTouch;
-import uia.core.basement.Message;
 import uia.core.ui.context.Window;
+import uia.physical.message.MessageStore;
 import uia.physical.message.Messages;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -19,9 +18,10 @@ import java.util.List;
 
 public class WindowSwing implements Window {
     private final JFrame jFrame;
-    private final LinkedList<Message> eventMessage = new LinkedList<>();
+    private final MessageStore messageStore = MessageStore.getInstance();
+    //private final LinkedList<Message> eventMessage = new LinkedList<>();
     private final int[] screenSize = new int[2];
-    private int messages = 0;
+    //private int messages = 0;
     private boolean focus = false;
 
     public WindowSwing(int x, int y) {
@@ -110,28 +110,30 @@ public class WindowSwing implements Window {
     }
 
     private void addKeyEvent(Key key) {
-        synchronized (eventMessage) {
+        /*synchronized (eventMessage) {
             eventMessage.push(Messages.newKeyEventMessage(key, null));
             messages++;
-        }
+        }*/
+        messageStore.add(Messages.newKeyEventMessage(key, null));
     }
 
     private void addScreenTouchEvent(List<ScreenTouch> screenTouches) {
-        synchronized (eventMessage) {
+        /*synchronized (eventMessage) {
             eventMessage.push(Messages.newScreenEventMessage(screenTouches, null));
             messages++;
-        }
+        }*/
+        messageStore.add(Messages.newScreenEventMessage(screenTouches, null));
     }
 
     protected void addUIComponent(Component component) {
         jFrame.add(component);
     }
 
-    /**
+    /*
      * @return the event messages as List
-     */
+     *
 
-    protected List<Message> popEventMessages() {
+    /*protected List<Message> popEventMessages() {
         synchronized (eventMessage) {
             List<Message> result = null;
             if (!eventMessage.isEmpty()) {
@@ -141,17 +143,17 @@ public class WindowSwing implements Window {
             }
             return result;
         }
-    }
+    }*/
 
-    /**
+    /*
      * This function is not thread safe.
      *
      * @return the amount of event messages
-     */
+     *
 
     protected int getMessages() {
         return messages;
-    }
+    }*/
 
     /**
      * Destroy this Window

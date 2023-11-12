@@ -91,7 +91,7 @@ public class ContextSwing implements Context {
                 int repaintPeriodMillis = 1000 / 60;
                 renderingThread = Executors.newSingleThreadScheduledExecutor();
                 renderingThread.scheduleAtFixedRate(() -> {
-                            List<Message> eventMessages = window.popEventMessages();
+                            /*List<Message> eventMessages = window.popEventMessages();
 
                             if (eventMessages != null) {
 
@@ -104,7 +104,7 @@ public class ContextSwing implements Context {
                                     //messages++;
                                 }
                                 //System.out.format("\nContext -> retrieved messages: %d", messages);
-                            }
+                            }*/
 
                             rendererEngine.draw(window.getWidth(), window.getHeight(), window.isFocused());
                         },
