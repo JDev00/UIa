@@ -33,7 +33,7 @@ public class TestUtils {
                 if (method.isAnnotationPresent(Test.class) && !method.isAnnotationPresent(Skip.class)) {
                     TestAssertion testAssertion = new TestAssertion();
                     try {
-                        method.invoke(null, testAssertion);
+                        method.invoke(testSuite, testAssertion);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

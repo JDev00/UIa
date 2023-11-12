@@ -9,24 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e94f413-5b84-4ebc-b4cb-620f91895743" name="Changes" comment="Refactor: renames method">
-      <change afterPath="$PROJECT_DIR$/src/test/core/Skip.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/core/Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="9e94f413-5b84-4ebc-b4cb-620f91895743" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/Sanity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/Sanity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/TestPaint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/TestPaint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/TestPointDistribution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/TestPointDistribution.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/TestView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/TestView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/TestViewMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/TestViewMessages.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/core/TestCase.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/core/TestSuite.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/core/Skip.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/core/Skip.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/core/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/core/Test.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/core/TestUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/core/TestUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/application/desktop/ContextSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/application/desktop/ContextSwing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/application/desktop/WindowSwing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/application/desktop/WindowSwing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/physical/Component.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/physical/Component.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/physical/message/MessageStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/physical/message/MessageStore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uia/physical/message/Messages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/uia/physical/message/Messages.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +107,7 @@
       <recent name="uia.core.widget.text" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.TestViewMessages">
+  <component name="RunManager" selected="Application.TestPaint">
     <configuration name="Sanity" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="test.Sanity" />
       <module name="UIa" />
@@ -195,9 +182,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.TestPaint" />
         <item itemvalue="Application.TestViewMessages" />
         <item itemvalue="Application.TestView" />
-        <item itemvalue="Application.TestPaint" />
         <item itemvalue="Application.Sanity" />
         <item itemvalue="Application.TestPointDistribution" />
       </list>
@@ -218,46 +205,6 @@
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
       <updated>1651233864002</updated>
-    </task>
-    <task id="LOCAL-00037" summary="Moves PointDistribution">
-      <option name="closed" value="true" />
-      <created>1697834749913</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1697834749913</updated>
-    </task>
-    <task id="LOCAL-00038" summary="Refactor: extract methods. Tests View click">
-      <option name="closed" value="true" />
-      <created>1697835799254</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1697835799254</updated>
-    </task>
-    <task id="LOCAL-00039" summary="Updates Component description">
-      <option name="closed" value="true" />
-      <created>1697835894545</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1697835894545</updated>
-    </task>
-    <task id="LOCAL-00040" summary="Prints a message when a click happens">
-      <option name="closed" value="true" />
-      <created>1697836032229</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1697836032229</updated>
-    </task>
-    <task id="LOCAL-00041" summary="Updates widgets">
-      <option name="closed" value="true" />
-      <created>1697836213443</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1697836213443</updated>
     </task>
     <task id="LOCAL-00042" summary="Deletes files">
       <option name="closed" value="true" />
@@ -603,10 +550,55 @@
       <option name="project" value="LOCAL" />
       <updated>1699557506181</updated>
     </task>
-    <option name="localTasksCounter" value="85" />
+    <task id="LOCAL-00085" summary="Adds Test and Skip annotations and removes dead code">
+      <option name="closed" value="true" />
+      <created>1699562488667</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1699562488667</updated>
+    </task>
+    <task id="LOCAL-00086" summary="Adds Test and Skip annotations and removes dead code">
+      <option name="closed" value="true" />
+      <created>1699562497207</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1699562497207</updated>
+    </task>
+    <task id="LOCAL-00087" summary="Refactor: changes method signature">
+      <option name="closed" value="true" />
+      <created>1699562648628</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1699562648628</updated>
+    </task>
+    <task id="LOCAL-00088" summary="Handles asynchronous message dispatching (preview)">
+      <option name="closed" value="true" />
+      <created>1699562726312</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1699562726312</updated>
+    </task>
+    <task id="LOCAL-00089" summary="Refactor: moves files">
+      <option name="closed" value="true" />
+      <created>1699562802045</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1699562802045</updated>
+    </task>
+    <option name="localTasksCounter" value="90" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="bcca3b68-f9bb-41c0-af7d-88d3135f45a2" value="TOOL_WINDOW" />
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
@@ -626,6 +618,11 @@
             </State>
           </value>
         </entry>
+        <entry key="bcca3b68-f9bb-41c0-af7d-88d3135f45a2">
+          <value>
+            <State />
+          </value>
+        </entry>
       </map>
     </option>
   </component>
@@ -633,9 +630,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Updates collider policies definition" />
-    <MESSAGE value="Removes a method used to set the native Graphics and improves existing implementations" />
-    <MESSAGE value="Expands constructor options" />
     <MESSAGE value="minor improvements and window focus addition" />
     <MESSAGE value="Refactor: extracts component. Graphical object rotation is now available" />
     <MESSAGE value="Renames ScreenPointer class" />
@@ -646,7 +640,6 @@
     <MESSAGE value="Removes old files" />
     <MESSAGE value="ff" />
     <MESSAGE value="Adds Messages and updates the dispatch mechanism" />
-    <MESSAGE value="Refactor: moves files" />
     <MESSAGE value="Updates version" />
     <MESSAGE value="Refactor: extracts object and renames it" />
     <MESSAGE value="Returns events as messages" />
@@ -658,7 +651,11 @@
     <MESSAGE value="Bugfix: delivers all the messages" />
     <MESSAGE value="Adds message test" />
     <MESSAGE value="Refactor: renames method" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor: renames method" />
+    <MESSAGE value="Adds Test and Skip annotations and removes dead code" />
+    <MESSAGE value="Refactor: changes method signature" />
+    <MESSAGE value="Handles asynchronous message dispatching (preview)" />
+    <MESSAGE value="Refactor: moves files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor: moves files" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

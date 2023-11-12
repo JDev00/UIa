@@ -1,10 +1,8 @@
 package test.core;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
+@Target(ElementType.METHOD)
 public @interface Test {
 }
