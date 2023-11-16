@@ -21,13 +21,13 @@ public interface Drawable {
     Paint getPaint();
 
     /**
-     * Build the Drawable geometry
+     * Set the Geometry
      *
-     * @param builder        a not null {@link Consumer} used to manipulate geometry
+     * @param builder        a not null {@link Consumer} used to build the geometry
      * @param inTimeBuilding true to build geometry at rendering time (for every frame)
      */
 
-    void buildGeometry(Consumer<Geometry> builder, boolean inTimeBuilding);
+    void setGeometry(Consumer<Geometry> builder, boolean inTimeBuilding);
 
     /**
      * @return the Drawable {@link Geometry}

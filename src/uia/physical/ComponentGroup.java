@@ -196,14 +196,15 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         super.draw(graphic);
 
         if (isVisible()) {
-
-            if (clip) graphic.setClip(clipShape);
-
+            if (clip) {
+                graphic.setClip(clipShape);
+            }
             for (View i : views) {
                 i.draw(graphic);
             }
-
-            if (clip) graphic.restoreClip();
+            if (clip) {
+                graphic.restoreClip();
+            }
         }
     }
 

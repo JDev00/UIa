@@ -49,7 +49,7 @@ public class UIGraph extends WrapperView {
     public UIGraph(View view) {
         super(view);
 
-        buildGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), GeometryFactory.STD_ROUND), true);
+        setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), GeometryFactory.STD_ROUND), true);
 
         stdDrawable = new DrawableDistribution();
 

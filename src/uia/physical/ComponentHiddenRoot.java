@@ -71,7 +71,7 @@ public final class ComponentHiddenRoot implements View {
     }
 
     @Override
-    public void buildGeometry(java.util.function.Consumer<Geometry> builder, boolean inTimeBuilding) {
+    public void setGeometry(java.util.function.Consumer<Geometry> builder, boolean inTimeBuilding) {
         throw new UnsupportedOperationException(unsupported_error);
     }
 

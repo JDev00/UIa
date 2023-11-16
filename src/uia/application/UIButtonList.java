@@ -33,7 +33,7 @@ public class UIButtonList extends WrapperView {
     public UIButtonList(View view) {
         super(new ComponentGroup(view));
 
-        buildGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
+        setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
 
         viewText = new ComponentText(new Component("TEXT", 0.5f, 0.5f, 0.7f, 1f)
                 .setExpanseLimit(1f, 1f));
@@ -42,7 +42,7 @@ public class UIButtonList extends WrapperView {
         viewText.getPaint().setColor(Theme.TRANSPARENT);
 
         viewLeft = new Component("LEFT", 0.1f, 0.5f, 0.1f, 0.5f).setExpanseLimit(1.2f, 1.2f);
-        viewLeft.buildGeometry(GeometryFactory::arrow, false);
+        viewLeft.setGeometry(GeometryFactory::arrow, false);
         viewLeft.setColliderPolicy(ColliderPolicy.AABB);
         viewLeft.setConsumer(Consumer.SCREEN_TOUCH, false);
         viewLeft.getPaint().setColor(Theme.BLACK);
@@ -50,7 +50,7 @@ public class UIButtonList extends WrapperView {
         viewLeft.registerCallback((OnClick) touches -> show(index - 1));
 
         viewRight = new Component("RIGHT", 0.9f, 0.5f, 0.1f, 0.5f).setExpanseLimit(1.2f, 1.2f);
-        viewRight.buildGeometry(GeometryFactory::arrow, false);
+        viewRight.setGeometry(GeometryFactory::arrow, false);
         viewRight.setColliderPolicy(ColliderPolicy.AABB);
         viewRight.setConsumer(Consumer.SCREEN_TOUCH, false);
         viewRight.getPaint().setColor(Theme.BLACK);

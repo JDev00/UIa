@@ -40,7 +40,7 @@ public final class Component implements View {
     private boolean consumeKey = true;
 
     public Component(String id, float x, float y, float width, float height,
-                     float animationExpansionX, float animationExpansionY) {
+                     float xExpansion, float yExpansion) {
         this.id = id;
 
         container = new float[]{x, y, width, height, 0f};
@@ -52,7 +52,7 @@ public final class Component implements View {
         shape = new Shape();
         GeometryFactory.rect(shape.getGeometry());
 
-        setExpanseLimit(animationExpansionX, animationExpansionY);
+        setExpanseLimit(xExpansion, yExpansion);
     }
 
     public Component(String id, float x, float y, float width, float height) {
@@ -109,7 +109,7 @@ public final class Component implements View {
     }
 
     @Override
-    public void buildGeometry(java.util.function.Consumer<Geometry> builder, boolean inTimeBuilding) {
+    public void setGeometry(java.util.function.Consumer<Geometry> builder, boolean inTimeBuilding) {
         if (builder != null) {
             builder.accept(shape.getGeometry());
             geometryBuilder = inTimeBuilding ? builder : null;

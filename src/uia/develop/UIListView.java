@@ -1,17 +1,15 @@
 package uia.develop;
 
+import uia.application.UIScrollBar;
 import uia.application.desktop.ContextSwing;
 import uia.core.basement.Callback;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
-import uia.core.ui.callbacks.OnMouseHover;
 import uia.physical.Component;
 import uia.physical.ComponentGroup;
 import uia.physical.ComponentText;
-import uia.physical.scroller.Scroller;
-import uia.physical.scroller.WheelScroller;
 import uia.physical.theme.Theme;
 import uia.physical.theme.ThemeDarcula;
 import uia.physical.wrapper.WrapperView;
@@ -23,15 +21,14 @@ import java.util.Iterator;
  */
 
 public class UIListView extends WrapperView implements ViewGroup {
-    /*private final UIScrollBar horBar;
-    private final UIScrollBar verBar;*/
-
+    /*private final UIScrollBar horBar;*/
+    private final UIScrollBar verticalBar;
     private final ViewGroup containerGroup;
     private final ViewGroup containerList;
 
     private ViewPositioner viewPositioner;
 
-    private Scroller scroller = new WheelScroller();
+    //private Scroller scroller = new WheelScroller();
 
     public UIListView(View view) {
         super(new ComponentGroup(view));
@@ -48,26 +45,26 @@ public class UIListView extends WrapperView implements ViewGroup {
             }
         };
 
+        verticalBar = new UIScrollBar(
+                new Component("VERTICAL_BAR", 0.975f, 0.5f, 0.03f, 0.95f)
+        );
+        verticalBar.setConsumer(Consumer.SCREEN_TOUCH, false);
+        verticalBar.getPaint().setColor(Theme.BLACK);
 
-        /*verBar = new UIScrollBar(new Component("VERBAR", 0.975f, 0.5f, 0.03f, 0.95f));
-        verBar.setConsumer(CONSUMER.POINTER, false);
-
-
-        horBar = new UIScrollBar(new Component("HORBAR", 0.5f, 0.975f, 0.03f, 0.95f));
+        /*horBar = new UIScrollBar(new Component("HORBAR", 0.5f, 0.975f, 0.03f, 0.95f));
         horBar.rotate(-TrigTable.HALF_PI);
         horBar.setConsumer(CONSUMER.POINTER, false);*/
 
-
-        containerList = new ComponentGroup(new Component("SKELETON", 0.475f, 0.475f, 0.95f, 0.95f)
-                .setExpanseLimit(1f, 1f));
+        containerList = new ComponentGroup(
+                new Component("SKELETON", 0.475f, 0.475f, 0.95f, 0.95f)
+        );
         containerList.setClip(false);
         containerList.setConsumer(Consumer.SCREEN_TOUCH, false);
-        containerList.getPaint().setColor(Theme.RED);
+        containerList.getPaint().setColor(Theme.TRANSPARENT);
 
-
-        containerGroup = ((ViewGroup) getView());
-        containerGroup.add(containerList);//, verBar, horBar);
-        containerGroup.registerCallback((OnMouseHover) sp -> scroller.update(sp));
+        containerGroup = getView();
+        containerGroup.add(containerList, verticalBar);
+        //containerGroup.registerCallback((OnMouseHover) touches -> scroller.update(sp));
     }
 
     /**
@@ -181,7 +178,6 @@ public class UIListView extends WrapperView implements ViewGroup {
     @Override
     public void update(View parent) {
         if (viewPositioner != null) {
-
             for (int i = 0; i < size(); i++) {
                 viewPositioner.place(get(i), i);
             }
@@ -191,10 +187,11 @@ public class UIListView extends WrapperView implements ViewGroup {
 
         if (isVisible()) {
             float height = containerList.boundsContent()[3];
-            scroller.setMax(height);
-            scroller.setFactor(height / (2 * containerList.size() + 1));
+            //scroller.setMax(height);
+            //scroller.setFactor(height / (2 * containerList.size() + 1));
 
-            containerList.setPosition(0.475f, 0.475f - scroller.getValue() / bounds()[3]);
+            containerList.setPosition(0.475f, 0.475f - verticalBar.getScrollValue());
+            //scroller.getValue() / bounds()[3]);
         }
     }
 
