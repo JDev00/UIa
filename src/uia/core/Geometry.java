@@ -5,6 +5,9 @@ import uia.utility.Utility;
 import java.util.ArrayList;
 import java.util.List;
 
+import static uia.utility.TrigTable.*;
+import static uia.utility.TrigTable.rotY;
+
 /**
  * Geometry defines the skeleton of a shape.
  * <br>
@@ -24,6 +27,47 @@ public class Geometry {
         return "Geometry{" +
                 "vertices=" + vertices +
                 '}';
+    }
+
+    /**
+     * Rotates this geometry
+     *
+     * @param rad the rotation in radians
+     * @return this geometry
+     */
+
+    public Geometry rotate(float rad) {
+        float cos = cos(rad);
+        float sin = sin(rad);
+        for (int i = 0; i < vertices(); i++) {
+            Geometry.Vertex vertex = get(i);
+            float vx = vertex.getX();
+            float vy = vertex.getY();
+            float nx = rotX(vx, vy, cos, sin);
+            float ny = rotY(vx, vy, cos, sin);
+            vertex.set(nx, ny);
+        }
+        return this;
+    }
+
+    /**
+     * Scales this geometry
+     *
+     * @param scaleX the scale greater than 0 on the x-axis
+     * @param scaleY the scale greater than 0 on the y-axis
+     * @return this geometry
+     */
+
+    public Geometry scale(float scaleX, float scaleY) {
+        for (int i = 0; i < vertices(); i++) {
+            Geometry.Vertex vertex = get(i);
+            float vx = vertex.getX();
+            float vy = vertex.getY();
+            float nx = scaleX * vx;
+            float ny = scaleY * vy;
+            vertex.set(nx, ny);
+        }
+        return this;
     }
 
     /**
