@@ -179,29 +179,6 @@ public final class GeometryFactory {
     }
 
     /**
-     * Builds an arrow
-     *
-     * @param geometry a not null {@link Geometry} to fill
-     * @throws NullPointerException if {@code geometry == null}
-     */
-
-    // TODO: sistemare vertici
-    public static Geometry arrow2(Geometry geometry) {
-        geometry.clear();
-        geometry.addVertices(
-                -0.15f, -1f,
-                0.25f, -1f,
-                1f, 0f,
-                0.25f, 1f,
-                -0.15f, 1f,
-                0.5f, 0.15f,
-                -1f, 0.15f,
-                -1f, -0.15f,
-                0.5f, -0.15f);
-        return geometry;
-    }
-
-    /**
      * Builds a plus shape
      *
      * @param geometry  a not null {@link Geometry} to fill
