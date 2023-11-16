@@ -171,8 +171,9 @@ public class RendererEngineSwing extends JPanel {
 
         nativeGraphics = (Graphics2D) graphics;
         applyHints();
-        if (view != null) {
+        try {
             view.draw(graphic);
+        } catch (Exception ignored) {
         }
     }
 }
