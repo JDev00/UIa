@@ -159,9 +159,9 @@ public class RendererEngineSwing extends JPanel {
      */
 
     protected void draw(int screenWidth, int screenHeight, boolean screenFocus) {
-        calculateMetrics();
+        //calculateMetrics();
         updateRootView(screenWidth, screenHeight, screenFocus);
-        updateView();
+        //updateView();
         repaint();
     }
 
@@ -172,8 +172,11 @@ public class RendererEngineSwing extends JPanel {
         nativeGraphics = (Graphics2D) graphics;
         applyHints();
         try {
+            calculateMetrics();
+            updateView();
             view.draw(graphic);
-        } catch (Exception ignored) {
+        } catch (Exception error) {
+            error.printStackTrace();
         }
     }
 }
