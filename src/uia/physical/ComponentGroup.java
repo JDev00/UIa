@@ -6,6 +6,9 @@ import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
 import uia.core.ScreenTouch;
 import uia.core.ui.Graphic;
+import uia.physical.message.EventKeyMessage;
+import uia.physical.message.EventTouchScreenMessage;
+import uia.physical.message.GenericMessage;
 import uia.physical.message.Messages;
 import uia.physical.wrapper.WrapperView;
 
@@ -103,7 +106,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         screenTouches.clear();
 
         if (isVisible()) {
-            List<ScreenTouch> tempScreenTouches = message.getMessage();
+            List<ScreenTouch> tempScreenTouches = message.getPayload();
             tempScreenTouches.forEach(screenTouch -> {
                 if (!clip || ComponentGroup.this.contains(screenTouch.getX(), screenTouch.getY())) {
                     screenTouches.add(screenTouch);
@@ -119,19 +122,17 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     @Override
     public void dispatchMessage(Message message) {
-        switch (message.getType()) {
-            case EVENT_SCREEN_TOUCH:
-                dispatchScreenEventMessage(message);
-                super.dispatchMessage(message);
-                break;
-            case EVENT_KEY:
-                dispatchKeyMessage(message);
-                super.dispatchMessage(message);
-                break;
-            case OTHER:
-                super.dispatchMessage(message);
-                dispatchMessageToViews(message);
-                break;
+        if (message instanceof GenericMessage) {
+            super.dispatchMessage(message);
+            dispatchMessageToViews(message);
+        }
+        if (message instanceof EventTouchScreenMessage) {
+            dispatchScreenEventMessage(message);
+            super.dispatchMessage(message);
+        }
+        if (message instanceof EventKeyMessage) {
+            dispatchKeyMessage(message);
+            super.dispatchMessage(message);
         }
     }
 

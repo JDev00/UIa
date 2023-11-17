@@ -2,6 +2,9 @@ package uia.physical;
 
 import uia.core.*;
 import uia.core.basement.Message;
+import uia.physical.message.EventKeyMessage;
+import uia.physical.message.EventTouchScreenMessage;
+import uia.physical.message.GenericMessage;
 import uia.physical.message.MessageStore;
 import uia.utility.GeometryFactory;
 import uia.core.basement.Callback;
@@ -293,16 +296,14 @@ public final class Component implements View {
 
     @Override
     public void dispatchMessage(Message message) {
-        switch (message.getType()) {
-            case EVENT_SCREEN_TOUCH:
-                readScreenTouches(message.getMessage());
-                break;
-            case EVENT_KEY:
-                readKey(message.getMessage());
-                break;
-            case OTHER:
-                readMessage(message);
-                break;
+        if (message instanceof GenericMessage) {
+            readMessage(message);
+        }
+        if (message instanceof EventTouchScreenMessage) {
+            readScreenTouches(message.getPayload());
+        }
+        if (message instanceof EventKeyMessage) {
+            readKey(message.getPayload());
         }
     }
 
