@@ -9,7 +9,7 @@ public interface Theme {
     Paint.Color RED = new Paint.Color(255, 0, 0);
     Paint.Color GREEN = new Paint.Color(0, 255, 0);
     Paint.Color BLUE = new Paint.Color(0, 0, 255);
-    Paint.Color DARK_GREY = new Paint.Color(28);
+    Paint.Color DARK_GREY = new Paint.Color(66);
 
-    Paint.Color BACKGROUND = new Paint.Color(45);
+    Paint.Color LIGHT_GREY = new Paint.Color(211, 211, 211);
 }
