@@ -7,9 +7,7 @@ import java.util.Arrays;
  */
 
 public class ScreenTouch {
-
     public enum Action {PRESSED, RELEASED, DRAGGED, MOVED, CLICKED, WHEEL, EXITED}
-
     public enum Button {LEFT, CENTER, RIGHT}
 
     private final Action action;
@@ -103,5 +101,15 @@ public class ScreenTouch {
 
     public Button getButton() {
         return button;
+    }
+
+    /**
+     * Copy this ScreenTouch
+     *
+     * @return a new ScreenTouch populated with the same attributes of the current one
+     */
+
+    public ScreenTouch copy() {
+        return new ScreenTouch(action, button, desc[0], desc[1], desc[2]);
     }
 }
