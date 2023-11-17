@@ -1,4 +1,4 @@
-package example.processing;
+package example.thirdparty;
 
 import processing.core.*;
 
