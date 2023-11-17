@@ -55,14 +55,6 @@ public class RendererEngineSwing extends JPanel {
     }
 
     /**
-     * @return the handled View
-     */
-
-    protected View getView() {
-        return view;
-    }
-
-    /**
      * Set some {@link Context.RenderingHint}s
      *
      * @param renderingHints a not null List of RenderingHints
@@ -127,23 +119,30 @@ public class RendererEngineSwing extends JPanel {
         rootView.requestFocus(focus);
     }
 
+    //private String lockedRecipient = null;
+
     /**
      * Helper function. Update the handled View.
      */
 
     private void updateView() {
         if (view != null) {
-            /*int counter = 0;
-            int limit = MAX_MESSAGES_PER_SECOND / Math.max(1, frameRate);
-            Message message;
-            while (counter < limit && (message = messageStore.pop()) != null) {
-                view.dispatchMessage(message);
-                counter++;
-            }*/
-
             int messagesPerFrame = MAX_MESSAGES_PER_SECOND / Math.max(1, frameRate);
             List<Message> messages = messageStore.pop(messagesPerFrame);
             for (Message message : messages) {
+                // test
+                /*if ("ROOT".equals(message.getRecipient()) && "LOCK_MESSAGES".equals(message.getPayload())) {
+                    System.out.println("received lock!");
+                    lockedRecipient = message.getSender();
+                }
+                if ("ROOT".equals(message.getRecipient()) && "UNLOCK_MESSAGES".equals(message.getPayload())) {
+                    System.out.println("received unlock!");
+                    lockedRecipient = null;
+                }
+                if (lockedRecipient != null) {
+                    //message = Messages.reassignMessageRecipient(message, lockedRecipient);
+                }*/
+                //
                 view.dispatchMessage(message);
             }
             view.update(rootView);
@@ -159,9 +158,7 @@ public class RendererEngineSwing extends JPanel {
      */
 
     protected void draw(int screenWidth, int screenHeight, boolean screenFocus) {
-        //calculateMetrics();
         updateRootView(screenWidth, screenHeight, screenFocus);
-        //updateView();
         repaint();
     }
 
@@ -174,9 +171,11 @@ public class RendererEngineSwing extends JPanel {
         try {
             calculateMetrics();
             updateView();
-            view.draw(graphic);
-        } catch (Exception error) {
-            error.printStackTrace();
+            if (view != null) {
+                view.draw(graphic);
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 }
