@@ -147,10 +147,9 @@ public class Shape implements Movable, Collider {
     @Override
     public boolean contains(float x, float y) {
         updateDimension();
-
         switch (policy) {
             case SAT:
-                return containsSAT(x, y);
+                return containsRECT(x, y) || containsSAT(x, y);
             case CIRCLE:
                 return containsCIRCLE(x, y);
             default:
