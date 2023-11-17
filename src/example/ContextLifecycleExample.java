@@ -14,10 +14,7 @@ public class ContextLifecycleExample {
 
     public static Context createAWTContext() {
         int[] screenSize = ContextSwing.getScreenSize();
-        Context result = new ContextSwing(4 * screenSize[0] / 5, 4 * screenSize[1] / 5);
-        result.getWindow().show();
-        result.setLifecycleStage(Context.LifecycleStage.RUN);
-        return result;
+        return ContextSwing.createAndStart(4 * screenSize[0] / 5, 4 * screenSize[1] / 5);
     }
 
     public static void main(String[] args) {
@@ -25,7 +22,7 @@ public class ContextLifecycleExample {
 
         View view = createMockView();
         view.registerCallback((OnClick) touches -> {
-            System.out.println("Clicked!");
+            System.out.println("Terminated!");
             context.setLifecycleStage(Context.LifecycleStage.TERMINATE);
         });
 

@@ -57,6 +57,7 @@ public class Sanity {
 
     public static Context createMockContext() {
         Context context = new ContextSwing(720, 540);
+        context.getWindow().show();
         context.setLifecycleStage(Context.LifecycleStage.RUN);
         return context;
     }

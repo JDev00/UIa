@@ -111,13 +111,8 @@ public class HelloWorld extends WrapperViewGroup {
 
     private static Context createContext() {
         int[] screenSize = ContextSwing.getScreenSize();
-        // creates a new AWT Context.
-        Context result = new ContextSwing(4 * screenSize[0] / 5, 4 * screenSize[1] / 5);
-        // shows the Window frame handled by this Context
-        result.getWindow().show();
-        // starts the created context
-        result.setLifecycleStage(Context.LifecycleStage.RUN);
-        return result;
+        // creates and start a new Swing based Context.
+        return ContextSwing.createAndStart(4 * screenSize[0] / 5, 4 * screenSize[1] / 5);
     }
 
     public static void main(String[] args) {
