@@ -27,7 +27,7 @@ public class HelloWorld extends WrapperViewGroup {
         // (in this example: Component).
         // Here we will create a ComponentGroup that will allow us to easily manage a set of views.
         super(new ComponentGroup(new Component("HELLO_WORLD", 0.5f, 0.5f, 1f, 1f)));
-        getPaint().setColor(Theme.BACKGROUND);
+        getPaint().setColor(Theme.DARK_GREY);
 
         // let us create a new specialised View: a Button
         UIButton button = createCustomButton();
@@ -38,7 +38,7 @@ public class HelloWorld extends WrapperViewGroup {
         });
         // add another callback to listen for messages sent to this button
         button.registerCallback((OnMessageReceived) message -> {
-            String text = message.<String>getMessage().contains("Hey") ? "Hide\npopup!" : "Show\npopup!";
+            String text = message.<String>getPayload().contains("Hey") ? "Hide\npopup!" : "Show\npopup!";
             ViewText viewText = (ViewText) button.getView();
             viewText.setText(text);
         });
@@ -48,7 +48,7 @@ public class HelloWorld extends WrapperViewGroup {
         // creates an event to listen for messages sent to this popup from other views
         popup.registerCallback((OnMessageReceived) message -> {
             // if the sender ID is 'BUTTON'
-            boolean visibility = message.<String>getMessage().contains("Wake up");
+            boolean visibility = message.<String>getPayload().contains("Wake up");
             // shows or hides this popup accordingly
             popup.setVisible(visibility);
             // sends a message to BUTTON to inform it that popup woke up or went to sleep

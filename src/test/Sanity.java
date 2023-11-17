@@ -41,7 +41,7 @@ public class Sanity {
 
     public static ViewGroup createRoot() {
         ViewGroup result = createViewGroup("ROOT_GROUP", 0.5f, 0.5f, 1f, 1f);
-        result.getPaint().setColor(Theme.BACKGROUND);
+        result.getPaint().setColor(Theme.DARK_GREY);
         return result;
     }
 
@@ -64,8 +64,7 @@ public class Sanity {
     public static void showBaseComponents() {
         ViewGroup root = createRoot();
 
-        Context context = createMockContext();
-        context.getWindow().show();
+        Context context = ContextSwing.createAndStart(1000, 600);
         context.setView(root);
 
         ViewText text = createViewText("TEXT", 0.33f, 0.45f, 0.5f, 0.75f);

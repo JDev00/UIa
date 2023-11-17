@@ -32,7 +32,7 @@ public class TestViewMessages {
 
         // test clause
         root.get(TARGET).registerCallback((OnMessageReceived) message -> {
-            testAssertion.expect(message.getMessage()).toBe(MESSAGE);
+            testAssertion.expect(message.getPayload()).toBe(MESSAGE);
         });
 
         for (int i = 0; i < messages; i++) {
