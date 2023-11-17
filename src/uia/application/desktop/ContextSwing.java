@@ -1,7 +1,6 @@
 package uia.application.desktop;
 
 import uia.core.ScreenTouch;
-import uia.core.basement.Message;
 import uia.core.ui.context.InputEmulator;
 import uia.core.ui.context.Window;
 import uia.physical.input.ArtificialInput;
@@ -44,9 +43,10 @@ public class ContextSwing implements Context {
         MessageStore messageStore = MessageStore.getInstance();
         inputEmulator = new ArtificialInput(message -> {
             int[] insets = window.getInsets();
-            if (message.getType().equals(Message.Type.EVENT_SCREEN_TOUCH)) {
-                ScreenTouch screenTouch = message.<List<ScreenTouch>>getMessage().get(0);
+            try {
+                ScreenTouch screenTouch = message.<List<ScreenTouch>>getPayload().get(0);
                 screenTouch.translate(insets[0], insets[1]);
+            } catch (Exception ignored) {
             }
             messageStore.add(message);
         });
