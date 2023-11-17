@@ -1,18 +1,21 @@
 package uia.physical.message;
 
+import uia.core.ScreenTouch;
 import uia.core.basement.Message;
 
+import java.util.List;
+
 /**
- * GenericMessage has the responsibility to wrap a generic payload
+ * EventTouchScreenMessage has the responsibility to wrap a List of {@link ScreenTouch}s as payload
  */
 
-public class GenericMessage implements Message {
-    private final Object message;
+public class EventTouchScreenMessage implements Message {
+    private final List<ScreenTouch> screenTouches;
     private String source;
     private final String recipient;
 
-    public GenericMessage(Object message, String source, String recipient) {
-        this.message = message;
+    public EventTouchScreenMessage(List<ScreenTouch> screenTouches, String source, String recipient) {
+        this.screenTouches = screenTouches;
         this.source = source;
         this.recipient = recipient;
     }
@@ -20,7 +23,7 @@ public class GenericMessage implements Message {
     @Override
     public String toString() {
         return "GenericMessage{" +
-                "message=" + message +
+                "screenTouches=" + screenTouches +
                 ", source='" + source + '\'' +
                 ", recipient='" + recipient + '\'' +
                 '}';
@@ -38,7 +41,7 @@ public class GenericMessage implements Message {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getPayload() {
-        return (T) message;
+    public List<ScreenTouch> getPayload() {
+        return screenTouches;
     }
 }

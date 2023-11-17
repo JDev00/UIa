@@ -1,18 +1,19 @@
 package uia.physical.message;
 
+import uia.core.Key;
 import uia.core.basement.Message;
 
 /**
- * GenericMessage has the responsibility to wrap a generic payload
+ * EventKeyMessage has the responsibility to wrap a {@link Key} as payload
  */
 
-public class GenericMessage implements Message {
-    private final Object message;
+public class EventKeyMessage implements Message {
+    private final Key key;
     private String source;
     private final String recipient;
 
-    public GenericMessage(Object message, String source, String recipient) {
-        this.message = message;
+    public EventKeyMessage(Key key, String source, String recipient) {
+        this.key = key;
         this.source = source;
         this.recipient = recipient;
     }
@@ -20,7 +21,7 @@ public class GenericMessage implements Message {
     @Override
     public String toString() {
         return "GenericMessage{" +
-                "message=" + message +
+                "key=" + key +
                 ", source='" + source + '\'' +
                 ", recipient='" + recipient + '\'' +
                 '}';
@@ -38,7 +39,7 @@ public class GenericMessage implements Message {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getPayload() {
-        return (T) message;
+    public Key getPayload() {
+        return key;
     }
 }
