@@ -11,7 +11,7 @@ import java.util.List;
 
 public class EventTouchScreenMessage implements Message {
     private final List<ScreenTouch> screenTouches;
-    private String source;
+    private final String source;
     private final String recipient;
 
     public EventTouchScreenMessage(List<ScreenTouch> screenTouches, String source, String recipient) {
@@ -22,7 +22,7 @@ public class EventTouchScreenMessage implements Message {
 
     @Override
     public String toString() {
-        return "GenericMessage{" +
+        return "EventTouchScreenMessage{" +
                 "screenTouches=" + screenTouches +
                 ", source='" + source + '\'' +
                 ", recipient='" + recipient + '\'' +

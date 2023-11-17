@@ -8,7 +8,7 @@ import uia.core.basement.Message;
 
 public class GenericMessage implements Message {
     private final Object message;
-    private String source;
+    private final String source;
     private final String recipient;
 
     public GenericMessage(Object message, String source, String recipient) {

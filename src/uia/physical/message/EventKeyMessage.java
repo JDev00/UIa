@@ -9,7 +9,7 @@ import uia.core.basement.Message;
 
 public class EventKeyMessage implements Message {
     private final Key key;
-    private String source;
+    private final String source;
     private final String recipient;
 
     public EventKeyMessage(Key key, String source, String recipient) {
@@ -20,7 +20,7 @@ public class EventKeyMessage implements Message {
 
     @Override
     public String toString() {
-        return "GenericMessage{" +
+        return "EventKeyMessage{" +
                 "key=" + key +
                 ", source='" + source + '\'' +
                 ", recipient='" + recipient + '\'' +
