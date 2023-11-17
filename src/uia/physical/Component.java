@@ -226,8 +226,10 @@ public final class Component implements View {
                 if (!p.isConsumed()
                         && p.getAction() != ScreenTouch.Action.EXITED
                         && contains(p.getX(), p.getY())) {
-                    p.translate(offset[0], offset[1]);
-                    curScreenTouches.add(p);
+                    ScreenTouch screenTouch = p.copy();
+                    screenTouch.consume();
+                    screenTouch.translate(offset[0], offset[1]);
+                    curScreenTouches.add(screenTouch);
                     // consume pointer when necessary
                     if (consumePointer) p.consume();
                 }
@@ -252,11 +254,6 @@ public final class Component implements View {
             curScreenTouches.forEach(p -> {
                 if (p.getAction() == ScreenTouch.Action.CLICKED) notifyCallbacks(OnClick.class, curScreenTouches);
             });
-
-            // restore screen touches to original position
-            for (ScreenTouch i : curScreenTouches) {
-                i.translate(-offset[0], -offset[1]);
-            }
         } else {
             // remove focus when necessary
             for (int i = 0; i < screenTouches.size() && focus; i++) {
@@ -277,11 +274,9 @@ public final class Component implements View {
 
     private void readKey(Key key) {
         if (!key.isConsumed() && visible && focus) {
-
             if (consumeKey) {
                 key.consume();
             }
-
             switch (key.getAction()) {
                 case PRESSED:
                     notifyCallbacks(OnKeyPressed.class, key);
