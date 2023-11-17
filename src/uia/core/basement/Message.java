@@ -1,12 +1,12 @@
 package uia.core.basement;
 
 /**
- * Message is a wrapper for a message to delivery and the recipient
+ * Message ADT.
+ * Message has the responsibility to keep the required information to
+ * delivery a message to a recipient.
  */
 
 public interface Message {
-
-    enum Type {EVENT_SCREEN_TOUCH, EVENT_KEY, OTHER}
 
     /**
      * @return the message sender
@@ -21,14 +21,8 @@ public interface Message {
     String getRecipient();
 
     /**
-     * @return the message {@link Type}
+     * @return the message content
      */
 
-    Type getType();
-
-    /**
-     * @return the message cast to the specified type
-     */
-
-    <T> T getMessage();
+    <T> T getPayload();
 }
