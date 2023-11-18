@@ -29,11 +29,10 @@ public final class Component implements View {
     private final List<Callback> callbacks;
     private java.util.function.Consumer<Geometry> geometryBuilder;
 
+    private final String id;
     private final float[] expanse = {1f, 1f, 1f, 1f, 0.125f};
     private final float[] container;
     private final float[] dimension = new float[2];
-
-    private final String id;
 
     private boolean over = false;
     private boolean focus = false;
@@ -199,31 +198,11 @@ public final class Component implements View {
         MessageStore.getInstance().add(message);
     }
 
-    /**
-     * Helper function. Read the given message and invoke the callbacks.
-     */
-
-    private void readMessage(Message message) {
-        String sender = message.getSender();
-        String recipient = message.getRecipient();
-        if (Objects.equals(id, recipient) || (recipient == null && !id.equals(sender))) {
-            notifyCallbacks(OnMessageReceived.class, message);
-        }
-    }
-
-    private final List<ScreenTouch> curScreenTouches = new ArrayList<>();
-
-    /**
-     * Helper function. Read the given screen touches and invoke the callbacks.
-     */
-
-    private void readScreenTouches(List<ScreenTouch> screenTouches) {
-        float[] bounds = shape.bounds();
-        int[] offset = {-(int) (bounds[0]), -(int) (bounds[1])};
-
-        curScreenTouches.clear();
-
+    private List<ScreenTouch> extractScreenTouches(List<ScreenTouch> screenTouches) {
+        List<ScreenTouch> out = new ArrayList<>(2);
         if (visible) {
+            float[] bounds = shape.bounds();
+            int[] offset = {-(int) (bounds[0]), -(int) (bounds[1])};
             screenTouches.forEach(p -> {
                 if (!p.isConsumed()
                         && p.getAction() != ScreenTouch.Action.EXITED
@@ -231,38 +210,62 @@ public final class Component implements View {
                     ScreenTouch screenTouch = p.copy();
                     screenTouch.consume();
                     screenTouch.translate(offset[0], offset[1]);
-                    curScreenTouches.add(screenTouch);
+                    out.add(screenTouch);
                     // consume pointer when necessary
                     if (consumePointer) p.consume();
                 }
             });
         }
+        return out;
+    }
 
-        if (!curScreenTouches.isEmpty()) {
-            // request focus when necessary
-            for (int i = 0; i < curScreenTouches.size() && !focus; i++) {
-                if (curScreenTouches.get(i).getAction() == ScreenTouch.Action.PRESSED) requestFocus(true);
+    private List<ScreenTouch> extractLockedScreenTouches(List<ScreenTouch> screenTouches) {
+        List<ScreenTouch> out = new ArrayList<>(2);
+        if (visible) {
+            float[] bounds = shape.bounds();
+            int[] offset = {-(int) (bounds[0]), -(int) (bounds[1])};
+            screenTouches.forEach(p -> {
+                p.consume();
+                ScreenTouch screenTouch = p.copy();
+                screenTouch.consume();
+                screenTouch.translate(offset[0], offset[1]);
+                out.add(screenTouch);
+            });
+        }
+        return out;
+    }
+
+    /**
+     * Helper function. Update screen touch callbacks according to the specified screen touches.
+     *
+     * @param internalTouches the screen touches inside the view area
+     * @param globalTouches   all the window screen touches
+     */
+
+    private void updateScreenTouchCallbacks(List<ScreenTouch> internalTouches,
+                                            List<ScreenTouch> globalTouches) {
+        if (!internalTouches.isEmpty()) {
+            // request focus
+            for (int i = 0; i < internalTouches.size() && !focus; i++) {
+                if (internalTouches.get(i).getAction() == ScreenTouch.Action.PRESSED) requestFocus(true);
             }
-
-            // notify hover when necessary
+            // invoke mouse enter or mouse hover callback
             if (!over) {
                 over = true;
-                notifyCallbacks(OnMouseEnter.class, curScreenTouches);
+                notifyCallbacks(OnMouseEnter.class, internalTouches);
             } else {
-                notifyCallbacks(OnMouseHover.class, curScreenTouches);
+                notifyCallbacks(OnMouseHover.class, internalTouches);
             }
-
-            // notify click when necessary
-            curScreenTouches.forEach(p -> {
-                if (p.getAction() == ScreenTouch.Action.CLICKED) notifyCallbacks(OnClick.class, curScreenTouches);
+            // invoke click callback
+            internalTouches.forEach(p -> {
+                if (p.getAction() == ScreenTouch.Action.CLICKED) notifyCallbacks(OnClick.class, internalTouches);
             });
         } else {
-            // remove focus when necessary
-            for (int i = 0; i < screenTouches.size() && focus; i++) {
-                if (screenTouches.get(i).getAction() == ScreenTouch.Action.PRESSED) requestFocus(false);
+            // remove focus
+            for (int i = 0; i < globalTouches.size() && focus; i++) {
+                if (globalTouches.get(i).getAction() == ScreenTouch.Action.PRESSED) requestFocus(false);
             }
-
-            // notify pointer exit when necessary
+            // invoke mouse exit callback
             if (over) {
                 over = false;
                 if (visible) notifyCallbacks(OnMouseExit.class, new ArrayList<ScreenTouch>(0));
@@ -271,10 +274,10 @@ public final class Component implements View {
     }
 
     /**
-     * Helper function. Read the given Key and invoke the callbacks.
+     * Helper function. Update key callbacks according to the specified key.
      */
 
-    private void readKey(Key key) {
+    private void updateKeyCallbacks(Key key) {
         if (!key.isConsumed() && visible && focus) {
             if (consumeKey) {
                 key.consume();
@@ -293,12 +296,33 @@ public final class Component implements View {
         }
     }
 
+    /**
+     * Helper function. Read the given message and invoke the callbacks.
+     */
+
+    private void readMessage(Message message) {
+        String sender = message.getSender();
+        String recipient = message.getRecipient();
+        if (Objects.equals(id, recipient) || (recipient == null && !id.equals(sender))) {
+            notifyCallbacks(OnMessageReceived.class, message);
+        }
+    }
+
     @Override
     public void dispatchMessage(Message message) {
-        if (message instanceof EventTouchScreenMessage) {
-            readScreenTouches(message.getPayload());
-        } else if (message instanceof EventKeyMessage) {
-            readKey(message.getPayload());
+        try {
+            List<ScreenTouch> screenTouches;
+            if (id.equals(message.getRecipient()) &&
+                    message instanceof EventTouchScreenMessage.Lock) {
+                screenTouches = extractLockedScreenTouches(message.getPayload());
+            } else {
+                screenTouches = extractScreenTouches(message.getPayload());
+            }
+            updateScreenTouchCallbacks(screenTouches, message.getPayload());
+        } catch (Exception ignored) {
+        }
+        if (message instanceof EventKeyMessage) {
+            updateKeyCallbacks(message.getPayload());
         } else {
             readMessage(message);
         }
