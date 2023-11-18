@@ -4,7 +4,6 @@ import uia.core.*;
 import uia.core.basement.Message;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.message.EventTouchScreenMessage;
-import uia.physical.message.GenericMessage;
 import uia.physical.message.MessageStore;
 import uia.utility.GeometryFactory;
 import uia.core.basement.Callback;

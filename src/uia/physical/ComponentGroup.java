@@ -8,7 +8,6 @@ import uia.core.ScreenTouch;
 import uia.core.ui.Graphic;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.message.EventTouchScreenMessage;
-import uia.physical.message.GenericMessage;
 import uia.physical.message.Messages;
 import uia.physical.wrapper.WrapperView;
 
@@ -122,15 +121,15 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     @Override
     public void dispatchMessage(Message message) {
-        if (message instanceof GenericMessage) {
-            super.dispatchMessage(message);
-            dispatchMessageToViews(message);
-        } else if (message instanceof EventTouchScreenMessage) {
+        if (message instanceof EventTouchScreenMessage) {
             dispatchScreenEventMessage(message);
             super.dispatchMessage(message);
-        } else {
+        } else if (message instanceof EventKeyMessage) {
             dispatchKeyMessage(message);
             super.dispatchMessage(message);
+        } else {
+            super.dispatchMessage(message);
+            dispatchMessageToViews(message);
         }
     }
 
