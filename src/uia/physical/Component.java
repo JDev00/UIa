@@ -296,14 +296,12 @@ public final class Component implements View {
 
     @Override
     public void dispatchMessage(Message message) {
-        if (message instanceof GenericMessage) {
-            readMessage(message);
-        }
         if (message instanceof EventTouchScreenMessage) {
             readScreenTouches(message.getPayload());
-        }
-        if (message instanceof EventKeyMessage) {
+        } else if (message instanceof EventKeyMessage) {
             readKey(message.getPayload());
+        } else {
+            readMessage(message);
         }
     }
 

@@ -125,12 +125,10 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         if (message instanceof GenericMessage) {
             super.dispatchMessage(message);
             dispatchMessageToViews(message);
-        }
-        if (message instanceof EventTouchScreenMessage) {
+        } else if (message instanceof EventTouchScreenMessage) {
             dispatchScreenEventMessage(message);
             super.dispatchMessage(message);
-        }
-        if (message instanceof EventKeyMessage) {
+        } else {
             dispatchKeyMessage(message);
             super.dispatchMessage(message);
         }
