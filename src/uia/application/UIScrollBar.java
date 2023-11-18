@@ -3,11 +3,11 @@ package uia.application;
 import uia.core.ScreenTouch;
 import uia.core.basement.Drawable;
 import uia.core.ui.View;
+import uia.core.ui.callbacks.OnClick;
 import uia.core.ui.callbacks.OnMouseHover;
 import uia.physical.Component;
 import uia.physical.ComponentGroup;
-import uia.physical.scroller.Scroller;
-import uia.physical.scroller.WheelScroller;
+import uia.physical.message.Messages;
 import uia.physical.theme.Theme;
 import uia.physical.theme.ThemeDarcula;
 import uia.physical.wrapper.WrapperView;
@@ -21,40 +21,91 @@ import static java.lang.Math.abs;
  */
 
 public class UIScrollBar extends WrapperView {
-    private final View cursor;
+    //private final float SCROLL_FACTOR = 0.05f;
 
-    private Scroller scroller;
-
+    /*private final View arrowUp;
+    private final View arrowDown;*/
+    private final View internalBar;
     private float val;
-
     private boolean locked = false;
 
     public UIScrollBar(View view) {
         super(new ComponentGroup(view));
 
-        buildGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
+        setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
         getPaint().setColor(ThemeDarcula.W_BACKGROUND);
         registerCallback((OnMouseHover) touches -> {
             ScreenTouch touch = touches.get(0);
-
             if (touch.getAction().equals(ScreenTouch.Action.DRAGGED)) {
+                if (!locked) {
+                    sendMessage(Messages.newMessage("LOCK_MESSAGES", getID(), "ROOT"));
+                }
                 locked = true;
                 updateScroll(touch.getX(), touch.getY());
-            } else if (scroller.update(touches)) {
-                setScroll(scroller.getValue());
+            }
+            if (touch.getAction().equals(ScreenTouch.Action.RELEASED)) {
+                if (locked) {
+                    sendMessage(Messages.newMessage("UNLOCK_MESSAGES", getID(), "ROOT"));
+                }
+                locked = false;
             }
         });
+        registerCallback((OnClick) touches -> {
+            ScreenTouch touch = touches.get(0);
+            updateScroll(touch.getX(), touch.getY());
+        });
+        /*registerCallback((OnMouseExit) o -> {
+            if (locked) {
+                sendMessage(Messages.newMessage("UNLOCK_MESSAGES", getID(), "ROOT"));
+            }
+            locked = false;
+            System.out.println("Out!");
+        });*/
 
-        cursor = new Component("CURSOR", 0.5f, 0.075f, 1f, 0.15f);
-        cursor.buildGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
-        cursor.setConsumer(Consumer.SCREEN_TOUCH, false);
-        cursor.getPaint().setColor(Theme.RED);
+        /*Paint arrowUpPaintOut = new Paint().setColor(Theme.WHITE);
+        Paint arrowUpPaintHover = new Paint().setColor(Theme.LIGHT_GREY);
+        arrowUp = new Component("ARROW_UP", 0.5f, 0.025f, 0.95f, 0.02f);
+        arrowUp.setGeometry(g -> GeometryFactory.arrow(g).rotate(-HALF_PI).scale(1f, 2f), false);
+        arrowUp.setColliderPolicy(ColliderPolicy.AABB);
+        arrowUp.registerCallback((OnClick) touches -> scroll(-SCROLL_FACTOR));
+        arrowUp.registerCallback((OnMouseHover) touches -> {
+            if (val > 0) {
+                arrowUp.getPaint().set(arrowUpPaintHover);
+            } else {
+                arrowUp.getPaint().set(arrowUpPaintOut);
+            }
+        });
+        arrowUp.registerCallback((OnMouseExit) o -> {
+            arrowUp.getPaint().set(arrowUpPaintOut);
+        });
 
-        scroller = new WheelScroller();
-        scroller.setFactor(0.1f);
-        scroller.setMax(1f);
+        Paint arrowDownPaintOut = new Paint().setColor(Theme.WHITE);
+        Paint arrowDownPaintHover = new Paint().setColor(Theme.LIGHT_GREY);
+        arrowDown = new Component("ARROW_DOWN", 0.5f, 0.975f, 1f, 0.02f);
+        arrowDown.setGeometry(g -> GeometryFactory.arrow(g).rotate(HALF_PI).scale(0.95f, 2f), false);
+        arrowDown.setColliderPolicy(ColliderPolicy.AABB);
+        arrowDown.registerCallback((OnClick) touches -> scroll(SCROLL_FACTOR));
+        arrowDown.registerCallback((OnMouseHover) touches -> {
+            if (val < 1) {
+                arrowDown.getPaint().set(arrowDownPaintHover);
+            } else {
+                arrowDown.getPaint().set(arrowDownPaintOut);
+            }
+        });
+        arrowDown.registerCallback((OnMouseExit) o -> {
+            arrowDown.getPaint().set(arrowDownPaintOut);
+        });*/
 
-        ((ComponentGroup) getView()).add(cursor);
+        internalBar = new Component("CURSOR", 0.5f, 0.25f, 0.85f, 0.5f);
+        internalBar.setGeometry(
+                g -> Drawable.buildRect(g, internalBar.getWidth(), internalBar.getHeight(), 1f),
+                true
+        );
+        internalBar.setConsumer(Consumer.SCREEN_TOUCH, false);
+        internalBar.getPaint().setColor(Theme.LIGHT_GREY);
+
+        this.<ComponentGroup>getView().add(internalBar);
+        this.<ComponentGroup>getView().setClip(false);
     }
 
     private void updateScroll(float x, float y) {
@@ -63,15 +114,25 @@ public class UIScrollBar extends WrapperView {
         float x_off = x / bounds[2];
         float y_off = y / bounds[3];
 
-        setScroll(abs(rotY(x_off, y_off, cos(bounds[4]), sin(bounds[4]))));
+        setScrollValue(abs(rotY(x_off, y_off, cos(bounds[4]), sin(bounds[4]))));
+    }
+
+    /**
+     * Set the internal bar relative height
+     *
+     * @param height the internal bar height between [0, 1]
+     */
+
+    public void setInternalBarHeight(float height) {
+        internalBar.setDimension(0.9f, Utility.constrain(height, 0.1f, 0.9f));
     }
 
     /**
      * @return the View used as cursor
      */
 
-    public View getCursor() {
-        return cursor;
+    public View getInternalBar() {
+        return internalBar;
     }
 
     /**
@@ -84,45 +145,45 @@ public class UIScrollBar extends WrapperView {
      */
 
     public void setScrollFactor(float factor) {
-        scroller.setFactor(Utility.constrain(factor, 0f, 1f));
+        //scroller.setFactor(Utility.constrain(factor, 0f, 1f));
     }
 
     /**
-     * Set the scroll amount
+     * Set the scrolling value
      *
-     * @param scroll the scroll amount between [0, 1]
+     * @param value the scrolling value between [0, 1]
      */
 
-    public void setScroll(float scroll) {
-        val = Utility.constrain(scroll, 0f, 1f);
-        scroller.setValue(val);
+    public void setScrollValue(float value) {
+        val = Utility.constrain(value, 0f, 1f);
 
-        float off = 0.5f * cursor.getHeight() / getHeight();
-        cursor.setPosition(0.5f, Utility.constrain(val, off, 1 - off));
+        float off = 0.5f * internalBar.getHeight() / getHeight();
+        //float internalBarPositionY = (0.9f - 2 * off) * val + 0.05f + off;
+        //internalBar.setPosition(0.5f, Utility.constrain(internalBarPositionY, 0.05f + off, 0.95f - off));
+        internalBar.setPosition(0.5f, Utility.constrain(val, off, 1f - off));
     }
 
     /**
-     * Scroll this bar of the given amount
+     * Scroll this bar of the specified amount
      *
      * @param amount a value between [0, 1]
      */
 
     public void scroll(float amount) {
-        setScroll(val + amount);
+        setScrollValue(val + amount);
     }
 
     /**
-     * @return the current scroll amount
+     * @return the current scroll amount between [0, 1]
      */
 
-    public float getScroll() {
+    public float getScrollValue() {
         return val;
     }
 
     @Override
     public void setVisible(boolean isVisible) {
         super.setVisible(isVisible);
-
         if (!isVisible) locked = false;
     }
 }
