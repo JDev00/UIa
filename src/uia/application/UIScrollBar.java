@@ -4,17 +4,15 @@ import uia.core.ScreenTouch;
 import uia.core.basement.Drawable;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnClick;
+import uia.core.ui.callbacks.OnMouseExit;
 import uia.core.ui.callbacks.OnMouseHover;
 import uia.physical.Component;
 import uia.physical.ComponentGroup;
-import uia.physical.message.Messages;
+import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.theme.Theme;
 import uia.physical.theme.ThemeDarcula;
 import uia.physical.wrapper.WrapperView;
 import uia.utility.Utility;
-
-import static uia.utility.TrigTable.*;
-import static java.lang.Math.abs;
 
 /**
  * UI scrollbar
@@ -22,9 +20,6 @@ import static java.lang.Math.abs;
 
 public class UIScrollBar extends WrapperView {
     //private final float SCROLL_FACTOR = 0.05f;
-
-    /*private final View arrowUp;
-    private final View arrowDown;*/
     private final View internalBar;
     private float val;
     private boolean locked = false;
@@ -34,69 +29,34 @@ public class UIScrollBar extends WrapperView {
 
         setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
         getPaint().setColor(ThemeDarcula.W_BACKGROUND);
-        registerCallback((OnMouseHover) touches -> {
-            ScreenTouch touch = touches.get(0);
-            if (touch.getAction().equals(ScreenTouch.Action.DRAGGED)) {
-                if (!locked) {
-                    sendMessage(Messages.newMessage("LOCK_MESSAGES", getID(), "ROOT"));
-                }
-                locked = true;
-                updateScroll(touch.getX(), touch.getY());
-            }
-            if (touch.getAction().equals(ScreenTouch.Action.RELEASED)) {
-                if (locked) {
-                    sendMessage(Messages.newMessage("UNLOCK_MESSAGES", getID(), "ROOT"));
-                }
-                locked = false;
-            }
-        });
         registerCallback((OnClick) touches -> {
             ScreenTouch touch = touches.get(0);
             updateScroll(touch.getX(), touch.getY());
         });
-        /*registerCallback((OnMouseExit) o -> {
+        registerCallback((OnMouseHover) touches -> {
+            ScreenTouch touch = touches.get(0);
+            if (touch.getAction().equals(ScreenTouch.Action.DRAGGED)) {
+                if (!locked) {
+                    locked = true;
+                    sendMessage(EventTouchScreenMessage.requestLock(getID()));
+                }
+                updateScroll(touch.getX(), touch.getY());
+            }
+            if (touch.getAction().equals(ScreenTouch.Action.RELEASED)) {
+                if (locked) {
+                    locked = false;
+                    sendMessage(EventTouchScreenMessage.releaseLock(getID()));
+                }
+            }
+        });
+        registerCallback((OnMouseExit) o -> {
             if (locked) {
-                sendMessage(Messages.newMessage("UNLOCK_MESSAGES", getID(), "ROOT"));
-            }
-            locked = false;
-            System.out.println("Out!");
-        });*/
-
-        /*Paint arrowUpPaintOut = new Paint().setColor(Theme.WHITE);
-        Paint arrowUpPaintHover = new Paint().setColor(Theme.LIGHT_GREY);
-        arrowUp = new Component("ARROW_UP", 0.5f, 0.025f, 0.95f, 0.02f);
-        arrowUp.setGeometry(g -> GeometryFactory.arrow(g).rotate(-HALF_PI).scale(1f, 2f), false);
-        arrowUp.setColliderPolicy(ColliderPolicy.AABB);
-        arrowUp.registerCallback((OnClick) touches -> scroll(-SCROLL_FACTOR));
-        arrowUp.registerCallback((OnMouseHover) touches -> {
-            if (val > 0) {
-                arrowUp.getPaint().set(arrowUpPaintHover);
-            } else {
-                arrowUp.getPaint().set(arrowUpPaintOut);
+                locked = false;
+                sendMessage(EventTouchScreenMessage.releaseLock(getID()));
             }
         });
-        arrowUp.registerCallback((OnMouseExit) o -> {
-            arrowUp.getPaint().set(arrowUpPaintOut);
-        });
 
-        Paint arrowDownPaintOut = new Paint().setColor(Theme.WHITE);
-        Paint arrowDownPaintHover = new Paint().setColor(Theme.LIGHT_GREY);
-        arrowDown = new Component("ARROW_DOWN", 0.5f, 0.975f, 1f, 0.02f);
-        arrowDown.setGeometry(g -> GeometryFactory.arrow(g).rotate(HALF_PI).scale(0.95f, 2f), false);
-        arrowDown.setColliderPolicy(ColliderPolicy.AABB);
-        arrowDown.registerCallback((OnClick) touches -> scroll(SCROLL_FACTOR));
-        arrowDown.registerCallback((OnMouseHover) touches -> {
-            if (val < 1) {
-                arrowDown.getPaint().set(arrowDownPaintHover);
-            } else {
-                arrowDown.getPaint().set(arrowDownPaintOut);
-            }
-        });
-        arrowDown.registerCallback((OnMouseExit) o -> {
-            arrowDown.getPaint().set(arrowDownPaintOut);
-        });*/
-
-        internalBar = new Component("CURSOR", 0.5f, 0.25f, 0.85f, 0.5f);
+        internalBar = new Component("SCROLLBAR_INTERNAL_BAR", 0.5f, 0.25f, 0.85f, 0.5f);
         internalBar.setGeometry(
                 g -> Drawable.buildRect(g, internalBar.getWidth(), internalBar.getHeight(), 1f),
                 true
@@ -111,10 +71,14 @@ public class UIScrollBar extends WrapperView {
     private void updateScroll(float x, float y) {
         float[] bounds = bounds();
 
+        //System.out.println(x + ", " + y);
+
         float x_off = x / bounds[2];
         float y_off = y / bounds[3];
 
-        setScrollValue(abs(rotY(x_off, y_off, cos(bounds[4]), sin(bounds[4]))));
+        setScrollValue(y_off);
+
+        //setScrollValue(abs(rotY(x_off, y_off, cos(bounds[4]), sin(bounds[4]))));
     }
 
     /**

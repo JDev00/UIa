@@ -46,10 +46,15 @@ public class UIListView extends WrapperView implements ViewGroup {
         };
 
         verticalBar = new UIScrollBar(
-                new Component("VERTICAL_BAR", 0.975f, 0.5f, 0.03f, 0.95f)
+                new Component("LISTVIEW_VERTICAL_BAR_" + getID(), 0.975f, 0.5f, 0.03f, 0.95f)
         );
         verticalBar.setConsumer(Consumer.SCREEN_TOUCH, false);
         verticalBar.getPaint().setColor(Theme.BLACK);
+
+        /*registerCallback((OnMouseHover) touches -> {
+            ScreenTouch screenTouch = touches.get(0);
+            verticalBar.scroll(0.1f * screenTouch.getWheelRotation());
+        });*/
 
         /*horBar = new UIScrollBar(new Component("HORBAR", 0.5f, 0.975f, 0.03f, 0.95f));
         horBar.rotate(-TrigTable.HALF_PI);
