@@ -5,6 +5,7 @@ import uia.core.ui.Graphic;
 import uia.core.ui.View;
 import uia.core.ui.context.Context;
 import uia.physical.ComponentHiddenRoot;
+import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.message.MessageStore;
 import uia.utility.Timer;
 
@@ -119,10 +120,10 @@ public class RendererEngineSwing extends JPanel {
         rootView.requestFocus(focus);
     }
 
-    //private String lockedRecipient = null;
+    private String lockScreenTouchMessageRecipient = null;
 
     /**
-     * Helper function. Update the handled View.
+     * Helper function. Update View.
      */
 
     private void updateView() {
@@ -130,19 +131,19 @@ public class RendererEngineSwing extends JPanel {
             int messagesPerFrame = MAX_MESSAGES_PER_SECOND / Math.max(1, frameRate);
             List<Message> messages = messageStore.pop(messagesPerFrame);
             for (Message message : messages) {
-                // test
-                /*if ("ROOT".equals(message.getRecipient()) && "LOCK_MESSAGES".equals(message.getPayload())) {
-                    System.out.println("received lock!");
-                    lockedRecipient = message.getSender();
+                // v1.0
+                // try to lock messages
+                if (message instanceof EventTouchScreenMessage.RequestLock && lockScreenTouchMessageRecipient == null) {
+                    lockScreenTouchMessageRecipient = message.getSender();
+                    //System.out.println("Lock acquired");
+                } else if (message instanceof EventTouchScreenMessage.Unlock) {
+                    lockScreenTouchMessageRecipient = null;
+                    //System.out.println("Lock released");
+                } else if (lockScreenTouchMessageRecipient != null && message instanceof EventTouchScreenMessage) {
+                    // reassign message recipient
+                    message = new EventTouchScreenMessage.Lock(message.getPayload(), lockScreenTouchMessageRecipient);
                 }
-                if ("ROOT".equals(message.getRecipient()) && "UNLOCK_MESSAGES".equals(message.getPayload())) {
-                    System.out.println("received unlock!");
-                    lockedRecipient = null;
-                }
-                if (lockedRecipient != null) {
-                    //message = Messages.reassignMessageRecipient(message, lockedRecipient);
-                }*/
-                //
+
                 view.dispatchMessage(message);
             }
             view.update(rootView);
