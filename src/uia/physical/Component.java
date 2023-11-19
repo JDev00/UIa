@@ -33,6 +33,7 @@ public final class Component implements View {
     private final float[] expanse = {1f, 1f, 1f, 1f, 0.125f};
     private final float[] container;
     private final float[] dimension = new float[2];
+    private final float[] maxDimension = {0, 0};
 
     private boolean over = false;
     private boolean focus = false;
@@ -74,6 +75,30 @@ public final class Component implements View {
     public Component setExpanseLimit(float x, float y) {
         expanse[2] = x;
         expanse[3] = y;
+        return this;
+    }
+
+    /**
+     * Set Component maximum width
+     *
+     * @param maxWidth the component maximum width in pixels
+     * @return this Component
+     */
+
+    public Component setMaxWidth(float maxWidth) {
+        maxDimension[0] = Math.max(0, maxWidth);
+        return this;
+    }
+
+    /**
+     * Set Component maximum height
+     *
+     * @param maxHeight the component maximum height in pixels
+     * @return this Component
+     */
+
+    public Component setMaxHeight(float maxHeight) {
+        maxDimension[1] = Math.max(0, maxHeight);
         return this;
     }
 
@@ -340,8 +365,12 @@ public final class Component implements View {
         float rot = bounds[4];
 
         // TODO: adjust auto-resize when component rotates
-        dimension[0] = expanse[0] * container[2] * width;
-        dimension[1] = expanse[1] * container[3] * height;
+        float componentWidth = container[2] * width;
+        float componentHeight = container[3] * height;
+        if (maxDimension[0] > 0) componentWidth = Math.min(maxDimension[0], componentWidth);
+        if (maxDimension[1] > 0) componentHeight = Math.min(maxDimension[1], componentHeight);
+        dimension[0] = expanse[0] * componentWidth;
+        dimension[1] = expanse[1] * componentHeight;
 
         shape.setPosition(
                 View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rot),
