@@ -131,19 +131,14 @@ public class RendererEngineSwing extends JPanel {
             int messagesPerFrame = MAX_MESSAGES_PER_SECOND / Math.max(1, frameRate);
             List<Message> messages = messageStore.pop(messagesPerFrame);
             for (Message message : messages) {
-                // v1.0
                 // try to lock messages
                 if (message instanceof EventTouchScreenMessage.RequestLock && lockScreenTouchMessageRecipient == null) {
                     lockScreenTouchMessageRecipient = message.getSender();
-                    //System.out.println("Lock acquired");
                 } else if (message instanceof EventTouchScreenMessage.Unlock) {
                     lockScreenTouchMessageRecipient = null;
-                    //System.out.println("Lock released");
                 } else if (lockScreenTouchMessageRecipient != null && message instanceof EventTouchScreenMessage) {
-                    // reassign message recipient
                     message = new EventTouchScreenMessage.Lock(message.getPayload(), lockScreenTouchMessageRecipient);
                 }
-
                 view.dispatchMessage(message);
             }
             view.update(rootView);

@@ -3,6 +3,7 @@ package uia.core;
 import uia.core.basement.Collider;
 import uia.core.basement.Movable;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import static uia.utility.TrigTable.*;
@@ -30,6 +31,15 @@ public class Shape implements Movable, Collider {
         geometry = new Geometry();
 
         bounds = new float[5];
+    }
+
+    @Override
+    public String toString() {
+        return "Shape{" +
+                "vertices=" + geometry.vertices() +
+                "policy=" + policy +
+                ", bounds=" + Arrays.toString(bounds) +
+                '}';
     }
 
     /**
