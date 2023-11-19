@@ -14,13 +14,13 @@ import uia.physical.ComponentGroup;
 import uia.physical.ComponentText;
 import uia.physical.message.Messages;
 import uia.physical.theme.Theme;
-import uia.physical.wrapper.WrapperViewGroup;
+import uia.physical.wrapper.WrapperView;
 
 /**
  * Demonstrative example. Draw a simple button that allows to show and hide a popup.
  */
 
-public class HelloWorld extends WrapperViewGroup {
+public class HelloWorld extends WrapperView {
 
     public HelloWorld() {
         // default components are based on the decorator pattern, so you need to pass the smallest UI unit
@@ -57,7 +57,7 @@ public class HelloWorld extends WrapperViewGroup {
         });
 
         // adds button and popup to the HelloWorld group
-        add(button, popup);
+        this.<ComponentGroup>getView().add(button, popup);
     }
 
     private static UIButton createCustomButton() {
