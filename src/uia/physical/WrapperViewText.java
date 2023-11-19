@@ -1,4 +1,4 @@
-package uia.physical.wrapper;
+package uia.physical;
 
 import uia.core.Font;
 import uia.core.Paint;

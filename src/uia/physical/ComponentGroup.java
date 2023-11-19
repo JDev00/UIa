@@ -9,7 +9,6 @@ import uia.core.ui.Graphic;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.message.Messages;
-import uia.physical.wrapper.WrapperView;
 
 import java.util.ArrayList;
 import java.util.Arrays;

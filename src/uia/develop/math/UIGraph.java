@@ -11,7 +11,7 @@ import uia.core.ui.callbacks.OnClick;
 import uia.physical.Component;
 import uia.core.Paint;
 import uia.physical.theme.Theme;
-import uia.physical.wrapper.WrapperView;
+import uia.physical.WrapperView;
 import uia.utility.GeometryFactory;
 
 import java.util.ArrayList;

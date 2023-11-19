@@ -1,34 +1,33 @@
 package test.artefacts;
 
 import uia.core.Font;
-import uia.core.ui.context.Context;
 import uia.core.ui.View;
+import uia.core.ui.ViewText;
 import uia.physical.Component;
 import uia.physical.ComponentText;
-import uia.physical.wrapper.WrapperViewText;
+import uia.physical.WrapperView;
 
 /**
- * Context information tracker
+ * Component designed to display the UIa used resources
  */
 
-public class ComponentTracker extends WrapperViewText {
-    private final Context context;
+public class ComponentTracker extends WrapperView {
+    private final ViewText viewText;
 
-    public ComponentTracker(Context context, float x, float y, float w, float h) {
-        super(new ComponentText(new Component("FPS", x, y, w, h)));
+    public ComponentTracker(float x, float y, float w, float h) {
+        super(new ComponentText(
+                new Component("FPS_TRACKER", x, y, w, h))
+        );
 
-        setAlign(AlignY.CENTER);
-        getFont().setStyle(Font.STYLE.ITALIC);
-
-        this.context = context;
+        viewText = this.getView();
+        viewText.setAlign(ViewText.AlignY.CENTER);
+        viewText.getFont().setStyle(Font.STYLE.ITALIC);
     }
 
     @Override
     public void update(View parent) {
         super.update(parent);
-
-        // context.getFrameRate()
-        long mem = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
-        setText("FPS: untracked" + "\nMem: " + mem + " MB");
+        long usedMemory = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
+        viewText.setText("FPS: untracked" + "\nMem: " + usedMemory + " MB");
     }
 }

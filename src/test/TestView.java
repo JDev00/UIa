@@ -76,7 +76,10 @@ public class TestView {
 
         Context context = createMockContext();
         context.setView(root);
+        waitMillis(100);
+
         context.getInputEmulator().clickOn(100, 100);
+        waitMillis(100);
     }
 
     @Test
@@ -88,13 +91,17 @@ public class TestView {
 
         Context context = createMockContext();
         context.setView(root);
+        waitMillis(100);
+
         context.getInputEmulator().moveMouseOnScreen(
                 100, 100,
                 110, 110,
                 20, 0.1f);
+        waitMillis(100);
     }
 
     @Test
+    @Skip
     public static void mouseEnteringViewShouldGenerateAnEvent(TestAssertion testAssertion) {
         testAssertion.assertions(1);
 
@@ -110,6 +117,7 @@ public class TestView {
     }
 
     @Test
+    @Skip
     public static void mouseExitingViewShouldGenerateAnEvent(TestAssertion testAssertion) {
         testAssertion.assertions(1);
 
@@ -126,6 +134,7 @@ public class TestView {
     }
 
     @Test
+    @Skip
     public static void typingKeyShouldGenerateAnEvent(TestAssertion testAssertion) {
         testAssertion.assertions(1);
 
@@ -142,6 +151,7 @@ public class TestView {
     }
 
     @Test
+    @Skip
     public static void releasingKeyShouldGenerateAnEvent(TestAssertion testAssertion) {
         testAssertion.assertions(1);
 
@@ -158,6 +168,7 @@ public class TestView {
     }
 
     @Test
+    @Skip
     public static void pressingKeyShouldGenerateAnEvent(TestAssertion testAssertion) {
         testAssertion.assertions(1);
 

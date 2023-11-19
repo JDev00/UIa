@@ -2,7 +2,9 @@ package uia.develop;
 
 import uia.application.UIScrollBar;
 import uia.application.desktop.ContextSwing;
+import uia.core.ScreenTouch;
 import uia.core.basement.Callback;
+import uia.core.ui.callbacks.OnMouseHover;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
@@ -12,23 +14,21 @@ import uia.physical.ComponentGroup;
 import uia.physical.ComponentText;
 import uia.physical.theme.Theme;
 import uia.physical.theme.ThemeDarcula;
-import uia.physical.wrapper.WrapperView;
+import uia.physical.WrapperView;
 
 import java.util.Iterator;
 
 /**
  * UIListView has been designed to handle a set of views.
+ * It automatically provides a vertical and a horizontal scrollbar.
  */
 
 public class UIListView extends WrapperView implements ViewGroup {
     /*private final UIScrollBar horBar;*/
     private final UIScrollBar verticalBar;
     private final ViewGroup containerGroup;
-    private final ViewGroup containerList;
-
+    private final ViewGroup viewsContainer;
     private ViewPositioner viewPositioner;
-
-    //private Scroller scroller = new WheelScroller();
 
     public UIListView(View view) {
         super(new ComponentGroup(view));
@@ -37,8 +37,8 @@ public class UIListView extends WrapperView implements ViewGroup {
         viewPositioner = (v, i) -> {
             float[] bounds = bounds();
             if (bounds[3] != 0) {
-                float h = 1.1f * v.bounds()[3] / (2 * bounds[3]);
-                if (i == 0) sum[0] = 0.2f;
+                float h = 1.0f * v.bounds()[3] / (2 * bounds[3]);
+                if (i == 0) sum[0] = 0f;
                 sum[0] += h;
                 v.setPosition(0.5f, sum[0]);
                 sum[0] += h;
@@ -47,29 +47,29 @@ public class UIListView extends WrapperView implements ViewGroup {
 
         verticalBar = new UIScrollBar(
                 new Component("LISTVIEW_VERTICAL_BAR_" + getID(), 0.975f, 0.5f, 0.03f, 0.95f)
+                        .setMaxWidth(10)
         );
         verticalBar.setConsumer(Consumer.SCREEN_TOUCH, false);
         verticalBar.getPaint().setColor(Theme.BLACK);
 
-        /*registerCallback((OnMouseHover) touches -> {
+        registerCallback((OnMouseHover) touches -> {
             ScreenTouch screenTouch = touches.get(0);
             verticalBar.scroll(0.1f * screenTouch.getWheelRotation());
-        });*/
+        });
 
         /*horBar = new UIScrollBar(new Component("HORBAR", 0.5f, 0.975f, 0.03f, 0.95f));
         horBar.rotate(-TrigTable.HALF_PI);
         horBar.setConsumer(CONSUMER.POINTER, false);*/
 
-        containerList = new ComponentGroup(
-                new Component("SKELETON", 0.475f, 0.475f, 0.95f, 0.95f)
+        viewsContainer = new ComponentGroup(
+                new Component("LISTVIEW_SKELETON_" + getID(), 0.475f, 0.475f, 0.95f, 0.95f)
         );
-        containerList.setClip(false);
-        containerList.setConsumer(Consumer.SCREEN_TOUCH, false);
-        containerList.getPaint().setColor(Theme.TRANSPARENT);
+        viewsContainer.setClip(false);
+        viewsContainer.setConsumer(Consumer.SCREEN_TOUCH, false);
+        viewsContainer.getPaint().setColor(Theme.TRANSPARENT);
 
         containerGroup = getView();
-        containerGroup.add(containerList, verticalBar);
-        //containerGroup.registerCallback((OnMouseHover) touches -> scroller.update(sp));
+        containerGroup.add(viewsContainer, verticalBar);
     }
 
     /**
@@ -82,7 +82,7 @@ public class UIListView extends WrapperView implements ViewGroup {
          * Place the specified View
          *
          * @param view a not null {@link View} to be placed
-         * @param i    the View's position (index)
+         * @param i    the View position (index)
          */
 
         void place(View view, int i);
@@ -109,60 +109,60 @@ public class UIListView extends WrapperView implements ViewGroup {
 
     @Override
     public boolean hasClip() {
-        return containerList.hasClip();
+        return viewsContainer.hasClip();
     }
 
     @Override
     public void add(View... views) {
-        containerList.add(views);
+        viewsContainer.add(views);
     }
 
     @Override
     public void add(int i, View view) {
-        containerList.add(i, view);
-
-        if (containerList.indexOf(view) != -1)
+        viewsContainer.add(i, view);
+        if (viewsContainer.indexOf(view) != -1) {
             notifyCallbacks(OnAdd.class, view);
+        }
     }
 
     @Override
     public void remove(View view) {
-        containerList.remove(view);
+        viewsContainer.remove(view);
     }
 
     @Override
     public void removeAll() {
-        containerList.removeAll();
+        viewsContainer.removeAll();
     }
 
     @Override
     public int size() {
-        return containerList.size();
+        return viewsContainer.size();
     }
 
     @Override
     public View get(int i) {
-        return containerList.get(i);
+        return viewsContainer.get(i);
     }
 
     @Override
     public View get(String id) {
-        return containerList.get(id);
+        return viewsContainer.get(id);
     }
 
     @Override
     public int indexOf(View view) {
-        return containerList.indexOf(view);
+        return viewsContainer.indexOf(view);
     }
 
     @Override
     public float[] boundsContent() {
-        return containerList.boundsContent();
+        return viewsContainer.boundsContent();
     }
 
     @Override
     public Iterator<View> iterator() {
-        return containerList.iterator();
+        return viewsContainer.iterator();
     }
 
     /**
@@ -191,11 +191,11 @@ public class UIListView extends WrapperView implements ViewGroup {
         super.update(parent);
 
         if (isVisible()) {
-            float height = containerList.boundsContent()[3];
+            float height = viewsContainer.boundsContent()[3];
             //scroller.setMax(height);
             //scroller.setFactor(height / (2 * containerList.size() + 1));
 
-            containerList.setPosition(0.475f, 0.475f - verticalBar.getScrollValue());
+            viewsContainer.setPosition(0.475f, 0.475f - verticalBar.getScrollValue());
             //scroller.getValue() / bounds()[3]);
         }
     }

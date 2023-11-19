@@ -45,8 +45,8 @@ public class Sanity {
         return result;
     }
 
-    public static ViewText createTracker(Context context) {
-        return new ComponentTracker(context, 0.95f, 0.95f, 0.1f, 0.1f);
+    public static View createTracker() {
+        return new ComponentTracker(0.95f, 0.95f, 0.1f, 0.1f);
     }
 
     /**
@@ -82,8 +82,7 @@ public class Sanity {
         group.getPaint().setColor(Theme.DARK_GREY);
         group.add(image, text);
 
-        ViewText tracker = createTracker(context);
-
+        View tracker = createTracker();
         root.add(group, tracker);
     }
 
@@ -114,8 +113,7 @@ public class Sanity {
         UICalendar calendar = new UICalendar(new Component("CALENDAR", 0.15f, 0.7f, 0.25f, 0.5f));
         calendar.setRotation(0.05f);
 
-        ViewText tracker = createTracker(context);
-
+        View tracker = createTracker();
         root.add(buttonFilled, buttonSwitch, buttonList, calendar, tracker);
     }
 

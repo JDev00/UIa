@@ -6,7 +6,7 @@ import uia.core.basement.Callback;
 import uia.core.ui.ViewText;
 import uia.core.ui.callbacks.OnClick;
 import uia.physical.theme.Theme;
-import uia.physical.wrapper.WrapperView;
+import uia.physical.WrapperView;
 import uia.utility.GeometryFactory;
 import uia.physical.Component;
 import uia.physical.ComponentGroup;

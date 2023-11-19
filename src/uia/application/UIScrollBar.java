@@ -11,7 +11,7 @@ import uia.physical.ComponentGroup;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.theme.Theme;
 import uia.physical.theme.ThemeDarcula;
-import uia.physical.wrapper.WrapperView;
+import uia.physical.WrapperView;
 import uia.utility.Utility;
 
 /**

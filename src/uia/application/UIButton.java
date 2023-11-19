@@ -5,7 +5,7 @@ import uia.core.ui.View;
 import uia.core.Paint;
 import uia.core.ui.callbacks.OnClick;
 import uia.physical.theme.Theme;
-import uia.physical.wrapper.WrapperView;
+import uia.physical.WrapperView;
 
 /**
  * Button has been developed as starting point for more complex widgets.

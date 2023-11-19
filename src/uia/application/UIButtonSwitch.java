@@ -5,7 +5,7 @@ import uia.physical.theme.ThemeDarcula;
 import uia.core.Paint;
 import uia.core.ui.ViewText;
 import uia.physical.ComponentText;
-import uia.physical.wrapper.WrapperView;
+import uia.physical.WrapperView;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnClick;
 import uia.physical.Component;

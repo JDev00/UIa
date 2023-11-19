@@ -3,7 +3,7 @@ package uia.application;
 import uia.core.basement.Drawable;
 import uia.core.ui.View;
 import uia.physical.theme.Theme;
-import uia.physical.wrapper.WrapperView;
+import uia.physical.WrapperView;
 import uia.core.ui.ViewText;
 import uia.utility.GeometryFactory;
 import uia.physical.Component;

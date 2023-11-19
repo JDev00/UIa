@@ -1,6 +1,8 @@
 package uia.application;
 
 import uia.core.basement.Drawable;
+import uia.core.ui.ViewGroup;
+import uia.physical.*;
 import uia.physical.theme.Theme;
 import uia.physical.theme.ThemeDarcula;
 import uia.core.*;
@@ -8,15 +10,10 @@ import uia.core.ui.View;
 import uia.core.ui.ViewText;
 import uia.core.ui.callbacks.OnMouseEnter;
 import uia.core.ui.callbacks.OnMouseExit;
-import uia.physical.ComponentText;
-import uia.physical.wrapper.WrapperView;
 import uia.core.basement.Callback;
 import uia.core.ui.callbacks.OnClick;
-import uia.physical.wrapper.WrapperViewText;
 import uia.utility.Utility;
 import uia.utility.GeometryFactory;
-import uia.physical.Component;
-import uia.physical.ComponentGroup;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,17 +34,14 @@ public class UICalendar extends WrapperView {
     };
 
     private final Calendar calendar;
-
     private final UIButtonList listUI;
-
+    private final Cell[] cells = new Cell[38];
     private final Font font;
     private final Paint[] paintCell = {
             new Paint().setColor(Theme.TRANSPARENT),
             new Paint().setColor(ThemeDarcula.W_BACKGROUND),
             new Paint().setColor(ThemeDarcula.W_FOREGROUND)
     };
-
-    private final Cell[] cells = new Cell[38];
 
     private int days;
     private int offset;
@@ -106,7 +100,7 @@ public class UICalendar extends WrapperView {
         int[] date = Utility.getDate();
         setDate(date[0], date[1], date[2]);
 
-        ComponentGroup group = (ComponentGroup) getView();
+        ViewGroup group = getView();
         group.add(listUI);
         group.add(cells);
     }
@@ -303,21 +297,21 @@ public class UICalendar extends WrapperView {
     private static class Cell extends WrapperViewText {
         public boolean selected = false;
 
-        public Cell(int number) {
-            super(new ComponentText(new Component("Cell" + number, 0f, 0f, 0f, 0f)));
+        public Cell(String id) {
+            super(new ComponentText(
+                    new Component("CELL_" + id, 0f, 0f, 0f, 0f))
+            );
 
             setAlign(ViewText.AlignY.CENTER);
             setConsumer(Consumer.SCREEN_TOUCH, false);
         }
-
-        private static int NUMBER = 0;
 
         /**
          * Create a new Cell used to represent a day of weeks
          */
 
         public static Cell createWeekDay(String weekDay) {
-            Cell cell = new Cell(NUMBER++);
+            Cell cell = new Cell(weekDay);
             cell.setText(weekDay);
             cell.getTextPaint().setColor(ThemeDarcula.W_FOREGROUND);
             return cell;
@@ -328,7 +322,7 @@ public class UICalendar extends WrapperView {
          */
 
         public static Cell createDay(String day) {
-            Cell cell = new Cell(NUMBER);
+            Cell cell = new Cell(day);
             cell.setText(day);
             cell.getTextPaint().setColor(Theme.WHITE);
             return cell;

@@ -12,7 +12,6 @@ import uia.physical.scroller.WheelScroller;
 import uia.physical.text.MultilineRendererV1;
 import uia.physical.text.TextRenderer;
 import uia.physical.text.InlineRendererV1;
-import uia.physical.wrapper.WrapperView;
 
 /**
  * Implementation of {@link ViewText}

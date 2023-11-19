@@ -14,7 +14,7 @@ import uia.physical.ComponentGroup;
 import uia.physical.ComponentText;
 import uia.physical.message.Messages;
 import uia.physical.theme.Theme;
-import uia.physical.wrapper.WrapperView;
+import uia.physical.WrapperView;
 
 /**
  * Demonstrative example. Draw a simple button that allows to show and hide a popup.

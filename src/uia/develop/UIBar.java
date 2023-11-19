@@ -10,7 +10,7 @@ import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.physical.theme.ThemeDarcula;
 import uia.physical.ComponentGroup;
-import uia.physical.wrapper.WrapperView;
+import uia.physical.WrapperView;
 import uia.physical.Component;
 import uia.physical.ComponentText;
 import uia.utility.Utility;
