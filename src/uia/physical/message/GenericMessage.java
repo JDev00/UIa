@@ -3,7 +3,7 @@ package uia.physical.message;
 import uia.core.basement.Message;
 
 /**
- * GenericMessage has the responsibility to wrap a generic payload
+ * Built-in {@link Message} implementation.
  */
 
 public class GenericMessage implements Message {
