@@ -81,30 +81,27 @@ public class GraphicAWT implements Graphic {
         targetPath.closePath();
     }
 
-    private final Stack<Shape> clipStack = new Stack<>();
+    private final Stack<java.awt.Shape> clipStack = new Stack<>();
     private final Path2D clipPath = new Path2D.Float();
 
     @Override
     public void setClip(Shape shape) {
         Graphics2D graphics = getGraphics();
-
         if (shape != null) {
             buildPathAndStoreInto(shape, clipPath);
             graphics.clip(clipPath);
         } else {
             graphics.setClip(null);
         }
+        clipStack.push(graphics.getClip());
     }
 
     @Override
     public void restoreClip() {
         Graphics2D graphics = getGraphics();
-
         try {
             clipStack.pop();
-            Shape previousClipShape = clipStack.peek();
-            buildPathAndStoreInto(previousClipShape, clipPath);
-            graphics.setClip(clipPath);
+            graphics.setClip(clipStack.peek());
         } catch (Exception error) {
             graphics.setClip(null);
         }
