@@ -1,6 +1,6 @@
 package uia.develop;
 
-import uia.application.UIScrollBar;
+import uia.application.UIScrollbar;
 import uia.application.desktop.ContextSwing;
 import uia.core.ScreenTouch;
 import uia.core.basement.Callback;
@@ -25,7 +25,7 @@ import java.util.Iterator;
 
 public class UIListView extends WrapperView implements ViewGroup {
     /*private final UIScrollBar horBar;*/
-    private final UIScrollBar verticalBar;
+    private final UIScrollbar verticalBar;
     private final ViewGroup containerGroup;
     private final ViewGroup viewsContainer;
     private ViewPositioner viewPositioner;
@@ -45,9 +45,10 @@ public class UIListView extends WrapperView implements ViewGroup {
             }
         };
 
-        verticalBar = new UIScrollBar(
+        verticalBar = new UIScrollbar(
                 new Component("LISTVIEW_VERTICAL_BAR_" + getID(), 0.975f, 0.5f, 0.03f, 0.95f)
-                        .setMaxWidth(10)
+                        .setMaxWidth(10),
+                true
         );
         verticalBar.setConsumer(Consumer.SCREEN_TOUCH, false);
         verticalBar.getPaint().setColor(Theme.BLACK);
@@ -195,7 +196,7 @@ public class UIListView extends WrapperView implements ViewGroup {
             //scroller.setMax(height);
             //scroller.setFactor(height / (2 * containerList.size() + 1));
 
-            viewsContainer.setPosition(0.475f, 0.475f - verticalBar.getScrollValue());
+            viewsContainer.setPosition(0.475f, 0.475f - verticalBar.getValue());
             //scroller.getValue() / bounds()[3]);
         }
     }
