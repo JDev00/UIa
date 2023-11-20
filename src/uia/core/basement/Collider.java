@@ -32,11 +32,12 @@ public interface Collider {
 
     /**
      * Return the collider boundaries as a rectangle.
+     * The top left corner is based on the entire window viewport.
      *
      * @return the boundaries as an array made up of five elements:
      * <ul>
-     *     <li>the top left corner along x-axis;</li>
-     *     <li>the top left corner along y-axis;</li>
+     *     <li>the top left corner on the x-axis;</li>
+     *     <li>the top left corner on the y-axis;</li>
      *     <li>the rectangle width;</li>
      *     <li>the rectangle height;</li>
      *     <li>the rotation in radians</li>
