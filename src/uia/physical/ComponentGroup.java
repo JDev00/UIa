@@ -161,8 +161,8 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
             }
             if (xi < cBound[0]) cBound[0] = xi;
             if (yi < cBound[1]) cBound[1] = yi;
-            if (xi > cBound[2]) cBound[2] = xi + bounds[2];
-            if (yi > cBound[3]) cBound[3] = yi + bounds[3];
+            if (xi + bounds[2] > cBound[2]) cBound[2] = xi + bounds[2];
+            if (yi + bounds[3] > cBound[3]) cBound[3] = yi + bounds[3];
         }
 
         cBound[2] = cBound[2] - cBound[0];
