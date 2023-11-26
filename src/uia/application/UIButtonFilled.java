@@ -2,6 +2,7 @@ package uia.application;
 
 import uia.core.basement.Drawable;
 import uia.core.ui.View;
+import uia.core.ui.ViewGroup;
 import uia.physical.theme.Theme;
 import uia.physical.WrapperView;
 import uia.core.ui.ViewText;
@@ -40,7 +41,7 @@ public class UIButtonFilled extends WrapperView {
         icon.setRotation(right ? 0f : TrigTable.PI);
         icon.getPaint().setColor(Theme.BLACK);
 
-        ((ComponentGroup) getView()).add(viewText, icon);
+        ViewGroup.insert(getView(), viewText, icon);
     }
 
     /**

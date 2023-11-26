@@ -80,10 +80,10 @@ public class Sanity {
 
         ViewGroup group = createViewGroup("GROUP", 0.4f, 0.5f, 0.5f, 0.5f);
         group.getPaint().setColor(Theme.DARK_GREY);
-        group.add(image, text);
+        ViewGroup.insert(group, image, text);
 
         View tracker = createTracker();
-        root.add(group, tracker);
+        ViewGroup.insert(root, group, tracker);
     }
 
     public static void showWidgets() {
@@ -114,7 +114,7 @@ public class Sanity {
         calendar.setRotation(0.05f);
 
         View tracker = createTracker();
-        root.add(buttonFilled, buttonSwitch, buttonList, calendar, tracker);
+        ViewGroup.insert(root, buttonFilled, buttonSwitch, buttonList, calendar, tracker);
     }
 
     public static void main(String[] args) {

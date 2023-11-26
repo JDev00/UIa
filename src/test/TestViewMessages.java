@@ -25,7 +25,7 @@ public class TestViewMessages {
 
         // test setup
         ViewGroup root = createRoot();
-        root.add(createView(TARGET, 0f, 0f, 0.1f, 0.1f));
+        ViewGroup.insert(root, createView(TARGET, 0f, 0f, 0.1f, 0.1f));
 
         Context context = createMockContext();
         context.setView(root);

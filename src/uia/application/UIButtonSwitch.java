@@ -1,6 +1,7 @@
 package uia.application;
 
 import uia.core.basement.Drawable;
+import uia.core.ui.ViewGroup;
 import uia.physical.theme.ThemeDarcula;
 import uia.core.Paint;
 import uia.core.ui.ViewText;
@@ -37,7 +38,7 @@ public class UIButtonSwitch extends WrapperView {
 
         states = new ViewText[]{v1, v2};
 
-        ((ComponentGroup) getView()).add(states);
+        ViewGroup.insert(getView(), states);
     }
 
     /**

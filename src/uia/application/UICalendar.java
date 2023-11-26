@@ -100,9 +100,8 @@ public class UICalendar extends WrapperView {
         int[] date = Utility.getDate();
         setDate(date[0], date[1], date[2]);
 
-        ViewGroup group = getView();
-        group.add(listUI);
-        group.add(cells);
+        ViewGroup.insert(getView(), listUI);
+        ViewGroup.insert(getView(), cells);
     }
 
     /**

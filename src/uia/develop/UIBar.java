@@ -53,10 +53,9 @@ public class UIBar extends WrapperView {
         viewText.getTextPaint().setColor(ThemeDarcula.TEXT);
         viewText.getFont().setSize(17f);
 
-        ViewGroup group = (ViewGroup) getView();
+        ViewGroup group = getView();
         group.setClip(false);
-        group.add(viewText);
-
+        ViewGroup.insert(group, viewText);
 
         fun = s -> Utility.limitDecimals(s, 1);
 

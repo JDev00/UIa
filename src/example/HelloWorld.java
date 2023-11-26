@@ -4,6 +4,7 @@ import uia.application.UIButton;
 import uia.application.desktop.ContextSwing;
 import uia.core.Font;
 import uia.core.Paint;
+import uia.core.ui.ViewGroup;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.ViewText;
@@ -57,7 +58,7 @@ public class HelloWorld extends WrapperView {
         });
 
         // adds button and popup to the HelloWorld group
-        this.<ComponentGroup>getView().add(button, popup);
+        ViewGroup.insert(getView(), button, popup);
     }
 
     private static UIButton createCustomButton() {

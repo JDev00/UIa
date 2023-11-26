@@ -3,6 +3,7 @@ package uia.application;
 import uia.core.basement.Drawable;
 import uia.core.ui.View;
 import uia.core.basement.Callback;
+import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.callbacks.OnClick;
 import uia.physical.theme.Theme;
@@ -56,7 +57,7 @@ public class UIButtonList extends WrapperView {
         viewRight.getPaint().setColor(Theme.BLACK);
         viewRight.registerCallback((OnClick) touches -> show(index + 1));
 
-        ((ComponentGroup) getView()).add(viewText, viewLeft, viewRight);
+        ViewGroup.insert(getView(), viewText, viewLeft, viewRight);
     }
 
     /**

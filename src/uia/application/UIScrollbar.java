@@ -84,7 +84,7 @@ public class UIScrollbar extends WrapperView {
 
         ViewGroup group = getView();
         group.setClip(false);
-        group.add(internalBar);
+        ViewGroup.insert(group, internalBar);
     }
 
     /**

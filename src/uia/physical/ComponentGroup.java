@@ -50,20 +50,18 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     }
 
     @Override
-    public void add(int i, View view) {
-        if (!views.contains(view)) views.add(i, view);
-    }
-
-    @Override
-    public void add(View... views) {
-        for (View i : views) {
-            add(size(), i);
+    public boolean insert(int i, View view) {
+        boolean result = false;
+        if (!views.contains(view)) {
+            views.add(i, view);
+            result = true;
         }
+        return result;
     }
 
     @Override
-    public void remove(View view) {
-        views.remove(view);
+    public boolean remove(View view) {
+        return views.remove(view);
     }
 
     @Override
