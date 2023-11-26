@@ -69,7 +69,7 @@ public class UIScrollbar extends WrapperView {
             }
         });
         registerCallback((OnMouseExit) o -> {
-            if (requestLock()) {
+            if (releaseLock()) {
                 barDragOffset = 0f;
             }
         });
