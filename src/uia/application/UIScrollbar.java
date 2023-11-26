@@ -1,5 +1,6 @@
 package uia.application;
 
+import uia.core.Paint;
 import uia.core.ScreenTouch;
 import uia.core.basement.Drawable;
 import uia.core.ui.View;
@@ -23,7 +24,7 @@ import uia.utility.Utility;
  *     <li>an external bar that is accessed and modified using the standard interface;</li>
  *     <li>an internal bar that represents the current scroll value.</li>
  * </ul>
- * The internal bar can be accessed and modified with {@link #getInternalBar()}.
+ * The internal bar can't be accessed directly.
  * <br>
  * By design, UIScrollbar natively supports dragging and moving the internal bar. The only operation that you have to
  * implement on your own is the scrolling caused by a mouse wheeling event.
@@ -40,6 +41,7 @@ public class UIScrollbar extends WrapperView {
     private float barDragOffset;
     private boolean locked = false;
     private final boolean vertical;
+    private boolean updateInternalBar = false;
 
     public UIScrollbar(View view, boolean vertical) {
         super(new ComponentGroup(view));
@@ -55,33 +57,28 @@ public class UIScrollbar extends WrapperView {
         registerCallback((OnMouseHover) touches -> {
             ScreenTouch touch = touches.get(0);
             if (touch.getAction().equals(ScreenTouch.Action.DRAGGED)) {
-                if (!locked) {
-                    locked = true;
-                    sendMessage(EventTouchScreenMessage.requestLock(getID()));
-                    //
+                if (requestLock()) {
                     barDragOffset = getBarDragOffset(touch.getX(), touch.getY());
                 }
-                updateScroll(touch.getX(), touch.getY() - barDragOffset);
+                updateScroll(touch.getX() - barDragOffset, touch.getY() - barDragOffset);
             }
             if (touch.getAction().equals(ScreenTouch.Action.RELEASED)) {
-                if (locked) {
-                    locked = false;
+                if (releaseLock()) {
                     barDragOffset = 0f;
-                    sendMessage(EventTouchScreenMessage.releaseLock(getID()));
                 }
             }
         });
         registerCallback((OnMouseExit) o -> {
-            if (locked) {
-                locked = false;
+            if (requestLock()) {
                 barDragOffset = 0f;
-                sendMessage(EventTouchScreenMessage.releaseLock(getID()));
             }
         });
 
-        internalBar = vertical
-                ? createVerticalBar()
-                : createHorizontalBar();
+        internalBar = vertical ? createVerticalBar() : createHorizontalBar();
+        internalBar.setGeometry(
+                g -> Drawable.buildRect(g, internalBar.getWidth(), internalBar.getHeight(), 1f),
+                true
+        );
         internalBar.setConsumer(Consumer.SCREEN_TOUCH, false);
         internalBar.getPaint().setColor(Theme.LIGHT_GREY);
 
@@ -90,17 +87,68 @@ public class UIScrollbar extends WrapperView {
         group.add(internalBar);
     }
 
+    /**
+     * Send a message to request the event messages lock
+     */
+
+    private boolean requestLock() {
+        boolean result = false;
+        if (!locked) {
+            result = true;
+            locked = true;
+            sendMessage(EventTouchScreenMessage.requestLock(getID()));
+        }
+        return result;
+    }
+
+    /**
+     * Send a message to release the event messages lock
+     */
+
+    private boolean releaseLock() {
+        boolean result = false;
+        if (locked) {
+            result = true;
+            locked = false;
+            sendMessage(EventTouchScreenMessage.releaseLock(getID()));
+        }
+        return result;
+    }
+
+    /**
+     * Helper function.
+     *
+     * @param x the screen touch position on the x-axis
+     * @return the bar drag offset on the x-axis
+     */
+
     private float getBarDragOffsetX(float x) {
         float[] bounds = internalBar.bounds();
         float xOff = bounds[0] - bounds()[0];
         return Utility.constrain(Math.max(0f, x - xOff), 0f, bounds[2]);
     }
 
+    /**
+     * Helper function.
+     *
+     * @param y the screen touch position on the y-axis
+     * @return the bar drag offset on the y-axis
+     */
+
     private float getBarDragOffsetY(float y) {
         float[] bounds = internalBar.bounds();
         float yOff = bounds[1] - bounds()[1];
         return Utility.constrain(Math.max(0f, y - yOff), 0f, bounds[3]);
     }
+
+    /**
+     * Helper function.
+     * Return the bar dragging offset position on the x-axis or y-axis according to the bar alignment
+     *
+     * @param x the screen touch position on the x-axis
+     * @param y the screen touch position on the y-axis
+     * @return the bar dragging offset position on the x-axis or the y-axis
+     */
 
     private float getBarDragOffset(float x, float y) {
         return vertical ? getBarDragOffsetY(y) : getBarDragOffsetX(x);
@@ -110,21 +158,52 @@ public class UIScrollbar extends WrapperView {
         float[] bounds = bounds();
         float scrollValue;
         if (vertical) {
-            float yFactor = 1f - internalBar.bounds()[3] / bounds[3];
-            scrollValue = (y / yFactor) / bounds[3];
+            float factor = 1f - internalBar.bounds()[3] / bounds[3];
+            scrollValue = (y / factor) / bounds[3];
         } else {
-            float xFactor = 1f - internalBar.bounds()[2] / bounds[2];
-            scrollValue = (x / xFactor) / bounds[2];
+            float factor = 1f - internalBar.bounds()[2] / bounds[2];
+            scrollValue = (x / factor) / bounds[2];
         }
         setValue(scrollValue);
     }
 
     /**
-     * @return the internal bar
+     * Helper method. Update the internal bar position.
      */
 
-    public View getInternalBar() {
-        return internalBar;
+    private void updateInternalBarPosition() {
+        if (vertical) {
+            float off = 0.5f * internalBar.getHeight() / getHeight();
+            internalBar.setPosition(0.5f, Utility.map(val, 0f, 1f, off, 1f - off));
+        } else {
+            float off = 0.5f * internalBar.getWidth() / getWidth();
+            internalBar.setPosition(Utility.map(val, 0f, 1f, off, 1f - off), 0.5f);
+        }
+    }
+
+    /**
+     * Set the internal bar size. More specifically, set the internal bar height when it is vertical
+     * and its width when it is horizontal.
+     *
+     * @param size the internal bar size between [0, 1]
+     */
+
+    public void setInternalBarSize(float size) {
+        size = Utility.constrain(size, 0, 1f);
+        if (vertical) {
+            internalBar.setDimension(0.9f, size);
+        } else {
+            internalBar.setDimension(size, 0.9f);
+        }
+        updateInternalBar = true;
+    }
+
+    /**
+     * @return the internal bar {@link Paint} object
+     */
+
+    public Paint getInternalBarPaint() {
+        return internalBar.getPaint();
     }
 
     /**
@@ -135,14 +214,15 @@ public class UIScrollbar extends WrapperView {
 
     public void setValue(float value) {
         val = Utility.constrain(value, 0f, 1f);
+        updateInternalBarPosition();
+    }
 
-        if (vertical) {
-            float off = 0.5f * internalBar.getHeight() / getHeight();
-            internalBar.setPosition(0.5f, Utility.map(val, 0f, 1f, off, 1f - off));
-        } else {
-            float off = 0.5f * internalBar.getWidth() / getWidth();
-            internalBar.setPosition(Utility.map(val, 0f, 1f, off, 1f - off), 0.5f);
-        }
+    /**
+     * @return the current value between [0, 1]
+     */
+
+    public float getValue() {
+        return val;
     }
 
     /**
@@ -155,18 +235,21 @@ public class UIScrollbar extends WrapperView {
         setValue(val + scrollAmount);
     }
 
-    /**
-     * @return the current value between [0, 1]
-     */
-
-    public float getValue() {
-        return val;
-    }
-
     @Override
     public void setVisible(boolean isVisible) {
         super.setVisible(isVisible);
-        if (!isVisible) locked = false;
+        if (!isVisible && releaseLock()) {
+            barDragOffset = 0f;
+        }
+    }
+
+    @Override
+    public void update(View parent) {
+        if (updateInternalBar) {
+            updateInternalBar = false;
+            updateInternalBarPosition();
+        }
+        super.update(parent);
     }
 
     /**
@@ -174,12 +257,7 @@ public class UIScrollbar extends WrapperView {
      */
 
     private static View createHorizontalBar() {
-        View out = new Component("SCROLLBAR_INTERNAL_BAR", 0.25f, 0.5f, 0.5f, 0.98f);
-        out.setGeometry(
-                g -> Drawable.buildRect(g, out.getWidth(), out.getHeight(), 1f),
-                true
-        );
-        return out;
+        return new Component("SCROLLBAR_INTERNAL_BAR", 0.25f, 0.5f, 0.5f, 0.9f);
     }
 
     /**
@@ -187,11 +265,25 @@ public class UIScrollbar extends WrapperView {
      */
 
     private static View createVerticalBar() {
-        View out = new Component("SCROLLBAR_INTERNAL_BAR", 0.5f, 0.25f, 0.85f, 0.5f);
-        out.setGeometry(
-                g -> Drawable.buildRect(g, out.getWidth(), out.getHeight(), 1f),
-                true
-        );
-        return out;
+        return new Component("SCROLLBAR_INTERNAL_BAR", 0.5f, 0.25f, 0.9f, 0.5f);
     }
+
+    /*public static void main(String[] args) {
+        ViewGroup group = new ComponentGroup(
+                new Component("A", 0.5f, 0.5f, 1f, 1f)
+        );
+        group.add(new UIScrollbar(
+                new Component("B", 0.5f, 0.5f, 0.9f, 0.1f),
+                false
+        ));
+
+        final float[] height = {1f};
+        group.registerCallback((OnClick) touches -> {
+            ((UIScrollbar) group.get("B")).setInternalBarSize(height[0]);
+            height[0] /= 2f;
+        });
+
+        Context context = ContextSwing.createAndStart(1000, 500);
+        context.setView(group);
+    }*/
 }
