@@ -103,6 +103,19 @@ public interface ViewGroup extends View, Iterable<View> {
     float[] boundsContent();
 
     /**
+     * Inserts the specified view as last element in the specified group
+     *
+     * @param group a not null {@link ViewGroup}
+     * @param view  a not null {@link View}
+     * @throws NullPointerException if {@code group == null}
+     */
+
+    static void insert(ViewGroup group, View view) {
+        Objects.requireNonNull(group);
+        group.insert(group.size(), view);
+    }
+
+    /**
      * Inserts the specified views inside the specified group
      *
      * @param group a not null {@link ViewGroup}
