@@ -267,23 +267,4 @@ public class UIScrollbar extends WrapperView {
     private static View createVerticalBar() {
         return new Component("SCROLLBAR_INTERNAL_BAR", 0.5f, 0.25f, 0.9f, 0.5f);
     }
-
-    /*public static void main(String[] args) {
-        ViewGroup group = new ComponentGroup(
-                new Component("A", 0.5f, 0.5f, 1f, 1f)
-        );
-        group.add(new UIScrollbar(
-                new Component("B", 0.5f, 0.5f, 0.9f, 0.1f),
-                false
-        ));
-
-        final float[] height = {1f};
-        group.registerCallback((OnClick) touches -> {
-            ((UIScrollbar) group.get("B")).setInternalBarSize(height[0]);
-            height[0] /= 2f;
-        });
-
-        Context context = ContextSwing.createAndStart(1000, 500);
-        context.setView(group);
-    }*/
 }
