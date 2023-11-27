@@ -154,15 +154,23 @@ public class UIScrollbar extends WrapperView {
         return vertical ? getBarDragOffsetY(y) : getBarDragOffsetX(x);
     }
 
+    /**
+     * Helper function. Updates the scroll value according to the given point
+     */
+
     private void updateScroll(float x, float y) {
         float[] bounds = bounds();
         float scrollValue;
         if (vertical) {
             float factor = 1f - internalBar.bounds()[3] / bounds[3];
-            scrollValue = (y / factor) / bounds[3];
+            scrollValue = factor > 0
+                    ? (y / factor) / bounds[3]
+                    : 0f;
         } else {
             float factor = 1f - internalBar.bounds()[2] / bounds[2];
-            scrollValue = (x / factor) / bounds[2];
+            scrollValue = factor > 0
+                    ? (x / factor) / bounds[2]
+                    : 0f;
         }
         setValue(scrollValue);
     }
