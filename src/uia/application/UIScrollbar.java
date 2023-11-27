@@ -16,7 +16,7 @@ import uia.physical.WrapperView;
 import uia.utility.Utility;
 
 /**
- * Standard UI library component.
+ * Standard UIa component.
  * <br>
  * UIScrollbar represents a default scrollbar. It can be set vertical or horizontal at the creation time.
  * It consists of two graphical elements:
@@ -29,7 +29,7 @@ import uia.utility.Utility;
  * By design, UIScrollbar natively supports dragging and moving the internal bar. The only operation that you have to
  * implement on your own is the scrolling caused by a mouse wheeling event.
  * <br>
- * To keep this component as simple as possible, the UIScrollbar value (accessed with {@link #getValue()})
+ * To keep this component as simple as possible, the scroll value (accessed with {@link #getValue()})
  * is bounded between [0, 1].
  *
  * @apiNote UIScrollbar doesn't fully support rotation, so rotate it carefully.
