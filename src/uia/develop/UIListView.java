@@ -237,7 +237,7 @@ public class UIListView extends WrapperView implements ViewGroup {
             ViewGroup.insert(group, createView(-1));
         });
 
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 10; i++) {
             ViewGroup.insert(group, createView(i));
         }
 

@@ -162,6 +162,11 @@ public final class Component implements View {
     public void setDimension(float width, float height) {
         container[2] = max(0, width);
         container[3] = max(0, height);
+
+        // TODO: approfondire
+        if (parent != null) {
+            updateShape(parent.bounds(), parent.getWidth(), parent.getHeight());
+        }
     }
 
     @Override
@@ -398,8 +403,12 @@ public final class Component implements View {
         }
     }
 
+    private View parent;
+
     @Override
     public void update(View parent) {
+        this.parent = parent;
+
         if (visible) {
 
             if (!parent.isOnFocus() && focus) {
