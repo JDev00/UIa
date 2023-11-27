@@ -4,6 +4,7 @@ import uia.application.UIScrollbar;
 import uia.application.desktop.ContextSwing;
 import uia.core.ScreenTouch;
 import uia.core.basement.Callback;
+import uia.core.ui.callbacks.OnClick;
 import uia.core.ui.callbacks.OnMouseHover;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
@@ -46,7 +47,7 @@ public class UIListView extends WrapperView implements ViewGroup {
         };
 
         verticalBar = new UIScrollbar(
-                new Component("LISTVIEW_VERTICAL_BAR_" + getID(), 0.975f, 0.5f, 0.03f, 0.95f)
+                new Component("LISTVIEW_VERTICAL_BAR_" + getID(), 0.975f, 0.5f, 0.03f, 0.98f)
                         .setMaxWidth(10),
                 true
         );
@@ -55,7 +56,8 @@ public class UIListView extends WrapperView implements ViewGroup {
 
         registerCallback((OnMouseHover) touches -> {
             ScreenTouch screenTouch = touches.get(0);
-            verticalBar.scroll(0.1f * screenTouch.getWheelRotation());
+            //System.out.println(screenTouch.getWheelRotation());
+            //verticalBar.scroll(0.1f * screenTouch.getWheelRotation());
         });
 
         /*horBar = new UIScrollBar(new Component("HORBAR", 0.5f, 0.975f, 0.03f, 0.95f));
@@ -70,7 +72,7 @@ public class UIListView extends WrapperView implements ViewGroup {
         viewsContainer.getPaint().setColor(Theme.TRANSPARENT);
 
         containerGroup = getView();
-        containerGroup.add(viewsContainer, verticalBar);
+        ViewGroup.insert(containerGroup, viewsContainer, verticalBar);
     }
 
     /**
@@ -114,21 +116,21 @@ public class UIListView extends WrapperView implements ViewGroup {
     }
 
     @Override
-    public void add(View... views) {
-        viewsContainer.add(views);
-    }
-
-    @Override
-    public void add(int i, View view) {
-        viewsContainer.add(i, view);
-        if (viewsContainer.indexOf(view) != -1) {
+    public boolean insert(int i, View view) {
+        boolean result = viewsContainer.insert(i, view);
+        if (result) {
             notifyCallbacks(OnAdd.class, view);
         }
+        return result;
     }
 
     @Override
-    public void remove(View view) {
-        viewsContainer.remove(view);
+    public boolean remove(View view) {
+        boolean result = viewsContainer.remove(view);
+        if (result) {
+            notifyCallbacks(OnRemove.class, view);
+        }
+        return result;
     }
 
     @Override
@@ -181,6 +183,12 @@ public class UIListView extends WrapperView implements ViewGroup {
         //verBar.setScroll(y);
     }
 
+    float yBarHeight = 0f;
+    float offsetYPrev = 0f;
+    float offsetY = 0f;
+    float height = 0f;
+    float heightPrev = 0f;
+
     @Override
     public void update(View parent) {
         if (viewPositioner != null) {
@@ -189,40 +197,57 @@ public class UIListView extends WrapperView implements ViewGroup {
             }
         }
 
+        verticalBar.setInternalBarSize(0.9f);
         super.update(parent);
 
         if (isVisible()) {
-            float height = viewsContainer.boundsContent()[3];
-            //scroller.setMax(height);
-            //scroller.setFactor(height / (2 * containerList.size() + 1));
+            offsetYPrev = offsetY;
+            heightPrev = height;
 
-            viewsContainer.setPosition(0.475f, 0.475f - verticalBar.getValue());
-            //scroller.getValue() / bounds()[3]);
+            height = viewsContainer.boundsContent()[3];
+            offsetY = Math.max(0f, height / bounds()[3] - 1f);
+            yBarHeight = 1f / (offsetY + 1f);
+
+            if (heightPrev != 0 && Float.compare(height, heightPrev) != 0) {
+                float deltaY = -verticalBar.getValue() * 80 / height;
+                //(height - heightPrev) / height;
+                System.out.println(height);
+                //System.out.println(get(0).bounds()[3]);
+                System.out.println("PRE: " + verticalBar.getValue());
+                //verticalBar.scroll(deltaY);
+                System.out.println("POST: " + verticalBar.getValue());
+            }
+
+            //scroller.setFactor(height / (2 * containerList.size() + 1));
+            viewsContainer.setPosition(
+                    0.475f,
+                    0.475f - offsetY * verticalBar.getValue());
         }
     }
 
     //
 
     public static void main(String[] args) {
-        ViewGroup view = new UIListView(new Component("TEST", 0.5f, 0.5f, 0.5f, 0.5f)
-                .setExpanseLimit(1f, 1f));
-        /*view.addCallback((OnClick) p -> {
-            view.setVisible(!view.isVisible());
-        });*/
-        //view.setClip(false);
+        ViewGroup group = new UIListView(
+                new Component("TEST", 0.5f, 0.5f, 0.5f, 0.5f)
+        );
+        group.registerCallback((OnClick) touches -> {
+            ViewGroup.insert(group, createView(-1));
+        });
 
-        for (int i = 0; i < 20; i++) {
-            view.add(createView(i));
+        for (int i = 0; i < 1; i++) {
+            ViewGroup.insert(group, createView(i));
         }
+        //group.get(3).getPaint().setColor(Theme.RED);
 
-        Context context = new ContextSwing(1800, 900);
-        context.setLifecycleStage(Context.LifecycleStage.RUN);
-        context.setView(view);
+        Context context = ContextSwing.createAndStart(1800, 900);
+        context.setView(group);
     }
 
     private static View createView(int number) {
-        ViewText out = new ComponentText(new Component("TEXT", 0f, 0f, 0.9f, 0.2f)
-                .setExpanseLimit(1.1f, 1.1f));
+        ViewText out = new ComponentText(
+                new Component("" + number, 0f, 0f, 0.9f, 0.5f).setMaxHeight(100)
+        );
         out.setText(number + " HELLO!");
         out.setAlign(ViewText.AlignY.CENTER);
         out.getPaint().setColor(ThemeDarcula.W_FOREGROUND);
