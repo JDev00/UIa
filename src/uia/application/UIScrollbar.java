@@ -18,7 +18,7 @@ import uia.utility.Utility;
 /**
  * Standard UIa component.
  * <br>
- * UIScrollbar represents a default scrollbar. It can be set vertical or horizontal at the creation time.
+ * UIScrollbar represents a scrollbar component. It can be set vertical or horizontal at the creation time.
  * It consists of two graphical elements:
  * <ul>
  *     <li>an external bar that is accessed and modified using the standard interface;</li>
@@ -26,11 +26,11 @@ import uia.utility.Utility;
  * </ul>
  * The internal bar can't be accessed directly.
  * <br>
- * By design, UIScrollbar natively supports dragging and moving the internal bar. The only operation that you have to
+ * By design, UIScrollbar supports dragging and moving the internal bar. The only operation that you have to
  * implement on your own is the scrolling caused by a mouse wheeling event.
  * <br>
- * To keep this component as simple as possible, the scroll value (accessed with {@link #getValue()})
- * is bounded between [0, 1].
+ * The scroll value (accessed with {@link #getValue()}) is bounded between [0, max]. The maximum scroll value is set
+ * with {@link #setMaxValue(float)}.
  *
  * @apiNote UIScrollbar doesn't fully support rotation, so rotate it carefully.
  */
@@ -38,6 +38,7 @@ import uia.utility.Utility;
 public class UIScrollbar extends WrapperView {
     private final View internalBar;
     private float val;
+    private float max = 1f;
     private float barDragOffset;
     private boolean locked = false;
     private final boolean vertical;
@@ -164,12 +165,12 @@ public class UIScrollbar extends WrapperView {
         if (vertical) {
             float factor = 1f - internalBar.bounds()[3] / bounds[3];
             scrollValue = factor > 0
-                    ? (y / factor) / bounds[3]
+                    ? max * (y / factor) / bounds[3]
                     : 0f;
         } else {
             float factor = 1f - internalBar.bounds()[2] / bounds[2];
             scrollValue = factor > 0
-                    ? (x / factor) / bounds[2]
+                    ? max * (x / factor) / bounds[2]
                     : 0f;
         }
         setValue(scrollValue);
@@ -182,10 +183,10 @@ public class UIScrollbar extends WrapperView {
     private void updateInternalBarPosition() {
         if (vertical) {
             float off = 0.5f * internalBar.getHeight() / getHeight();
-            internalBar.setPosition(0.5f, Utility.map(val, 0f, 1f, off, 1f - off));
+            internalBar.setPosition(0.5f, Utility.map(val / max, 0f, 1f, off, 1f - off));
         } else {
             float off = 0.5f * internalBar.getWidth() / getWidth();
-            internalBar.setPosition(Utility.map(val, 0f, 1f, off, 1f - off), 0.5f);
+            internalBar.setPosition(Utility.map(val / max, 0f, 1f, off, 1f - off), 0.5f);
         }
     }
 
@@ -215,18 +216,28 @@ public class UIScrollbar extends WrapperView {
     }
 
     /**
+     * Sets the scrollbar max value
+     *
+     * @param max the maximum value greater than or equal to 1
+     */
+
+    public void setMaxValue(float max) {
+        this.max = Math.max(1f, max);
+    }
+
+    /**
      * Set the scrollbar value
      *
-     * @param value the scrollbar value between [0, 1]
+     * @param value the scrollbar value between [0, max]
      */
 
     public void setValue(float value) {
-        val = Utility.constrain(value, 0f, 1f);
+        val = Utility.constrain(value, 0f, max);
         updateInternalBarPosition();
     }
 
     /**
-     * @return the current value between [0, 1]
+     * @return the current value between [0, max]
      */
 
     public float getValue() {
@@ -236,7 +247,7 @@ public class UIScrollbar extends WrapperView {
     /**
      * Scroll this scrollbar of the specified amount
      *
-     * @param scrollAmount a value between [0, 1]
+     * @param scrollAmount a value between [0, max]
      */
 
     public void scroll(float scrollAmount) {
