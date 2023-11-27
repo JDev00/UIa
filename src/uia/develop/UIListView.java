@@ -2,10 +2,8 @@ package uia.develop;
 
 import uia.application.UIScrollbar;
 import uia.application.desktop.ContextSwing;
-import uia.core.ScreenTouch;
 import uia.core.basement.Callback;
 import uia.core.ui.callbacks.OnClick;
-import uia.core.ui.callbacks.OnMouseHover;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
@@ -25,7 +23,7 @@ import java.util.Iterator;
  */
 
 public class UIListView extends WrapperView implements ViewGroup {
-    /*private final UIScrollBar horBar;*/
+    private final UIScrollbar horizontalBar;
     private final UIScrollbar verticalBar;
     private final ViewGroup containerGroup;
     private final ViewGroup viewsContainer;
@@ -53,16 +51,21 @@ public class UIListView extends WrapperView implements ViewGroup {
         );
         verticalBar.setConsumer(Consumer.SCREEN_TOUCH, false);
         verticalBar.getPaint().setColor(Theme.BLACK);
+        verticalBar.setVisible(false);
 
-        registerCallback((OnMouseHover) touches -> {
+        /*registerCallback((OnMouseHover) touches -> {
             ScreenTouch screenTouch = touches.get(0);
             //System.out.println(screenTouch.getWheelRotation());
             //verticalBar.scroll(0.1f * screenTouch.getWheelRotation());
-        });
+        });*/
 
-        /*horBar = new UIScrollBar(new Component("HORBAR", 0.5f, 0.975f, 0.03f, 0.95f));
-        horBar.rotate(-TrigTable.HALF_PI);
-        horBar.setConsumer(CONSUMER.POINTER, false);*/
+        horizontalBar = new UIScrollbar(
+                new Component("HORBAR", 0.5f, 0.975f, 0.9f, 0.05f)
+                        .setMaxHeight(10f),
+                false
+        );
+        horizontalBar.setConsumer(Consumer.SCREEN_TOUCH, false);
+        horizontalBar.setVisible(false);
 
         viewsContainer = new ComponentGroup(
                 new Component("LISTVIEW_SKELETON_" + getID(), 0.475f, 0.475f, 0.95f, 0.95f)
@@ -72,7 +75,7 @@ public class UIListView extends WrapperView implements ViewGroup {
         viewsContainer.getPaint().setColor(Theme.TRANSPARENT);
 
         containerGroup = getView();
-        ViewGroup.insert(containerGroup, viewsContainer, verticalBar);
+        ViewGroup.insert(containerGroup, viewsContainer, horizontalBar, verticalBar);
     }
 
     /**
@@ -178,16 +181,17 @@ public class UIListView extends WrapperView implements ViewGroup {
         this.viewPositioner = viewPositioner;
     }
 
-    public void setScroll(float x, float y) {
-        //horBar.setScroll(x);
-        //verBar.setScroll(y);
+    /**
+     * Define me!
+     */
+
+    public void setScrollValue(float x, float y) {
+        horizontalBar.setValue(x);
+        verticalBar.setValue(y);
     }
 
-    float yBarHeight = 0f;
-    float offsetYPrev = 0f;
-    float offsetY = 0f;
-    float height = 0f;
-    float heightPrev = 0f;
+    float barWidth = 0f;
+    float barHeight = 0f;
 
     @Override
     public void update(View parent) {
@@ -197,56 +201,53 @@ public class UIListView extends WrapperView implements ViewGroup {
             }
         }
 
-        verticalBar.setInternalBarSize(0.9f);
+        horizontalBar.setInternalBarSize(barWidth);
+        verticalBar.setInternalBarSize(barHeight);
         super.update(parent);
 
         if (isVisible()) {
-            offsetYPrev = offsetY;
-            heightPrev = height;
+            horizontalBar.setVisible(barWidth < 1f);
+            verticalBar.setVisible(barHeight < 1f);
 
-            height = viewsContainer.boundsContent()[3];
-            offsetY = Math.max(0f, height / bounds()[3] - 1f);
-            yBarHeight = 1f / (offsetY + 1f);
+            float[] bounds = viewsContainer.boundsContent();
+            float width = bounds[2];
+            float height = bounds[3];
+            float offsetX = Math.max(0f, width / bounds()[2] - 1f);
+            float offsetY = Math.max(0f, height / bounds()[3] - 1f);
+            barWidth = 1f / (offsetX + 1f);
+            barHeight = 1f / (offsetY + 1f);
 
-            if (heightPrev != 0 && Float.compare(height, heightPrev) != 0) {
-                float deltaY = -verticalBar.getValue() * 80 / height;
-                //(height - heightPrev) / height;
-                System.out.println(height);
-                //System.out.println(get(0).bounds()[3]);
-                System.out.println("PRE: " + verticalBar.getValue());
-                //verticalBar.scroll(deltaY);
-                System.out.println("POST: " + verticalBar.getValue());
-            }
+            horizontalBar.setMaxValue(width);
+            verticalBar.setMaxValue(height);
 
-            //scroller.setFactor(height / (2 * containerList.size() + 1));
+            float vx = verticalBar.isVisible() ? 0.475f : 0.5f;
+
             viewsContainer.setPosition(
-                    0.475f,
-                    0.475f - offsetY * verticalBar.getValue());
+                    vx - horizontalBar.getValue() / bounds()[2],
+                    0.475f - verticalBar.getValue() / bounds()[3]
+            );
         }
     }
 
-    //
-
     public static void main(String[] args) {
-        ViewGroup group = new UIListView(
-                new Component("TEST", 0.5f, 0.5f, 0.5f, 0.5f)
+        UIListView group = new UIListView(
+                new Component("TEST", 0.5f, 0.5f, 0.5f, 0.5f).setMaxHeight(300)
         );
         group.registerCallback((OnClick) touches -> {
             ViewGroup.insert(group, createView(-1));
         });
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 500; i++) {
             ViewGroup.insert(group, createView(i));
         }
-        //group.get(3).getPaint().setColor(Theme.RED);
 
-        Context context = ContextSwing.createAndStart(1800, 900);
+        Context context = ContextSwing.createAndStart(1000, 700);
         context.setView(group);
     }
 
     private static View createView(int number) {
         ViewText out = new ComponentText(
-                new Component("" + number, 0f, 0f, 0.9f, 0.5f).setMaxHeight(100)
+                new Component("" + number, 0f, 0f, 0.9f, 0.1f)
         );
         out.setText(number + " HELLO!");
         out.setAlign(ViewText.AlignY.CENTER);
