@@ -1,7 +1,6 @@
 package uia.core;
 
 import uia.core.basement.Collider;
-import uia.core.basement.Movable;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -15,12 +14,12 @@ import static uia.utility.TrigTable.*;
  *     <li>a set of primitives operations on such geometry.</li>
  * </ul>
  * <br>
- * Shape's responsibility is to transform a Geometry object.
+ * Shape responsibility is to transform a Geometry object.
  * <br>
- * <b>By design, shape's geometry is center based.</b>
+ * <b>By design, shape geometry is center based.</b>
  */
 
-public class Shape implements Movable, Collider {
+public class Shape implements Collider {
     private Geometry geometry;
     private ColliderPolicy policy = ColliderPolicy.SAT;
 
@@ -29,7 +28,6 @@ public class Shape implements Movable, Collider {
 
     public Shape() {
         geometry = new Geometry();
-
         bounds = new float[5];
     }
 
@@ -108,25 +106,42 @@ public class Shape implements Movable, Collider {
         this.policy = Objects.requireNonNull(policy);
     }
 
-    @Override
+    /**
+     * Set the Shape absolute position
+     *
+     * @param x the Shape absolute position on the x-axis
+     * @param y the Shape absolute position on the y-axis
+     */
+
     public void setPosition(float x, float y) {
         bounds[0] = x;
         bounds[1] = y;
     }
 
-    @Override
+    /**
+     * Set the Shape dimension
+     *
+     * @param width  the Shape width (>= 0) in pixels
+     * @param height the Shape height (>= 0) in pixels
+     */
+
     public void setDimension(float width, float height) {
         bounds[2] = Math.max(0, width);
         bounds[3] = Math.max(0, height);
     }
 
-    @Override
+    /**
+     * Set the Shape rotation
+     *
+     * @param radians the rotation in radians
+     */
+
     public void setRotation(float radians) {
         bounds[4] = radians % TWO_PI;
     }
 
     /**
-     * @return the shape's width without rotation applied
+     * @return the Shape width without rotation applied
      */
 
     public float getWidth() {
@@ -134,7 +149,7 @@ public class Shape implements Movable, Collider {
     }
 
     /**
-     * @return the shape's height without rotation applied
+     * @return the Shape height without rotation applied
      */
 
     public float getHeight() {

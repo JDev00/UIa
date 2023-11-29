@@ -15,12 +15,6 @@ import java.util.function.Consumer;
 public interface Drawable {
 
     /**
-     * @return the {@link Paint} object
-     */
-
-    Paint getPaint();
-
-    /**
      * Set the Geometry
      *
      * @param builder        a not null {@link Consumer} used to build the geometry
@@ -36,18 +30,36 @@ public interface Drawable {
     Geometry getGeometry();
 
     /**
-     * Make this Drawable visible or not visible.
-     *
-     * @param visible true to set this Drawable visible
+     * @return the {@link Paint} object
      */
 
-    void setVisible(boolean visible);
+    Paint getPaint();
 
     /**
-     * @return true if this Drawable is visible
+     * Set the Drawable position
+     *
+     * @param x the Drawable position on the x-axis
+     * @param y the Drawable position on the y-axis
      */
 
-    boolean isVisible();
+    void setPosition(float x, float y);
+
+    /**
+     * Set the Drawable dimension
+     *
+     * @param width  the Drawable width
+     * @param height the Drawable height
+     */
+
+    void setDimension(float width, float height);
+
+    /**
+     * Set the Drawable rotation
+     *
+     * @param radians the rotation in radians
+     */
+
+    void setRotation(float radians);
 
     /**
      * Draws this Drawable on the specified Graphic
