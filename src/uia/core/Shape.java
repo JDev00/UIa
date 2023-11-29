@@ -51,17 +51,17 @@ public class Shape implements Collider {
     }
 
     /**
-     * Transform the given Vertex according to the shape's position, dimension and rotation and store the result
-     * inside a 'target' Vertex.
+     * Transforms the specified Vertex according to the shape position, dimension and rotation
+     * and stores the result inside a 'target' Vertex.
      * <br>
-     * The given Vertex won't be modified.
+     * The specified Vertex won't be modified.
      * <br>
      * Time required: T(1)
      * <br>
      * Space required: O(1)
      */
 
-    public void transformAndStoreInto(Geometry.Vertex source, TransformedVertex target) {
+    private void transform(Geometry.Vertex source, TransformedVertex target) {
         float x = bounds[2] * source.getX();
         float y = bounds[3] * source.getY();
         float cos = cos(bounds[4]);
@@ -169,6 +169,45 @@ public class Shape implements Collider {
         return outBounds;
     }
 
+    /**
+     * Helper function. Calculates if the specified point is inside this Shape according to RECT collider.
+     */
+
+    private boolean containsRECT(float x, float y) {
+        return Collider.intersects(bounds[0], bounds[1], r_width, r_height, x, y, 1, 1);
+    }
+
+    /**
+     * Helper function. Calculates if the specified point is inside this Shape according to CIRCLE collider.
+     */
+
+    private boolean containsCIRCLE(float x, float y) {
+        float dx = Math.abs(bounds[0] - x);
+        float dy = Math.abs(bounds[1] - y);
+        return Math.sqrt(dx * dx + dy * dy) <= 0.5f * bounds[2];
+    }
+
+    /**
+     * Helper function. Calculates if the specified point is inside this Shape according to SAT collider.
+     */
+
+    private boolean containsSAT(float x, float y) {
+        boolean inside = false;
+        int size = geometry.vertices();
+        TransformedVertex vi = new TransformedVertex();
+        TransformedVertex vj = new TransformedVertex();
+
+        // check if the given point is inside this shape. https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
+        for (int i = 0, j = size - 1; i < size; j = i++) {
+            transform(geometry.get(i), vi);
+            transform(geometry.get(j), vj);
+            if ((vi.y > y) != (vj.y > y) && x < (vj.x - vi.x) * (y - vi.y) / (vj.y - vi.y) + vi.x)
+                inside = !inside;
+        }
+
+        return inside;
+    }
+
     @Override
     public boolean contains(float x, float y) {
         updateDimension();
@@ -182,33 +221,22 @@ public class Shape implements Collider {
         }
     }
 
-    private boolean containsRECT(float x, float y) {
-        return Collider.intersects(bounds[0], bounds[1], r_width, r_height, x, y, 1, 1);
-    }
+    /**
+     * Transforms the source Vertex according to the shape position, dimension and rotation
+     * and stores the result inside a 'target' Vertex.
+     * <br>
+     * <b>The source Vertex won't be modified.</b>
+     *
+     * @param shape  a not null {@link Shape} object
+     * @param source the vertex to transform
+     * @param target the vertex obtained after the transformation
+     * @throws NullPointerException if {@code shape == null or source == null or target == null}
+     */
 
-    private boolean containsCIRCLE(float x, float y) {
-        float dx = Math.abs(bounds[0] - x);
-        float dy = Math.abs(bounds[1] - y);
-        return Math.sqrt(dx * dx + dy * dy) <= 0.5f * bounds[2];
-    }
-
-    private boolean containsSAT(float x, float y) {
-        boolean inside = false;
-
-        int size = geometry.vertices();
-        TransformedVertex vi = new TransformedVertex();
-        TransformedVertex vj = new TransformedVertex();
-
-        // check if the given point is inside this shape.
-        // https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
-        for (int i = 0, j = size - 1; i < size; j = i++) {
-            transformAndStoreInto(geometry.get(i), vi);
-            transformAndStoreInto(geometry.get(j), vj);
-
-            if ((vi.y > y) != (vj.y > y) && x < (vj.x - vi.x) * (y - vi.y) / (vj.y - vi.y) + vi.x)
-                inside = !inside;
-        }
-
-        return inside;
+    public static void transform(Shape shape, Geometry.Vertex source, TransformedVertex target) {
+        Objects.requireNonNull(shape);
+        Objects.requireNonNull(source);
+        Objects.requireNonNull(target);
+        shape.transform(source, target);
     }
 }
