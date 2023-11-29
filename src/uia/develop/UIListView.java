@@ -190,16 +190,24 @@ public class UIListView extends WrapperView implements ViewGroup {
         verticalBar.setValue(y);
     }
 
-    float barWidth = 0f;
-    float barHeight = 0f;
+    /**
+     * Helper function. Updates the view positioner.
+     */
 
-    @Override
-    public void update(View parent) {
+    private void updatePositioner() {
         if (viewPositioner != null) {
             for (int i = 0; i < size(); i++) {
                 viewPositioner.place(get(i), i);
             }
         }
+    }
+
+    float barWidth = 0f;
+    float barHeight = 0f;
+
+    @Override
+    public void update(View parent) {
+        updatePositioner();
 
         horizontalBar.setInternalBarSize(barWidth);
         verticalBar.setInternalBarSize(barHeight);
@@ -228,6 +236,20 @@ public class UIListView extends WrapperView implements ViewGroup {
             );
         }
     }
+
+    /*public static ViewPositioner createVerticalPositioner() {
+        float[] sum = {0f};
+        return (v, i) -> {
+            float[] bounds = bounds();
+            if (bounds[3] != 0) {
+                float h = 1.0f * v.bounds()[3] / (2 * bounds[3]);
+                if (i == 0) sum[0] = 0f;
+                sum[0] += h;
+                v.setPosition(0.5f, sum[0]);
+                sum[0] += h;
+            }
+        };
+    }*/
 
     public static void main(String[] args) {
         UIListView group = new UIListView(
