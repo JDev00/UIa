@@ -12,8 +12,10 @@ import java.util.Iterator;
 import java.util.Objects;
 
 /**
+ * Standard UIa component.
+ * <br>
  * UIListView has been designed to handle a set of views.
- * It automatically provides a vertical and a horizontal scrollbar.
+ * Formally, it is a layout with vertical and horizontal scrollbars.
  */
 
 public class UIListView extends WrapperView implements ViewGroup {
@@ -165,7 +167,10 @@ public class UIListView extends WrapperView implements ViewGroup {
     }
 
     /**
-     * Define me!
+     * Sets the current scroll value
+     *
+     * @param x the scroll value on the x-axis between [0, group content width]
+     * @param y the scroll value on the y-axis between [0, group content height]
      */
 
     public void setScrollValue(float x, float y) {
