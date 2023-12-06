@@ -16,6 +16,7 @@ import uia.physical.theme.ThemeDarcula;
 import uia.physical.WrapperView;
 
 import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * UIListView has been designed to handle a set of views.
@@ -32,39 +33,21 @@ public class UIListView extends WrapperView implements ViewGroup {
     public UIListView(View view) {
         super(new ComponentGroup(view));
 
-        float[] sum = {0f};
-        viewPositioner = (v, i) -> {
-            float[] bounds = bounds();
-            if (bounds[3] != 0) {
-                float h = 1.0f * v.bounds()[3] / (2 * bounds[3]);
-                if (i == 0) sum[0] = 0f;
-                sum[0] += h;
-                v.setPosition(0.5f, sum[0]);
-                sum[0] += h;
-            }
-        };
+        viewPositioner = createVerticalPositioner(this);
 
         verticalBar = new UIScrollbar(
                 new Component("LISTVIEW_VERTICAL_BAR_" + getID(), 0.975f, 0.5f, 0.03f, 0.98f)
                         .setMaxWidth(10),
                 true
         );
-        verticalBar.setConsumer(Consumer.SCREEN_TOUCH, false);
         verticalBar.getPaint().setColor(Theme.BLACK);
         verticalBar.setVisible(false);
-
-        /*registerCallback((OnMouseHover) touches -> {
-            ScreenTouch screenTouch = touches.get(0);
-            //System.out.println(screenTouch.getWheelRotation());
-            //verticalBar.scroll(0.1f * screenTouch.getWheelRotation());
-        });*/
 
         horizontalBar = new UIScrollbar(
                 new Component("HORBAR", 0.5f, 0.975f, 0.9f, 0.05f)
                         .setMaxHeight(10f),
                 false
         );
-        horizontalBar.setConsumer(Consumer.SCREEN_TOUCH, false);
         horizontalBar.setVisible(false);
 
         viewsContainer = new ComponentGroup(
@@ -76,6 +59,12 @@ public class UIListView extends WrapperView implements ViewGroup {
 
         containerGroup = getView();
         ViewGroup.insert(containerGroup, viewsContainer, horizontalBar, verticalBar);
+
+        /*registerCallback((OnMouseHover) touches -> {
+            ScreenTouch screenTouch = touches.get(0);
+            //System.out.println(screenTouch.getWheelRotation());
+            //verticalBar.scroll(0.1f * screenTouch.getWheelRotation());
+        });*/
     }
 
     /**
@@ -217,11 +206,13 @@ public class UIListView extends WrapperView implements ViewGroup {
             horizontalBar.setVisible(barWidth < 1f);
             verticalBar.setVisible(barHeight < 1f);
 
-            float[] bounds = viewsContainer.boundsContent();
-            float width = bounds[2];
-            float height = bounds[3];
-            float offsetX = Math.max(0f, width / bounds()[2] - 1f);
-            float offsetY = Math.max(0f, height / bounds()[3] - 1f);
+            float[] bounds = bounds();
+            float[] boundsContent = viewsContainer.boundsContent();
+            float width = Math.max(0f, boundsContent[2] - bounds[2]);
+            float height = Math.max(0f, boundsContent[3] - bounds[3]);
+            float offsetX = Math.max(0f, width / bounds[2]);
+            float offsetY = Math.max(0f, height / bounds[3]);
+
             barWidth = 1f / (offsetX + 1f);
             barHeight = 1f / (offsetY + 1f);
 
@@ -237,10 +228,19 @@ public class UIListView extends WrapperView implements ViewGroup {
         }
     }
 
-    /*public static ViewPositioner createVerticalPositioner() {
+    /**
+     * Creates a vertical {@link ViewPositioner}
+     *
+     * @param group the {@link ViewGroup} container
+     * @return a new vertical {@link ViewPositioner}
+     * @throws NullPointerException if {@code group == null}
+     */
+
+    public static ViewPositioner createVerticalPositioner(ViewGroup group) {
+        Objects.requireNonNull(group);
         float[] sum = {0f};
+        float[] bounds = group.bounds();
         return (v, i) -> {
-            float[] bounds = bounds();
             if (bounds[3] != 0) {
                 float h = 1.0f * v.bounds()[3] / (2 * bounds[3]);
                 if (i == 0) sum[0] = 0f;
@@ -249,7 +249,7 @@ public class UIListView extends WrapperView implements ViewGroup {
                 sum[0] += h;
             }
         };
-    }*/
+    }
 
     public static void main(String[] args) {
         UIListView group = new UIListView(
