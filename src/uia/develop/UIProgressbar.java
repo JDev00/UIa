@@ -1,5 +1,6 @@
 package uia.develop;
 
+import uia.application.desktop.ContextSwing;
 import uia.core.Shape;
 import uia.core.basement.Drawable;
 import uia.core.ui.View;
@@ -8,6 +9,7 @@ import uia.core.Geometry;
 import uia.core.ui.Graphic;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
+import uia.core.ui.context.Context;
 import uia.physical.theme.ThemeDarcula;
 import uia.physical.ComponentGroup;
 import uia.physical.WrapperView;
@@ -24,18 +26,17 @@ import static uia.utility.TrigTable.*;
  * Progressbar
  */
 
-public class UIBar extends WrapperView {
+public class UIProgressbar extends WrapperView {
     private final Paint paintLine;
     private final Shape shapeLine;
     private final ViewText viewText;
-
     private Function<String, String> fun;
 
     private float val;
     private float min;
     private float max;
 
-    public UIBar(View view) {
+    public UIProgressbar(View view) {
         super(new ComponentGroup(view));
 
         setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
@@ -46,7 +47,9 @@ public class UIBar extends WrapperView {
         paintLine = new Paint().setColor(ThemeDarcula.W_FOREGROUND);
 
         viewText = new ComponentText(new Component("TEXT", 0.5f, 1.25f, 0.225f, 0.5f));
-        viewText.setGeometry(g -> Drawable.buildRect(g, viewText.getWidth(), viewText.getHeight(), 0.5f), true);
+        viewText.setGeometry(g -> Drawable.buildRect(g, viewText.getWidth(), viewText.getHeight(), 0.5f),
+                true
+        );
         viewText.setConsumer(Consumer.SCREEN_TOUCH, false);
         viewText.setAlign(ComponentText.AlignY.CENTER);
         viewText.getPaint().setColor(ThemeDarcula.BACKGROUND);
@@ -192,5 +195,20 @@ public class UIBar extends WrapperView {
 
     public ViewText getText() {
         return viewText;
+    }
+
+    public static void main(String[] args) {
+        UIProgressbar progressbar = new UIProgressbar(
+                new Component("", 0.5f, 0.5f, 0.2f, 0.1f)
+        );
+        progressbar.setValue(0.5f);
+
+        ViewGroup group = new ComponentGroup(
+                new Component("", 0.5f, 0.5f, 1f, 1f)
+        );
+        ViewGroup.insert(group, progressbar);
+
+        Context context = ContextSwing.createAndStart(1000, 500);
+        context.setView(group);
     }
 }
