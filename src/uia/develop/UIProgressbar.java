@@ -1,12 +1,9 @@
 package uia.develop;
 
 import uia.application.desktop.ContextSwing;
-import uia.core.Shape;
+import uia.core.Paint;
 import uia.core.basement.Drawable;
 import uia.core.ui.View;
-import uia.core.Paint;
-import uia.core.Geometry;
-import uia.core.ui.Graphic;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.context.Context;
@@ -15,24 +12,23 @@ import uia.physical.ComponentGroup;
 import uia.physical.WrapperView;
 import uia.physical.Component;
 import uia.physical.ComponentText;
+import uia.utility.TrigTable;
 import uia.utility.Utility;
 
 import java.util.function.Function;
 
-import static java.lang.Math.*;
-import static uia.utility.TrigTable.*;
-
 /**
- * Progressbar
+ * Standard UIa component.
+ * <br>s
+ * Progressbar to describe.
  */
 
 public class UIProgressbar extends WrapperView {
-    private final Paint paintLine;
-    private final Shape shapeLine;
+    private final View internalBar;
     private final ViewText viewText;
-    private Function<String, String> fun;
+    private Function<String, String> textFunction;
 
-    private float val;
+    private float value;
     private float min;
     private float max;
 
@@ -42,11 +38,12 @@ public class UIProgressbar extends WrapperView {
         setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
         getPaint().setColor(ThemeDarcula.W_BACKGROUND);
 
-        shapeLine = new Shape();
+        internalBar = new Component("PROGRESSBAR_INTERNAL_BAR_" + getID(), 0.5f, 0.5f, 1f, 1f);
+        internalBar.getPaint().setColor(ThemeDarcula.W_FOREGROUND);
 
-        paintLine = new Paint().setColor(ThemeDarcula.W_FOREGROUND);
-
-        viewText = new ComponentText(new Component("TEXT", 0.5f, 1.25f, 0.225f, 0.5f));
+        viewText = new ComponentText(
+                new Component("TEXT", 0.5f, 1.275f, 0.225f, 0.5f)
+        );
         viewText.setGeometry(g -> Drawable.buildRect(g, viewText.getWidth(), viewText.getHeight(), 0.5f),
                 true
         );
@@ -58,29 +55,45 @@ public class UIProgressbar extends WrapperView {
 
         ViewGroup group = getView();
         group.setClip(false);
-        ViewGroup.insert(group, viewText);
+        ViewGroup.insert(group, viewText, internalBar);
 
-        fun = s -> Utility.limitDecimals(s, 1);
+        textFunction = s -> Utility.limitDecimals(s, 1);
 
-        setRange(0f, 100f);
-        setValue(val);
+        setRange(0f, 1f);
+        setValue(value);
     }
 
     /**
-     * Set the text for this bar
+     * @return the internal bar {@link Paint}
+     */
+
+    public Paint getInternalBarPaint() {
+        return internalBar.getPaint();
+    }
+
+    /**
+     * @return the information text
+     */
+
+    public ViewText getText() {
+        return viewText;
+    }
+
+    /**
+     * Set the progressbar information text
      *
      * @param fun a not null {@link Function}
      */
 
     public void setText(Function<String, String> fun) {
         if (fun != null) {
-            this.fun = fun;
+            this.textFunction = fun;
             setValue(getValue());
         }
     }
 
     /**
-     * Set the range [min, max] for this bar
+     * Set the progressbar value range
      *
      * @param min the minimum value
      * @param max the maximum value
@@ -90,39 +103,35 @@ public class UIProgressbar extends WrapperView {
         if (min < max) {
             this.min = min;
             this.max = max;
-            setValue(val);
+            setValue(value);
         }
     }
 
     /**
-     * Set the current value for this bar
+     * Set the progressbar value
      *
-     * @param value the value to assign to this bar
+     * @param value the progressbar value between [min, max]
      */
 
     public void setValue(float value) {
-        val = Utility.constrain(value, min, max);
-        viewText.setText(fun.apply(String.valueOf(val)));
+        this.value = Utility.constrain(value, min, max);
+        viewText.setText(textFunction.apply(String.valueOf(this.value)));
     }
 
-    private void updateShape() {
-        float[] bounds = bounds();
-        float w = getWidth(), h = getHeight();
-        float cos = cos(bounds[4]), sin = sin(bounds[4]);
+    /**
+     * Helper function. Updates the internal bar geometry.
+     */
 
-        Geometry geometry = shapeLine.getGeometry();
-        geometry.clear();
-        geometry.addVertex(0, 0);
-        //geometry.addVertex(mp, 0);
-        //geometry.addVertex(mp, 1);
-        geometry.addVertex(0, 1);
-
-        shapeLine.setPosition(
-                bounds[0] + bounds[2] / 2f - rotX(w, h, cos, sin) / 2f,
-                bounds[1] + bounds[3] / 2f - rotY(w, h, cos, sin) / 2f
-        );
-        shapeLine.setDimension(2 * w, 2 * h);
-        shapeLine.setRotation(bounds[4]);
+    private void updateInternalBarGeometry() {
+        float xVertex = value - 0.5f;
+        internalBar.getGeometry()
+                .clear()
+                .addVertices(
+                        -0.5f, -0.5f,
+                        xVertex, -0.5f,
+                        xVertex, 0.5f,
+                        -0.5f, 0.5f
+                );
     }
 
     private void updateTextBounds() {
@@ -139,22 +148,9 @@ public class UIProgressbar extends WrapperView {
 
     @Override
     public void update(View parent) {
+        updateInternalBarGeometry();
         super.update(parent);
-
-        float mp = abs(val - min) / abs(max - min);
-
-        updateShape();
         updateTextBounds();
-    }
-
-    @Override
-    public void draw(Graphic graphic) {
-        super.draw(graphic);
-
-        graphic.setPaint(paintLine);
-        graphic.setClip(shapeLine);
-        graphic.drawShape(shapeLine);
-        graphic.restoreClip();
     }
 
     /**
@@ -178,30 +174,15 @@ public class UIProgressbar extends WrapperView {
      */
 
     public float getValue() {
-        return val;
-    }
-
-    /**
-     * @return the {@link Paint} used to color the progress line
-     */
-
-    public Paint getPaintLine() {
-        return paintLine;
-    }
-
-    /**
-     * @return the {@link ViewText} object
-     */
-
-    public ViewText getText() {
-        return viewText;
+        return value;
     }
 
     public static void main(String[] args) {
         UIProgressbar progressbar = new UIProgressbar(
                 new Component("", 0.5f, 0.5f, 0.2f, 0.1f)
         );
-        progressbar.setValue(0.5f);
+        progressbar.setValue(0.778f);
+        progressbar.setRotation(TrigTable.HALF_PI);
 
         ViewGroup group = new ComponentGroup(
                 new Component("", 0.5f, 0.5f, 1f, 1f)
