@@ -66,19 +66,21 @@ public class GraphicAWT implements Graphic {
         Geometry geometry = shape.getGeometry();
         Shape.TransformedVertex target = new Shape.TransformedVertex();
 
-        for (int i = 0; i < geometry.vertices(); i++) {
-            Shape.transform(shape, geometry.get(i), target);
-            float x = target.x;
-            float y = target.y;
+        if (geometry.vertices() > 0) {
+            for (int i = 0; i < geometry.vertices(); i++) {
+                Shape.transform(shape, geometry.get(i), target);
+                float x = target.x;
+                float y = target.y;
 
-            if (target.primer) {
-                targetPath.moveTo(x, y);
-            } else {
-                targetPath.lineTo(x, y);
+                if (target.primer) {
+                    targetPath.moveTo(x, y);
+                } else {
+                    targetPath.lineTo(x, y);
+                }
             }
-        }
 
-        targetPath.closePath();
+            targetPath.closePath();
+        }
     }
 
     private final Stack<java.awt.Shape> clipStack = new Stack<>();
