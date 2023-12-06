@@ -33,7 +33,7 @@ public class UIListView extends WrapperView implements ViewGroup {
     public UIListView(View view) {
         super(new ComponentGroup(view));
 
-        viewPositioner = createVerticalPositioner(this);
+        viewPositioner = createVerticalPositioner(this, 1.01f);
 
         verticalBar = new UIScrollbar(
                 new Component("LISTVIEW_VERTICAL_BAR_" + getID(), 0.975f, 0.5f, 0.03f, 0.98f)
@@ -232,21 +232,46 @@ public class UIListView extends WrapperView implements ViewGroup {
      * Creates a vertical {@link ViewPositioner}
      *
      * @param group the {@link ViewGroup} container
+     * @param gap   a value (>= 1) used to space views
      * @return a new vertical {@link ViewPositioner}
      * @throws NullPointerException if {@code group == null}
      */
 
-    public static ViewPositioner createVerticalPositioner(ViewGroup group) {
+    public static ViewPositioner createVerticalPositioner(ViewGroup group, float gap) {
         Objects.requireNonNull(group);
         float[] sum = {0f};
         float[] bounds = group.bounds();
         return (v, i) -> {
             if (bounds[3] != 0) {
-                float h = 1.0f * v.bounds()[3] / (2 * bounds[3]);
+                float h = gap * v.bounds()[3] / (2 * bounds[3]);
                 if (i == 0) sum[0] = 0f;
                 sum[0] += h;
                 v.setPosition(0.5f, sum[0]);
                 sum[0] += h;
+            }
+        };
+    }
+
+    /**
+     * Creates a horizontal {@link ViewPositioner}
+     *
+     * @param group the {@link ViewGroup} container
+     * @param gap   a value (>= 1) used to space views
+     * @return a new horizontal {@link ViewPositioner}
+     * @throws NullPointerException if {@code group == null}
+     */
+
+    public static ViewPositioner createHorizontalPositioner(ViewGroup group, float gap) {
+        Objects.requireNonNull(group);
+        float[] sum = {0f};
+        float[] bounds = group.bounds();
+        return (v, i) -> {
+            if (bounds[3] != 0) {
+                float w = gap * v.bounds()[2] / (2 * bounds[2]);
+                if (i == 0) sum[0] = 0f;
+                sum[0] += w;
+                v.setPosition(sum[0], 0.5f);
+                sum[0] += w;
             }
         };
     }
