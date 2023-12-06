@@ -2,9 +2,12 @@ package uia.physical.theme;
 
 import uia.core.Paint;
 
+/**
+ * Collection of Darcula theme colors
+ */
+
 public interface ThemeDarcula {
-    Paint.Color BACKGROUND = new Paint.Color(40, 42, 54);
-    Paint.Color TEXT = new Paint.Color(255);
-    Paint.Color W_FOREGROUND = new Paint.Color(41, 41, 204);
-    Paint.Color W_BACKGROUND = new Paint.Color(231);
+    Paint.Color BLUE = Theme.createColor(41, 41, 204);
+    Paint.Color DARK_GRAY = Theme.createColor(40, 42, 54);
+    Paint.Color LIGHT_GRAY = Theme.createColor(231);
 }

@@ -27,7 +27,7 @@ public class UIButtonSwitch extends WrapperView {
         setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
         registerCallback((OnClick) touches -> setState(!isFirstState()));
 
-        activePaint = new Paint().setColor(ThemeDarcula.W_FOREGROUND);
+        activePaint = new Paint().setColor(ThemeDarcula.BLUE);
 
         ViewText v1 = createView("LEFT", 0.25f);
         v1.setText("Left");

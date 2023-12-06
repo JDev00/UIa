@@ -7,11 +7,12 @@ import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.context.Context;
-import uia.physical.theme.ThemeDarcula;
+import uia.physical.theme.Theme;
 import uia.physical.ComponentGroup;
 import uia.physical.WrapperView;
 import uia.physical.Component;
 import uia.physical.ComponentText;
+import uia.physical.theme.ThemeDarcula;
 import uia.utility.TrigTable;
 import uia.utility.Utility;
 
@@ -36,21 +37,21 @@ public class UIProgressbar extends WrapperView {
         super(new ComponentGroup(view));
 
         setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
-        getPaint().setColor(ThemeDarcula.W_BACKGROUND);
+        getPaint().setColor(Theme.DARK_GREY);
 
         internalBar = new Component("PROGRESSBAR_INTERNAL_BAR_" + getID(), 0.5f, 0.5f, 1f, 1f);
-        internalBar.getPaint().setColor(ThemeDarcula.W_FOREGROUND);
+        internalBar.getPaint().setColor(Theme.GREEN);
 
         viewText = new ComponentText(
-                new Component("TEXT", 0.5f, 1.275f, 0.225f, 0.5f)
+                new Component("PROGRESSBAR_TEXT_" + getID(), 0.5f, 1.275f, 0.225f, 0.5f)
         );
         viewText.setGeometry(g -> Drawable.buildRect(g, viewText.getWidth(), viewText.getHeight(), 0.5f),
                 true
         );
         viewText.setConsumer(Consumer.SCREEN_TOUCH, false);
         viewText.setAlign(ComponentText.AlignY.CENTER);
-        viewText.getPaint().setColor(ThemeDarcula.BACKGROUND);
-        viewText.getTextPaint().setColor(ThemeDarcula.TEXT);
+        viewText.getPaint().setColor(ThemeDarcula.DARK_GRAY);
+        viewText.getTextPaint().setColor(Theme.WHITE);
         viewText.getFont().setSize(17f);
 
         ViewGroup group = getView();

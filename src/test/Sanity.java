@@ -118,6 +118,7 @@ public class Sanity {
     }
 
     public static void main(String[] args) {
-        showBaseComponents();
+        //showBaseComponents();
+        showWidgets();
     }
 }
