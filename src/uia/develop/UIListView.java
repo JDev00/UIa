@@ -44,10 +44,11 @@ public class UIListView extends WrapperView implements ViewGroup {
         verticalBar.setVisible(false);
 
         horizontalBar = new UIScrollbar(
-                new Component("HORBAR", 0.5f, 0.975f, 0.9f, 0.05f)
+                new Component("LISTVIEW_HORIZONTAL_BAR_" + getID(), 0.5f, 0.975f, 0.9f, 0.05f)
                         .setMaxHeight(10f),
                 false
         );
+        horizontalBar.getPaint().setColor(Theme.BLACK);
         horizontalBar.setVisible(false);
 
         viewsContainer = new ComponentGroup(
@@ -203,9 +204,6 @@ public class UIListView extends WrapperView implements ViewGroup {
         super.update(parent);
 
         if (isVisible()) {
-            horizontalBar.setVisible(barWidth < 1f);
-            verticalBar.setVisible(barHeight < 1f);
-
             float[] bounds = bounds();
             float[] boundsContent = viewsContainer.boundsContent();
             float width = Math.max(0f, boundsContent[2] - bounds[2]);
@@ -216,7 +214,10 @@ public class UIListView extends WrapperView implements ViewGroup {
             barWidth = 1f / (offsetX + 1f);
             barHeight = 1f / (offsetY + 1f);
 
+            horizontalBar.setVisible(barWidth < 1f);
             horizontalBar.setMaxValue(width);
+
+            verticalBar.setVisible(barHeight < 1f);
             verticalBar.setMaxValue(height);
 
             float vx = verticalBar.isVisible() ? 0.475f : 0.5f;
