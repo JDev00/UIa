@@ -28,7 +28,7 @@ public class HelloWorld extends WrapperView {
         // (in this example: Component).
         // Here we will create a ComponentGroup that will allow us to easily manage a set of views.
         super(new ComponentGroup(new Component("HELLO_WORLD", 0.5f, 0.5f, 1f, 1f)));
-        getPaint().setColor(Theme.DARK_GREY);
+        getPaint().setColor(Theme.DARK_GRAY);
 
         // let us create a new specialised View: a Button
         UIButton button = createCustomButton();
@@ -86,7 +86,7 @@ public class HelloWorld extends WrapperView {
                 .setSize(18)
                 .setStyle(Font.STYLE.BOLD);
         // get the Paint used by viewText and set a new color
-        viewText.getTextPaint().setColor(Theme.GREEN);
+        viewText.getTextPaint().setColor(Theme.LIME);
         return result;
     }
 

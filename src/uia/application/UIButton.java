@@ -26,7 +26,7 @@ public class UIButton extends WrapperView {
 
         paintState = new Paint[]{
                 new Paint().setColor(Theme.RED),
-                new Paint().setColor(Theme.GREEN)
+                new Paint().setColor(Theme.LIME)
         };
     }
 

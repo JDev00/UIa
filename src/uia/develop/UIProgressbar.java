@@ -37,10 +37,10 @@ public class UIProgressbar extends WrapperView {
         super(new ComponentGroup(view));
 
         setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
-        getPaint().setColor(Theme.DARK_GREY);
+        getPaint().setColor(Theme.DARK_GRAY);
 
         internalBar = new Component("PROGRESSBAR_INTERNAL_BAR_" + getID(), 0.5f, 0.5f, 1f, 1f);
-        internalBar.getPaint().setColor(Theme.GREEN);
+        internalBar.getPaint().setColor(Theme.LIME);
 
         viewText = new ComponentText(
                 new Component("PROGRESSBAR_TEXT_" + getID(), 0.5f, 1.275f, 0.225f, 0.5f)

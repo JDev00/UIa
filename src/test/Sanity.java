@@ -41,7 +41,7 @@ public class Sanity {
 
     public static ViewGroup createRoot() {
         ViewGroup result = createViewGroup("ROOT_GROUP", 0.5f, 0.5f, 1f, 1f);
-        result.getPaint().setColor(Theme.DARK_GREY);
+        result.getPaint().setColor(Theme.DARK_GRAY);
         return result;
     }
 
@@ -79,7 +79,7 @@ public class Sanity {
         image.registerCallback((OnClick) touches -> System.out.println("ComponentImage clicked!"));
 
         ViewGroup group = createViewGroup("GROUP", 0.4f, 0.5f, 0.5f, 0.5f);
-        group.getPaint().setColor(Theme.DARK_GREY);
+        group.getPaint().setColor(Theme.DARK_GRAY);
         ViewGroup.insert(group, image, text);
 
         View tracker = createTracker();
