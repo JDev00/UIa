@@ -1,17 +1,11 @@
 package uia.application;
 
-import uia.application.desktop.ContextSwing;
 import uia.core.basement.Callback;
-import uia.core.ui.callbacks.OnClick;
-import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
-import uia.core.ui.ViewText;
 import uia.physical.Component;
 import uia.physical.ComponentGroup;
-import uia.physical.ComponentText;
 import uia.physical.theme.Theme;
-import uia.physical.theme.ThemeDarcula;
 import uia.physical.WrapperView;
 
 import java.util.Iterator;
@@ -274,32 +268,5 @@ public class UIListView extends WrapperView implements ViewGroup {
                 sum[0] += w;
             }
         };
-    }
-
-    public static void main(String[] args) {
-        UIListView group = new UIListView(
-                new Component("TEST", 0.5f, 0.5f, 0.5f, 0.5f).setMaxHeight(300)
-        );
-        group.registerCallback((OnClick) touches -> {
-            ViewGroup.insert(group, createView(-1));
-        });
-
-        for (int i = 0; i < 10; i++) {
-            ViewGroup.insert(group, createView(i));
-        }
-
-        Context context = ContextSwing.createAndStart(1000, 700);
-        context.setView(group);
-    }
-
-    private static View createView(int number) {
-        ViewText out = new ComponentText(
-                new Component("" + number, 0f, 0f, 0.9f, 0.1f)
-        );
-        out.setText(number + " HELLO!");
-        out.setAlign(ViewText.AlignY.CENTER);
-        out.getPaint().setColor(ThemeDarcula.W_FOREGROUND);
-        out.setConsumer(Consumer.SCREEN_TOUCH, false);
-        return out;
     }
 }
