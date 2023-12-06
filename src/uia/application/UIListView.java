@@ -1,6 +1,5 @@
-package uia.develop;
+package uia.application;
 
-import uia.application.UIScrollbar;
 import uia.application.desktop.ContextSwing;
 import uia.core.basement.Callback;
 import uia.core.ui.callbacks.OnClick;
