@@ -5,29 +5,33 @@ import uia.core.Paint;
 import uia.core.basement.Drawable;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
-import uia.core.ui.ViewText;
 import uia.core.ui.context.Context;
 import uia.physical.theme.Theme;
 import uia.physical.ComponentGroup;
 import uia.physical.WrapperView;
 import uia.physical.Component;
-import uia.physical.ComponentText;
-import uia.physical.theme.ThemeDarcula;
 import uia.utility.TrigTable;
 import uia.utility.Utility;
 
-import java.util.function.Function;
+import java.util.Objects;
 
 /**
  * Standard UIa component.
- * <br>s
- * Progressbar to describe.
+ * <br>
+ * Progressbar is a widget used to display the progress of a task.
+ * <br>
+ * It consists of two elements:
+ * <ul>
+ *     <li>an external bar that gives the progressbar its shape;</li>
+ *     <li>an internal bar that displays the progress.</li>
+ * </ul>
+ * <br>
+ *
+ * @apiNote Designed to support rotation
  */
 
-public class UIProgressbar extends WrapperView {
+public final class UIProgressbar extends WrapperView {
     private final View internalBar;
-    private final ViewText viewText;
-    private Function<String, String> textFunction;
 
     private float value;
     private float min;
@@ -42,23 +46,9 @@ public class UIProgressbar extends WrapperView {
         internalBar = new Component("PROGRESSBAR_INTERNAL_BAR_" + getID(), 0.5f, 0.5f, 1f, 1f);
         internalBar.getPaint().setColor(Theme.LIME);
 
-        viewText = new ComponentText(
-                new Component("PROGRESSBAR_TEXT_" + getID(), 0.5f, 1.275f, 0.225f, 0.5f)
-        );
-        viewText.setGeometry(g -> Drawable.buildRect(g, viewText.getWidth(), viewText.getHeight(), 0.5f),
-                true
-        );
-        viewText.setConsumer(Consumer.SCREEN_TOUCH, false);
-        viewText.setAlign(ComponentText.AlignY.CENTER);
-        viewText.getPaint().setColor(ThemeDarcula.DARK_GRAY);
-        viewText.getTextPaint().setColor(Theme.WHITE);
-        viewText.getFont().setSize(17f);
-
         ViewGroup group = getView();
-        group.setClip(false);
-        ViewGroup.insert(group, viewText, internalBar);
-
-        textFunction = s -> Utility.limitDecimals(s, 1);
+        group.setClip(true);
+        ViewGroup.insert(group, internalBar);
 
         setRange(0f, 1f);
         setValue(value);
@@ -70,27 +60,6 @@ public class UIProgressbar extends WrapperView {
 
     public Paint getInternalBarPaint() {
         return internalBar.getPaint();
-    }
-
-    /**
-     * @return the information text
-     */
-
-    public ViewText getText() {
-        return viewText;
-    }
-
-    /**
-     * Set the progressbar information text
-     *
-     * @param fun a not null {@link Function}
-     */
-
-    public void setText(Function<String, String> fun) {
-        if (fun != null) {
-            this.textFunction = fun;
-            setValue(getValue());
-        }
     }
 
     /**
@@ -116,7 +85,6 @@ public class UIProgressbar extends WrapperView {
 
     public void setValue(float value) {
         this.value = Utility.constrain(value, min, max);
-        viewText.setText(textFunction.apply(String.valueOf(this.value)));
     }
 
     /**
@@ -135,23 +103,10 @@ public class UIProgressbar extends WrapperView {
                 );
     }
 
-    private void updateTextBounds() {
-        /*float h = 1.33f * viewText.getTextHeight() / desc[1];
-        float yh = 0.75f * h + abs(rotX(0, 0.5f * viewText.getTextWidth() / desc[1], cos(-desc[2]), sin(-desc[2])));
-
-        viewText.setDimension(
-                1.33f * viewText.getTextWidth() / getWidth(),
-                1.33f * viewText.getTextHeight() / desc[1]
-        );
-        viewText.setPosition(mp, 1f + yh);
-        viewText.setRotation(-desc[2]);*/
-    }
-
     @Override
     public void update(View parent) {
         updateInternalBarGeometry();
         super.update(parent);
-        updateTextBounds();
     }
 
     /**
@@ -178,8 +133,20 @@ public class UIProgressbar extends WrapperView {
         return value;
     }
 
+    /**
+     * Creates a new Progressbar based of the specified View
+     *
+     * @param view a not null {@link View}
+     * @throws NullPointerException if {@code view == null}
+     */
+
+    public static UIProgressbar create(View view) {
+        Objects.requireNonNull(view);
+        return new UIProgressbar(view);
+    }
+
     public static void main(String[] args) {
-        UIProgressbar progressbar = new UIProgressbar(
+        UIProgressbar progressbar = UIProgressbar.create(
                 new Component("", 0.5f, 0.5f, 0.2f, 0.1f)
         );
         progressbar.setValue(0.778f);
