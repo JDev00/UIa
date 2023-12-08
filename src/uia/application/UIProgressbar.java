@@ -1,11 +1,9 @@
 package uia.application;
 
-import uia.application.desktop.ContextSwing;
 import uia.core.Paint;
 import uia.core.basement.Drawable;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
-import uia.core.ui.context.Context;
 import uia.physical.theme.Theme;
 import uia.physical.ComponentGroup;
 import uia.physical.WrapperView;
@@ -134,30 +132,28 @@ public final class UIProgressbar extends WrapperView {
     }
 
     /**
-     * Creates a new Progressbar based of the specified View
+     * Creates a new horizontal Progressbar based of the specified View
      *
      * @param view a not null {@link View}
      * @throws NullPointerException if {@code view == null}
      */
 
-    public static UIProgressbar create(View view) {
+    public static UIProgressbar createHorizontal(View view) {
         Objects.requireNonNull(view);
         return new UIProgressbar(view);
     }
 
-    public static void main(String[] args) {
-        UIProgressbar progressbar = UIProgressbar.create(
-                new Component("", 0.5f, 0.5f, 0.2f, 0.1f)
-        );
-        progressbar.setValue(0.778f);
-        progressbar.setRotation(TrigTable.HALF_PI);
+    /**
+     * Creates a new vertical Progressbar based of the specified View
+     *
+     * @param view a not null {@link View}
+     * @throws NullPointerException if {@code view == null}
+     */
 
-        ViewGroup group = new ComponentGroup(
-                new Component("", 0.5f, 0.5f, 1f, 1f)
-        );
-        ViewGroup.insert(group, progressbar);
-
-        Context context = ContextSwing.createAndStart(1000, 500);
-        context.setView(group);
+    public static UIProgressbar createVertical(View view) {
+        Objects.requireNonNull(view);
+        UIProgressbar result = new UIProgressbar(view);
+        result.setRotation(-TrigTable.HALF_PI);
+        return result;
     }
 }
