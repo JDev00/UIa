@@ -16,7 +16,7 @@ import uia.utility.TrigTable;
  * Filled button, with an element on the right or on the left
  */
 
-public class UIButtonFilled extends WrapperView {
+public final class UIButtonFilled extends WrapperView {
     private final View icon;
     private final ViewText viewText;
 

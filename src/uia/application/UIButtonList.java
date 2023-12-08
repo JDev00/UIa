@@ -22,7 +22,7 @@ import java.util.List;
  * Horizontal scrollable list
  */
 
-public class UIButtonList extends WrapperView {
+public final class UIButtonList extends WrapperView {
     private final View viewLeft;
     private final View viewRight;
     private final ViewText viewText;

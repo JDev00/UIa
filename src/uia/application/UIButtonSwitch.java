@@ -16,7 +16,7 @@ import uia.physical.ComponentGroup;
  * Two states switchable button
  */
 
-public class UIButtonSwitch extends WrapperView {
+public final class UIButtonSwitch extends WrapperView {
     private final ViewText[] states;
 
     private final Paint activePaint;

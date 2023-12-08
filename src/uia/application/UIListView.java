@@ -18,7 +18,7 @@ import java.util.Objects;
  * Formally, it is a layout with vertical and horizontal scrollbars.
  */
 
-public class UIListView extends WrapperView implements ViewGroup {
+public final class UIListView extends WrapperView implements ViewGroup {
     private final UIScrollbar horizontalBar;
     private final UIScrollbar verticalBar;
     private final ViewGroup containerGroup;

@@ -35,7 +35,7 @@ import uia.utility.Utility;
  * @apiNote UIScrollbar doesn't fully support rotation, so rotate it carefully.
  */
 
-public class UIScrollbar extends WrapperView {
+public final class UIScrollbar extends WrapperView {
     private final View internalBar;
     private float val;
     private float max = 1f;

@@ -26,7 +26,7 @@ import java.util.List;
 
 // TODO: complete calendar
 
-public class UICalendar extends WrapperView {
+public final class UICalendar extends WrapperView {
     public static final String[] WEEK = new String[]{"M", "T", "W", "T", "F", "S", "S"};
     public static final String[] MONTHS = new String[]{
             "January", "February", "March", "April", "May", "June",

@@ -16,7 +16,7 @@ import uia.physical.WrapperView;
  * To modify the Button's Paint use: {@link #getPaint(STATE)}.
  */
 
-public class UIButton extends WrapperView {
+public final class UIButton extends WrapperView {
     private final Paint[] paintState;
 
     public UIButton(View view) {
