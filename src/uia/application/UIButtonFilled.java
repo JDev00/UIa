@@ -83,19 +83,4 @@ public final class UIButtonFilled extends WrapperView {
     public View getIcon() {
         return icon;
     }
-
-    /*public static void main(String[] args) {
-        UIButtonFilled button = new UIButtonFilled(
-                new Component("", 0.5f, 0.5f, 0.1f, 0.1f), true
-        );
-        button.setText("Ciao!");
-
-        ViewGroup group = new ComponentGroup(
-                new Component("", 0.5f, 0.5f, 1f, 1f)
-        );
-        ViewGroup.insert(group, button);
-
-        Context context = ContextSwing.createAndStart(1000, 500);
-        context.setView(button);
-    }*/
 }
