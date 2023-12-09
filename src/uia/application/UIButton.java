@@ -1,5 +1,6 @@
 package uia.application;
 
+import uia.core.basement.Callback;
 import uia.core.ui.View;
 import uia.core.Paint;
 import uia.core.ui.callbacks.OnClick;
@@ -21,7 +22,6 @@ public final class UIButton extends WrapperView {
     /**
      * Button state representation
      */
-
     public enum STATE {ON, OFF}
 
     private final Paint[] paintState;
@@ -39,12 +39,35 @@ public final class UIButton extends WrapperView {
     }
 
     /**
+     * Callback invoked when Button is turned on.
+     * <br>
+     * It provides the Button.
+     */
+    public interface onEnabled extends Callback<View> {
+    }
+
+    /**
+     * Callback invoked when Button is turned off.
+     * <br>
+     * It provides the Button.
+     */
+    public interface onDisabled extends Callback<View> {
+    }
+
+    /**
      * Enables or disables this button
      *
      * @param enabled true to enable this button
      */
 
     public void enable(boolean enabled) {
+        if (this.enabled != enabled) {
+            if (enabled) {
+                notifyCallbacks(onEnabled.class, this);
+            } else {
+                notifyCallbacks(onDisabled.class, this);
+            }
+        }
         this.enabled = enabled;
         applyPaintByState();
     }
