@@ -100,7 +100,7 @@ public class Sanity {
                 .setColor(Theme.TRANSPARENT)
                 .setStrokeColor(Theme.WHITE)
                 .setStrokeWidth(4);
-        buttonFilled.getViewText().getTextPaint()
+        buttonFilled.getTextPaint()
                 .setColor(Theme.WHITE);
 
         UIButtonSwitch buttonSwitch = new UIButtonSwitch(
