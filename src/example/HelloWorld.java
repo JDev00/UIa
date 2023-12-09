@@ -66,12 +66,12 @@ public class HelloWorld extends WrapperView {
                 new Component("BUTTON", 0.25f, 0.5f, 0.1f, 0.1f, 1.2f, 1.2f)
         ));
         // get the Paint used when the button is activated and set: a new color, stroke color and stroke width
-        result.getPaint(UIButton.STATE.ENABLED)
+        result.getPaint(UIButton.STATE.ON)
                 .setColor(new Paint.Color(100, 200, 255, 100))
                 .setStrokeColor(Theme.WHITE)
                 .setStrokeWidth(8);
         // get the Paint used when the button isn't activated and set: a new color, stroke color and stroke width
-        result.getPaint(UIButton.STATE.DISABLED)
+        result.getPaint(UIButton.STATE.OFF)
                 .setColor(new Paint.Color(200, 100, 0, 50))
                 .setStrokeColor(Theme.RED)
                 .setStrokeWidth(4);
