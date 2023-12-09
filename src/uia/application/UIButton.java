@@ -82,25 +82,4 @@ public final class UIButton extends WrapperView {
     public Paint getPaint(STATE state) {
         return STATE.ON.equals(state) ? paintState[1] : paintState[0];
     }
-
-    /*public static void main(String[] args) {
-        UIButton button = new UIButton(
-                new Component(".", 0.5f, 0.5f, 0.1f, 0.1f)
-        );
-        button.getPaint(STATE.OFF)
-                .setColor(Theme.BLACK)
-                .setStrokeColor(Theme.WHITE)
-                .setStrokeWidth(10);
-        button.getPaint(STATE.ON)
-                .setColor(Theme.CHOCOLATE);
-
-        ViewGroup group = new ComponentGroup(
-                new Component(".", 0.5f, 0.5f, 1f, 1f)
-        );
-        group.getPaint().setColor(Theme.DARK_SLATE_GRAY);
-        ViewGroup.insert(group, button);
-
-        Context context = ContextSwing.createAndStart(1000, 500);
-        context.setView(group);
-    }*/
 }
