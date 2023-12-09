@@ -40,7 +40,7 @@ public class HelloWorld extends WrapperView {
         // add another callback to listen for messages sent to this button
         button.registerCallback((OnMessageReceived) message -> {
             String text = message.<String>getPayload().contains("Hey") ? "Hide\npopup!" : "Show\npopup!";
-            ViewText viewText = (ViewText) button.getView();
+            ViewText viewText = button.getView();
             viewText.setText(text);
         });
 
