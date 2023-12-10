@@ -117,7 +117,7 @@ public final class ComponentHiddenRoot implements View {
     }
 
     @Override
-    public float[] bounds() {
+    public float[] getBounds() {
         return bounds;
     }
 

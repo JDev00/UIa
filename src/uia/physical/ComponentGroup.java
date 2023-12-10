@@ -150,7 +150,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
             if (isVisible()) view.update(this);
 
-            float[] bounds = view.bounds();
+            float[] bounds = view.getBounds();
             float xi = bounds[0], yi = bounds[1];
 
             if (i == 0) {
@@ -172,7 +172,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
      */
 
     private void updateClipShape() {
-        float[] bounds = bounds();
+        float[] bounds = getBounds();
         clipShape.setPosition(bounds[0] + bounds[2] / 2f, bounds[1] + bounds[3] / 2f);
         clipShape.setDimension(getWidth(), getHeight());
         clipShape.setRotation(bounds[4]);

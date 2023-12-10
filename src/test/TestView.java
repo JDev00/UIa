@@ -29,7 +29,7 @@ public class TestView {
 
         waitMillis(100);
 
-        float[] bounds = root.bounds();
+        float[] bounds = root.getBounds();
         float width = root.getWidth();
         float height = root.getHeight();
         float rotation = bounds[4];
@@ -60,7 +60,7 @@ public class TestView {
 
         float width = root.getWidth();
         float height = root.getHeight();
-        float rotation = root.bounds()[4];
+        float rotation = root.getBounds()[4];
 
         testAssertion.expect(rotation).toBe(ROTATION);
         testAssertion.expect(width).toBe(widthPreRotation);

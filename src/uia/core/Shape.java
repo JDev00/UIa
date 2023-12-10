@@ -159,7 +159,7 @@ public class Shape implements Collider {
     private final float[] outBounds = new float[5];
 
     @Override
-    public float[] bounds() {
+    public float[] getBounds() {
         updateDimension();
         outBounds[0] = bounds[0] - 0.5f * r_width;
         outBounds[1] = bounds[1] - 0.5f * r_height;

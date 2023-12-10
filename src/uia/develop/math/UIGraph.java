@@ -202,7 +202,7 @@ public class UIGraph extends WrapperView {
         super.draw(graphic);
 
         if (isVisible()) {
-            float[] bounds = bounds();
+            float[] bounds = getBounds();
             float width = 0.95f * getWidth();
             float height = 0.95f * getHeight();
             float rot = bounds[4];
@@ -421,7 +421,7 @@ public class UIGraph extends WrapperView {
                 new Component("", 0.5f, 0.5f, 0.5f, 0.5f)
         );
         uiGraph.registerCallback((OnClick) p -> {
-            uiGraph.setRotation(uiGraph.bounds()[4] + 0.05f);
+            uiGraph.setRotation(uiGraph.getBounds()[4] + 0.05f);
         });
         uiGraph.getDistribution(0)
                 .add(0f, 0f)

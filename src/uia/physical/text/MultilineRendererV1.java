@@ -24,7 +24,7 @@ public class MultilineRendererV1 implements TextRenderer {
         float textHeight = ViewText.countLines(text) * lineHeight;
 
         float y_adj = TextRenderer.map(view.getAlignY()) * (view.getHeight() - textHeight - 0.75f * lineHeight) / 2f;
-        float rot = view.bounds()[4];
+        float rot = view.getBounds()[4];
 
         int sol; // start of line
         int eol = -1; // end of line

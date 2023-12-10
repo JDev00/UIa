@@ -216,7 +216,7 @@ public final class Component implements View {
     private List<ScreenTouch> extractScreenTouches(List<ScreenTouch> screenTouches) {
         List<ScreenTouch> out = new ArrayList<>(2);
         if (visible) {
-            float[] bounds = shape.bounds();
+            float[] bounds = shape.getBounds();
             int[] offset = {-(int) (bounds[0]), -(int) (bounds[1])};
             screenTouches.forEach(p -> {
                 if (!p.isConsumed()
@@ -237,7 +237,7 @@ public final class Component implements View {
     private List<ScreenTouch> extractLockedScreenTouches(List<ScreenTouch> screenTouches) {
         List<ScreenTouch> out = new ArrayList<>(2);
         if (visible) {
-            float[] bounds = shape.bounds();
+            float[] bounds = shape.getBounds();
             int[] offset = {-(int) (bounds[0]), -(int) (bounds[1])};
             screenTouches.forEach(p -> {
                 p.consume();
@@ -350,7 +350,7 @@ public final class Component implements View {
      */
 
     private void updateShape(View parent) {
-        float[] bounds = parent.bounds();
+        float[] bounds = parent.getBounds();
         float width = parent.getWidth();
         float height = parent.getHeight();
         float xDist = width * (container[0] - 0.5f);
@@ -436,8 +436,8 @@ public final class Component implements View {
     }
 
     @Override
-    public float[] bounds() {
-        return shape.bounds();
+    public float[] getBounds() {
+        return shape.getBounds();
     }
 
     @Override

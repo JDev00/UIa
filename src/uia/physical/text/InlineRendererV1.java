@@ -25,7 +25,7 @@ public class InlineRendererV1 implements TextRenderer {
 
         float xDist = TextRenderer.map(view.getAlignX()) * (lineWidth - longestLine) / 2f;
         float yDist = TextRenderer.map(view.getAlignY()) * (view.getHeight() - 0.75f * lineHeight) / 2f + 0.75f * lineHeight;
-        float rot = view.bounds()[4];
+        float rot = view.getBounds()[4];
 
         graphic.drawText(chars, 0, chars.length,
                 View.getPositionOnX(x, 0f, xDist, yDist, rot),

@@ -124,8 +124,8 @@ public final class UIScrollbar extends WrapperView {
      */
 
     private float getBarDragOffsetX(float x) {
-        float[] bounds = internalBar.bounds();
-        float xOff = bounds[0] - bounds()[0];
+        float[] bounds = internalBar.getBounds();
+        float xOff = bounds[0] - getBounds()[0];
         return Utility.constrain(Math.max(0f, x - xOff), 0f, bounds[2]);
     }
 
@@ -137,8 +137,8 @@ public final class UIScrollbar extends WrapperView {
      */
 
     private float getBarDragOffsetY(float y) {
-        float[] bounds = internalBar.bounds();
-        float yOff = bounds[1] - bounds()[1];
+        float[] bounds = internalBar.getBounds();
+        float yOff = bounds[1] - getBounds()[1];
         return Utility.constrain(Math.max(0f, y - yOff), 0f, bounds[3]);
     }
 
@@ -160,15 +160,15 @@ public final class UIScrollbar extends WrapperView {
      */
 
     private void updateScroll(float x, float y) {
-        float[] bounds = bounds();
+        float[] bounds = getBounds();
         float scrollValue;
         if (vertical) {
-            float factor = 1f - internalBar.bounds()[3] / bounds[3];
+            float factor = 1f - internalBar.getBounds()[3] / bounds[3];
             scrollValue = factor > 0
                     ? max * (y / factor) / bounds[3]
                     : 0f;
         } else {
-            float factor = 1f - internalBar.bounds()[2] / bounds[2];
+            float factor = 1f - internalBar.getBounds()[2] / bounds[2];
             scrollValue = factor > 0
                     ? max * (x / factor) / bounds[2]
                     : 0f;

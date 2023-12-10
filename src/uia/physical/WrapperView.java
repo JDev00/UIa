@@ -138,8 +138,8 @@ public abstract class WrapperView implements View {
     }
 
     @Override
-    public float[] bounds() {
-        return view.bounds();
+    public float[] getBounds() {
+        return view.getBounds();
     }
 
     @Override

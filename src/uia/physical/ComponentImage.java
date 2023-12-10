@@ -58,7 +58,7 @@ public final class ComponentImage extends WrapperView {
         super.draw(graphic);
 
         if (isVisible()) {
-            float[] bounds = bounds();
+            float[] bounds = getBounds();
             float xDist = imgBounds[0] * getWidth();
             float yDist = imgBounds[1] * getHeight();
             float rot = imgBounds[4];

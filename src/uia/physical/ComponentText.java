@@ -195,7 +195,7 @@ public final class ComponentText extends WrapperView implements ViewText {
         super.update(parent);
 
         if (isVisible()) {
-            float[] bounds = bounds();
+            float[] bounds = getBounds();
             float w = getWidth();
             float h = getHeight();
 
