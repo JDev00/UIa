@@ -264,6 +264,10 @@ public final class UIScrollbar extends WrapperView {
 
     @Override
     public void update(View parent) {
+        // bugfix
+        if (val > max) {
+            setValue(max);
+        }
         if (updateInternalBar) {
             updateInternalBar = false;
             updateInternalBarPosition();
