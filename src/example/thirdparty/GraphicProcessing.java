@@ -81,7 +81,7 @@ public class GraphicProcessing implements Graphic {
         Shape.TransformedVertex target = new Shape.TransformedVertex();
 
         for (int i = 0; i < geometry.vertices(); i++) {
-            shape.transformAndStoreInto(geometry.get(i), target);
+            Shape.transform(shape, geometry.get(i), target);
             float x = target.x;
             float y = target.y;
 

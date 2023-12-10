@@ -4,6 +4,7 @@ import uia.application.UIButton;
 import uia.application.desktop.ContextSwing;
 import uia.core.Font;
 import uia.core.Paint;
+import uia.core.ui.ViewGroup;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.ViewText;
@@ -27,7 +28,7 @@ public class HelloWorld extends WrapperView {
         // (in this example: Component).
         // Here we will create a ComponentGroup that will allow us to easily manage a set of views.
         super(new ComponentGroup(new Component("HELLO_WORLD", 0.5f, 0.5f, 1f, 1f)));
-        getPaint().setColor(Theme.DARK_GREY);
+        getPaint().setColor(Theme.DARK_GRAY);
 
         // let us create a new specialised View: a Button
         UIButton button = createCustomButton();
@@ -39,7 +40,7 @@ public class HelloWorld extends WrapperView {
         // add another callback to listen for messages sent to this button
         button.registerCallback((OnMessageReceived) message -> {
             String text = message.<String>getPayload().contains("Hey") ? "Hide\npopup!" : "Show\npopup!";
-            ViewText viewText = (ViewText) button.getView();
+            ViewText viewText = button.getView();
             viewText.setText(text);
         });
 
@@ -57,7 +58,7 @@ public class HelloWorld extends WrapperView {
         });
 
         // adds button and popup to the HelloWorld group
-        this.<ComponentGroup>getView().add(button, popup);
+        ViewGroup.insert(getView(), button, popup);
     }
 
     private static UIButton createCustomButton() {
@@ -65,12 +66,12 @@ public class HelloWorld extends WrapperView {
                 new Component("BUTTON", 0.25f, 0.5f, 0.1f, 0.1f, 1.2f, 1.2f)
         ));
         // get the Paint used when the button is activated and set: a new color, stroke color and stroke width
-        result.getPaint(UIButton.STATE.ENABLED)
+        result.getPaint(UIButton.STATE.ON)
                 .setColor(new Paint.Color(100, 200, 255, 100))
                 .setStrokeColor(Theme.WHITE)
                 .setStrokeWidth(8);
         // get the Paint used when the button isn't activated and set: a new color, stroke color and stroke width
-        result.getPaint(UIButton.STATE.DISABLED)
+        result.getPaint(UIButton.STATE.OFF)
                 .setColor(new Paint.Color(200, 100, 0, 50))
                 .setStrokeColor(Theme.RED)
                 .setStrokeWidth(4);
@@ -85,7 +86,7 @@ public class HelloWorld extends WrapperView {
                 .setSize(18)
                 .setStyle(Font.STYLE.BOLD);
         // get the Paint used by viewText and set a new color
-        viewText.getTextPaint().setColor(Theme.GREEN);
+        viewText.getTextPaint().setColor(Theme.LIME);
         return result;
     }
 

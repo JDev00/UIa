@@ -1,5 +1,7 @@
 package uia.core.ui;
 
+import java.util.Objects;
+
 /**
  * ViewGroup ADT.
  * <br>
@@ -30,33 +32,25 @@ public interface ViewGroup extends View, Iterable<View> {
     boolean hasClip();
 
     /**
-     * Adds the specified Views to this group.
-     * <br>
-     * A duplicated View won't be added.
-     *
-     * @param views a not null array of {@link View}s
-     * @throws NullPointerException if {@code views == null}
-     */
-
-    void add(View... views);
-
-    /**
-     * Adds a new View to this group
+     * Inserts a new View to this group
      *
      * @param i    the position where to insert the View
      * @param view a new not null {@link View}
+     * @return true if the specified View has been added to this group
      * @throws IndexOutOfBoundsException if {@code i < 0 or i >= size()}
+     * @throws NullPointerException      if {@code view == null}
      */
 
-    void add(int i, View view);
+    boolean insert(int i, View view);
 
     /**
-     * Remove the specified View from this group
+     * Removes the specified View from this group
      *
      * @param view a not null {@link View} to remove
+     * @return true if the specified View has been removed from this group
      */
 
-    void remove(View view);
+    boolean remove(View view);
 
     /**
      * Removes all Views from this group
@@ -79,8 +73,8 @@ public interface ViewGroup extends View, Iterable<View> {
     View get(int i);
 
     /**
-     * @param id the View's ID to look for
-     * @return the specified View; a null value will be returned if any View can be located
+     * @param id the View ID to look for
+     * @return the specified View; a null value is returned if no View is found
      */
 
     View get(String id);
@@ -95,7 +89,7 @@ public interface ViewGroup extends View, Iterable<View> {
     int indexOf(View view);
 
     /**
-     * Returns the boundaries occupied by the group's Views.
+     * Returns the boundaries occupied by the group Views.
      *
      * @return a new array made up of four elements:
      * <ul>
@@ -107,4 +101,60 @@ public interface ViewGroup extends View, Iterable<View> {
      */
 
     float[] boundsContent();
+
+    /**
+     * Inserts the specified view as last element in the specified group
+     *
+     * @param group a not null {@link ViewGroup}
+     * @param view  a not null {@link View}
+     * @throws NullPointerException if {@code group == null}
+     */
+
+    static void insert(ViewGroup group, View view) {
+        Objects.requireNonNull(group);
+        group.insert(group.size(), view);
+    }
+
+    /**
+     * Inserts the specified views inside the specified group
+     *
+     * @param group a not null {@link ViewGroup}
+     * @param views a not null Array of {@link View}s
+     * @throws NullPointerException if {@code group == null or views == null or views[i] == null}
+     */
+
+    static void insert(ViewGroup group, View... views) {
+        Objects.requireNonNull(group);
+        Objects.requireNonNull(views);
+        for (View view : views) {
+            group.insert(group.size(), view);
+        }
+    }
+
+    /**
+     * Removes a View from the specified group
+     *
+     * @param group a not null {@link ViewGroup}
+     * @param i     the position, inside the specified group, of the View to remove
+     * @throws NullPointerException      if {@code group == null}
+     * @throws IndexOutOfBoundsException if {@code i < 0 or i >= group.size()}
+     */
+
+    static void remove(ViewGroup group, int i) {
+        Objects.requireNonNull(group);
+        group.remove(group.get(i));
+    }
+
+    /**
+     * Removes the first found View from the specified group
+     *
+     * @param group a not null {@link ViewGroup}
+     * @param id    the id of the View to remove
+     * @throws NullPointerException if {@code group == null}
+     */
+
+    static void remove(ViewGroup group, String id) {
+        Objects.requireNonNull(group);
+        group.remove(group.get(id));
+    }
 }

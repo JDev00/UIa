@@ -1,7 +1,9 @@
 package uia.physical;
 
 import uia.core.*;
+import uia.core.basement.Callable;
 import uia.core.basement.Message;
+import uia.physical.callbacks.CallbackStore;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.message.MessageStore;
@@ -20,14 +22,14 @@ import static java.lang.Math.min;
 import static uia.utility.TrigTable.*;
 
 /**
- * UIa built-in {@link View} implementation.
+ * UIa standard {@link View} implementation
  */
 
 public final class Component implements View {
     private final Paint paint;
     private final Shape shape;
-    private final List<Callback> callbacks;
     private java.util.function.Consumer<Geometry> geometryBuilder;
+    private final Callable callable;
 
     private final String id;
     private final float[] expanse = {1f, 1f, 1f, 1f, 0.125f};
@@ -47,7 +49,7 @@ public final class Component implements View {
 
         container = new float[]{x, y, width, height, 0f};
 
-        callbacks = new ArrayList<>(4);
+        callable = new CallbackStore(4);
 
         paint = new Paint().setColor(new Paint.Color(255));
 
@@ -104,34 +106,17 @@ public final class Component implements View {
 
     @Override
     public void registerCallback(Callback<?> callback) {
-        if (!callbacks.contains(callback)) callbacks.add(callback);
+        callable.registerCallback(callback);
     }
 
     @Override
     public void unregisterCallback(Callback<?> callback) {
-        callbacks.remove(callback);
+        callable.unregisterCallback(callback);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void notifyCallbacks(Class<? extends Callback> type, Object data) {
-        try {
-            String name = type.getName();
-
-            callbacks.forEach(callback -> {
-                Class<?> current = callback.getClass();
-                while (current != null) {
-                    Class<?>[] interfaces = current.getInterfaces();
-                    for (Class<?> i : interfaces) {
-                        if (name.equals(i.getName())) {
-                            callback.update(data);
-                        }
-                    }
-                    current = current.getSuperclass();
-                }
-            });
-        } catch (Exception ignored) {
-        }
+        callable.notifyCallbacks(type, data);
     }
 
     @Override
@@ -162,6 +147,11 @@ public final class Component implements View {
     public void setDimension(float width, float height) {
         container[2] = max(0, width);
         container[3] = max(0, height);
+
+        // TODO: approfondire
+        if (parent != null) {
+            updateShape(parent);
+        }
     }
 
     @Override
@@ -354,12 +344,15 @@ public final class Component implements View {
     }
 
     /**
-     * Update shape position, dimension and rotation
+     * Helper function. Updates shape.
      *
-     * @param bounds a View's bounds
+     * @param parent the view parent
      */
 
-    private void updateShape(float[] bounds, float width, float height) {
+    private void updateShape(View parent) {
+        float[] bounds = parent.bounds();
+        float width = parent.getWidth();
+        float height = parent.getHeight();
         float xDist = width * (container[0] - 0.5f);
         float yDist = height * (container[1] - 0.5f);
         float rot = bounds[4];
@@ -398,8 +391,12 @@ public final class Component implements View {
         }
     }
 
+    private View parent;
+
     @Override
     public void update(View parent) {
+        this.parent = parent;
+
         if (visible) {
 
             if (!parent.isOnFocus() && focus) {
@@ -407,7 +404,7 @@ public final class Component implements View {
             }
 
             updateExpansionAnimation();
-            updateShape(parent.bounds(), parent.getWidth(), parent.getHeight());
+            updateShape(parent);
 
             if (geometryBuilder != null) {
                 geometryBuilder.accept(shape.getGeometry());

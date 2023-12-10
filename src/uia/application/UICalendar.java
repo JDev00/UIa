@@ -26,7 +26,7 @@ import java.util.List;
 
 // TODO: complete calendar
 
-public class UICalendar extends WrapperView {
+public final class UICalendar extends WrapperView {
     public static final String[] WEEK = new String[]{"M", "T", "W", "T", "F", "S", "S"};
     public static final String[] MONTHS = new String[]{
             "January", "February", "March", "April", "May", "June",
@@ -39,8 +39,8 @@ public class UICalendar extends WrapperView {
     private final Font font;
     private final Paint[] paintCell = {
             new Paint().setColor(Theme.TRANSPARENT),
-            new Paint().setColor(ThemeDarcula.W_BACKGROUND),
-            new Paint().setColor(ThemeDarcula.W_FOREGROUND)
+            new Paint().setColor(ThemeDarcula.LIGHT_GRAY),
+            new Paint().setColor(ThemeDarcula.BLUE)
     };
 
     private int days;
@@ -53,7 +53,7 @@ public class UICalendar extends WrapperView {
         super(new ComponentGroup(view));
 
         setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), GeometryFactory.STD_ROUND), true);
-        getPaint().setColor(ThemeDarcula.BACKGROUND);
+        getPaint().setColor(ThemeDarcula.DARK_GRAY);
 
         font = new Font("Arial", Font.STYLE.ITALIC, Font.FONT_SIZE_DESKTOP);
 
@@ -100,9 +100,8 @@ public class UICalendar extends WrapperView {
         int[] date = Utility.getDate();
         setDate(date[0], date[1], date[2]);
 
-        ViewGroup group = getView();
-        group.add(listUI);
-        group.add(cells);
+        ViewGroup.insert(getView(), listUI);
+        ViewGroup.insert(getView(), cells);
     }
 
     /**
@@ -313,7 +312,7 @@ public class UICalendar extends WrapperView {
         public static Cell createWeekDay(String weekDay) {
             Cell cell = new Cell(weekDay);
             cell.setText(weekDay);
-            cell.getTextPaint().setColor(ThemeDarcula.W_FOREGROUND);
+            cell.getTextPaint().setColor(ThemeDarcula.BLUE);
             return cell;
         }
 

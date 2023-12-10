@@ -30,7 +30,7 @@ public class WindowSwing implements Window {
         jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jFrame.getContentPane().setPreferredSize(new Dimension(x, y));
-        jFrame.setTitle("UIa Standard Window");
+        jFrame.setTitle("UIa Swing Window");
         jFrame.pack();
         jFrame.addComponentListener(new ComponentAdapter() {
             @Override

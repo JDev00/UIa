@@ -50,20 +50,18 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     }
 
     @Override
-    public void add(int i, View view) {
-        if (!views.contains(view)) views.add(i, view);
-    }
-
-    @Override
-    public void add(View... views) {
-        for (View i : views) {
-            add(size(), i);
+    public boolean insert(int i, View view) {
+        boolean result = false;
+        if (!views.contains(view)) {
+            views.add(i, view);
+            result = true;
         }
+        return result;
     }
 
     @Override
-    public void remove(View view) {
-        views.remove(view);
+    public boolean remove(View view) {
+        return views.remove(view);
     }
 
     @Override
@@ -161,12 +159,12 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
             }
             if (xi < cBound[0]) cBound[0] = xi;
             if (yi < cBound[1]) cBound[1] = yi;
-            if (xi > cBound[2]) cBound[2] = xi + bounds[2];
-            if (yi > cBound[3]) cBound[3] = yi + bounds[3];
+            if (xi + bounds[2] > cBound[2]) cBound[2] = xi + bounds[2];
+            if (yi + bounds[3] > cBound[3]) cBound[3] = yi + bounds[3];
         }
 
-        cBound[2] = cBound[2] - cBound[0];
-        cBound[3] = cBound[3] - cBound[1];
+        cBound[2] -= cBound[0];
+        cBound[3] -= cBound[1];
     }
 
     /**

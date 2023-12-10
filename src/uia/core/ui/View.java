@@ -16,7 +16,7 @@ import static uia.utility.TrigTable.*;
  * <b>A View is identified by an ID assigned at declaration time.</b>
  */
 
-public interface View extends Callable, Movable, Drawable, Collider {
+public interface View extends Callable, Drawable, Collider {
 
     enum Consumer {SCREEN_TOUCH, KEY}
 
@@ -35,6 +35,20 @@ public interface View extends Callable, Movable, Drawable, Collider {
      */
 
     boolean isOnFocus();
+
+    /**
+     * Makes this View visible or not visible.
+     *
+     * @param visible true to set this View visible
+     */
+
+    void setVisible(boolean visible);
+
+    /**
+     * @return true if this View is visible
+     */
+
+    boolean isVisible();
 
     /**
      * Consumer functionality consumes screen touches or keys that are dispatched to this View.
@@ -67,7 +81,7 @@ public interface View extends Callable, Movable, Drawable, Collider {
     /**
      * Updates this View state
      *
-     * @param parent  the not null parent of this View
+     * @param parent the not null parent of this View
      * @throws NullPointerException if {@code == null}
      */
 

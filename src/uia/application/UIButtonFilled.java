@@ -1,7 +1,10 @@
 package uia.application;
 
+import uia.core.Font;
+import uia.core.Paint;
 import uia.core.basement.Drawable;
 import uia.core.ui.View;
+import uia.core.ui.ViewGroup;
 import uia.physical.theme.Theme;
 import uia.physical.WrapperView;
 import uia.core.ui.ViewText;
@@ -12,10 +15,12 @@ import uia.physical.ComponentText;
 import uia.utility.TrigTable;
 
 /**
- * Filled button, with an element on the right or on the left
+ * Standard UIa component.
+ * <br>
+ * Button with a text and an icon on the right or on the left.
  */
 
-public class UIButtonFilled extends WrapperView {
+public final class UIButtonFilled extends WrapperView {
     private final View icon;
     private final ViewText viewText;
 
@@ -24,31 +29,51 @@ public class UIButtonFilled extends WrapperView {
 
         setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
 
-        viewText = new ComponentText(new Component("TEXT", 0.5f + (right ? -0.05f : 0.05f), 0.5f, 0.5f, 1f)
-                .setExpanseLimit(1f, 1f));
+        viewText = new ComponentText(
+                new Component("BUTTON_FILLED_TEXT_" + getID(), 0.5f + (right ? -0.05f : 0.05f), 0.5f,
+                        0.5f, 1f)
+        );
         viewText.setConsumer(Consumer.SCREEN_TOUCH, false);
         viewText.setAlign(right ? ComponentText.AlignX.LEFT : ComponentText.AlignX.RIGHT);
         viewText.setAlign(ComponentText.AlignY.CENTER);
         viewText.getPaint().setColor(Theme.TRANSPARENT);
         viewText.getTextPaint().setColor(Theme.BLACK);
 
-        icon = new Component("ICON", right ? 0.875f : 0.125f, 0.5f, 0.15f, 0.4f)
-                .setExpanseLimit(1.25f, 1.25f);
+        icon = new Component("BUTTON_FILLED_ICON_" + getID(), right ? 0.875f : 0.125f, 0.5f,
+                0.125f, 0.4f, 1.25f, 1.25f);
         icon.setColliderPolicy(ColliderPolicy.AABB);
         icon.setConsumer(Consumer.SCREEN_TOUCH, false);
         icon.setGeometry(GeometryFactory::arrow, false);
         icon.setRotation(right ? 0f : TrigTable.PI);
         icon.getPaint().setColor(Theme.BLACK);
 
-        ((ComponentGroup) getView()).add(viewText, icon);
+        ViewGroup.insert(getView(), viewText, icon);
     }
 
     /**
-     * @return the {@link ViewText} used to render text
+     * Sets the button text
+     *
+     * @param text a String to display; it could be null
      */
 
-    public ViewText getViewText() {
-        return viewText;
+    public void setText(String text) {
+        viewText.setText(text);
+    }
+
+    /**
+     * @return the {@link Paint} object used to color text
+     */
+
+    public Paint getTextPaint() {
+        return viewText.getTextPaint();
+    }
+
+    /**
+     * @return the text {@link Font} object
+     */
+
+    public Font getFont() {
+        return viewText.getFont();
     }
 
     /**

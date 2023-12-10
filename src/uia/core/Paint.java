@@ -268,6 +268,24 @@ public class Paint {
     }
 
     /**
+     * Checks if the given Paints have the same color
+     *
+     * @param paint1 a not null {@link Paint}
+     * @param paint2 a not null {@link Paint}
+     * @return true if the specified Paints have the same color
+     * @throws NullPointerException if {@code paint1 == null or paint2 == null}
+     */
+
+    public static boolean haveTheSameColor(Paint paint1, Paint paint2) {
+        Objects.requireNonNull(paint1);
+        Objects.requireNonNull(paint2);
+        return paint1.getRed() == paint2.getRed()
+                && paint1.getGreen() == paint2.getGreen()
+                && paint1.getBlue() == paint2.getBlue()
+                && paint1.getAlpha() == paint2.getAlpha();
+    }
+
+    /**
      * Color is used to represent an RGB based color format.
      */
 

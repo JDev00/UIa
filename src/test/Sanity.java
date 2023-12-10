@@ -3,7 +3,7 @@ package test;
 import test.artefacts.ComponentTracker;
 import uia.application.UIButtonFilled;
 import uia.application.UIButtonList;
-import uia.application.UIButtonSwitch;
+import uia.application.UIToggleButton;
 import uia.application.UICalendar;
 import uia.application.desktop.ContextSwing;
 import uia.core.ui.View;
@@ -41,7 +41,7 @@ public class Sanity {
 
     public static ViewGroup createRoot() {
         ViewGroup result = createViewGroup("ROOT_GROUP", 0.5f, 0.5f, 1f, 1f);
-        result.getPaint().setColor(Theme.DARK_GREY);
+        result.getPaint().setColor(Theme.DARK_GRAY);
         return result;
     }
 
@@ -79,11 +79,11 @@ public class Sanity {
         image.registerCallback((OnClick) touches -> System.out.println("ComponentImage clicked!"));
 
         ViewGroup group = createViewGroup("GROUP", 0.4f, 0.5f, 0.5f, 0.5f);
-        group.getPaint().setColor(Theme.DARK_GREY);
-        group.add(image, text);
+        group.getPaint().setColor(Theme.DARK_GRAY);
+        ViewGroup.insert(group, image, text);
 
         View tracker = createTracker();
-        root.add(group, tracker);
+        ViewGroup.insert(root, group, tracker);
     }
 
     public static void showWidgets() {
@@ -100,10 +100,10 @@ public class Sanity {
                 .setColor(Theme.TRANSPARENT)
                 .setStrokeColor(Theme.WHITE)
                 .setStrokeWidth(4);
-        buttonFilled.getViewText().getTextPaint()
+        buttonFilled.getTextPaint()
                 .setColor(Theme.WHITE);
 
-        UIButtonSwitch buttonSwitch = new UIButtonSwitch(
+        UIToggleButton buttonSwitch = new UIToggleButton(
                 new Component("BUTTON_1", 0.85f, 0.5f, 0.15f, 0.1f)
         );
 
@@ -114,10 +114,11 @@ public class Sanity {
         calendar.setRotation(0.05f);
 
         View tracker = createTracker();
-        root.add(buttonFilled, buttonSwitch, buttonList, calendar, tracker);
+        ViewGroup.insert(root, buttonFilled, buttonSwitch, buttonList, calendar, tracker);
     }
 
     public static void main(String[] args) {
-        showBaseComponents();
+        //showBaseComponents();
+        showWidgets();
     }
 }
