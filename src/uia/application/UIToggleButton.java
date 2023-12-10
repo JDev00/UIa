@@ -189,25 +189,4 @@ public final class UIToggleButton extends WrapperView {
                 ? states[0].getFont()
                 : states[1].getFont();
     }
-
-    /*public static void main(String[] args) {
-        UIToggleButton button = new UIToggleButton(
-                new Component("", 0.5f, 0.5f, 0.1f, 0.1f)
-        );
-        button.setState(State.SECOND);
-        button.getPaint()
-                .setColor(Theme.DARK_GRAY)
-                .setStrokeWidth(10)
-                .setStrokeColor(Theme.LIGHT_CORAL);
-        button.getActivePaint().setColor(Theme.CHOCOLATE);
-
-        ViewGroup group = new ComponentGroup(
-                new Component("", 0.5f, 0.5f, 1f, 1f)
-        );
-        group.getPaint().setColor(Theme.LIGHT_GRAY);
-        ViewGroup.insert(group, button);
-
-        Context context = ContextSwing.createAndStart(1000, 500);
-        context.setView(button);
-    }*/
 }
