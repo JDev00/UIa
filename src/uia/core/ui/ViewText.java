@@ -6,7 +6,7 @@ import uia.core.Paint;
 /**
  * ViewText ADT.
  * <br>
- * A ViewText is a specialised View responsible for drawing a text on the screen.
+ * A ViewText is a specialised View responsible for drawing text on the screen.
  */
 
 public interface ViewText extends View {
@@ -56,7 +56,7 @@ public interface ViewText extends View {
     Paint getTextPaint();
 
     /**
-     * Set a new Font to this View
+     * Sets a new Font for text
      *
      * @param font a not null {@link Font} object
      */
@@ -70,9 +70,9 @@ public interface ViewText extends View {
     Font getFont();
 
     /**
-     * Single line functionality ensures that the entire text will be drawn on a single line.
+     * Single line functionality displays all the text on a single line.
      *
-     * @param singleLine true to draw text on a single line
+     * @param singleLine true to display text on a single line
      */
 
     void setSingleLine(boolean singleLine);
@@ -92,7 +92,7 @@ public interface ViewText extends View {
     void setDescription(String description);
 
     /**
-     * Set a String to display.
+     * Sets a String to display.
      * <br>
      * A null String will reset the text and all its attributes.
      *
@@ -108,31 +108,35 @@ public interface ViewText extends View {
     String getText();
 
     /**
-     * Scroll text along x-axis and y-axis.
+     * Scrolls text on the x-axis and y-axis.
      *
-     * @param x the scroll value along x-axis
-     * @param y the scroll value along y-axis
+     * @param x the scroll value on the x-axis
+     * @param y the scroll value on the y-axis
      */
 
     void scrollText(float x, float y);
 
     /**
-     * @return the text with (the longest line of text) in pixel
-     */
-
-    float getTextWidth();
-
-    /**
-     * @return the text height in pixel
-     */
-
-    float getTextHeight();
-
-    /**
-     * Count the number of break lines contained inside the given String.
-     * If the given String is null, then return 0.
+     * Returns the rectangle occupied by the text.
+     * <br>
+     * <b>Note that the top left corner is based on the window viewport and not on the component dimension.</b>
      *
-     * @return the number of break lines inside the given String
+     * @return the text bounds as an array of 5 elements:
+     * <ul>
+     *     <li>the top left corner on the x-axis;</li>
+     *     <li>the top left corner on the y-axis;</li>
+     *     <li>the text width (text longest line) in pixels;</li>
+     *     <li>the text height in pixels;</li>
+     *     <li>the text rotation in radians.</li>
+     * </ul>
+     */
+
+    float[] getTextBounds();
+
+    /**
+     * Counts the number of break lines contained in the specified String.
+     *
+     * @return the number of break lines in the specified String or 0 if it is null
      */
 
     static int countLines(String string) {

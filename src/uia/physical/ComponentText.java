@@ -142,6 +142,14 @@ public final class ComponentText extends WrapperView implements ViewText {
         updateScrollerValue(scroller[1], y);
     }
 
+    private final float[] textBoundsCopy = new float[5];
+
+    @Override
+    public float[] getTextBounds() {
+        System.arraycopy(textBounds, 0, textBoundsCopy, 0, textBoundsCopy.length);
+        return textBoundsCopy;
+    }
+
     /**
      * Set the scroller scroll factor and maximum value
      */
@@ -212,15 +220,5 @@ public final class ComponentText extends WrapperView implements ViewText {
 
             graphic.restoreClip();
         }
-    }
-
-    @Override
-    public float getTextWidth() {
-        return textBounds[2];
-    }
-
-    @Override
-    public float getTextHeight() {
-        return textBounds[3];
     }
 }

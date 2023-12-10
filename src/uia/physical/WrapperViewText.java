@@ -5,7 +5,7 @@ import uia.core.Paint;
 import uia.core.ui.ViewText;
 
 /**
- * WrapperViewText enables the creation of complex artifacts, like every day graphical widgets, specifically
+ * WrapperViewText enables the creation of complex components, like every day graphical widgets, specifically
  * designed to handle texts.
  */
 
@@ -83,12 +83,7 @@ public abstract class WrapperViewText extends WrapperView implements ViewText {
     }
 
     @Override
-    public float getTextWidth() {
-        return viewText.getTextWidth();
-    }
-
-    @Override
-    public float getTextHeight() {
-        return viewText.getTextHeight();
+    public float[] getTextBounds() {
+        return viewText.getTextBounds();
     }
 }
