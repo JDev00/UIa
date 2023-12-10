@@ -3,7 +3,7 @@ package test;
 import test.artefacts.ComponentTracker;
 import uia.application.UIButtonFilled;
 import uia.application.UIButtonList;
-import uia.application.UIButtonSwitch;
+import uia.application.UIToggleButton;
 import uia.application.UICalendar;
 import uia.application.desktop.ContextSwing;
 import uia.core.ui.View;
@@ -103,7 +103,7 @@ public class Sanity {
         buttonFilled.getTextPaint()
                 .setColor(Theme.WHITE);
 
-        UIButtonSwitch buttonSwitch = new UIButtonSwitch(
+        UIToggleButton buttonSwitch = new UIToggleButton(
                 new Component("BUTTON_1", 0.85f, 0.5f, 0.15f, 0.1f)
         );
 
