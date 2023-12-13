@@ -83,6 +83,11 @@ public abstract class WrapperViewText extends WrapperView implements ViewText {
     }
 
     @Override
+    public float[] getScrollValue() {
+        return viewText.getScrollValue();
+    }
+
+    @Override
     public float[] getTextBounds() {
         return viewText.getTextBounds();
     }

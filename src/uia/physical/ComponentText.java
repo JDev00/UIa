@@ -142,6 +142,15 @@ public final class ComponentText extends WrapperView implements ViewText {
         updateScrollerValue(scroller[1], y);
     }
 
+    private final float[] scrollValue = new float[2];
+
+    @Override
+    public float[] getScrollValue() {
+        scrollValue[0] = scroller[0].getValue();
+        scrollValue[1] = scroller[1].getValue();
+        return scrollValue;
+    }
+
     private final float[] textBoundsCopy = new float[5];
 
     @Override

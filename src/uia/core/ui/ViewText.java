@@ -117,6 +117,12 @@ public interface ViewText extends View {
     void scrollText(float x, float y);
 
     /**
+     * @return the scroll value on the x-axis and y-axis
+     */
+
+    float[] getScrollValue();
+
+    /**
      * Returns the rectangle occupied by the text.
      * <br>
      * <b>Note that the top left corner is based on the window viewport and not on the component dimension.</b>
@@ -144,7 +150,9 @@ public interface ViewText extends View {
         if (string != null) {
             char[] chars = string.toCharArray();
             for (char i : chars) {
-                if (i == '\n') lines++;
+                if (i == '\n') {
+                    lines++;
+                }
             }
         }
         return lines;
