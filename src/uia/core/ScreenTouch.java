@@ -1,6 +1,7 @@
 package uia.core;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Mouse pointer or Touch (on mobile context) representation
@@ -8,6 +9,7 @@ import java.util.Arrays;
 
 public class ScreenTouch {
     public enum Action {PRESSED, RELEASED, DRAGGED, MOVED, CLICKED, WHEEL, EXITED}
+
     public enum Button {LEFT, CENTER, RIGHT}
 
     private final Action action;
@@ -111,5 +113,20 @@ public class ScreenTouch {
 
     public ScreenTouch copy() {
         return new ScreenTouch(action, button, desc[0], desc[1], desc[2]);
+    }
+
+    /**
+     * Checks if the specified ScreenTouch made the specified Action
+     *
+     * @param screenTouch a not null {@link ScreenTouch}
+     * @param action      a not null {@link Action}
+     * @return true if the specified ScreenTouch made the specified Action
+     * @throws NullPointerException if {@code screenTouch == null or action == null}
+     */
+
+    public static boolean madeAction(ScreenTouch screenTouch, Action action) {
+        Objects.requireNonNull(screenTouch);
+        Objects.requireNonNull(action);
+        return screenTouch.getAction().equals(action);
     }
 }

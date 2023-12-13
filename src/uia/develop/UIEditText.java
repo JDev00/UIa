@@ -47,12 +47,10 @@ public class UIEditText extends WrapperViewText {
 
     public UIEditText(View view) {
         super(new ComponentText(view));
-
         registerCallback((OnKeyPressed) key -> {
             int code = key.getKeyCode();
             char keyChar = key.getKeyChar();
             boolean selected = getSelectionCount() > 0;
-
             if (defaultAction(key, selected)) {
                 cursor.resetTimer();
             } else if (!illegalCodes.contains(code) && (rule.equals(Rule.ALPHANUMERIC)
@@ -62,13 +60,12 @@ public class UIEditText extends WrapperViewText {
                 addText(index, key.getKeyChar());
             }
         });
-
         final boolean[] selected = {false};
         registerCallback((OnMouseHover) touches -> {
-            ScreenTouch p = touches.get(0);
-            if (p.getAction().equals(ScreenTouch.Action.PRESSED)) {
-                int ind = getIndex(p.getX(), p.getY());
-                //System.out.println(ind);
+            ScreenTouch screenTouch = touches.get(0);
+            if (ScreenTouch.madeAction(screenTouch, ScreenTouch.Action.PRESSED)
+                    || ScreenTouch.madeAction(screenTouch, ScreenTouch.Action.DRAGGED)) {
+                int ind = getIndex(screenTouch.getX(), screenTouch.getY());
                 if (ind != -1) {
                     index = ind;
                     if (!selected[0]) {
@@ -76,7 +73,7 @@ public class UIEditText extends WrapperViewText {
                         hIndex = index;
                     }
                 }
-            } else if (p.getAction().equals(ScreenTouch.Action.RELEASED)) {
+            } else if (ScreenTouch.madeAction(screenTouch, ScreenTouch.Action.RELEASED)) {
                 selected[0] = false;
             }
         });
