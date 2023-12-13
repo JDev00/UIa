@@ -6,6 +6,7 @@ import uia.core.ui.Graphic;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.callbacks.OnKeyPressed;
+import uia.core.ui.callbacks.OnMouseExit;
 import uia.core.ui.callbacks.OnMouseHover;
 import uia.core.ui.context.Context;
 import uia.physical.*;
@@ -71,6 +72,7 @@ public class UIEditText extends WrapperViewText {
                 selected[0] = false;
             }
         });
+        registerCallback((OnMouseExit) o -> selected[0] = false);
 
 
         highlight = new Shape();
@@ -320,16 +322,19 @@ public class UIEditText extends WrapperViewText {
         int ax = TextRenderer.map(getAlignX());
 
         float[] bounds = getBounds();
-        float[] textBounds = getTextBounds();
         float width = bounds[2];
         float lineHeight = font.getLineHeight();
 
-        float x = textBounds[0] + font.getWidth(0, iMin, chars);
-        float y = textBounds[1] + ax * (width - font.getWidth(0, length, chars)) / 2f;
+        float x = bounds[0]
+                + ax * (width - font.getWidth(0, length, chars)) / 2f
+                + font.getWidth(0, iMin, chars)
+                - (ax - 1f) * 4f;
+        // TODO: handle the centered text
+        float y = bounds[1];
         float frame = font.getWidth(iMin, iMax - iMin, chars);
 
-        highlight.setPosition(x + frame / 2f, y + 0.5f * lineHeight);
-        highlight.setDimension(frame / 2f, lineHeight / 2f);
+        highlight.setPosition(x + frame / 2f, y + lineHeight / 2f);
+        highlight.setDimension(frame, lineHeight);
         graphic.drawShape(highlight);
     }
 
@@ -433,7 +438,7 @@ public class UIEditText extends WrapperViewText {
             }
 
             int ax = TextRenderer.map(getAlignX());
-            float width = getBounds()[2] - font.getWidth('o');
+            float width = getBounds()[2];
             float[] bounds = getBounds();
             float[] textBounds = getTextBounds();
             float lineHeight = font.getLineHeight();
@@ -512,22 +517,22 @@ public class UIEditText extends WrapperViewText {
         Font font = getFont();
 
         float[] bounds = getBounds();
-        float[] textBounds = getTextBounds();
-        float width = bounds[2] - font.getWidth('o');
+        //float[] textBounds = getTextBounds();
         float heightLine = font.getLineHeight();
 
         int ax = TextRenderer.map(getAlignX());
-        float x = ax * (bounds[2] - textBounds[2]) / 2f;
         float y = 0f;
 
         if (my > y && my < y + heightLine) {
-            x += ((ax - 1f) * width - ax * font.getWidth(0, length, chars)) / 2f;
+            float x = ax * (bounds[2] - font.getWidth(0, length, chars)) / 2f;
 
             float dim;
             int j = 0;
             while (j < length) {
                 dim = font.getWidth(chars[j]);
-                if (mx < x + dim / 2f) break;
+                if (mx < x + dim / 2f) {
+                    break;
+                }
                 x += dim;
                 j++;
             }
@@ -667,6 +672,8 @@ public class UIEditText extends WrapperViewText {
         UIEditText editText = new UIEditText(
                 new Component("", 0.5f, 0.5f, 0.5f, 0.5f)
         );
+        editText.setAlign(AlignX.RIGHT);
+        editText.setSingleLine(true);
         //editText.setText(Utility.readAll("src\\test\\TestView.java"));
         editText.setText("ciao!");
         editText.getPaint().setColor(Theme.SILVER);
