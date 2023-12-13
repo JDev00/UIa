@@ -481,6 +481,24 @@ public class UIEditText extends WrapperViewText {
      */
 
     private int getIndex(char[] chars, int length, float mx, float my) {
+        int result;
+        if (isSingleLine()) {
+            result = getIndexForInlineText(chars, length, mx, my);
+        } else {
+            result = getIndexForMultilineText(chars, length, mx, my);
+        }
+        return result;
+    }
+
+    /**
+     * Helper function. Returns the character index covered by cursor.
+     * <br>
+     * More formally: given a pointer coordinates, find the nearest character and return its index.
+     *
+     * @return the character index or -1
+     */
+
+    private int getIndexForInlineText(char[] chars, int length, float mx, float my) {
         Font font = getFont();
 
         float[] bounds = getBounds();
@@ -492,47 +510,63 @@ public class UIEditText extends WrapperViewText {
         float x = ax * (bounds[2] - textBounds[2]) / 2f;
         float y = 0f;
 
-        if (isSingleLine()) {
+        if (my > y && my < y + heightLine) {
+            x += ((ax - 1f) * width - ax * font.getWidth(0, length, chars)) / 2f;
 
-            if (my > y && my < y + heightLine) {
-                float dim;
-
-                x += ((ax - 1f) * width - ax * font.getWidth(0, length, chars)) / 2f;
-
-                int j = 0;
-                while (j < length) {
-                    dim = font.getWidth(chars[j]);
-                    if (mx < x + dim / 2f) break;
-                    x += dim;
-                    j++;
-                }
-
-                return j;
+            float dim;
+            int j = 0;
+            while (j < length) {
+                dim = font.getWidth(chars[j]);
+                if (mx < x + dim / 2f) break;
+                x += dim;
+                j++;
             }
 
-        } else {
-            int sol;      // start of line
-            int eol = -1; // end of line
+            return j;
+        }
 
-            for (int i = 0; i <= length; i++) {
+        return -1;
+    }
 
-                if (i == length || chars[i] == '\n') {
-                    sol = eol + 1;
-                    eol = i;
-                    y += heightLine;
+    /**
+     * Helper function. Returns the character index covered by cursor.
+     * <br>
+     * More formally: given a pointer coordinates, find the nearest character and return its index.
+     *
+     * @return the character index or -1
+     */
 
-                    if (my > y - heightLine && my < y) {
-                        float dim;
-                        int j = sol;
-                        while (j < eol) {
-                            dim = font.getWidth(chars[j]);
-                            if (mx < x + dim / 2f) break;
-                            x += dim;
-                            j++;
+    private int getIndexForMultilineText(char[] chars, int length, float mx, float my) {
+        Font font = getFont();
+        float[] bounds = getBounds();
+        float heightLine = font.getLineHeight();
+
+        int ax = TextRenderer.map(getAlignX());
+        float y = 0f;
+
+        int sol;      // start of line
+        int eol = -1; // end of line
+
+        for (int i = 0; i <= length; i++) {
+
+            if (i == length || chars[i] == '\n') {
+                sol = eol + 1;
+                eol = i;
+                y += heightLine;
+                if (my > y - heightLine && my < y) {
+                    float x = ax * (bounds[2] - font.getWidth(sol, eol - sol, chars)) / 2f;
+                    float dim;
+                    int j = sol;
+                    while (j < eol) {
+                        dim = font.getWidth(chars[j]);
+                        if (mx < x + dim / 2f) {
+                            break;
                         }
-
-                        return j;
+                        x += dim;
+                        j++;
                     }
+
+                    return j;
                 }
             }
         }
@@ -566,14 +600,6 @@ public class UIEditText extends WrapperViewText {
 
     public int getSelectionCount() {
         return Math.abs(index - hIndex);
-    }
-
-    /**
-     * @return the text cursor
-     */
-
-    public Cursor getCursor() {
-        return cursor;
     }
 
     /**
