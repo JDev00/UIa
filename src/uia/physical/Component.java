@@ -449,4 +449,28 @@ public final class Component implements View {
     public String getID() {
         return id;
     }
+
+    /**
+     * Makes the specified Shape suitable for the clip region operation.
+     *
+     * @param view  a not null View used to prepare the Shape
+     * @param shape a not null Shape to be prepared to the clip region operation
+     * @throws NullPointerException if {@code view == null or shape == null}
+     */
+
+    public static void makeShapeForClipRegion(View view, Shape shape) {
+        Objects.requireNonNull(view);
+        Objects.requireNonNull(shape);
+
+        float[] bounds = view.getBounds();
+        float width = view.getWidth();
+        float height = view.getHeight();
+        shape.setGeometry(view.getGeometry());
+        shape.setPosition(
+                bounds[0] + bounds[2] / 2f,
+                bounds[1] + bounds[3] / 2f
+        );
+        shape.setDimension(width, height);
+        shape.setRotation(bounds[4]);
+    }
 }

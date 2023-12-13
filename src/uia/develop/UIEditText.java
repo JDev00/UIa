@@ -33,23 +33,21 @@ public class UIEditText extends WrapperViewText {
 
     private final Paint paintHighlight;
     private final Shape highlight;
+    private final Shape clipShape = new Shape();
     private Cursor cursor;
 
     private int index;
     private int hIndex;
-    private float cursorX;
-    private float cursorY;
 
     public UIEditText(View view) {
         super(new ComponentText(view));
         registerCallback((OnKeyPressed) key -> {
-            int code = key.getKeyCode();
-            boolean selected = getSelectionCount() > 0;
-            if (defaultAction(key, selected)) {
+            boolean selectedText = getSelectionCount() > 0;
+            if (defaultAction(key, selectedText)) {
                 cursor.resetTimer();
-            } else if (!illegalCodes.contains(code)) {
+            } else if (!illegalCodes.contains(key.getKeyCode())) {
                 cursor.resetTimer();
-                if (selected) {
+                if (selectedText) {
                     clearSelected();
                 }
                 addText(index, key.getKeyChar());
@@ -74,12 +72,6 @@ public class UIEditText extends WrapperViewText {
         });
         registerCallback((OnMouseExit) o -> selected[0] = false);
 
-
-        highlight = new Shape();
-        GeometryFactory.rect(highlight.getGeometry());
-
-        paintHighlight = new Paint().setColor(Theme.createColor(65, 105, 225, 126));
-
         /*illegalCodes.add(Key.KEY_TAB);
         illegalCodes.add(Key.KEY_SHIFT);
         illegalCodes.add(Key.KEY_CTRL);
@@ -93,6 +85,11 @@ public class UIEditText extends WrapperViewText {
         illegalCodes.add(34);   // PAGE_DOWN
         illegalCodes.add(226);  // KEYPAD LEFT_ARROW
         illegalCodes.add(227);  // KEYPAD RIGHT_ARROW*/
+
+        highlight = new Shape();
+        GeometryFactory.rect(highlight.getGeometry());
+
+        paintHighlight = new Paint().setColor(Theme.createColor(65, 105, 225, 126));
 
         cursor = new Cursor(view.getID());
     }
@@ -121,7 +118,7 @@ public class UIEditText extends WrapperViewText {
         }
     }
 
-    public void addText(int i, char[] in) {
+    private void addText(int i, char[] in) {
         if (charList.add(i, in, 0, in.length)) {
             index += in.length;
             hIndex = index;
@@ -129,14 +126,14 @@ public class UIEditText extends WrapperViewText {
         }
     }
 
-    public void removeText(int i) {
+    private void removeText(int i) {
         if (charList.remove(i)) {
             hIndex = index = min(i, chars());
             refreshText();
         }
     }
 
-    public void removeText(int i, int j) {
+    private void removeText(int i, int j) {
         if (charList.remove(i, j)) {
             hIndex = index = Utility.constrain(i, 0, chars());
             refreshText();
@@ -167,7 +164,7 @@ public class UIEditText extends WrapperViewText {
      * Reset the selection box
      */
 
-    public void resetTextBox() {
+    private void resetTextBox() {
         index = hIndex = 0;
     }
 
@@ -301,10 +298,14 @@ public class UIEditText extends WrapperViewText {
      */
 
     private void drawBox(Graphic graphic) {
-        if (isSingleLine()) {
-            drawInlineBox(graphic);
-        } else {
-            drawMultilineBox(graphic);
+        if (getSelectionCount() > 0) {
+            graphic.setPaint(paintHighlight);
+
+            if (isSingleLine()) {
+                drawInlineBox(graphic);
+            } else {
+                drawMultilineBox(graphic);
+            }
         }
     }
 
@@ -343,6 +344,8 @@ public class UIEditText extends WrapperViewText {
      */
 
     private void drawMultilineBox(Graphic graphic) {
+        // TODO: handle the centered text
+
         Font font = getFont();
         char[] chars = charList.toArray();
         int length = chars();
@@ -410,7 +413,8 @@ public class UIEditText extends WrapperViewText {
         super.update(container);
 
         if (isVisible()) {
-            Font font = getFont();
+            float[] bounds = getBounds();
+            Component.makeShapeForClipRegion(this, clipShape);
 
             int sol = 0;  // start of line
             int eol = -1; // end of line
@@ -437,24 +441,27 @@ public class UIEditText extends WrapperViewText {
                 eol = length;
             }
 
+            Font font = getFont();
             int ax = TextRenderer.map(getAlignX());
             float width = getBounds()[2];
-            float[] bounds = getBounds();
             float[] textBounds = getTextBounds();
             float lineHeight = font.getLineHeight();
             float lineFactor = 1f;
 
-            // update cursor's position along x-axis
-            cursorX = (textBounds[0] + ((ax - 1f) * width - ax * font.getWidth(sol, Math.max(0, eol - sol), chars)) / 2f
+            // update cursor position on the x-axis
+            float cursorX = (textBounds[0] + ((ax - 1f) * width - ax * font.getWidth(sol, Math.max(0, eol - sol), chars)) / 2f
                     + font.getWidth(sol, index - sol, chars)) / bounds[2];
 
-            // update cursor's position along y-axis
-            cursorY = ((cLine - 0.5f) * lineHeight - getScrollValue()[1]) / bounds[3];
+            // update cursor position on the y-axis
+            float cursorY = ((cLine - 0.5f) * lineHeight - getScrollValue()[1]) / bounds[3];
 
             // update cursor
             if (isOnFocus()) {
                 cursor.setPosition(cursorX, cursorY);
-                cursor.setDimension(2 / bounds[2], (lineHeight / lineFactor) / bounds[3]);
+                cursor.setDimension(
+                        2f / bounds[2],
+                        (lineHeight / lineFactor) / bounds[3]
+                );
                 cursor.update(this);
             }
         }
@@ -465,19 +472,12 @@ public class UIEditText extends WrapperViewText {
         super.draw(graphic);
 
         if (isVisible()) {
-            //graphic.setClip(clipShape);
-
-            // highlight the selected text
-            if (getSelectionCount() > 0) {
-                graphic.setPaint(paintHighlight);
-                drawBox(graphic);
-            }
-
+            graphic.setClip(clipShape);
+            drawBox(graphic);
             if (isOnFocus()) {
                 cursor.draw(graphic);
             }
-
-            //graphic.restoreClip();
+            graphic.restoreClip();
         }
     }
 
@@ -672,10 +672,9 @@ public class UIEditText extends WrapperViewText {
         UIEditText editText = new UIEditText(
                 new Component("", 0.5f, 0.5f, 0.5f, 0.5f)
         );
-        editText.setAlign(AlignX.RIGHT);
-        editText.setSingleLine(true);
-        //editText.setText(Utility.readAll("src\\test\\TestView.java"));
-        editText.setText("ciao!");
+        editText.setAlign(AlignX.LEFT);
+        editText.setText(Utility.readAll("src\\test\\TestView.java"));
+        //editText.setText("ciao!\nhqwrrtre");
         editText.getPaint().setColor(Theme.SILVER);
 
         ViewGroup group = new ComponentGroup(
