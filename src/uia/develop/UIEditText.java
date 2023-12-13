@@ -27,18 +27,12 @@ import static java.lang.Math.min;
  */
 
 public class UIEditText extends WrapperViewText {
-
-    public enum Rule {ALPHANUMERIC, NUMBERS}
-
-    private final List<Integer> illegalCodes = new ArrayList<>();
     private final CharList charList = new CharList(10);
+    private final List<Integer> illegalCodes = new ArrayList<>();
 
-    private Rule rule = Rule.ALPHANUMERIC;
-
-    private Cursor cursor;
-
+    private final Paint paintHighlight;
     private final Shape highlight;
-    private Paint paintHighlight;
+    private Cursor cursor;
 
     private int index;
     private int hIndex;
@@ -49,14 +43,14 @@ public class UIEditText extends WrapperViewText {
         super(new ComponentText(view));
         registerCallback((OnKeyPressed) key -> {
             int code = key.getKeyCode();
-            char keyChar = key.getKeyChar();
             boolean selected = getSelectionCount() > 0;
             if (defaultAction(key, selected)) {
                 cursor.resetTimer();
-            } else if (!illegalCodes.contains(code) && (rule.equals(Rule.ALPHANUMERIC)
-                    || (rule.equals(Rule.NUMBERS) && keyChar >= '0' && keyChar <= '9'))) {
+            } else if (!illegalCodes.contains(code)) {
                 cursor.resetTimer();
-                if (selected) clearSelected();
+                if (selected) {
+                    clearSelected();
+                }
                 addText(index, key.getKeyChar());
             }
         });
@@ -82,7 +76,7 @@ public class UIEditText extends WrapperViewText {
         highlight = new Shape();
         GeometryFactory.rect(highlight.getGeometry());
 
-        paintHighlight = new Paint().setColor(new Paint.Color(80, 120, 255));
+        paintHighlight = new Paint().setColor(Theme.createColor(65, 105, 225, 126));
 
         /*illegalCodes.add(Key.KEY_TAB);
         illegalCodes.add(Key.KEY_SHIFT);
@@ -98,8 +92,7 @@ public class UIEditText extends WrapperViewText {
         illegalCodes.add(226);  // KEYPAD LEFT_ARROW
         illegalCodes.add(227);  // KEYPAD RIGHT_ARROW*/
 
-        cursor = new Cursor();
-        cursor.getPaint().setColor(Theme.BLACK);
+        cursor = new Cursor(view.getID());
     }
 
     @Override
@@ -296,31 +289,31 @@ public class UIEditText extends WrapperViewText {
     }
 
     /**
-     * Decide what kind of chars are allowed when typing text
-     *
-     * @param rule a not null {@link Rule}
-     */
-
-    public void setRule(Rule rule) {
-        if (rule != null) {
-            this.rule = rule;
-        }
-    }
-
-    /**
-     * Draw a rectangle that highlights the text.
+     * Draws a rectangle around the highlighted text.
      * <br>
      * Time required: O(n);
      * <br>
      * Space required: O(1)
      *
      * @param graphic a not null {@link Graphic}
-     * @param chars   a not null char array
-     * @param length  the array's length
      */
 
-    private void drawBox(Graphic graphic, char[] chars, int length) {
+    private void drawBox(Graphic graphic) {
+        if (isSingleLine()) {
+            drawInlineBox(graphic);
+        } else {
+            drawMultilineBox(graphic);
+        }
+    }
+
+    /**
+     * Helper function. Draws a box on single line text.
+     */
+
+    private void drawInlineBox(Graphic graphic) {
         Font font = getFont();
+        char[] chars = charList.toArray();
+        int length = chars();
 
         int iMin = getMinIndex();
         int iMax = getMaxIndex();
@@ -328,63 +321,81 @@ public class UIEditText extends WrapperViewText {
 
         float[] bounds = getBounds();
         float[] textBounds = getTextBounds();
-        float width = bounds[2] - font.getWidth('o');
-        float lineHeight = textBounds[3];
+        float width = bounds[2];
+        float lineHeight = font.getLineHeight();
+
+        float x = textBounds[0] + font.getWidth(0, iMin, chars);
+        float y = textBounds[1] + ax * (width - font.getWidth(0, length, chars)) / 2f;
+        float frame = font.getWidth(iMin, iMax - iMin, chars);
+
+        highlight.setPosition(x + frame / 2f, y + 0.5f * lineHeight);
+        highlight.setDimension(frame / 2f, lineHeight / 2f);
+        graphic.drawShape(highlight);
+    }
+
+    /**
+     * Helper function. Draws a box on multiline text.
+     */
+
+    private void drawMultilineBox(Graphic graphic) {
+        Font font = getFont();
+        char[] chars = charList.toArray();
+        int length = chars();
+        int ax = TextRenderer.map(getAlignX());
+
+        float[] bounds = getBounds();
+        float[] textBounds = getTextBounds();
+        float width = bounds[2];
+        float lineHeight = font.getLineHeight();
 
         float x = textBounds[0];
         float y = textBounds[1];
 
-        if (isSingleLine()) {
-            x += font.getWidth(0, iMin, chars);// offset
-            x += ((ax - 1f) * width - ax * font.getWidth(0, length, chars)) / 2f;// aligner
+        int iMin = getMinIndex();
+        int iMax = getMaxIndex();
+        int sol = 0; // start of line
+        int eol;     // end of line
+        int o;
+        int line = 1;
 
-            float frame = font.getWidth(iMin, iMax - iMin, chars);
-
-            highlight.setPosition(x + frame / 2f, y + 0.5f * lineHeight);
-            highlight.setDimension(frame / 2f, lineHeight / 2f);
-            graphic.drawShape(highlight);
-        } else {
-            int sol = 0;  // start of line
-            int eol = -1; // end of line
-            int o;
-            int line = 1;
-
-            // calculate the first highlight's offset position along x-axis
-            for (int i = 0; i < iMin; i++) {
-                if (chars[i] == '\n') {
-                    sol = i + 1;
-                    line++;
-                }
+        // calculate the first highlight's offset position along x-axis
+        for (int i = 0; i < iMin; i++) {
+            if (chars[i] == '\n') {
+                sol = i + 1;
+                line++;
             }
+        }
 
-            float diff = font.getWidth(sol, iMin - sol, chars);// calculate the offset
-            o = iMin;
-            eol = sol - 1;
+        float diff = font.getWidth(sol, iMin - sol, chars);// calculate the offset
+        o = iMin;
+        eol = sol - 1;
 
-            for (int i = iMin; i <= iMax; i++) {
+        for (int i = iMin; i <= iMax; i++) {
 
-                if (i == iMax || chars[i] == '\n') {
-                    sol = eol + 1;
-                    eol = getBr(chars, length, i);
+            if (i == iMax || chars[i] == '\n') {
+                sol = eol + 1;
+                eol = getBr(chars, length, i);
 
-                    float lineWidth = font.getWidth(sol, eol - sol, chars);
-                    float wShape = font.getWidth(o, i - o, chars);
+                float lineWidth = font.getWidth(sol, eol - sol, chars);
+                float wShape = font.getWidth(o, i - o, chars);
 
-                    // highlight all the line long
-                    if (lineWidth == 0f) {
-                        lineWidth = wShape = 10f;
-                    }
-
-                    diff += ((ax - 1f) * width - ax * lineWidth) / 2f;// aligner
-
-                    highlight.setPosition(x + diff + wShape / 2f, y + (line - 0.5f) * lineHeight);
-                    highlight.setDimension(wShape / 2f, lineHeight / 2f);
-                    graphic.drawShape(highlight);
-
-                    o = i;
-                    line++;
-                    diff = 0f;
+                // highlight all the line long
+                if (lineWidth == 0f) {
+                    lineWidth = wShape = 10f;
                 }
+
+                diff += ax * (width - lineWidth) / 2f;// aligner
+
+                highlight.setPosition(
+                        x + diff + wShape / 2f,
+                        y + (line - 0.5f) * lineHeight
+                );
+                highlight.setDimension(wShape, lineHeight);
+                graphic.drawShape(highlight);
+
+                o = i;
+                line++;
+                diff = 0f;
             }
         }
     }
@@ -454,7 +465,7 @@ public class UIEditText extends WrapperViewText {
             // highlight the selected text
             if (getSelectionCount() > 0) {
                 graphic.setPaint(paintHighlight);
-                drawBox(graphic, charList.toArray(), chars());
+                drawBox(graphic);
             }
 
             if (isOnFocus()) {
@@ -612,8 +623,9 @@ public class UIEditText extends WrapperViewText {
     public static class Cursor extends WrapperView {
         private final Timer timer;
 
-        public Cursor() {
-            super(new Component("Cursor", 0f, 0f, 1f, 1f));
+        public Cursor(String id) {
+            super(new Component("EDIT_TEXT_CURSOR_" + id, 0f, 0f, 1f, 1f));
+            getPaint().setColor(Theme.BLACK);
 
             timer = new Timer();
         }
@@ -625,15 +637,16 @@ public class UIEditText extends WrapperViewText {
         @Override
         public void draw(Graphic graphic) {
             float seconds = timer.seconds();
-
             if (seconds <= 0.5f) {
                 super.draw(graphic);
-            } else if (seconds >= 1f) timer.reset();
+            } else if (seconds >= 1f) {
+                timer.reset();
+            }
         }
     }
 
     /**
-     * Return the next break line.
+     * Returns the next break line.
      * <br>
      * Time required: O(n);
      * <br>
@@ -654,7 +667,8 @@ public class UIEditText extends WrapperViewText {
         UIEditText editText = new UIEditText(
                 new Component("", 0.5f, 0.5f, 0.5f, 0.5f)
         );
-        editText.setText(Utility.readAll("src\\test\\TestView.java"));
+        //editText.setText(Utility.readAll("src\\test\\TestView.java"));
+        editText.setText("ciao!");
         editText.getPaint().setColor(Theme.SILVER);
 
         ViewGroup group = new ComponentGroup(
