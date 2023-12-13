@@ -17,8 +17,10 @@ import uia.utility.Timer;
 import uia.utility.Utility;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 /**
@@ -71,6 +73,9 @@ public class UIEditText extends WrapperViewText {
             }
         });
         registerCallback((OnMouseExit) o -> selected[0] = false);
+
+        // shift, ctrl, alt gr, esc, caps-lock
+        illegalCodes.addAll(Arrays.asList(16, 17, 18, 27, 20));
 
         /*illegalCodes.add(Key.KEY_TAB);
         illegalCodes.add(Key.KEY_SHIFT);
@@ -157,7 +162,7 @@ public class UIEditText extends WrapperViewText {
      */
 
     private int getMaxIndex() {
-        return Math.max(index, hIndex);
+        return max(index, hIndex);
     }
 
     /**
@@ -283,6 +288,60 @@ public class UIEditText extends WrapperViewText {
                 }
                 return true;
         }*/
+
+        if (key.getKeyCode() == 8) {// backspace
+            if (selected) {
+                clearSelected();
+            } else {
+                removeText(index - 1);
+            }
+            return true;
+        } else if (key.getKeyCode() == 127) {// canc
+            if (selected) {
+                clearSelected();
+            } else {
+                removeText(index);
+            }
+            return true;
+        } else if (key.getKeyCode() == 40) {// key-down
+            /*int ind = getIndex(1);
+            if (ind >= 0) {
+                index = ind;
+            }*/
+            return true;
+        } else if (key.getKeyCode() == 38) {// key-up
+            /*int ind = getIndex(1);
+            if (ind >= 0) {
+                index = ind;
+            }*/
+            return true;
+        } else if (key.isKeystroke(1, 37)) {// shift-left
+            index = max(0, index - 1);
+            return true;
+        } else if (key.getKeyCode() == 37) {// key-left
+            int k = getMinIndex() - 1;
+            setIndex(k);
+            setHIndex(k);
+            return true;
+        } else if (key.isKeystroke(1, 39)) {// shift-right
+            index = min(index + 1, chars());
+            return true;
+        } else if (key.getKeyCode() == 39) {// key-right
+            int k = getMaxIndex() + 1;
+            setIndex(k);
+            setHIndex(k);
+            return true;
+        } else if (key.isKeystroke(2, 65)) {// ctrl-a
+            hIndex = 0;
+            index = chars();
+            return true;
+        } else if (key.isKeystroke(2, 67)) {// ctrl-c
+            return true;
+        } else if (key.isKeystroke(2, 86)) {// ctrl-v
+            return true;
+        }
+
+        System.out.println(key.getKeyCode());
 
         return false;
     }
@@ -449,7 +508,7 @@ public class UIEditText extends WrapperViewText {
             float lineFactor = 1f;
 
             // update cursor position on the x-axis
-            float cursorX = (textBounds[0] + ((ax - 1f) * width - ax * font.getWidth(sol, Math.max(0, eol - sol), chars)) / 2f
+            float cursorX = (textBounds[0] + ((ax - 1f) * width - ax * font.getWidth(sol, max(0, eol - sol), chars)) / 2f
                     + font.getWidth(sol, index - sol, chars)) / bounds[2];
 
             // update cursor position on the y-axis
