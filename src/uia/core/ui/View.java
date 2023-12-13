@@ -96,30 +96,32 @@ public interface View extends Callable, Drawable, Collider {
     /**
      * Calculates the View position on the x-axis
      *
-     * @param xLeft   the container position on x-axis
-     * @param width   the container width
-     * @param xDist   the View distance from the container center on the x-axis
-     * @param yDist   the View distance from the container center on the y-axis
-     * @param radians the View rotation in radians
+     * @param xContainer     the left top container corner position on the x-axis
+     * @param containerWidth the container width
+     * @param xDist          the View distance from the container center on the x-axis
+     * @param yDist          the View distance from the container center on the y-axis
+     * @param rotation       the View rotation in radians
      * @return the View position on x-axis
      */
 
-    static float getPositionOnX(float xLeft, float width, float xDist, float yDist, float radians) {
-        return xLeft + 0.5f * width + rotX(xDist, yDist, cos(radians), sin(radians));
+    static float getPositionOnX(float xContainer, float containerWidth,
+                                float xDist, float yDist, float rotation) {
+        return xContainer + 0.5f * containerWidth + rotX(xDist, yDist, cos(rotation), sin(rotation));
     }
 
     /**
      * Calculates the View position on the y-axis
      *
-     * @param yTop    the container position on y-axis
-     * @param height  the container height
-     * @param xDist   the View distance from the container center on the x-axis
-     * @param yDist   the View distance from the container center on the y-axis
-     * @param radians the View rotation in radians
+     * @param yContainer      the left top container corner position on the y-axis
+     * @param containerHeight the container height
+     * @param xDist           the View distance from the container center on the x-axis
+     * @param yDist           the View distance from the container center on the y-axis
+     * @param radians         the View rotation in radians
      * @return the View position on x-axis
      */
 
-    static float getPositionOnY(float yTop, float height, float xDist, float yDist, float radians) {
-        return yTop + 0.5f * height + rotY(xDist, yDist, cos(radians), sin(radians));
+    static float getPositionOnY(float yContainer, float containerHeight,
+                                float xDist, float yDist, float radians) {
+        return yContainer + 0.5f * containerHeight + rotY(xDist, yDist, cos(radians), sin(radians));
     }
 }
