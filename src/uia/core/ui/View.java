@@ -101,7 +101,7 @@ public interface View extends Callable, Drawable, Collider {
      * @param xDist          the View distance from the container center on the x-axis
      * @param yDist          the View distance from the container center on the y-axis
      * @param rotation       the View rotation in radians
-     * @return the View position on x-axis
+     * @return the View position on the x-axis
      */
 
     static float getPositionOnX(float xContainer, float containerWidth,
@@ -116,12 +116,12 @@ public interface View extends Callable, Drawable, Collider {
      * @param containerHeight the container height
      * @param xDist           the View distance from the container center on the x-axis
      * @param yDist           the View distance from the container center on the y-axis
-     * @param radians         the View rotation in radians
-     * @return the View position on x-axis
+     * @param rotation        the View rotation in radians
+     * @return the View position on the y-axis
      */
 
     static float getPositionOnY(float yContainer, float containerHeight,
-                                float xDist, float yDist, float radians) {
-        return yContainer + 0.5f * containerHeight + rotY(xDist, yDist, cos(radians), sin(radians));
+                                float xDist, float yDist, float rotation) {
+        return yContainer + 0.5f * containerHeight + rotY(xDist, yDist, cos(rotation), sin(rotation));
     }
 }
