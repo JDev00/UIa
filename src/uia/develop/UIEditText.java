@@ -371,7 +371,9 @@ public class UIEditText extends WrapperViewText {
                     float wShape = font.getWidth(o, i - o, chars);
 
                     // highlight all the line long
-                    if (lineWidth == 0f) lineWidth = wShape = 10f;
+                    if (lineWidth == 0f) {
+                        lineWidth = wShape = 10f;
+                    }
 
                     diff += ((ax - 1f) * width - ax * lineWidth) / 2f;// aligner
 
@@ -431,7 +433,7 @@ public class UIEditText extends WrapperViewText {
                     + font.getWidth(sol, index - sol, chars)) / bounds[2];
 
             // update cursor's position along y-axis
-            cursorY = (cLine - 0.5f) * lineHeight / bounds[3];
+            cursorY = ((cLine - 0.5f) * lineHeight - getScrollValue()[1]) / bounds[3];
 
             // update cursor
             if (isOnFocus()) {
@@ -543,7 +545,7 @@ public class UIEditText extends WrapperViewText {
         float heightLine = font.getLineHeight();
 
         int ax = TextRenderer.map(getAlignX());
-        float y = 0f;
+        float y = -getScrollValue()[1];
 
         int sol;      // start of line
         int eol = -1; // end of line
@@ -652,7 +654,7 @@ public class UIEditText extends WrapperViewText {
         UIEditText editText = new UIEditText(
                 new Component("", 0.5f, 0.5f, 0.5f, 0.5f)
         );
-        editText.setText("Test!");
+        editText.setText(Utility.readAll("src\\test\\TestView.java"));
         editText.getPaint().setColor(Theme.SILVER);
 
         ViewGroup group = new ComponentGroup(
