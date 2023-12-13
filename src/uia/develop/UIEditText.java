@@ -67,7 +67,7 @@ public class UIEditText extends WrapperViewText {
         registerCallback((OnMouseHover) touches -> {
             ScreenTouch p = touches.get(0);
             if (p.getAction().equals(ScreenTouch.Action.PRESSED)) {
-                int ind = getIndex(charList.toArray(), chars(), p.getX(), p.getY());
+                int ind = getIndex(p.getX(), p.getY());
                 //System.out.println(ind);
                 if (ind != -1) {
                     index = ind;
@@ -467,21 +467,17 @@ public class UIEditText extends WrapperViewText {
     }
 
     /**
-     * Given a pointer coordinates, find the nearest array's element and return its index.
-     * <br>
-     * Time required: O(n);
-     * <br>
-     * Space required: O(1).
+     * Finds the nearest character and return its index.
      *
-     * @param chars  a not null char array
-     * @param length the array's length
-     * @param mx     the pointer's position along x-axis
-     * @param my     the pointer's position along y-axis
-     * @return the array's index currently user-covered otherwise -1
+     * @param mx the cursor position on the x-axis
+     * @param my the cursor position on the y-axis
+     * @return the character index covered by cursor otherwise -1
      */
 
-    private int getIndex(char[] chars, int length, float mx, float my) {
+    private int getIndex(float mx, float my) {
         int result;
+        int length = chars();
+        char[] chars = charList.toArray();
         if (isSingleLine()) {
             result = getIndexForInlineText(chars, length, mx, my);
         } else {
@@ -494,6 +490,10 @@ public class UIEditText extends WrapperViewText {
      * Helper function. Returns the character index covered by cursor.
      * <br>
      * More formally: given a pointer coordinates, find the nearest character and return its index.
+     * <br>
+     * Time required: O(n);
+     * <br>
+     * Space required: O(1).
      *
      * @return the character index or -1
      */
@@ -532,6 +532,10 @@ public class UIEditText extends WrapperViewText {
      * Helper function. Returns the character index covered by cursor.
      * <br>
      * More formally: given a pointer coordinates, find the nearest character and return its index.
+     * <br>
+     * Time required: O(n);
+     * <br>
+     * Space required: O(1).
      *
      * @return the character index or -1
      */
