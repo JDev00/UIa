@@ -48,7 +48,7 @@ public class UIGraphic extends WrapperView {
     }
 
     /**
-     * Calculate, for every distribution, the nearest point respect to the mouse position.
+     * Calculates, for each distribution, the nearest point to the mouse position.
      * <br>
      * Time required: T(n)
      * <br>
@@ -70,10 +70,8 @@ public class UIGraphic extends WrapperView {
         for (DrawableDistribution distribution : drawableDistributions) {
             node = -1;
             pDist = Integer.MAX_VALUE;
-
             for (int j = 0; j < distribution.size(); j++) {
                 int dist = (int) Math.abs(bounds[0] + bounds[2] * distribution.get(j, PointDistribution.AXIS.X) - (x + offset));
-
                 if (dist < pDist) {
                     node = j;
                     pDist = dist;
@@ -219,13 +217,12 @@ public class UIGraphic extends WrapperView {
         });
         uiGraphic.getDistribution(0)
                 .setLinePaint(new Paint()
-                        .setStrokeWidth(3)
+                        .setStrokeWidth(6)
                         .setStrokeColor(Theme.ROYAL_BLUE))
                 .add(0f, 0f)
                 .add(-100f, -100f)
                 .add(-100, 1000)
                 .add(2000, 1200);
-        //uiGraph.setRotation(0.15f);
 
         Context context = ContextSwing.createAndStart(1800, 900);
         context.setView(uiGraphic);
