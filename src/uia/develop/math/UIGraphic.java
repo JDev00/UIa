@@ -13,20 +13,22 @@ import uia.core.Paint;
 import uia.physical.theme.Theme;
 import uia.physical.WrapperView;
 import uia.utility.GeometryFactory;
+import uia.utility.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Component designed to display multiple data distributions on screen
+ * Standard UIa component.
+ * <br>
+ * Component designed to display multiple data distributions.
  */
 
-public class UIGraph extends WrapperView {
+public class UIGraphic extends WrapperView {
 
     /**
      * Internal data structure used to handle a pair
      */
-
     private static class Pair<T, V> {
         T val1;
         V val2;
@@ -46,10 +48,14 @@ public class UIGraph extends WrapperView {
     private float xMax, yMax;
     private float xMin, yMin;
 
-    public UIGraph(View view) {
+    public UIGraphic(View view) {
         super(view);
 
-        setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), GeometryFactory.STD_ROUND), true);
+        setGeometry(g -> Drawable.buildRect(g,
+                getWidth(),
+                getHeight(),
+                GeometryFactory.STD_ROUND
+        ), true);
 
         stdDrawable = new DrawableDistribution();
 
@@ -58,7 +64,7 @@ public class UIGraph extends WrapperView {
         axis = new Shape();
         axis.setGeometry(GeometryFactory.rect(axis.getGeometry()));
 
-        paintAxis = new Paint().setStrokeWidth(2);
+        paintAxis = new Paint().setStrokeWidth(1);
 
         reset();
     }
@@ -134,7 +140,7 @@ public class UIGraph extends WrapperView {
     }
 
     /**
-     * Clear all distributions
+     * Clears all the distributions
      */
 
     public void clear() {
@@ -143,7 +149,7 @@ public class UIGraph extends WrapperView {
     }
 
     /**
-     * Set a DistributionDrawable for the specified distribution
+     * Sets a DistributionDrawable for the specified distribution
      *
      * @param i   the distribution's position
      * @param drw a not null {@link DrawableDistribution}
@@ -152,10 +158,6 @@ public class UIGraph extends WrapperView {
 
     public void setDrawable(int i, DrawableDistribution drw) {
         data.get(i).val2 = drw;
-    }
-
-    private static float normalize(float val, float min, float max) {
-        return (val - min) / (max - min);
     }
 
     private final Shape clipShape = new Shape();
@@ -167,8 +169,8 @@ public class UIGraph extends WrapperView {
         clipShape.setDimension(0.97f * getWidth(), 0.97f * getHeight());
         clipShape.setRotation(bounds[4]);
 
-        float xDist = width * (normalize(0f, xMin, xMax) - 0.5f);
-        float yDist = -height * (normalize(0f, yMin, yMax) - 0.5f);
+        float xDist = width * (Utility.normalize(0f, xMin, xMax) - 0.5f);
+        float yDist = -height * (Utility.normalize(0f, yMin, yMax) - 0.5f);
 
         float gx = View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rotation);
         float gy = View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rotation);
@@ -178,13 +180,13 @@ public class UIGraph extends WrapperView {
         // to refactor: draw ordinate axis
         axis.setRotation(rotation);
         axis.setPosition(gx, gy);//x - gWidth / 2f, y);
-        axis.setDimension(2, 2 * height);
+        axis.setDimension(1, 2 * height);
         graphic.setPaint(paintAxis);
         graphic.drawShape(axis);
 
         // to refactor: draw abscissa axis
         axis.setPosition(gx, gy);//x, y + gHeight / 2f);
-        axis.setDimension(2 * width, 2);
+        axis.setDimension(2 * width, 1);
         graphic.setPaint(paintAxis);
         graphic.drawShape(axis);
 
@@ -215,7 +217,7 @@ public class UIGraph extends WrapperView {
                 updateMinAndMax(dis.getMin(PointDistribution.AXIS.X), dis.getMin(PointDistribution.AXIS.Y));
 
                 DrawableDistribution drw = i.val2;
-                drw.draw(graphic, dis, bounds, width, height, rot);
+                drw.draw(graphic, bounds, width, height, rot);
             }
         }
     }
@@ -256,181 +258,21 @@ public class UIGraph extends WrapperView {
 
     //
 
-    /**
-     * A DrawableDistribution defines the graphical settings to draw a {@link PointDistribution} on screen.
-     */
-
-    public static class DrawableDistribution {
-        private final Paint paintLine, paintPoint;
-        private final Shape shapeMarker, shapeLine;
-
-        private float pointDimension = 4;
-        private boolean enableLine = true;
-        private boolean enablePoint = true;
-
-        public DrawableDistribution() {
-            paintLine = new Paint()
-                    .setColor(Theme.BLACK)
-                    .setStrokeWidth(3);
-
-            paintPoint = new Paint().setColor(Theme.RED);
-
-            shapeMarker = new Shape();
-            shapeMarker.setGeometry(GeometryFactory.rect(shapeMarker.getGeometry()));
-
-            shapeLine = new Shape();
-            shapeLine.setGeometry(GeometryFactory.rect(shapeLine.getGeometry()));
-        }
-
-        /**
-         * Set the point dimension
-         *
-         * @param pointDim a value {@code >= 0}
-         */
-
-        public DrawableDistribution setPointDimension(int pointDim) {
-            this.pointDimension = Math.max(pointDim, 0);
-            return this;
-        }
-
-        /**
-         * Set the line color
-         *
-         * @param color a not null {@link uia.core.Paint.Color}
-         */
-
-        public DrawableDistribution setColorLine(Paint.Color color) {
-            paintLine.setColor(color);
-            return this;
-        }
-
-        /**
-         * Test
-         */
-
-        public DrawableDistribution setLineWidth(int val) {
-            paintLine.setStrokeWidth(val);
-            return this;
-        }
-
-        /**
-         * Set the point color
-         *
-         * @param color a not null {@link uia.core.Paint.Color}
-         */
-
-        public DrawableDistribution setColorPoint(Paint.Color color) {
-            paintPoint.setColor(color);
-            return this;
-        }
-
-        /**
-         * Set the marker's geometry
-         *
-         * @param marker a not null {@link Geometry}
-         */
-
-        public DrawableDistribution setMarker(Geometry marker) {
-            Geometry markerGeometry = shapeMarker.getGeometry();
-            markerGeometry.clear();
-
-            for (int i = 0; i < marker.vertices(); i++) {
-                Geometry.Vertex vertex = marker.get(i);
-                markerGeometry.addVertex(vertex.getX(), vertex.getY());
-            }
-            return this;
-        }
-
-        /**
-         * Enable or disable the line that connects each point
-         *
-         * @param enableLine true to enable the line
-         */
-
-        public DrawableDistribution enableLine(boolean enableLine) {
-            this.enableLine = enableLine;
-            return this;
-        }
-
-        /**
-         * Enable or disable the drawing of points
-         *
-         * @param enablePoint true to draw points
-         */
-
-        public DrawableDistribution enablePoint(boolean enablePoint) {
-            this.enablePoint = enablePoint;
-            return this;
-        }
-
-        /**
-         * Draw the given data distribution
-         *
-         * @param graphic           the {@link Graphic} object
-         * @param pointDistribution the {@link PointDistribution} to draw
-         */
-
-        public void draw(Graphic graphic, PointDistribution pointDistribution,
-                         float[] bounds, float width, float height, float rotation) {
-            if (enableLine) {
-                graphic.setPaint(paintLine);
-
-                /*for (int i = 0; i < pointDistribution.size() - 1; i++) {
-                    graphic.openShape(
-                            (int) (bounds[0] + bounds[2] * pointDistribution.get(i, 0)),
-                            (int) (bounds[1] - bounds[3] * pointDistribution.get(i, 1)));
-                    graphic.vertex(
-                            (int) (bounds[0] + bounds[2] * pointDistribution.get(i + 1, 0)),
-                            (int) (bounds[1] - bounds[3] * pointDistribution.get(i + 1, 1)));
-                    graphic.closeShape();
-                }*/
-            }
-
-            if (enablePoint) {
-                graphic.setPaint(paintPoint);
-
-                float xMin = pointDistribution.getMin(PointDistribution.AXIS.X);
-                float yMin = pointDistribution.getMin(PointDistribution.AXIS.Y);
-
-                float xMax = pointDistribution.getMax(PointDistribution.AXIS.X);
-                float yMax = pointDistribution.getMax(PointDistribution.AXIS.Y);
-
-                for (int i = 0; i < pointDistribution.size(); i++) {
-                    float px = pointDistribution.get(i, PointDistribution.AXIS.X);
-                    float py = pointDistribution.get(i, PointDistribution.AXIS.Y);
-
-                    float xDist = width * (normalize(px, xMin, xMax) - 0.5f);
-                    float yDist = -height * (normalize(py, yMin, yMax) - 0.5f);
-
-                    shapeMarker.setPosition(
-                            View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rotation),
-                            View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rotation)
-                    );
-                    shapeMarker.setDimension(pointDimension, pointDimension);
-
-                    graphic.drawShape(shapeMarker);
-                }
-            }
-        }
-    }
-
-    //
-
     public static void main(String[] args) {
-        UIGraph uiGraph = new UIGraph(
+        UIGraphic uiGraphic = new UIGraphic(
                 new Component("", 0.5f, 0.5f, 0.5f, 0.5f)
         );
-        uiGraph.registerCallback((OnClick) p -> {
-            uiGraph.setRotation(uiGraph.getBounds()[4] + 0.05f);
+        uiGraphic.registerCallback((OnClick) p -> {
+            uiGraphic.setRotation(uiGraphic.getBounds()[4] + 0.05f);
         });
-        uiGraph.getDistribution(0)
+        uiGraphic.getDistribution(0)
                 .add(0f, 0f)
-                .add(-10f, -10f);
-        //.add(100, 1000);*/
-        //.add(2000, 1200);
+                .add(-100f, -100f)
+                .add(-100, 1000)
+                .add(2000, 1200);
         //uiGraph.setRotation(0.15f);
 
         Context context = ContextSwing.createAndStart(1800, 900);
-        context.setView(uiGraph);
+        context.setView(uiGraphic);
     }
 }
