@@ -33,10 +33,12 @@ public class GraphicProcessing implements Graphic {
 
     @Override
     public void setClip(Shape shape) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void restoreClip() {
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -57,6 +59,11 @@ public class GraphicProcessing implements Graphic {
         }
 
         getGraphics().textFont((PFont) font.getNative());
+    }
+
+    @Override
+    public void drawShape(float... vertices) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

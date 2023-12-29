@@ -57,6 +57,22 @@ public interface Graphic {
     void setFont(Font font);
 
     /**
+     * Draws an on-the-fly shape on this Graphic.
+     *
+     * @param vertices an array with the shape vertices. The array shape must be: [x1,y1, x2,y2, x3,y3, ...]
+     * @throws NullPointerException     if {@code vertices == null}
+     * @throws IllegalArgumentException if {@code vertices doesn't follow the required array shape}
+     * @apiNote drawShape(float...) is less powerful compared to {@link #drawShape(Shape)}, in fact
+     * vertices don't support translation, scaling and rotation. However, vertices can be expressed in a free form
+     * without value constraints.
+     * @implSpec This method must draw a self-contained shape and must not interfere with the {@link #drawShape(Shape)}.
+     * The first vertex must be used to close the shape.
+     * @since 1.4
+     */
+
+    void drawShape(float... vertices);
+
+    /**
      * Draw the given {@link Shape} on this Graphic.
      *
      * @param shape a not null {@link Shape} to be drawn

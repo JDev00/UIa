@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.function.Supplier;
 
 /**
- * Java AWT base {@link Graphic} implementation.
+ * {@link Graphic} implementation based on Java AWT.
  */
 
 public class GraphicAWT implements Graphic {
@@ -50,37 +50,6 @@ public class GraphicAWT implements Graphic {
     @Override
     public void dispose() {
         getGraphics().dispose();
-    }
-
-    /**
-     * Helper function.
-     * <br>
-     * Time required: T(n)
-     * <br>
-     * Space required: O(1).
-     */
-
-    private void buildPathAndStoreInto(Shape shape, Path2D targetPath) {
-        targetPath.reset();
-
-        Geometry geometry = shape.getGeometry();
-        Shape.TransformedVertex target = new Shape.TransformedVertex();
-
-        if (geometry.vertices() > 0) {
-            for (int i = 0; i < geometry.vertices(); i++) {
-                Shape.transform(shape, geometry.get(i), target);
-                float x = target.x;
-                float y = target.y;
-
-                if (target.primer) {
-                    targetPath.moveTo(x, y);
-                } else {
-                    targetPath.lineTo(x, y);
-                }
-            }
-
-            targetPath.closePath();
-        }
     }
 
     private final Stack<java.awt.Shape> clipStack = new Stack<>();
@@ -165,21 +134,89 @@ public class GraphicAWT implements Graphic {
         graphics.setStroke((Stroke) paint.getNativeStrokeWidth());
     }
 
-    @Override
-    public void drawShape(Shape shape) {
-        buildPathAndStoreInto(shape, shapePath);
-
+    private void drawShapeOnScreen(Path2D path) {
         Graphics2D graphics = getGraphics();
-        graphics.fill(shapePath);
+        graphics.fill(path);
 
         if (paint.hasStroke()) {
             java.awt.Paint previousPaint = graphics.getPaint();
 
             graphics.setPaint((java.awt.Paint) paint.getNativeStrokeColor());
-            graphics.draw(shapePath);
+            graphics.draw(path);
 
             graphics.setPaint(previousPaint);
         }
+    }
+
+    /**
+     * Helper function. Builds a Shape suitable for AWT.
+     * <br>
+     * Time required: T(n)
+     * <br>
+     * Space required: O(1).
+     */
+
+    private void buildPathAndStoreInto(Shape shape, Path2D targetPath) {
+        targetPath.reset();
+
+        Geometry geometry = shape.getGeometry();
+        Shape.TransformedVertex target = new Shape.TransformedVertex();
+
+        if (geometry.vertices() > 0) {
+            for (int i = 0; i < geometry.vertices(); i++) {
+                Shape.transform(shape, geometry.get(i), target);
+                float x = target.x;
+                float y = target.y;
+
+                if (target.primer) {
+                    targetPath.moveTo(x, y);
+                } else {
+                    targetPath.lineTo(x, y);
+                }
+            }
+
+            targetPath.closePath();
+        }
+    }
+
+    /**
+     * Helper function. Builds a Shape suitable for AWT.
+     * <br>
+     * Time required: T(n)
+     * <br>
+     * Space required: O(1).
+     */
+
+    private void buildPathAndStoreInto(float[] vertices, Path2D targetPath) {
+        targetPath.reset();
+        for (int i = 0; i < vertices.length; i += 2) {
+            float x = vertices[i];
+            float y = vertices[i + 1];
+            if (targetPath.getCurrentPoint() == null) {
+                targetPath.moveTo(x, y);
+            } else {
+                targetPath.lineTo(x, y);
+            }
+        }
+        if (vertices.length > 0) {
+            targetPath.closePath();
+        }
+    }
+
+    @Override
+    public void drawShape(float... vertices) {
+        Objects.requireNonNull(vertices);
+        if (vertices.length % 2 != 0) {
+            throw new IllegalArgumentException("The array shape must be [x1,y1, x2,y2, x3,y3, ...]");
+        }
+        buildPathAndStoreInto(vertices, shapePath);
+        drawShapeOnScreen(shapePath);
+    }
+
+    @Override
+    public void drawShape(Shape shape) {
+        buildPathAndStoreInto(shape, shapePath);
+        drawShapeOnScreen(shapePath);
     }
 
     @Override
