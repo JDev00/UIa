@@ -134,6 +134,10 @@ public class GraphicAWT implements Graphic {
         graphics.setStroke((Stroke) paint.getNativeStrokeWidth());
     }
 
+    /**
+     * Helper function. Draws the specified Path on screen.
+     */
+
     private void drawShapeOnScreen(Path2D path) {
         Graphics2D graphics = getGraphics();
         graphics.fill(path);
