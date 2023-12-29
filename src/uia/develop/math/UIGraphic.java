@@ -1,17 +1,15 @@
 package uia.develop.math;
 
 import uia.application.desktop.ContextSwing;
-import uia.core.Geometry;
 import uia.core.Shape;
-import uia.core.basement.Drawable;
 import uia.core.ui.context.Context;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnClick;
 import uia.physical.Component;
 import uia.core.Paint;
-import uia.physical.theme.Theme;
 import uia.physical.WrapperView;
+import uia.physical.theme.Theme;
 import uia.utility.GeometryFactory;
 import uia.utility.Utility;
 
@@ -21,27 +19,13 @@ import java.util.List;
 /**
  * Standard UIa component.
  * <br>
- * Component designed to display multiple data distributions.
+ * Component designed to render multiple data distributions.
  */
 
 public class UIGraphic extends WrapperView {
+    private final List<DrawableDistribution> drawableDistributions;
 
-    /**
-     * Internal data structure used to handle a pair
-     */
-    private static class Pair<T, V> {
-        T val1;
-        V val2;
-
-        public Pair(T val1, V val2) {
-            this.val1 = val1;
-            this.val2 = val2;
-        }
-    }
-
-    private final List<Pair<PointDistribution, DrawableDistribution>> data;
-    private final DrawableDistribution stdDrawable;
-
+    private final Shape clipShape;
     private final Shape axis;
     private final Paint paintAxis;
 
@@ -51,15 +35,9 @@ public class UIGraphic extends WrapperView {
     public UIGraphic(View view) {
         super(view);
 
-        setGeometry(g -> Drawable.buildRect(g,
-                getWidth(),
-                getHeight(),
-                GeometryFactory.STD_ROUND
-        ), true);
+        drawableDistributions = new ArrayList<>();
 
-        stdDrawable = new DrawableDistribution();
-
-        data = new ArrayList<>();
+        clipShape = new Shape();
 
         axis = new Shape();
         axis.setGeometry(GeometryFactory.rect(axis.getGeometry()));
@@ -69,7 +47,7 @@ public class UIGraphic extends WrapperView {
         reset();
     }
 
-    /*
+    /**
      * Calculate, for every distribution, the nearest point respect to the mouse position.
      * <br>
      * Time required: T(n)
@@ -78,25 +56,23 @@ public class UIGraphic extends WrapperView {
      *
      * @param x     the mouse position <b>(relative to this View)</b> along x-axis
      * @param store a not null {@link List} used to store the nearest points
-     *
+     */
 
     @Deprecated
-    protected void nearest(float x, List<float[]> store) {
+    public void nearest(float x, List<float[]> store) {
         store.clear();
 
         int node;
         int pDist;
-        float[] bounds = bounds();
+        float[] bounds = getBounds();
         float offset = bounds[0] - bounds[2] / 2f;
 
-        for (Pair<PointDistribution, DrawableDistribution> i : data) {
+        for (DrawableDistribution distribution : drawableDistributions) {
             node = -1;
             pDist = Integer.MAX_VALUE;
 
-            PointDistribution dis = i.val1;
-
-            for (int j = 0; j < dis.size(); j++) {
-                int dist = (int) abs(this.bounds[0] + this.bounds[2] * dis.get(j, PointDistribution.AXIS.X) - (x + offset));
+            for (int j = 0; j < distribution.size(); j++) {
+                int dist = (int) Math.abs(bounds[0] + bounds[2] * distribution.get(j, PointDistribution.AXIS.X) - (x + offset));
 
                 if (dist < pDist) {
                     node = j;
@@ -109,12 +85,20 @@ public class UIGraphic extends WrapperView {
                 store.add(new float[0]);
             } else {
                 store.add(new float[]{
-                        dis.get(node, PointDistribution.AXIS.X),
-                        dis.get(node, PointDistribution.AXIS.Y)
+                        distribution.get(node, PointDistribution.AXIS.X),
+                        distribution.get(node, PointDistribution.AXIS.Y)
                 });
             }
         }
-    }*/
+    }
+
+    /**
+     * @return the {@link Paint} used to paint axis
+     */
+
+    public Paint getPaintAxis() {
+        return paintAxis;
+    }
 
     /**
      * Update the attributes of this graphic
@@ -145,58 +129,33 @@ public class UIGraphic extends WrapperView {
 
     public void clear() {
         reset();
-        data.clear();
+        drawableDistributions.clear();
     }
 
-    /**
-     * Sets a DistributionDrawable for the specified distribution
-     *
-     * @param i   the distribution's position
-     * @param drw a not null {@link DrawableDistribution}
-     * @throws IndexOutOfBoundsException if {@code i < 0 || i >= size()}
-     */
-
-    public void setDrawable(int i, DrawableDistribution drw) {
-        data.get(i).val2 = drw;
-    }
-
-    private final Shape clipShape = new Shape();
-
-    private void drawAxis(Graphic graphic, float[] bounds,
-                          float width, float height, float rotation) {
-        clipShape.setGeometry(getGeometry());
-        clipShape.setPosition(bounds[0] + bounds[2] / 2f, bounds[1] + bounds[3] / 2f);
-        clipShape.setDimension(0.97f * getWidth(), 0.97f * getHeight());
-        clipShape.setRotation(bounds[4]);
-
+    private void drawAxis(Graphic graphic, float width, float height, float rotation) {
+        float[] bounds = getBounds();
         float xDist = width * (Utility.normalize(0f, xMin, xMax) - 0.5f);
         float yDist = -height * (Utility.normalize(0f, yMin, yMax) - 0.5f);
+        float lineX = View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rotation);
+        float lineY = View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rotation);
 
-        float gx = View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rotation);
-        float gy = View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rotation);
-
+        Component.makeShapeForClipRegion(this, clipShape, 0.97f, 0.97f);
         graphic.setClip(clipShape);
 
-        // to refactor: draw ordinate axis
+        // draw ordinate
         axis.setRotation(rotation);
-        axis.setPosition(gx, gy);//x - gWidth / 2f, y);
+        axis.setPosition(lineX, lineY);
         axis.setDimension(1, 2 * height);
         graphic.setPaint(paintAxis);
         graphic.drawShape(axis);
 
-        // to refactor: draw abscissa axis
-        axis.setPosition(gx, gy);//x, y + gHeight / 2f);
+        // draw abscissa
+        axis.setPosition(lineX, lineY);
         axis.setDimension(2 * width, 1);
         graphic.setPaint(paintAxis);
         graphic.drawShape(axis);
 
         graphic.restoreClip();
-
-        /*Shape cross = new Shape();
-            cross.setGeometry(Figure.rect(cross.getGeometry()));
-            cross.setPosition(gx, gy);
-            cross.setDimension(15, 15);
-            graphic.drawShape(cross);*/
     }
 
     @Override
@@ -209,15 +168,18 @@ public class UIGraphic extends WrapperView {
             float height = 0.95f * getHeight();
             float rot = bounds[4];
 
-            drawAxis(graphic, bounds, width, height, rot);
+            drawAxis(graphic, width, height, rot);
 
-            for (Pair<PointDistribution, DrawableDistribution> i : data) {
-                PointDistribution dis = i.val1;
-                updateMinAndMax(dis.getMax(PointDistribution.AXIS.X), dis.getMax(PointDistribution.AXIS.Y));
-                updateMinAndMax(dis.getMin(PointDistribution.AXIS.X), dis.getMin(PointDistribution.AXIS.Y));
-
-                DrawableDistribution drw = i.val2;
-                drw.draw(graphic, bounds, width, height, rot);
+            for (DrawableDistribution distribution : drawableDistributions) {
+                updateMinAndMax(
+                        distribution.getMax(PointDistribution.AXIS.X),
+                        distribution.getMax(PointDistribution.AXIS.Y)
+                );
+                updateMinAndMax(
+                        distribution.getMin(PointDistribution.AXIS.X),
+                        distribution.getMin(PointDistribution.AXIS.Y)
+                );
+                distribution.draw(graphic, bounds, width, height, rot);
             }
         }
     }
@@ -227,36 +189,26 @@ public class UIGraphic extends WrapperView {
      */
 
     public int distributions() {
-        return data.size();
+        return drawableDistributions.size();
     }
 
     /**
-     * Return the specified {@link PointDistribution}.
+     * Return the specified {@link DrawableDistribution}.
      *
      * @param i the index of the distribution
-     * @return the specified distribution if {@code i <= distributions()} else null
+     * @return the specified distribution if {@code i <= distributions()} otherwise null
      */
 
-    public PointDistribution getDistribution(int i) {
+    public DrawableDistribution getDistribution(int i) {
         if (i >= 0 && i < distributions()) {
-            return data.get(i).val1;
+            return drawableDistributions.get(i);
         } else if (i == distributions()) {
-            PointDistribution dis = new PointDistribution();
-            data.add(new Pair<>(dis, stdDrawable));
-            return dis;
+            DrawableDistribution result = new DrawableDistribution();
+            drawableDistributions.add(result);
+            return result;
         }
         return null;
     }
-
-    /**
-     * @return the {@link Paint} used to color axis
-     */
-
-    public Paint getPaintAxis() {
-        return paintAxis;
-    }
-
-    //
 
     public static void main(String[] args) {
         UIGraphic uiGraphic = new UIGraphic(
@@ -266,6 +218,9 @@ public class UIGraphic extends WrapperView {
             uiGraphic.setRotation(uiGraphic.getBounds()[4] + 0.05f);
         });
         uiGraphic.getDistribution(0)
+                .setLinePaint(new Paint()
+                        .setStrokeWidth(3)
+                        .setStrokeColor(Theme.ROYAL_BLUE))
                 .add(0f, 0f)
                 .add(-100f, -100f)
                 .add(-100, 1000)
