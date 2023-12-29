@@ -172,6 +172,19 @@ public final class Utility {
         return out;
     }
 
+    /**
+     * Normalizes the specified value between [0, 1]
+     *
+     * @param value the value to be normalized
+     * @param min   the minimum value
+     * @param max   the maximum value
+     * @return the new normalized value between [0, 1]
+     */
+
+    public static float normalize(float value, float min, float max) {
+        return (value - min) / (max - min);
+    }
+
     // Calendar
 
     /**
