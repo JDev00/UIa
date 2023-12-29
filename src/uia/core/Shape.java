@@ -170,7 +170,7 @@ public class Shape implements Collider {
     }
 
     /**
-     * Helper function. Calculates if the specified point is inside this Shape according to RECT collider.
+     * Helper function. Checks if the specified point is inside this Shape according to the RECT collider.
      */
 
     private boolean containsRECT(float x, float y) {
@@ -178,7 +178,7 @@ public class Shape implements Collider {
     }
 
     /**
-     * Helper function. Calculates if the specified point is inside this Shape according to CIRCLE collider.
+     * Helper function. Checks if the given point is inside this Shape according to the CIRCLE collider.
      */
 
     private boolean containsCIRCLE(float x, float y) {
@@ -188,23 +188,24 @@ public class Shape implements Collider {
     }
 
     /**
-     * Helper function. Calculates if the specified point is inside this Shape according to SAT collider.
+     * Helper function. Checks if the given point is inside this Shape according to the SAT collider.
      */
 
     private boolean containsSAT(float x, float y) {
         boolean inside = false;
-        int size = geometry.vertices();
-        TransformedVertex vi = new TransformedVertex();
-        TransformedVertex vj = new TransformedVertex();
+        if (containsRECT(x, y)) {
+            int size = geometry.vertices();
+            TransformedVertex vi = new TransformedVertex();
+            TransformedVertex vj = new TransformedVertex();
 
-        // check if the given point is inside this shape. https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
-        for (int i = 0, j = size - 1; i < size; j = i++) {
-            transform(geometry.get(i), vi);
-            transform(geometry.get(j), vj);
-            if ((vi.y > y) != (vj.y > y) && x < (vj.x - vi.x) * (y - vi.y) / (vj.y - vi.y) + vi.x)
-                inside = !inside;
+            // check if the given point is inside this shape. https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
+            for (int i = 0, j = size - 1; i < size; j = i++) {
+                transform(geometry.get(i), vi);
+                transform(geometry.get(j), vj);
+                if ((vi.y > y) != (vj.y > y) && x < (vj.x - vi.x) * (y - vi.y) / (vj.y - vi.y) + vi.x)
+                    inside = !inside;
+            }
         }
-
         return inside;
     }
 
@@ -213,7 +214,7 @@ public class Shape implements Collider {
         updateDimension();
         switch (policy) {
             case SAT:
-                return containsRECT(x, y) || containsSAT(x, y);
+                return containsSAT(x, y);
             case CIRCLE:
                 return containsCIRCLE(x, y);
             default:
