@@ -1,6 +1,6 @@
 package test;
 
-import uia.develop.math.PointDistribution;
+import uia.application.math.PointDistribution;
 import test.core.Test;
 import test.core.TestAssertion;
 import test.core.TestUtils;

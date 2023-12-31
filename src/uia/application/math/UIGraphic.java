@@ -1,4 +1,4 @@
-package uia.develop.math;
+package uia.application.math;
 
 import uia.core.Shape;
 import uia.core.ui.Graphic;

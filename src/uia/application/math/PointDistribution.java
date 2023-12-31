@@ -1,4 +1,4 @@
-package uia.develop.math;
+package uia.application.math;
 
 import java.util.ArrayList;
 import java.util.Arrays;
