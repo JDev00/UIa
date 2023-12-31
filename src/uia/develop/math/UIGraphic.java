@@ -1,15 +1,11 @@
 package uia.develop.math;
 
-import uia.application.desktop.ContextSwing;
 import uia.core.Shape;
-import uia.core.ui.context.Context;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
-import uia.core.ui.callbacks.OnClick;
 import uia.physical.Component;
 import uia.core.Paint;
 import uia.physical.WrapperView;
-import uia.physical.theme.Theme;
 import uia.utility.GeometryFactory;
 import uia.utility.Utility;
 
@@ -19,7 +15,19 @@ import java.util.List;
 /**
  * Standard UIa component.
  * <br>
- * Component designed to render multiple data distributions.
+ * The purpose of this component is to render multiple data distributions on the screen.
+ * By design, it provides a Cartesian plane on which to render the data distributions.
+ * In addition, it adjusts the scale of the Cartesian plane to fit all the distribution points.
+ * <br>
+ * Limitations:
+ * <br>
+ * 1) it doesn't support zooming in or out;
+ * 2) the distribution points are not interactive: this means that nothing happens when the user passes over one of them.
+ * <br>
+ * Usage notes:
+ * <br>
+ * 1) to set a new distribution or to manipulate a distribution, use the method: {@link #getDistribution(int)};
+ * 2) it is possible to customise the graphical appearance of a distribution using the dedicated methods.
  */
 
 public class UIGraphic extends WrapperView {
@@ -47,7 +55,7 @@ public class UIGraphic extends WrapperView {
         reset();
     }
 
-    /**
+    /*
      * Calculates, for each distribution, the nearest point to the mouse position.
      * <br>
      * Time required: T(n)
@@ -56,7 +64,7 @@ public class UIGraphic extends WrapperView {
      *
      * @param x     the mouse position <b>(relative to this View)</b> along x-axis
      * @param store a not null {@link List} used to store the nearest points
-     */
+     *
 
     @Deprecated
     public void nearest(float x, List<float[]> store) {
@@ -88,7 +96,7 @@ public class UIGraphic extends WrapperView {
                 });
             }
         }
-    }
+    }*/
 
     /**
      * @return the {@link Paint} used to paint axis
@@ -206,25 +214,5 @@ public class UIGraphic extends WrapperView {
             return result;
         }
         return null;
-    }
-
-    public static void main(String[] args) {
-        UIGraphic uiGraphic = new UIGraphic(
-                new Component("", 0.5f, 0.5f, 0.5f, 0.5f)
-        );
-        uiGraphic.registerCallback((OnClick) p -> {
-            uiGraphic.setRotation(uiGraphic.getBounds()[4] + 0.05f);
-        });
-        uiGraphic.getDistribution(0)
-                .setLinePaint(new Paint()
-                        .setStrokeWidth(6)
-                        .setStrokeColor(Theme.ROYAL_BLUE))
-                .add(0f, 0f)
-                .add(-100f, -100f)
-                .add(-100, 1000)
-                .add(2000, 1200);
-
-        Context context = ContextSwing.createAndStart(1800, 900);
-        context.setView(uiGraphic);
     }
 }
