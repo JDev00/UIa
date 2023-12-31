@@ -5,8 +5,20 @@ import uia.core.*;
 /**
  * Graphic ADT.
  * <br>
- * A Graphic is responsible for drawing things on the screen. It is designed to provide a set of primitive functionalities
+ * A Graphic is responsible for drawing things on the screen. It is designed to provide a set of functionalities
  * that are unrelated to the specific platform.
+ * <br>
+ * <br>
+ * <b>Purpose</b>:
+ * <br>
+ * to provide a set of features that are platform independent to:
+ * <ul>
+ *     <li>draw a shape;</li>
+ *     <li>draw a text;</li>
+ *     <li>draw an image.</li>
+ * </ul>
+ * And, for each drawing operation, make it possible to modify the graphical appearance of the object
+ * (depending on the drawing operation).
  */
 
 public interface Graphic {
