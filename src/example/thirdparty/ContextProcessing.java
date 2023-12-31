@@ -73,4 +73,19 @@ public class ContextProcessing implements Context {
     public String clipboard(ClipboardOperation operation, String str) {
         return null;
     }
+
+    /**
+     * Creates a new ContextProcessing and start it
+     *
+     * @param width  the window width
+     * @param height the window height
+     * @return a new ContextProcessing
+     */
+
+    public static Context createAndStart(int width, int height) {
+        Context context = new ContextProcessing(width, height);
+        context.getWindow().show();
+        context.setLifecycleStage(LifecycleStage.RUN);
+        return context;
+    }
 }
