@@ -5,6 +5,7 @@ import processing.core.*;
 import uia.core.*;
 import uia.core.ui.Graphic;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class GraphicProcessing implements Graphic {
@@ -33,12 +34,10 @@ public class GraphicProcessing implements Graphic {
 
     @Override
     public void setClip(Shape shape) {
-        throw new UnsupportedOperationException();
     }
 
     @Override
     public void restoreClip() {
-        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -62,11 +61,6 @@ public class GraphicProcessing implements Graphic {
     }
 
     @Override
-    public void drawShape(float... vertices) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void setPaint(Paint paint) {
         PGraphics graphics = getGraphics();
         graphics.fill(paint.getRed(), paint.getGreen(), paint.getBlue(), paint.getAlpha());
@@ -78,6 +72,25 @@ public class GraphicProcessing implements Graphic {
         }
 
         graphics.strokeWeight(paint.getStrokeWidth());
+    }
+
+    @Override
+    public void drawShape(float... vertices) {
+        Objects.requireNonNull(vertices);
+        if (vertices.length % 2 != 0) {
+            throw new IllegalArgumentException("vertices shape must be [x1,y1, x2,y2, x3,y3, ...]");
+        }
+
+        if (vertices.length > 0) {
+            PGraphics graphics = getGraphics();
+            graphics.beginShape();
+            for (int i = 0; i < vertices.length; i += 2) {
+                float x = vertices[i];
+                float y = vertices[i + 1];
+                graphics.vertex(x, y);
+            }
+            graphics.endShape();
+        }
     }
 
     @Override
