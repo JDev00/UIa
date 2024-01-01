@@ -80,8 +80,8 @@ public class ContextSwing implements Context {
                 int repaintPeriodMillis = 1000 / 60;
                 renderingThread = Executors.newSingleThreadScheduledExecutor();
                 renderingThread.scheduleAtFixedRate(() -> rendererEngine.draw(
-                                window.getWidth(),
-                                window.getHeight(),
+                                window.getViewportWidth(),
+                                window.getViewportHeight(),
                                 window.isFocused()
                         ),
                         0,
@@ -154,7 +154,7 @@ public class ContextSwing implements Context {
 
     public static Context createAndStart(int width, int height) {
         Context context = new ContextSwing(width, height);
-        context.getWindow().show();
+        context.getWindow().setVisible(true);
         context.setLifecycleStage(LifecycleStage.RUN);
         return context;
     }

@@ -6,72 +6,76 @@ package uia.core.ui.context;
  * Window is responsible for managing a native window (the one the user sees and interacts with when an application is running).
  * Such a Window can be either system or third-party generated.
  * <br>
- * By default, a window as a specific piece dedicated to rendering. This area is automatically managed and
- * only it's width and height can be accessed externally via {@link #getWidth()} and {@link #getHeight()}.
+ * By default, a window has a specific part dedicated to rendering things. This area is automatically managed, and
+ * only it's width and height can be accessed externally via {@link #getViewportWidth()} and {@link #getViewportHeight()}.
  */
 
 public interface Window {
 
     /**
-     * Make this Window visible on the screen
-     */
-
-    Window show();
-
-    /**
-     * Hide this Window
-     */
-
-    Window hide();
-
-    /**
-     * Set the window to always be on top of other system or third-party windows, even when it isn't in focus.
+     * Shows or hides this Window
      *
-     * @param alwaysOnTop true to set this window to always be on top
-     * @return this {@link Window}
+     * @param visible true to make this Window visible
+     * @return this Window
+     */
+
+    Window setVisible(boolean visible);
+
+    /**
+     * @return true if this Window is visible
+     */
+
+    boolean isVisible();
+
+    /**
+     * Sets this window to stay always on top of other system or third-party windows, even when it isn't in focus.
+     *
+     * @param alwaysOnTop true to keep this window always be on top
+     * @return this Window
      */
 
     Window setAlwaysOnTop(boolean alwaysOnTop);
 
     /**
-     * Make the window resizable. It allows the user to resize the window in a canonical way through the GUI.
+     * Makes this window resizable. This functionality allows the user to resize the window via the GUI.
      *
      * @param resizable true to make this windows resizable
-     * @return this {@link Window}
+     * @return this Window
      */
 
     Window setResizable(boolean resizable);
 
     /**
-     * Set the window title
+     * Sets the window title
      *
      * @param title a title; it could be null
-     * @return this {@link Window}
+     * @return this Window
      */
 
     Window setTitle(String title);
 
     /**
-     * Resize this window to the specified width and height
+     * Resizes this window to the specified width and height
      *
-     * @param width  the new window's width; it must be greater than 150 pixels
-     * @param height the new window's height; it must be greater than 150 pixels
-     * @return this {@link Window}
+     * @param width  the new window width; it must be greater than 200 pixels
+     * @param height the new window height; it must be greater than 200 pixels
+     * @return this Window
+     * @throws IllegalArgumentException if {@code width <= 200 or height <= 200}
      */
 
     Window resize(int width, int height);
 
     /**
-     * @return the width of the drawable area
+     * @return the width of the area in which the UIa GUI components can be seen
      */
 
-    int getWidth();
+    int getViewportWidth();
 
     /**
-     * @return the height of the drawable area
+     * @return the height of the area in which the UIa GUI components can be seen
      */
 
-    int getHeight();
+    int getViewportHeight();
 
     /**
      * @return true if this Window is on focus
@@ -80,7 +84,11 @@ public interface Window {
     boolean isFocused();
 
     /**
-     * @return the window frame insets (title bar height and left and right padding of the drawing area)
+     * @return the window frame insets:
+     * <ul>
+     *     <li>title bar height</li>
+     *     <li>viewport left and right padding</li>
+     * </ul>
      */
 
     int[] getInsets();

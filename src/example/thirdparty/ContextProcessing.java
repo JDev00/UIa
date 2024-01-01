@@ -75,6 +75,14 @@ public class ContextProcessing implements Context {
     }
 
     /**
+     * @return the processing PApplet object
+     */
+
+    public PApplet getPApplet() {
+        return rendererEngineProcessing;
+    }
+
+    /**
      * Creates a new ContextProcessing and start it
      *
      * @param width  the window width
@@ -84,7 +92,7 @@ public class ContextProcessing implements Context {
 
     public static Context createAndStart(int width, int height) {
         Context context = new ContextProcessing(width, height);
-        context.getWindow().show();
+        context.getWindow().setVisible(true);
         context.setLifecycleStage(LifecycleStage.RUN);
         return context;
     }

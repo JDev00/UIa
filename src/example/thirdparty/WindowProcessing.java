@@ -5,6 +5,16 @@ import uia.core.ui.context.Window;
 public class WindowProcessing implements Window {
 
     @Override
+    public Window setVisible(boolean visible) {
+        return null;
+    }
+
+    @Override
+    public boolean isVisible() {
+        return false;
+    }
+
+    @Override
     public Window setAlwaysOnTop(boolean alwaysOnTop) {
         return null;
     }
@@ -20,27 +30,17 @@ public class WindowProcessing implements Window {
     }
 
     @Override
-    public Window show() {
-        return null;
-    }
-
-    @Override
-    public Window hide() {
-        return null;
-    }
-
-    @Override
     public Window resize(int width, int height) {
         return null;
     }
 
     @Override
-    public int getWidth() {
+    public int getViewportWidth() {
         return 0;
     }
 
     @Override
-    public int getHeight() {
+    public int getViewportHeight() {
         return 0;
     }
 
@@ -51,6 +51,6 @@ public class WindowProcessing implements Window {
 
     @Override
     public int[] getInsets() {
-        return null;
+        return new int[0];
     }
 }

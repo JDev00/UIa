@@ -56,10 +56,7 @@ public class Sanity {
      */
 
     public static Context createMockContext() {
-        Context context = new ContextSwing(720, 540);
-        context.getWindow().show();
-        context.setLifecycleStage(Context.LifecycleStage.RUN);
-        return context;
+        return ContextSwing.createAndStart(720, 540);
     }
 
     public static void showBaseComponents() {
@@ -90,7 +87,6 @@ public class Sanity {
         ViewGroup root = createRoot();
 
         Context context = createMockContext();
-        context.getWindow().show();
         context.setView(root);
 
         UIButtonFilled buttonFilled = new UIButtonFilled(

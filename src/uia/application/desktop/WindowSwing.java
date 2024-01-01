@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Built-in {@link Window} implementation based on Java Swing.
+ * {@link Window} implementation based on Java Swing.
  */
 
 public class WindowSwing implements Window {
@@ -166,15 +166,14 @@ public class WindowSwing implements Window {
     }
 
     @Override
-    public Window show() {
-        jFrame.setVisible(true);
+    public Window setVisible(boolean visible) {
+        jFrame.setVisible(visible);
         return this;
     }
 
     @Override
-    public Window hide() {
-        jFrame.setVisible(false);
-        return this;
+    public boolean isVisible() {
+        return jFrame.isVisible();
     }
 
     @Override
@@ -195,14 +194,15 @@ public class WindowSwing implements Window {
         return this;
     }
 
-    /**
-     * @throws IllegalArgumentException {@code if width < 200 or height < 200}
-     */
-
     @Override
     public Window resize(int width, int height) {
-        if (width < 200) throw new IllegalArgumentException("width must be greater than 200 pixels");
-        if (height < 200) throw new IllegalArgumentException("height must be greater than 200 pixels");
+        if (width < 200) {
+            throw new IllegalArgumentException("width must be greater than 200 pixels");
+        }
+        if (height < 200) {
+            throw new IllegalArgumentException("height must be greater than 200 pixels");
+        }
+
         screenSize[0] = width;
         screenSize[1] = height;
         jFrame.setSize(width, height);
@@ -210,12 +210,12 @@ public class WindowSwing implements Window {
     }
 
     @Override
-    public int getWidth() {
+    public int getViewportWidth() {
         return screenSize[0];
     }
 
     @Override
-    public int getHeight() {
+    public int getViewportHeight() {
         return screenSize[1];
     }
 
