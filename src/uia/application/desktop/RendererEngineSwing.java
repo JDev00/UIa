@@ -1,12 +1,10 @@
 package uia.application.desktop;
 
-import uia.core.basement.Message;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
 import uia.core.ui.context.Context;
 import uia.physical.ComponentHiddenRoot;
-import uia.physical.message.EventTouchScreenMessage;
-import uia.physical.message.MessageStore;
+import uia.physical.message.MessagingSystem;
 import uia.utility.Timer;
 
 import javax.swing.*;
@@ -20,9 +18,7 @@ import java.util.Objects;
  */
 
 public class RendererEngineSwing extends JPanel {
-    private static final int MAX_MESSAGES_PER_SECOND = 40000;
-
-    private final MessageStore messageStore = MessageStore.getInstance();
+    private final MessagingSystem messagingSystem;
     private final Timer timer;
     private Graphics2D nativeGraphics;
     private final Graphic graphic;
@@ -35,6 +31,8 @@ public class RendererEngineSwing extends JPanel {
     private float lastFrameCount;
 
     public RendererEngineSwing() {
+        messagingSystem = new MessagingSystem();
+
         graphic = new GraphicAWT(() -> nativeGraphics);
 
         rootView = new ComponentHiddenRoot();
@@ -120,27 +118,15 @@ public class RendererEngineSwing extends JPanel {
         rootView.requestFocus(focus);
     }
 
-    private String lockScreenTouchMessageRecipient = null;
-
     /**
      * Helper function. Update View.
      */
 
     private void updateView() {
         if (view != null) {
-            int messagesPerFrame = MAX_MESSAGES_PER_SECOND / Math.max(1, frameRate);
-            List<Message> messages = messageStore.pop(messagesPerFrame);
-            for (Message message : messages) {
-                // try to lock messages
-                if (message instanceof EventTouchScreenMessage.RequestLock && lockScreenTouchMessageRecipient == null) {
-                    lockScreenTouchMessageRecipient = message.getSender();
-                } else if (message instanceof EventTouchScreenMessage.Unlock) {
-                    lockScreenTouchMessageRecipient = null;
-                } else if (lockScreenTouchMessageRecipient != null && message instanceof EventTouchScreenMessage) {
-                    message = new EventTouchScreenMessage.Lock(message.getPayload(), lockScreenTouchMessageRecipient);
-                }
-                view.dispatchMessage(message);
-            }
+            int maxMessagesToProcess = MessagingSystem.MAX_MESSAGES_TO_PROCESS / Math.max(1, frameRate);
+            messagingSystem.setMaxMessagesToProcess(maxMessagesToProcess);
+            messagingSystem.sendMessagesTo(view);
             view.update(rootView);
         }
     }
