@@ -7,23 +7,22 @@ import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 import uia.core.Key;
 import uia.core.ScreenTouch;
-import uia.core.basement.Message;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
 import uia.physical.ComponentHiddenRoot;
-import uia.physical.message.MessageStore;
 import uia.physical.message.Messages;
+import uia.physical.message.MessagingSystem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RendererEngineProcessing extends PApplet {
-    private Graphic graphic;
-    private PGraphics nativeGraphics;
-
     public static final String RENDERER = PConstants.P3D;
     public static final int[] initScreenDimension = new int[2];
 
+    private final MessagingSystem messagingSystem = new MessagingSystem();
+    private Graphic graphic;
+    private PGraphics nativeGraphics;
     public static View currentView;
     private final View rootView = new ComponentHiddenRoot();
 
@@ -52,14 +51,9 @@ public class RendererEngineProcessing extends PApplet {
         rootView.requestFocus(focused);
 
         if (currentView != null) {
-            int counter = 0;
-            int limit = 30000 / (int) Math.max(1, frameRate);
-            Message message;
-
-            while ((message = MessageStore.getInstance().pop()) != null && counter < limit) {
-                currentView.dispatchMessage(message);
-                counter++;
-            }
+            int maxMessagesToProcess = MessagingSystem.MAX_MESSAGES_TO_PROCESS / Math.max(1, (int) frameRate);
+            messagingSystem.setMaxMessagesToProcess(maxMessagesToProcess);
+            messagingSystem.sendMessagesTo(currentView);
 
             currentView.update(rootView);
             currentView.draw(graphic);
@@ -67,18 +61,18 @@ public class RendererEngineProcessing extends PApplet {
     }
 
     /**
-     * Dispatch keys
+     * Helper function. Dispatch keys.
      */
 
     private void dispatch(KeyEvent event, Key.Action action) {
-        Key key = new Key(action, event.getModifiers(), event.getKey(), event.getKeyCode());
         if (currentView != null) {
+            Key key = new Key(action, event.getModifiers(), event.getKey(), event.getKeyCode());
             currentView.dispatchMessage(Messages.newKeyEventMessage(key, null));
         }
     }
 
     /**
-     * Dispatch screen touches
+     * Helper function. Dispatch screen touches.
      */
 
     private void dispatch(MouseEvent event, ScreenTouch.Action action) {

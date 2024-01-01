@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * MessagingSystem has the responsibility to manage the available messages.
+ * MessagingSystem has the responsibility to manage and dispatch the available messages.
  */
 
 public class MessagingSystem {
