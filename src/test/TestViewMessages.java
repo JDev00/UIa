@@ -2,6 +2,7 @@ package test;
 
 import test.core.Test;
 import test.core.TestAssertion;
+import test.core.TestExecutor;
 import test.core.TestUtils;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.callbacks.OnMessageReceived;
@@ -39,10 +40,10 @@ public class TestViewMessages {
             root.sendMessage(Messages.newMessage(MESSAGE, TARGET));
         }
 
-        TestUtils.waitMillis(2_100);
+        TestUtils.wait(2_100);
     }
 
     public static void main(String[] args) {
-        TestUtils.runTestSuite(new TestViewMessages());
+        TestExecutor.runTests(new TestViewMessages());
     }
 }

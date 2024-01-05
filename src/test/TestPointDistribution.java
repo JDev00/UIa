@@ -1,9 +1,9 @@
 package test;
 
+import test.core.TestExecutor;
 import uia.application.math.PointDistribution;
 import test.core.Test;
 import test.core.TestAssertion;
-import test.core.TestUtils;
 
 /**
  * Unit tests
@@ -56,6 +56,6 @@ public class TestPointDistribution {
     }
 
     public static void main(String[] args) {
-        TestUtils.runTestSuite(new TestPointDistribution());
+        TestExecutor.runTests(new TestPointDistribution());
     }
 }

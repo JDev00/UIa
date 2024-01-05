@@ -6,7 +6,6 @@ import uia.core.ui.View;
 import uia.core.ui.callbacks.*;
 
 import static test.Sanity.*;
-import static test.core.TestUtils.waitMillis;
 import static uia.utility.TrigTable.*;
 
 /**
@@ -27,7 +26,7 @@ public class TestView {
         float ROTATION = 2.145f;
         root.setRotation(ROTATION);
 
-        waitMillis(100);
+        TestUtils.wait(100);
 
         float[] bounds = root.getBounds();
         float width = root.getWidth();
@@ -56,7 +55,7 @@ public class TestView {
         Context context = createMockContext();
         context.setView(root);
 
-        waitMillis(100);
+        TestUtils.wait(100);
 
         float width = root.getWidth();
         float height = root.getHeight();
@@ -76,10 +75,10 @@ public class TestView {
 
         Context context = createMockContext();
         context.setView(root);
-        waitMillis(100);
+        TestUtils.wait(100);
 
         context.getInputEmulator().clickOn(100, 100);
-        waitMillis(100);
+        TestUtils.wait(100);
     }
 
     @Test
@@ -91,13 +90,13 @@ public class TestView {
 
         Context context = createMockContext();
         context.setView(root);
-        waitMillis(100);
+        TestUtils.wait(100);
 
         context.getInputEmulator().moveMouseOnScreen(
                 100, 100,
                 110, 110,
                 20, 0.1f);
-        waitMillis(100);
+        TestUtils.wait(100);
     }
 
     @Test
@@ -185,6 +184,6 @@ public class TestView {
     }
 
     public static void main(String[] args) {
-        TestUtils.runTestSuite(new TestView());
+        TestExecutor.runTests(new TestView());
     }
 }

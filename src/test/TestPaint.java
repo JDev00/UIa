@@ -2,7 +2,7 @@ package test;
 
 import test.core.Test;
 import test.core.TestAssertion;
-import test.core.TestUtils;
+import test.core.TestExecutor;
 import uia.core.Paint;
 
 /**
@@ -52,6 +52,6 @@ public class TestPaint {
     }
 
     public static void main(String[] args) {
-        TestUtils.runTestSuite(new TestPaint());
+        TestExecutor.runTests(new TestPaint());
     }
 }
