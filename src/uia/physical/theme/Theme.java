@@ -1,6 +1,6 @@
 package uia.physical.theme;
 
-import uia.core.Paint;
+import uia.core.Paint.Paint;
 
 /**
  * Collection of colors

@@ -3,7 +3,7 @@ package example;
 import uia.application.UIButton;
 import uia.application.desktop.ContextSwing;
 import uia.core.Font;
-import uia.core.Paint;
+import uia.core.Paint.Paint;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;

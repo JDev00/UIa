@@ -1,7 +1,7 @@
 package uia.core.ui;
 
 import uia.core.Font;
-import uia.core.Paint;
+import uia.core.Paint.Paint;
 
 /**
  * ViewText ADT.

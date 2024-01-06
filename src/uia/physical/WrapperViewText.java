@@ -1,7 +1,7 @@
 package uia.physical;
 
 import uia.core.Font;
-import uia.core.Paint;
+import uia.core.Paint.Paint;
 import uia.core.ui.ViewText;
 
 /**

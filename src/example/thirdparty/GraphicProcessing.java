@@ -3,6 +3,7 @@ package example.thirdparty;
 import processing.core.*;
 
 import uia.core.*;
+import uia.core.Paint.Paint;
 import uia.core.shape.Geometry;
 import uia.core.shape.Shape;
 import uia.core.ui.Graphic;

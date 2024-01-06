@@ -1,7 +1,7 @@
 package uia.application.math;
 
 import uia.core.shape.Geometry;
-import uia.core.Paint;
+import uia.core.Paint.Paint;
 import uia.core.shape.Shape;
 import uia.core.shape.NormalizedVertex;
 import uia.core.ui.Graphic;

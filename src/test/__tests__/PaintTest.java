@@ -1,24 +1,30 @@
 package test.__tests__;
 
+import test.core.BeforeEachTest;
 import test.core.Test;
 import test.core.TestAssertion;
 import test.core.TestExecutor;
-import uia.core.Paint;
+import uia.core.Paint.Paint;
 
 /**
  * Unit tests
  */
 
-public class TestPaint {
+public class PaintTest {
+    Paint paint;
+
+    @BeforeEachTest
+    public void beforeEach() {
+        paint = new Paint();
+    }
 
     @Test
-    public static void shouldBePossibleToSetColorAndStrokeColor(TestAssertion testAssertion) {
+    public void shouldBePossibleToSetColorAndStrokeColor(TestAssertion testAssertion) {
         testAssertion.assertions(7);
 
         final int[] COLOR = {255, 0, 128, 100};
         final int[] COLOR_STROKE = {0, 255, 128, 100};
 
-        Paint paint = new Paint();
         paint.setColor(new Paint.Color(COLOR[0], COLOR[1], COLOR[2], COLOR[3]));
         paint.setStrokeColor(new Paint.Color(COLOR_STROKE[0], COLOR_STROKE[1], COLOR_STROKE[2], COLOR_STROKE[3]));
 
@@ -32,14 +38,13 @@ public class TestPaint {
     }
 
     @Test
-    public static void paintShouldBeAppliedToAnotherPaint(TestAssertion testAssertion) {
+    public void paintShouldBeAppliedToAnotherPaint(TestAssertion testAssertion) {
         testAssertion.assertions(7);
 
         Paint paintToSet = new Paint();
         paintToSet.setColor(new Paint.Color(255, 0, 0));
         paintToSet.setStrokeColor(new Paint.Color("0xff11aa"));
 
-        Paint paint = new Paint();
         paint.set(paintToSet);
 
         testAssertion.expect(paint.getRed()).toBe(paintToSet.getRed());
@@ -52,6 +57,6 @@ public class TestPaint {
     }
 
     public static void main(String[] args) {
-        TestExecutor.runTests(new TestPaint());
+        TestExecutor.runTests(new PaintTest());
     }
 }

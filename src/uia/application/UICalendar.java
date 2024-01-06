@@ -1,5 +1,6 @@
 package uia.application;
 
+import uia.core.Paint.Paint;
 import uia.core.basement.Drawable;
 import uia.core.ui.ViewGroup;
 import uia.physical.*;

@@ -1,4 +1,4 @@
-package uia.core;
+package uia.core.Paint;
 
 import uia.utility.Utility;
 
@@ -181,6 +181,15 @@ public class Paint {
 
     public int getAlpha() {
         return color[3];
+    }
+
+    public int[] getColor() {
+        return new int[]{
+                getRed(),
+                getGreen(),
+                getBlue(),
+                getAlpha()
+        };
     }
 
     /**

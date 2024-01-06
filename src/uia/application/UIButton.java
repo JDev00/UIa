@@ -2,7 +2,7 @@ package uia.application;
 
 import uia.core.basement.Callback;
 import uia.core.ui.View;
-import uia.core.Paint;
+import uia.core.Paint.Paint;
 import uia.core.ui.callbacks.OnClick;
 import uia.physical.theme.Theme;
 import uia.physical.WrapperView;

@@ -1,6 +1,6 @@
 package uia.application;
 
-import uia.core.Paint;
+import uia.core.Paint.Paint;
 import uia.core.ScreenTouch;
 import uia.core.basement.Drawable;
 import uia.core.ui.View;
