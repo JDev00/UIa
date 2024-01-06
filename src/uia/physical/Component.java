@@ -10,6 +10,7 @@ import uia.physical.callbacks.CallbackStore;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.message.MessageStore;
+import uia.physical.theme.Theme;
 import uia.utility.Geometries;
 import uia.core.basement.Callback;
 import uia.core.ui.View;
@@ -54,7 +55,7 @@ public final class Component implements View {
 
         callable = new CallbackStore(4);
 
-        paint = new Paint().setColor(new Paint.Color(255));
+        paint = new Paint().setColor(Theme.WHITE);
 
         shape = new Shape();
         Geometries.rect(shape.getGeometry());

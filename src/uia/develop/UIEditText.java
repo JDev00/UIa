@@ -2,6 +2,7 @@ package uia.develop;
 
 import uia.application.desktop.ContextSwing;
 import uia.core.*;
+import uia.core.Paint.Color;
 import uia.core.Paint.Paint;
 import uia.core.shape.Shape;
 import uia.core.ui.Graphic;
@@ -96,7 +97,7 @@ public class UIEditText extends WrapperViewText {
         highlight = new Shape();
         Geometries.rect(highlight.getGeometry());
 
-        paintHighlight = new Paint().setColor(Theme.createColor(65, 105, 225, 126));
+        paintHighlight = new Paint().setColor(Color.createColor(65, 105, 225, 126));
 
         cursor = new Cursor(view.getID());
     }

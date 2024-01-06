@@ -79,6 +79,63 @@ public class TestAssertion {
     }
 
     /**
+     * Checks whether the expected object contains the specified values.
+     * <br>
+     * A shallow control is operated on elements.
+     *
+     * @param values the values the expected object is supposed to contain
+     * @throws NullPointerException if {@code values is null}
+     * @see #toHaveValues(Object...)
+     */
+
+    public void toHaveValues(int[] values) {
+        Objects.requireNonNull(values);
+        Object[] castValues = new Object[values.length];
+        for (int i = 0; i < values.length; i++) {
+            castValues[i] = values[i];
+        }
+        toHaveValues(castValues);
+    }
+
+    /**
+     * Checks whether the expected object contains the specified values.
+     * <br>
+     * A shallow control is operated on elements.
+     *
+     * @param values the values the expected object is supposed to contain
+     * @throws NullPointerException if {@code values is null}
+     * @see #toHaveValues(Object...)
+     */
+
+    public void toHaveValues(float[] values) {
+        Objects.requireNonNull(values);
+        Object[] castValues = new Object[values.length];
+        for (int i = 0; i < values.length; i++) {
+            castValues[i] = values[i];
+        }
+        toHaveValues(castValues);
+    }
+
+    /**
+     * Checks whether the expected object contains the specified values.
+     * <br>
+     * A shallow control is operated on elements.
+     *
+     * @param values the values the expected object is supposed to contain
+     * @throws NullPointerException if {@code values is null}
+     * @see #toHaveValues(Object...)
+     */
+
+    public void toHaveValues(double[] values) {
+        Objects.requireNonNull(values);
+        Object[] castValues = new Object[values.length];
+        for (int i = 0; i < values.length; i++) {
+            castValues[i] = values[i];
+        }
+        toHaveValues(castValues);
+    }
+
+    /**
      * Checks if the expected object has the specified length.
      * <br>
      * Note that this method assumes that 'expected' is an array.

@@ -117,9 +117,11 @@ public class GraphicAWT implements Graphic {
 
     private void buildPaint(Paint paint) {
         if (!paint.isValid() || !(paint.getNativeColor() instanceof java.awt.Paint)) {
+            uia.core.Paint.Color color = paint.getColor();
+            uia.core.Paint.Color strokeColor = paint.getStrokeColor();
             paint.setNative(
-                    new Color(paint.getRed(), paint.getGreen(), paint.getBlue(), paint.getAlpha()),
-                    new Color(paint.getStrokeRed(), paint.getStrokeGreen(), paint.getStrokeBlue()),
+                    new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()),
+                    new Color(strokeColor.getRed(), strokeColor.getGreen(), strokeColor.getBlue()),
                     new BasicStroke(paint.getStrokeWidth()));
         }
     }

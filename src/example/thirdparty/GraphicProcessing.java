@@ -3,6 +3,7 @@ package example.thirdparty;
 import processing.core.*;
 
 import uia.core.*;
+import uia.core.Paint.Color;
 import uia.core.Paint.Paint;
 import uia.core.shape.Geometry;
 import uia.core.shape.Shape;
@@ -65,11 +66,14 @@ public class GraphicProcessing implements Graphic {
 
     @Override
     public void setPaint(Paint paint) {
+        Color color = paint.getColor();
+        Color strokeColor = paint.getStrokeColor();
+
         PGraphics graphics = getGraphics();
-        graphics.fill(paint.getRed(), paint.getGreen(), paint.getBlue(), paint.getAlpha());
+        graphics.fill(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 
         if (paint.hasStroke()) {
-            graphics.stroke(paint.getStrokeRed(), paint.getStrokeGreen(), paint.getStrokeBlue());
+            graphics.stroke(strokeColor.getRed(), strokeColor.getGreen(), strokeColor.getBlue());
         } else {
             graphics.noStroke();
         }

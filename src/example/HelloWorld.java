@@ -3,6 +3,7 @@ package example;
 import uia.application.UIButton;
 import uia.application.desktop.ContextSwing;
 import uia.core.Font;
+import uia.core.Paint.Color;
 import uia.core.Paint.Paint;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.context.Context;
@@ -67,12 +68,12 @@ public class HelloWorld extends WrapperView {
         ));
         // get the Paint used when the button is activated and set: a new color, stroke color and stroke width
         result.getPaint(UIButton.STATE.ON)
-                .setColor(new Paint.Color(100, 200, 255, 100))
+                .setColor(Color.createColor(100, 200, 255, 100))
                 .setStrokeColor(Theme.WHITE)
                 .setStrokeWidth(8);
         // get the Paint used when the button isn't activated and set: a new color, stroke color and stroke width
         result.getPaint(UIButton.STATE.OFF)
-                .setColor(new Paint.Color(200, 100, 0, 50))
+                .setColor(Color.createColor(200, 100, 0, 50))
                 .setStrokeColor(Theme.RED)
                 .setStrokeWidth(4);
         // get the ViewText passed to the button constructor
@@ -106,7 +107,9 @@ public class HelloWorld extends WrapperView {
                 .setStyle(Font.STYLE.ITALIC)
                 .setLeadingFactor(1.2f);
         // set text color
-        result.getTextPaint().setColor(new Paint.Color("0xe813dd"));
+        result.getTextPaint().setColor(
+                Color.createColor("0xe813dd")
+        );
         return result;
     }
 

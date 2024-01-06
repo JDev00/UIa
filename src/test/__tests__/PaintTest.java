@@ -4,6 +4,7 @@ import test.core.BeforeEachTest;
 import test.core.Test;
 import test.core.TestAssertion;
 import test.core.TestExecutor;
+import uia.core.Paint.Color;
 import uia.core.Paint.Paint;
 
 /**
@@ -11,6 +12,9 @@ import uia.core.Paint.Paint;
  */
 
 public class PaintTest {
+    int strokeWidth = 2;
+    Color color = Color.createColor(255, 0, 128, 100);
+    Color strokeColor = Color.createColor(0, 255, 128, 100);
     Paint paint;
 
     @BeforeEachTest
@@ -19,41 +23,58 @@ public class PaintTest {
     }
 
     @Test
-    public void shouldBePossibleToSetColorAndStrokeColor(TestAssertion testAssertion) {
-        testAssertion.assertions(7);
+    public void shouldBePossibleToSetThePaintColorTheStrokeColorAndTheStrokeWidth(TestAssertion testAssertion) {
+        testAssertion.assertions(4);
 
-        final int[] COLOR = {255, 0, 128, 100};
-        final int[] COLOR_STROKE = {0, 255, 128, 100};
+        // test setup
+        paint.setColor(color);
+        paint.setStrokeColor(strokeColor);
+        paint.setStrokeWidth(strokeWidth);
 
-        paint.setColor(new Paint.Color(COLOR[0], COLOR[1], COLOR[2], COLOR[3]));
-        paint.setStrokeColor(new Paint.Color(COLOR_STROKE[0], COLOR_STROKE[1], COLOR_STROKE[2], COLOR_STROKE[3]));
+        // test controls
+        int[] expectedColorValues = paint.getColor().getRGBA();
+        testAssertion.expect(expectedColorValues).toHaveValues(color.getRGBA());
 
-        testAssertion.expect(paint.getRed()).toBe(COLOR[0]);
-        testAssertion.expect(paint.getGreen()).toBe(COLOR[1]);
-        testAssertion.expect(paint.getBlue()).toBe(COLOR[2]);
-        testAssertion.expect(paint.getAlpha()).toBe(COLOR[3]);
-        testAssertion.expect(paint.getStrokeRed()).toBe(COLOR_STROKE[0]);
-        testAssertion.expect(paint.getStrokeGreen()).toBe(COLOR_STROKE[1]);
-        testAssertion.expect(paint.getStrokeBlue()).toBe(COLOR_STROKE[2]);
+        int[] expectedStrokeColorValues = paint.getStrokeColor().getRGBA();
+        testAssertion.expect(expectedStrokeColorValues).toHaveValues(
+                strokeColor.getRed(),
+                strokeColor.getGreen(),
+                strokeColor.getBlue(),
+                255
+        );
+
+        int expectedStrokeWidth = paint.getStrokeWidth();
+        testAssertion.expect(expectedStrokeWidth).toBe(strokeWidth);
+
+        testAssertion.expect(paint.hasStroke()).toBe(true);
     }
 
     @Test
-    public void paintShouldBeAppliedToAnotherPaint(TestAssertion testAssertion) {
-        testAssertion.assertions(7);
+    public void shouldBePossibleToApplyAPaintToAnotherPaint(TestAssertion testAssertion) {
+        testAssertion.assertions(3);
 
+        // test setup
         Paint paintToSet = new Paint();
-        paintToSet.setColor(new Paint.Color(255, 0, 0));
-        paintToSet.setStrokeColor(new Paint.Color("0xff11aa"));
+        paintToSet.setColor(color);
+        paintToSet.setStrokeColor(strokeColor);
+        paintToSet.setStrokeWidth(strokeWidth);
 
         paint.set(paintToSet);
 
-        testAssertion.expect(paint.getRed()).toBe(paintToSet.getRed());
-        testAssertion.expect(paint.getGreen()).toBe(paintToSet.getGreen());
-        testAssertion.expect(paint.getBlue()).toBe(paintToSet.getBlue());
-        testAssertion.expect(paint.getAlpha()).toBe(paintToSet.getAlpha());
-        testAssertion.expect(paint.getStrokeRed()).toBe(paintToSet.getStrokeRed());
-        testAssertion.expect(paint.getStrokeGreen()).toBe(paintToSet.getStrokeGreen());
-        testAssertion.expect(paint.getStrokeBlue()).toBe(paintToSet.getStrokeBlue());
+        // test controls
+        int[] expectedColorValues = paint.getColor().getRGBA();
+        testAssertion.expect(expectedColorValues).toHaveValues(color.getRGBA());
+
+        int[] expectedStrokeColorValues = paint.getStrokeColor().getRGBA();
+        testAssertion.expect(expectedStrokeColorValues).toHaveValues(
+                strokeColor.getRed(),
+                strokeColor.getGreen(),
+                strokeColor.getBlue(),
+                255
+        );
+
+        int expectedStrokeWidth = paint.getStrokeWidth();
+        testAssertion.expect(expectedStrokeWidth).toBe(strokeWidth);
     }
 
     public static void main(String[] args) {

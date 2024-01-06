@@ -12,6 +12,7 @@ import uia.physical.scroller.WheelScroller;
 import uia.physical.text.MultilineRendererV1;
 import uia.physical.text.TextRenderer;
 import uia.physical.text.InlineRendererV1;
+import uia.physical.theme.Theme;
 
 /**
  * Implementation of {@link ViewText}
@@ -52,7 +53,7 @@ public final class ComponentText extends WrapperView implements ViewText {
 
         font = new Font("Arial", Font.STYLE.PLAIN, Font.FONT_SIZE_DESKTOP);
 
-        paintText = new Paint().setColor(new Paint.Color(0));
+        paintText = new Paint().setColor(Theme.BLACK);
 
         clipShape = new Shape();
         clipShape.setGeometry(getGeometry());

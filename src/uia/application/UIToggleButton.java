@@ -98,12 +98,7 @@ public final class UIToggleButton extends WrapperView {
      */
 
     private void applyColor(Paint target, Paint source) {
-        target.setColor(new Paint.Color(
-                source.getRed(),
-                source.getGreen(),
-                source.getBlue(),
-                source.getAlpha()
-        ));
+        target.setColor(source.getColor());
     }
 
     /**
