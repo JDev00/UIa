@@ -63,20 +63,43 @@ public class TestAssertion {
 
     public void toHaveValues(Object... values) {
         Objects.requireNonNull(values);
-        if (expected.getClass().isArray()) {
-            if (values.length > Array.getLength(expected)) {
-                throw new IllegalArgumentException();
-            }
-            for (int i = 0; i < values.length; i++) {
-                Object subjectElement = Array.get(expected, i);
-                if (!subjectElement.equals(values[i])) {
-                    throw new IllegalArgumentException("expected " + subjectElement + " to be " + values[i] + " but it wasn't");
-                }
-            }
-            passedAssertions++;
-        } else {
+        if (values.length > Array.getLength(expected)) {
+            throw new IllegalArgumentException("have been specified more values than the expected ones");
+        }
+        if (!expected.getClass().isArray()) {
             throw new ClassCastException("expected " + expected + " to be an array but it wasn't");
         }
+        for (int i = 0; i < values.length; i++) {
+            Object subjectElement = Array.get(expected, i);
+            if (!subjectElement.equals(values[i])) {
+                throw new IllegalArgumentException("expected " + subjectElement + " to be " + values[i] + " but it wasn't");
+            }
+        }
+        passedAssertions++;
+    }
+
+    /**
+     * Checks if the expected object has the specified length.
+     * <br>
+     * Note that this method assumes that 'expected' is an array.
+     *
+     * @param length the number of elements (> 0) the expected is supposed to have
+     * @throws IllegalArgumentException if {@code length < 0}
+     * @throws ClassCastException       if {@code expected is not an array}
+     */
+
+    public void toHaveLength(int length) {
+        if (length < 0) {
+            throw new IllegalArgumentException("the specified 'length' must be >= 0");
+        }
+        if (!expected.getClass().isArray()) {
+            throw new ClassCastException("expected " + expected + " to be an array but it wasn't");
+        }
+        int expectedElementsNumber = Array.getLength(expected);
+        if (expectedElementsNumber != length) {
+            throw new IllegalArgumentException("expected " + expected + "to have length " + length + " but it was " + expectedElementsNumber);
+        }
+        passedAssertions++;
     }
 
     /**

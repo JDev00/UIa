@@ -38,7 +38,7 @@ public class GeometryTest {
 
     @Test
     public void aMalformedVertexShouldBeAddedToTheGeometry(TestAssertion testAssertion) {
-        testAssertion.assertions(2);
+        testAssertion.assertions(3);
 
         float xVertex = 10f;
         float yVertex = -1.5f;
@@ -46,7 +46,8 @@ public class GeometryTest {
 
         testAssertion.expect(geometry.vertices()).toBe(1);
         float[] expectedVertex = geometry.get(0).toArray();
-        testAssertion.expect(expectedVertex).toHaveValues(0.5f, -0.5f, 0f);
+        testAssertion.expect(expectedVertex).toHaveLength(2);
+        testAssertion.expect(expectedVertex).toHaveValues(0.5f, -0.5f);
     }
 
     @Test
