@@ -3,6 +3,7 @@ package uia.application.math;
 import uia.core.shape.Geometry;
 import uia.core.Paint;
 import uia.core.shape.Shape;
+import uia.core.shape.Vertex;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
 import uia.physical.theme.Theme;
@@ -76,7 +77,7 @@ public class DrawableDistribution extends PointDistribution {
         Geometry internalGeometry = shapeMarker.getGeometry();
         internalGeometry.removeAllVertices();
         for (int i = 0; i < markerGeometry.vertices(); i++) {
-            Geometry.Vertex vertex = markerGeometry.get(i);
+            Vertex vertex = markerGeometry.get(i);
             internalGeometry.addVertex(vertex.getX(), vertex.getY());
         }
         return this;
