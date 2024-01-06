@@ -125,22 +125,6 @@ public final class Color {
     }
 
     /**
-     * @param hex a not null hexadecimal number with uppercase chars
-     * @return the decimal representation of the given hex
-     */
-
-    private static int getDecimal(String hex) {
-        String digits = "0123456789ABCDEF";
-        int val = 0;
-        for (int i = 0; i < hex.length(); i++) {
-            char c = hex.charAt(i);
-            int d = digits.indexOf(c);
-            val = 16 * val + d;
-        }
-        return val;
-    }
-
-    /**
      * @return the correct color channel value
      */
 
@@ -192,6 +176,22 @@ public final class Color {
     }
 
     /**
+     * @param hex a not null hexadecimal number with uppercase chars
+     * @return the decimal representation of the given hex
+     */
+
+    private static int hexToDecimal(String hex) {
+        String digits = "0123456789ABCDEF";
+        int val = 0;
+        for (int i = 0; i < hex.length(); i++) {
+            char c = hex.charAt(i);
+            int d = digits.indexOf(c);
+            val = 16 * val + d;
+        }
+        return val;
+    }
+
+    /**
      * Creates a new Color based on the specified hex value
      *
      * @param hex a not null hex value
@@ -205,7 +205,7 @@ public final class Color {
                     .replace("#", "")
                     .toUpperCase();
             int length = hex.length();
-            int color = getDecimal(hex);
+            int color = hexToDecimal(hex);
 
             if (length == 6) {
                 result = createColor(
