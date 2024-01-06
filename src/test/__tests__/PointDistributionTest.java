@@ -10,7 +10,7 @@ import test.core.TestAssertion;
  * Unit tests
  */
 
-public class TestPointDistribution {
+public class PointDistributionTest {
     PointDistribution pointDistribution;
 
     @BeforeEachTest
@@ -75,6 +75,6 @@ public class TestPointDistribution {
     }
 
     public static void main(String[] args) {
-        TestExecutor.runTests(new TestPointDistribution());
+        TestExecutor.runTests(new PointDistributionTest());
     }
 }
