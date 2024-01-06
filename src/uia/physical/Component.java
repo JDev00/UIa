@@ -3,6 +3,8 @@ package uia.physical;
 import uia.core.*;
 import uia.core.basement.Callable;
 import uia.core.basement.Message;
+import uia.core.shape.Geometry;
+import uia.core.shape.Shape;
 import uia.physical.callbacks.CallbackStore;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.message.EventTouchScreenMessage;

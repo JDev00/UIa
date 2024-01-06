@@ -1,7 +1,7 @@
 package uia.application;
 
 import uia.core.Font;
-import uia.core.Geometry;
+import uia.core.shape.Geometry;
 import uia.core.basement.Drawable;
 import uia.core.ui.ViewGroup;
 import uia.physical.theme.Theme;

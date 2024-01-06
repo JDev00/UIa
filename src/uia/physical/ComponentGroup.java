@@ -1,6 +1,6 @@
 package uia.physical;
 
-import uia.core.Shape;
+import uia.core.shape.Shape;
 import uia.core.basement.Message;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;

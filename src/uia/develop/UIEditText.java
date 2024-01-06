@@ -2,6 +2,7 @@ package uia.develop;
 
 import uia.application.desktop.ContextSwing;
 import uia.core.*;
+import uia.core.shape.Shape;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;

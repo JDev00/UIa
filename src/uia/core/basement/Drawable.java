@@ -1,6 +1,6 @@
 package uia.core.basement;
 
-import uia.core.Geometry;
+import uia.core.shape.Geometry;
 import uia.core.Paint;
 import uia.core.ui.Graphic;
 import uia.utility.GeometryFactory;

@@ -3,6 +3,8 @@ package example.thirdparty;
 import processing.core.*;
 
 import uia.core.*;
+import uia.core.shape.Geometry;
+import uia.core.shape.Shape;
 import uia.core.ui.Graphic;
 
 import java.util.Objects;

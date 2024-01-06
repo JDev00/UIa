@@ -1,10 +1,10 @@
 package uia.application.desktop;
 
 import uia.core.Font;
-import uia.core.Geometry;
+import uia.core.shape.Geometry;
 import uia.core.Image;
 import uia.core.Paint;
-import uia.core.Shape;
+import uia.core.shape.Shape;
 import uia.core.ui.Graphic;
 import uia.utility.TrigTable;
 

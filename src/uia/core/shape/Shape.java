@@ -1,4 +1,4 @@
-package uia.core;
+package uia.core.shape;
 
 import uia.core.basement.Collider;
 

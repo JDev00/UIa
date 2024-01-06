@@ -1,6 +1,6 @@
 package uia.utility;
 
-import uia.core.Geometry;
+import uia.core.shape.Geometry;
 
 import static uia.utility.TrigTable.*;
 

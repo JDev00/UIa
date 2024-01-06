@@ -1,6 +1,6 @@
 package uia.physical;
 
-import uia.core.Geometry;
+import uia.core.shape.Geometry;
 import uia.core.Paint;
 import uia.core.basement.Callback;
 import uia.core.basement.Message;

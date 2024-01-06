@@ -1,6 +1,6 @@
 package uia.application.math;
 
-import uia.core.Shape;
+import uia.core.shape.Shape;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
 import uia.physical.Component;

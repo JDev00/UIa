@@ -1,8 +1,8 @@
 package uia.application.math;
 
-import uia.core.Geometry;
+import uia.core.shape.Geometry;
 import uia.core.Paint;
-import uia.core.Shape;
+import uia.core.shape.Shape;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
 import uia.physical.theme.Theme;
