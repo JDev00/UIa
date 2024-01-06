@@ -1,7 +1,5 @@
 package uia.core.shape;
 
-import uia.utility.Utility;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,7 +15,7 @@ import static uia.utility.TrigTable.rotY;
  * A normalized vertex has its dimensions (values) constrained between [-0.5, 0.5].
  */
 
-public class Geometry implements Iterable<Geometry.Vertex> {
+public class Geometry implements Iterable<Vertex> {
     private final List<Vertex> vertices;
 
     public Geometry() {
@@ -149,7 +147,7 @@ public class Geometry implements Iterable<Geometry.Vertex> {
         Objects.requireNonNull(geometry);
         float cos = cos(radians);
         float sin = sin(radians);
-        for (Geometry.Vertex vertex : geometry) {
+        for (Vertex vertex : geometry) {
             float vx = vertex.getX();
             float vy = vertex.getY();
             float nx = rotX(vx, vy, cos, sin);
@@ -178,7 +176,7 @@ public class Geometry implements Iterable<Geometry.Vertex> {
         if (scaleY <= 0) {
             throw new IllegalArgumentException("scaleY must be greater than 0");
         }
-        for (Geometry.Vertex vertex : geometry) {
+        for (Vertex vertex : geometry) {
             float vx = vertex.getX();
             float vy = vertex.getY();
             float nx = scaleX * vx;
@@ -186,111 +184,5 @@ public class Geometry implements Iterable<Geometry.Vertex> {
             vertex.set(nx, ny);
         }
         return geometry;
-    }
-
-    /**
-     * A vertex is a single geometric point.
-     */
-
-    public static class Vertex {
-        private float x;
-        private float y;
-        private boolean primer = false;
-
-        public Vertex(float x, float y) {
-            this.set(x, y);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(x, y, primer);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            Vertex vertex = (Vertex) o;
-            return Float.compare(x, vertex.x) == 0 && Float.compare(y, vertex.y) == 0 && primer == vertex.primer;
-        }
-
-        @Override
-        public String toString() {
-            return "Vertex{" +
-                    "x=" + x +
-                    ", y=" + y +
-                    ", primer=" + primer +
-                    '}';
-        }
-
-        /**
-         * Constrains the given value between [-0.5, 0.5]
-         */
-
-        private static float constrainValue(float value) {
-            return Utility.constrain(value, -0.5f, 0.5f);
-        }
-
-        /**
-         * Set the vertex position
-         *
-         * @param x the position along x-axis between [-0.5, 0.5]
-         * @param y the position along y-axis between [-0.5, 0.5]
-         * @return this Vertex
-         */
-
-        public Vertex set(float x, float y) {
-            this.x = constrainValue(x);
-            this.y = constrainValue(y);
-            return this;
-        }
-
-        /**
-         * A primer vertex is the one who opens a new piece of geometry
-         *
-         * @param primer true to start a new piece of geometry
-         * @return this Vertex
-         */
-
-        public Vertex setPrimer(boolean primer) {
-            this.primer = primer;
-            return this;
-        }
-
-        /**
-         * @return true if this Vertex is a primer vertex
-         */
-
-        public boolean isPrimer() {
-            return primer;
-        }
-
-        /**
-         * @return the vertex position along x-axis
-         */
-
-        public float getX() {
-            return x;
-        }
-
-        /**
-         * @return the vertex position along y-axis
-         */
-
-        public float getY() {
-            return y;
-        }
-
-        /**
-         * @return the vertex values on the x-axis and y-axis as an array
-         */
-
-        public float[] toArray() {
-            return new float[]{x, y};
-        }
     }
 }
