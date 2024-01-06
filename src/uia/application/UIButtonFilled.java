@@ -8,7 +8,7 @@ import uia.core.ui.ViewGroup;
 import uia.physical.theme.Theme;
 import uia.physical.WrapperView;
 import uia.core.ui.ViewText;
-import uia.utility.GeometryFactory;
+import uia.utility.Geometries;
 import uia.physical.Component;
 import uia.physical.ComponentGroup;
 import uia.physical.ComponentText;
@@ -43,7 +43,7 @@ public final class UIButtonFilled extends WrapperView {
                 0.125f, 0.4f, 1.25f, 1.25f);
         icon.setColliderPolicy(ColliderPolicy.AABB);
         icon.setConsumer(Consumer.SCREEN_TOUCH, false);
-        icon.setGeometry(GeometryFactory::arrow, false);
+        icon.setGeometry(Geometries::arrow, false);
         icon.setRotation(right ? 0f : TrigTable.PI);
         icon.getPaint().setColor(Theme.BLACK);
 

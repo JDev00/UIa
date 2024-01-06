@@ -9,7 +9,7 @@ import uia.physical.callbacks.CallbackStore;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.message.MessageStore;
-import uia.utility.GeometryFactory;
+import uia.utility.Geometries;
 import uia.core.basement.Callback;
 import uia.core.ui.View;
 import uia.core.ui.Graphic;
@@ -56,7 +56,7 @@ public final class Component implements View {
         paint = new Paint().setColor(new Paint.Color(255));
 
         shape = new Shape();
-        GeometryFactory.rect(shape.getGeometry());
+        Geometries.rect(shape.getGeometry());
 
         setExpanseLimit(xExpansion, yExpansion);
     }

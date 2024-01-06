@@ -92,13 +92,12 @@ public final class UIProgressbar extends WrapperView {
 
     private void updateInternalBarGeometry() {
         float xVertex = value - 0.5f;
-        Geometry emptyGeometry = internalBar.getGeometry().removeAllVertices();
-        Geometry.addVertices(emptyGeometry,
+        Geometry internalBarGeometry = internalBar.getGeometry().removeAllVertices();
+        internalBarGeometry.addVertices(
                 -0.5f, -0.5f,
                 xVertex, -0.5f,
                 xVertex, 0.5f,
-                -0.5f, 0.5f
-        );
+                -0.5f, 0.5f);
     }
 
     @Override

@@ -13,7 +13,7 @@ import uia.core.ui.callbacks.OnMouseExit;
 import uia.core.basement.Callback;
 import uia.core.ui.callbacks.OnClick;
 import uia.utility.Utility;
-import uia.utility.GeometryFactory;
+import uia.utility.Geometries;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,7 +52,7 @@ public final class UICalendar extends WrapperView {
     public UICalendar(View view) {
         super(new ComponentGroup(view));
 
-        setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), GeometryFactory.STD_ROUND), true);
+        setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), Geometries.STD_ROUND), true);
         getPaint().setColor(ThemeDarcula.DARK_GRAY);
 
         font = new Font("Arial", Font.STYLE.ITALIC, Font.FONT_SIZE_DESKTOP);

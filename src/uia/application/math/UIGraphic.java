@@ -6,7 +6,7 @@ import uia.core.ui.View;
 import uia.physical.Component;
 import uia.core.Paint;
 import uia.physical.WrapperView;
-import uia.utility.GeometryFactory;
+import uia.utility.Geometries;
 import uia.utility.Utility;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class UIGraphic extends WrapperView {
         clipShape = new Shape();
 
         axis = new Shape();
-        axis.setGeometry(GeometryFactory.rect(axis.getGeometry()));
+        axis.setGeometry(Geometries.rect(axis.getGeometry()));
 
         paintAxis = new Paint().setStrokeWidth(1);
 

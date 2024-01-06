@@ -5,10 +5,10 @@ import uia.core.shape.Geometry;
 import static uia.utility.TrigTable.*;
 
 /**
- * Collection of utilities used to easily build geometries
+ * Collection of geometries
  */
 
-public final class GeometryFactory {
+public final class Geometries {
 
     /**
      * Standard number of geometry vertices
@@ -29,7 +29,7 @@ public final class GeometryFactory {
 
     public static Geometry rect(Geometry geometry) {
         geometry.removeAllVertices();
-        Geometry.addVertices(geometry,
+        geometry.addVertices(
                 -0.5f, -0.5f,
                 0.5f, -0.5f,
                 0.5f, 0.5f,
@@ -115,7 +115,7 @@ public final class GeometryFactory {
 
     public static Geometry triangle(Geometry geometry) {
         geometry.removeAllVertices();
-        Geometry.addVertices(geometry,
+        geometry.addVertices(
                 -0.5f, -0.5f,
                 0.5f, 0,
                 -0.5f, 0.5f);
@@ -148,7 +148,7 @@ public final class GeometryFactory {
 
     public static Geometry pause(Geometry geometry) {
         geometry.removeAllVertices();
-        Geometry.addVertices(geometry,
+        geometry.addVertices(
                 -0.5f, -0.5f,
                 -0.165f, -0.5f,
                 -0.165f, 0.5f,
@@ -170,7 +170,7 @@ public final class GeometryFactory {
 
     public static Geometry arrow(Geometry geometry) {
         geometry.removeAllVertices();
-        Geometry.addVertices(geometry,
+        geometry.addVertices(
                 -0.5f, -0.5f,
                 0.5f, 0,
                 -0.5f, 0.5f,
@@ -189,7 +189,7 @@ public final class GeometryFactory {
     public static Geometry plus(Geometry geometry, float thickness) {
         float th = Utility.constrain(Math.abs(thickness), 0, 0.375f);
         geometry.removeAllVertices();
-        Geometry.addVertices(geometry,
+        geometry.addVertices(
                 -th, -0.5f,
                 th, -0.5f,
                 th, -th,
@@ -216,7 +216,7 @@ public final class GeometryFactory {
     public static Geometry delete(Geometry geometry, float thickness) {
         float th = Utility.constrain(thickness, 0, 0.5f);
         geometry.removeAllVertices();
-        Geometry.addVertices(geometry,
+        geometry.addVertices(
                 -0.5f + th, -0.5f,
                 -0.5f, -0.5f,
                 -th / 2f, 0,

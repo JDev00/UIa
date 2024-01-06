@@ -13,7 +13,7 @@ import uia.core.ui.context.Context;
 import uia.physical.*;
 import uia.physical.text.TextRenderer;
 import uia.physical.theme.Theme;
-import uia.utility.GeometryFactory;
+import uia.utility.Geometries;
 import uia.utility.Timer;
 import uia.utility.Utility;
 
@@ -93,7 +93,7 @@ public class UIEditText extends WrapperViewText {
         illegalCodes.add(227);  // KEYPAD RIGHT_ARROW*/
 
         highlight = new Shape();
-        GeometryFactory.rect(highlight.getGeometry());
+        Geometries.rect(highlight.getGeometry());
 
         paintHighlight = new Paint().setColor(Theme.createColor(65, 105, 225, 126));
 

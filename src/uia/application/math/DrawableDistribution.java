@@ -7,7 +7,7 @@ import uia.core.shape.NormalizedVertex;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
 import uia.physical.theme.Theme;
-import uia.utility.GeometryFactory;
+import uia.utility.Geometries;
 import uia.utility.Utility;
 
 /**
@@ -31,7 +31,7 @@ public class DrawableDistribution extends PointDistribution {
         paintPoint = new Paint().setColor(Theme.RED);
 
         shapeMarker = new Shape();
-        shapeMarker.setGeometry(GeometryFactory.rect(shapeMarker.getGeometry()));
+        shapeMarker.setGeometry(Geometries.rect(shapeMarker.getGeometry()));
     }
 
     /**

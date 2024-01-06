@@ -9,9 +9,8 @@ import static uia.utility.TrigTable.*;
 import static uia.utility.TrigTable.rotY;
 
 /**
- * Geometry defines the skeleton of a shape.
- * <br>
  * Geometry has the responsibility to handle a set of normalized vertices.
+ * <br>
  * A normalized vertex has its dimensions (values) constrained between [-0.5, 0.5].
  */
 
@@ -26,6 +25,7 @@ public class Geometry implements Iterable<NormalizedVertex> {
     public String toString() {
         return "Geometry{" +
                 "vertices=" + vertices +
+                ", verticesNumber=" + vertices.size() +
                 '}';
     }
 
@@ -69,16 +69,40 @@ public class Geometry implements Iterable<NormalizedVertex> {
     }
 
     /**
-     * Removes the specified vertex
+     * Adds the specified vertices to this geometry
+     *
+     * @param vertices a list of vertices. The array shape must be: [x1,y1, x2,y2, ..., xn,yn]
+     * @return this Geometry
+     * @throws NullPointerException     if {@code vertices == null}
+     * @throws IllegalArgumentException if the array shape is malformed
+     */
+
+    public Geometry addVertices(float... vertices) {
+        Objects.requireNonNull(vertices);
+        if (vertices.length % 2 != 0) {
+            throw new IllegalArgumentException("the 'vertices' shape must be [x1,y1, x2,y2, ... , xn, yn]");
+        }
+        for (int i = 0; i < vertices.length; i += 2) {
+            addVertex(vertices[i], vertices[i + 1]);
+        }
+        return this;
+    }
+
+    /**
+     * Removes the specified vertex from this geometry.
+     * <br>
+     * If the first vertex is removed and there are multiple vertices, the next one is
+     * selected as the primer vertex.
      *
      * @param i the position of the vertex to remove
      * @return this Geometry
-     * @throws IndexOutOfBoundsException if {@code i < 0 or i >= vertices}
+     * @throws IndexOutOfBoundsException if {@code i < 0 or i >= vertices()}
      */
 
     public Geometry removeVertex(int i) {
         if (i < 0 || i >= vertices()) {
-            throw new IndexOutOfBoundsException("index is out of range!");
+            throw new IndexOutOfBoundsException("the provided index 'i' is out of range. " +
+                    "Current range: [0, " + (vertices() - 1) + "]");
         }
         vertices.remove(i);
         // if needed, set the first vertex as start point for geometry
@@ -111,27 +135,6 @@ public class Geometry implements Iterable<NormalizedVertex> {
     @Override
     public Iterator<NormalizedVertex> iterator() {
         return vertices.iterator();
-    }
-
-    /**
-     * Adds the specified vertices to the given geometry
-     *
-     * @param geometry a not null {@link Geometry} to be filled with the specified vertices
-     * @param vertices a list of vertices. The array shape must be: [x1,y1, x2,y2, ..., xn,yn]
-     * @return the specified Geometry
-     * @throws NullPointerException     if {@code vertices == null}
-     * @throws IllegalArgumentException if the array shape is malformed
-     */
-
-    public static Geometry addVertices(Geometry geometry, float... vertices) {
-        Objects.requireNonNull(vertices);
-        if (vertices.length % 2 != 0) {
-            throw new IllegalArgumentException("array shape must be [x1,y1, x2,y2, ... , xn, yn]");
-        }
-        for (int i = 0; i < vertices.length; i += 2) {
-            geometry.addVertex(vertices[i], vertices[i + 1]);
-        }
-        return geometry;
     }
 
     /**

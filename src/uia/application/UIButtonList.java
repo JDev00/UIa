@@ -8,7 +8,7 @@ import uia.core.ui.ViewText;
 import uia.core.ui.callbacks.OnClick;
 import uia.physical.theme.Theme;
 import uia.physical.WrapperView;
-import uia.utility.GeometryFactory;
+import uia.utility.Geometries;
 import uia.physical.Component;
 import uia.physical.ComponentGroup;
 import uia.physical.ComponentText;
@@ -43,7 +43,7 @@ public final class UIButtonList extends WrapperView {
         viewText.getPaint().setColor(Theme.TRANSPARENT);
 
         viewLeft = new Component("LEFT", 0.1f, 0.5f, 0.1f, 0.5f).setExpanseLimit(1.2f, 1.2f);
-        viewLeft.setGeometry(GeometryFactory::arrow, false);
+        viewLeft.setGeometry(Geometries::arrow, false);
         viewLeft.setColliderPolicy(ColliderPolicy.AABB);
         viewLeft.setConsumer(Consumer.SCREEN_TOUCH, false);
         viewLeft.getPaint().setColor(Theme.BLACK);
@@ -51,7 +51,7 @@ public final class UIButtonList extends WrapperView {
         viewLeft.registerCallback((OnClick) touches -> show(index - 1));
 
         viewRight = new Component("RIGHT", 0.9f, 0.5f, 0.1f, 0.5f).setExpanseLimit(1.2f, 1.2f);
-        viewRight.setGeometry(GeometryFactory::arrow, false);
+        viewRight.setGeometry(Geometries::arrow, false);
         viewRight.setColliderPolicy(ColliderPolicy.AABB);
         viewRight.setConsumer(Consumer.SCREEN_TOUCH, false);
         viewRight.getPaint().setColor(Theme.BLACK);

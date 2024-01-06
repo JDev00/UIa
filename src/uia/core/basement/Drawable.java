@@ -3,7 +3,7 @@ package uia.core.basement;
 import uia.core.shape.Geometry;
 import uia.core.Paint;
 import uia.core.ui.Graphic;
-import uia.utility.GeometryFactory;
+import uia.utility.Geometries;
 
 import java.util.function.Consumer;
 
@@ -95,10 +95,10 @@ public interface Drawable {
     /**
      * Build a rounded rectangle
      *
-     * @see GeometryFactory#rect(Geometry, int, float, float, float, float, float)
+     * @see Geometries#rect(Geometry, int, float, float, float, float, float)
      */
 
     static void buildRect(Geometry geometry, float width, float height, float radius) {
-        GeometryFactory.rect(geometry, GeometryFactory.STD_VERT, radius, width / height);
+        Geometries.rect(geometry, Geometries.STD_VERT, radius, width / height);
     }
 }
