@@ -1,6 +1,6 @@
 package test.__tests__;
 
-import test.artefacts.ComponentTracker;
+import test.__tests__.artefacts.ComponentTracker;
 import uia.application.UIButtonFilled;
 import uia.application.UIButtonList;
 import uia.application.UIToggleButton;

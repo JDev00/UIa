@@ -1,4 +1,4 @@
-package test.artefacts;
+package test.__tests__.artefacts;
 
 import uia.core.Font;
 import uia.core.ui.View;
