@@ -1,4 +1,4 @@
-package test.__tests__;
+package test.__tests__.Paint;
 
 import test.core.BeforeEachTest;
 import test.core.Test;
