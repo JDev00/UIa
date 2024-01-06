@@ -5,9 +5,8 @@ Version 1.4:
 ################
 
 * added UIGraphic
-* revision of UIEditText (not finished yet)
+* revised UIEditText (not production ready)
 * added MessagingSystem
-* revision of Geometry and Paint
-* improvement of the Color
-* improvement of the TestExecutor: adds the the '@BeforeEachTest' annotation
-* revision of the existing tests
+* revised Geometry, Paint and Color
+* improved TestExecutor: added the the '@BeforeEachTest' annotation
+* revised the existing tests
