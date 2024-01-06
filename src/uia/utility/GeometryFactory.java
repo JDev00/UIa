@@ -28,8 +28,8 @@ public final class GeometryFactory {
      */
 
     public static Geometry rect(Geometry geometry) {
-        geometry.clear();
-        geometry.addVertices(
+        geometry.removeAllVertices();
+        Geometry.addVertices(geometry,
                 -0.5f, -0.5f,
                 0.5f, -0.5f,
                 0.5f, 0.5f,
@@ -55,7 +55,7 @@ public final class GeometryFactory {
 
     public static Geometry rect(Geometry geometry, int vertices,
                                 float a, float b, float c, float d, float ratio) {
-        geometry.clear();
+        geometry.removeAllVertices();
 
         vertices = vertices / 4;
 
@@ -114,8 +114,8 @@ public final class GeometryFactory {
      */
 
     public static Geometry triangle(Geometry geometry) {
-        geometry.clear();
-        geometry.addVertices(
+        geometry.removeAllVertices();
+        Geometry.addVertices(geometry,
                 -0.5f, -0.5f,
                 0.5f, 0,
                 -0.5f, 0.5f);
@@ -131,7 +131,7 @@ public final class GeometryFactory {
      */
 
     public static Geometry oval(Geometry geometry, int vertices) {
-        geometry.clear();
+        geometry.removeAllVertices();
         for (int i = 0; i <= vertices; i++) {
             float a = TWO_PI * i / vertices;
             geometry.addVertex(cos(a) / 2f, sin(a) / 2f);
@@ -147,8 +147,8 @@ public final class GeometryFactory {
      */
 
     public static Geometry pause(Geometry geometry) {
-        geometry.clear();
-        geometry.addVertices(
+        geometry.removeAllVertices();
+        Geometry.addVertices(geometry,
                 -0.5f, -0.5f,
                 -0.165f, -0.5f,
                 -0.165f, 0.5f,
@@ -169,8 +169,8 @@ public final class GeometryFactory {
      */
 
     public static Geometry arrow(Geometry geometry) {
-        geometry.clear();
-        geometry.addVertices(
+        geometry.removeAllVertices();
+        Geometry.addVertices(geometry,
                 -0.5f, -0.5f,
                 0.5f, 0,
                 -0.5f, 0.5f,
@@ -188,8 +188,8 @@ public final class GeometryFactory {
 
     public static Geometry plus(Geometry geometry, float thickness) {
         float th = Utility.constrain(Math.abs(thickness), 0, 0.375f);
-        geometry.clear();
-        geometry.addVertices(
+        geometry.removeAllVertices();
+        Geometry.addVertices(geometry,
                 -th, -0.5f,
                 th, -0.5f,
                 th, -th,
@@ -215,8 +215,8 @@ public final class GeometryFactory {
 
     public static Geometry delete(Geometry geometry, float thickness) {
         float th = Utility.constrain(thickness, 0, 0.5f);
-        geometry.clear();
-        geometry.addVertices(
+        geometry.removeAllVertices();
+        Geometry.addVertices(geometry,
                 -0.5f + th, -0.5f,
                 -0.5f, -0.5f,
                 -th / 2f, 0,

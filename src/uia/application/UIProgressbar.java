@@ -1,5 +1,6 @@
 package uia.application;
 
+import uia.core.Geometry;
 import uia.core.Paint;
 import uia.core.basement.Drawable;
 import uia.core.ui.View;
@@ -91,14 +92,13 @@ public final class UIProgressbar extends WrapperView {
 
     private void updateInternalBarGeometry() {
         float xVertex = value - 0.5f;
-        internalBar.getGeometry()
-                .clear()
-                .addVertices(
-                        -0.5f, -0.5f,
-                        xVertex, -0.5f,
-                        xVertex, 0.5f,
-                        -0.5f, 0.5f
-                );
+        Geometry emptyGeometry = internalBar.getGeometry().removeAllVertices();
+        Geometry.addVertices(emptyGeometry,
+                -0.5f, -0.5f,
+                xVertex, -0.5f,
+                xVertex, 0.5f,
+                -0.5f, 0.5f
+        );
     }
 
     @Override

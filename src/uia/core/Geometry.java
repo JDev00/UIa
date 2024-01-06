@@ -3,7 +3,9 @@ package uia.core;
 import uia.utility.Utility;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import static uia.utility.TrigTable.*;
 import static uia.utility.TrigTable.rotY;
@@ -15,7 +17,7 @@ import static uia.utility.TrigTable.rotY;
  * A normalized vertex has its dimensions (values) constrained between [-0.5, 0.5].
  */
 
-public class Geometry {
+public class Geometry implements Iterable<Geometry.Vertex> {
     private final List<Vertex> vertices;
 
     public Geometry() {
@@ -30,73 +32,34 @@ public class Geometry {
     }
 
     /**
-     * Rotates this geometry
-     *
-     * @param rad the rotation in radians
-     * @return this geometry
-     */
-
-    public Geometry rotate(float rad) {
-        float cos = cos(rad);
-        float sin = sin(rad);
-        for (int i = 0; i < vertices(); i++) {
-            Geometry.Vertex vertex = get(i);
-            float vx = vertex.getX();
-            float vy = vertex.getY();
-            float nx = rotX(vx, vy, cos, sin);
-            float ny = rotY(vx, vy, cos, sin);
-            vertex.set(nx, ny);
-        }
-        return this;
-    }
-
-    /**
-     * Scales this geometry
-     *
-     * @param scaleX the scale greater than 0 on the x-axis
-     * @param scaleY the scale greater than 0 on the y-axis
-     * @return this geometry
-     */
-
-    public Geometry scale(float scaleX, float scaleY) {
-        for (int i = 0; i < vertices(); i++) {
-            Geometry.Vertex vertex = get(i);
-            float vx = vertex.getX();
-            float vy = vertex.getY();
-            float nx = scaleX * vx;
-            float ny = scaleY * vy;
-            vertex.set(nx, ny);
-        }
-        return this;
-    }
-
-    /**
-     * Remove all vertices
+     * Removes all vertices from this geometry
      *
      * @return this Geometry
      */
 
-    public Geometry clear() {
+    public Geometry removeAllVertices() {
         vertices.clear();
         return this;
     }
 
     /**
-     * Add a new vertex
+     * Adds a vertex to this geometry and decides if it is a primer vertex.
+     * <br>
+     * A primer vertex is the vertex used to start a new piece of geometry.
      *
-     * @param x         the vertex coordinate along x-axis
-     * @param y         the vertex coordinate along y-axis
-     * @param beginGeom true to start a new piece of geometry
+     * @param x      the vertex coordinate along x-axis
+     * @param y      the vertex coordinate along y-axis
+     * @param primer true to mark the vertex as primer
      * @return this Geometry
      */
 
-    public Geometry addVertex(float x, float y, boolean beginGeom) {
-        vertices.add(new Vertex().set(x, y).setPrimer(vertices.isEmpty() || beginGeom));
+    public Geometry addVertex(float x, float y, boolean primer) {
+        vertices.add(new Vertex(x, y).setPrimer(vertices.isEmpty() || primer));
         return this;
     }
 
     /**
-     * Add a new vertex
+     * Adds a vertex to this geometry
      *
      * @param x the vertex coordinate along x-axis
      * @param y the vertex coordinate along y-axis
@@ -108,41 +71,27 @@ public class Geometry {
     }
 
     /**
-     * Add new vertices
+     * Removes the specified vertex
      *
-     * @param vertices a not null array of vertices. The array's shape must be: [x1,y1, x2,y2, ..., xn,yn]
+     * @param i the position of the vertex to remove
      * @return this Geometry
-     * @throws NullPointerException if {@code vertices == null}
+     * @throws IndexOutOfBoundsException if {@code i < 0 or i >= vertices}
      */
 
-    public Geometry addVertices(float... vertices) {
-        if (vertices.length % 2 == 0) {
-            for (int i = 0; i < vertices.length; i += 2) {
-                addVertex(vertices[i], vertices[i + 1], false);
-            }
+    public Geometry removeVertex(int i) {
+        if (i < 0 || i >= vertices()) {
+            throw new IndexOutOfBoundsException("index is out of range!");
+        }
+        vertices.remove(i);
+        // if needed, set the first vertex as start point for geometry
+        if (i == 0 && !vertices.isEmpty()) {
+            vertices.get(0).setPrimer(true);
         }
         return this;
     }
 
-    /*
-     * Remove the specified vertex
-     *
-     * @param i the position of the vertex to remove
-     * @return this Geometry
-     *
-
-    public Geometry removeVertex(int i) {
-        if (i >= 0 && i < vertices.size()) {
-            //transformed.remove(i);
-            // set the first vertex as start point for geometry
-            //if (!vertices.isEmpty())
-            vertices.get(0).beginGeom = true;
-        }
-        return this;
-    }*/
-
     /**
-     * @return the number of vertices
+     * @return the total number of vertices
      */
 
     public int vertices() {
@@ -150,10 +99,10 @@ public class Geometry {
     }
 
     /**
-     * Return the specified vertex
+     * Returns the specified vertex
      *
      * @param i the position of the Vertex
-     * @return the specified Vertex
+     * @return the specified {@link Vertex}
      * @throws IndexOutOfBoundsException if {@code i < 0 || i >= vertices()}
      */
 
@@ -161,14 +110,122 @@ public class Geometry {
         return vertices.get(i);
     }
 
+    @Override
+    public Iterator<Vertex> iterator() {
+        return vertices.iterator();
+    }
+
     /**
-     * Vertex definition
+     * Adds the specified vertices to the given geometry
+     *
+     * @param geometry a not null {@link Geometry} to be filled with the specified vertices
+     * @param vertices a list of vertices. The array shape must be: [x1,y1, x2,y2, ..., xn,yn]
+     * @return the specified Geometry
+     * @throws NullPointerException     if {@code vertices == null}
+     * @throws IllegalArgumentException if the array shape is malformed
+     */
+
+    public static Geometry addVertices(Geometry geometry, float... vertices) {
+        Objects.requireNonNull(vertices);
+        if (vertices.length % 2 != 0) {
+            throw new IllegalArgumentException("array shape must be [x1,y1, x2,y2, ... , xn, yn]");
+        }
+        for (int i = 0; i < vertices.length; i += 2) {
+            geometry.addVertex(vertices[i], vertices[i + 1]);
+        }
+        return geometry;
+    }
+
+    /**
+     * Rotates the specified geometry
+     *
+     * @param geometry a not null {@link Geometry} to rotate
+     * @param radians  the rotation in radians
+     * @return the specified Geometry
+     * @throws NullPointerException if {@code geometry == null}
+     */
+
+    public static Geometry rotate(Geometry geometry, float radians) {
+        Objects.requireNonNull(geometry);
+        float cos = cos(radians);
+        float sin = sin(radians);
+        for (Geometry.Vertex vertex : geometry) {
+            float vx = vertex.getX();
+            float vy = vertex.getY();
+            float nx = rotX(vx, vy, cos, sin);
+            float ny = rotY(vx, vy, cos, sin);
+            vertex.set(nx, ny);
+        }
+        return geometry;
+    }
+
+    /**
+     * Scales the specified geometry
+     *
+     * @param geometry a not null {@link Geometry} to scale
+     * @param scaleX   the scale (> 0) on the x-axis
+     * @param scaleY   the scale (> 0) on the y-axis
+     * @return the specified Geometry
+     * @throws NullPointerException     if {@code geometry == null}
+     * @throws IllegalArgumentException if {@code scaleX <= 0 or scaleY <= 0}
+     */
+
+    public static Geometry scale(Geometry geometry, float scaleX, float scaleY) {
+        Objects.requireNonNull(geometry);
+        if (scaleX <= 0) {
+            throw new IllegalArgumentException("scaleX must be greater than 0");
+        }
+        if (scaleY <= 0) {
+            throw new IllegalArgumentException("scaleY must be greater than 0");
+        }
+        for (Geometry.Vertex vertex : geometry) {
+            float vx = vertex.getX();
+            float vy = vertex.getY();
+            float nx = scaleX * vx;
+            float ny = scaleY * vy;
+            vertex.set(nx, ny);
+        }
+        return geometry;
+    }
+
+    /**
+     * A vertex is a single geometric point.
      */
 
     public static class Vertex {
         private float x;
         private float y;
         private boolean primer = false;
+
+        public Vertex(float x, float y) {
+            this.set(x, y);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y, primer);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Vertex vertex = (Vertex) o;
+            return Float.compare(x, vertex.x) == 0 && Float.compare(y, vertex.y) == 0 && primer == vertex.primer;
+        }
+
+        @Override
+        public String toString() {
+            return "Vertex{" +
+                    "x=" + x +
+                    ", y=" + y +
+                    ", primer=" + primer +
+                    '}';
+        }
 
         /**
          * Constrains the given value between [-0.5, 0.5]
@@ -228,13 +285,12 @@ public class Geometry {
             return y;
         }
 
-        @Override
-        public String toString() {
-            return "Vertex{" +
-                    "x=" + x +
-                    ", y=" + y +
-                    ", primer=" + primer +
-                    '}';
+        /**
+         * @return the vertex values on the x-axis and y-axis as an array
+         */
+
+        public float[] toArray() {
+            return new float[]{x, y};
         }
     }
 }

@@ -74,7 +74,7 @@ public class DrawableDistribution extends PointDistribution {
 
     public DrawableDistribution setMarker(Geometry markerGeometry) {
         Geometry internalGeometry = shapeMarker.getGeometry();
-        internalGeometry.clear();
+        internalGeometry.removeAllVertices();
         for (int i = 0; i < markerGeometry.vertices(); i++) {
             Geometry.Vertex vertex = markerGeometry.get(i);
             internalGeometry.addVertex(vertex.getX(), vertex.getY());
