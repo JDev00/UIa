@@ -1,4 +1,4 @@
-package test;
+package test.__tests__;
 
 import test.artefacts.ComponentTracker;
 import uia.application.UIButtonFilled;

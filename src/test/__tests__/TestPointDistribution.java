@@ -1,4 +1,4 @@
-package test;
+package test.__tests__;
 
 import test.core.TestExecutor;
 import uia.application.math.PointDistribution;

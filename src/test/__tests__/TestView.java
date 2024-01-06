@@ -1,11 +1,11 @@
-package test;
+package test.__tests__;
 
 import test.core.*;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.*;
 
-import static test.Sanity.*;
+import static test.__tests__.Sanity.*;
 import static uia.utility.TrigTable.*;
 
 /**

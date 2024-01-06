@@ -1,4 +1,4 @@
-package test;
+package test.__tests__;
 
 import test.core.Test;
 import test.core.TestAssertion;
@@ -9,7 +9,7 @@ import uia.core.ui.callbacks.OnMessageReceived;
 import uia.core.ui.context.Context;
 import uia.physical.message.Messages;
 
-import static test.Sanity.*;
+import static test.__tests__.Sanity.*;
 
 /**
  * Unit tests

@@ -1,4 +1,4 @@
-package test;
+package test.__tests__;
 
 import test.core.Test;
 import test.core.TestAssertion;
