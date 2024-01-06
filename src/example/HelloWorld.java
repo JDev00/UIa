@@ -4,7 +4,6 @@ import uia.application.UIButton;
 import uia.application.desktop.ContextSwing;
 import uia.core.Font;
 import uia.core.Paint.Color;
-import uia.core.Paint.Paint;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
@@ -19,7 +18,7 @@ import uia.physical.theme.Theme;
 import uia.physical.WrapperView;
 
 /**
- * Demonstrative example. Draw a simple button that allows to show and hide a popup.
+ * Demonstrative example. Display a simple button that allows to show and hide a popup.
  */
 
 public class HelloWorld extends WrapperView {
@@ -28,29 +27,32 @@ public class HelloWorld extends WrapperView {
         // default components are based on the decorator pattern, so you need to pass the smallest UI unit
         // (in this example: Component).
         // Here we will create a ComponentGroup that will allow us to easily manage a set of views.
-        super(new ComponentGroup(new Component("HELLO_WORLD", 0.5f, 0.5f, 1f, 1f)));
+        super(new ComponentGroup(
+                new Component("HELLO_WORLD", 0.5f, 0.5f, 1f, 1f))
+        );
         getPaint().setColor(Theme.DARK_GRAY);
 
         // let us create a new specialised View: a Button
         UIButton button = createCustomButton();
         // now comes for the interesting part of the job: showing and hiding a View without creating dependencies.
         button.registerCallback((OnClick) touches -> {
-            String message = button.isEnabled() ? "Wake up!" : "Sleep now :)";
-            button.sendMessage(Messages.newMessage(message, "POPUP"));
+            String messageToSend = button.isEnabled() ? "Wake up!" : "Sleep now :)";
+            button.sendMessage(Messages.newMessage(messageToSend, "POPUP"));
         });
         // add another callback to listen for messages sent to this button
         button.registerCallback((OnMessageReceived) message -> {
-            String text = message.<String>getPayload().contains("Hey") ? "Hide\npopup!" : "Show\npopup!";
+            String payload = message.getPayload();
+            String textToDisplay = payload.contains("Hey") ? "Hide\npopup!" : "Show\npopup!";
             ViewText viewText = button.getView();
-            viewText.setText(text);
+            viewText.setText(textToDisplay);
         });
 
-        // now, creates a new simple popup View.
+        // now create a new simple popup.
         View popup = createSimplePopup();
         // creates an event to listen for messages sent to this popup from other views
         popup.registerCallback((OnMessageReceived) message -> {
-            // if the sender ID is 'BUTTON'
-            boolean visibility = message.<String>getPayload().contains("Wake up");
+            String payload = message.getPayload();
+            boolean visibility = payload.contains("Wake up");
             // shows or hides this popup accordingly
             popup.setVisible(visibility);
             // sends a message to BUTTON to inform it that popup woke up or went to sleep
@@ -62,11 +64,15 @@ public class HelloWorld extends WrapperView {
         ViewGroup.insert(getView(), button, popup);
     }
 
+    /**
+     * Helper function. Creates a custom demonstrative button
+     */
+
     private static UIButton createCustomButton() {
         UIButton result = new UIButton(new ComponentText(
                 new Component("BUTTON", 0.25f, 0.5f, 0.1f, 0.1f, 1.2f, 1.2f)
         ));
-        // get the Paint used when the button is activated and set: a new color, stroke color and stroke width
+        // get the Paint used when the button is activated and set: a color, stroke color and stroke width
         result.getPaint(UIButton.STATE.ON)
                 .setColor(Color.createColor(100, 200, 255, 100))
                 .setStrokeColor(Theme.WHITE)
@@ -77,19 +83,23 @@ public class HelloWorld extends WrapperView {
                 .setStrokeColor(Theme.RED)
                 .setStrokeWidth(4);
         // get the ViewText passed to the button constructor
-        ViewText viewText = ((ViewText) result.getView());
+        ViewText viewText = result.getView();
         // set the text alignment along y-axis
         viewText.setAlign(ViewText.AlignY.CENTER);
         // set some text
         viewText.setText("Show\npopup!");
         // get the ViewText's Font and set a new size and a new style
         viewText.getFont()
-                .setSize(18)
-                .setStyle(Font.STYLE.BOLD);
+                .setStyle(Font.STYLE.BOLD)
+                .setSize(18);
         // get the Paint used by viewText and set a new color
         viewText.getTextPaint().setColor(Theme.LIME);
         return result;
     }
+
+    /**
+     * Helper function. Creates a simple popup
+     */
 
     private static View createSimplePopup() {
         // now, let us create a viewText. We will use it to emulate a simple popup.
@@ -103,24 +113,18 @@ public class HelloWorld extends WrapperView {
         // set text properties
         result.setAlign(ViewText.AlignY.CENTER);
         result.getFont()
-                .setSize(25)
                 .setStyle(Font.STYLE.ITALIC)
-                .setLeadingFactor(1.2f);
+                .setLeadingFactor(1.2f)
+                .setSize(25);
         // set text color
-        result.getTextPaint().setColor(
-                Color.createColor("0xe813dd")
-        );
+        result.getTextPaint().setColor(Color.createColor("0xe813dd"));
         return result;
     }
 
-    private static Context createContext() {
-        int[] screenSize = ContextSwing.getScreenSize();
-        // creates and start a new Swing based Context.
-        return ContextSwing.createAndStart(4 * screenSize[0] / 5, 4 * screenSize[1] / 5);
-    }
-
     public static void main(String[] args) {
-        Context context = createContext();
+        // Now create the Context and attach the HelloWorld View to it.
+        // This will display the HelloWorld View.
+        Context context = ContextSwing.createAndStart(1000, 500);
         context.setView(new HelloWorld());
     }
 }
