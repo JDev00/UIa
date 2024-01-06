@@ -15,8 +15,8 @@ import static uia.utility.TrigTable.rotY;
  * A normalized vertex has its dimensions (values) constrained between [-0.5, 0.5].
  */
 
-public class Geometry implements Iterable<Vertex> {
-    private final List<Vertex> vertices;
+public class Geometry implements Iterable<NormalizedVertex> {
+    private final List<NormalizedVertex> vertices;
 
     public Geometry() {
         vertices = new ArrayList<>();
@@ -52,7 +52,7 @@ public class Geometry implements Iterable<Vertex> {
      */
 
     public Geometry addVertex(float x, float y, boolean primer) {
-        vertices.add(new Vertex(x, y).setPrimer(vertices.isEmpty() || primer));
+        vertices.add(new NormalizedVertex(x, y).setPrimer(vertices.isEmpty() || primer));
         return this;
     }
 
@@ -100,16 +100,16 @@ public class Geometry implements Iterable<Vertex> {
      * Returns the specified vertex
      *
      * @param i the position of the Vertex
-     * @return the specified {@link Vertex}
+     * @return the specified {@link NormalizedVertex}
      * @throws IndexOutOfBoundsException if {@code i < 0 || i >= vertices()}
      */
 
-    public Vertex get(int i) {
+    public NormalizedVertex get(int i) {
         return vertices.get(i);
     }
 
     @Override
-    public Iterator<Vertex> iterator() {
+    public Iterator<NormalizedVertex> iterator() {
         return vertices.iterator();
     }
 
@@ -147,7 +147,7 @@ public class Geometry implements Iterable<Vertex> {
         Objects.requireNonNull(geometry);
         float cos = cos(radians);
         float sin = sin(radians);
-        for (Vertex vertex : geometry) {
+        for (NormalizedVertex vertex : geometry) {
             float vx = vertex.getX();
             float vy = vertex.getY();
             float nx = rotX(vx, vy, cos, sin);
@@ -176,7 +176,7 @@ public class Geometry implements Iterable<Vertex> {
         if (scaleY <= 0) {
             throw new IllegalArgumentException("scaleY must be greater than 0");
         }
-        for (Vertex vertex : geometry) {
+        for (NormalizedVertex vertex : geometry) {
             float vx = vertex.getX();
             float vy = vertex.getY();
             float nx = scaleX * vx;

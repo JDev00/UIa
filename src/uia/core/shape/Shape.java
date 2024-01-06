@@ -61,7 +61,7 @@ public class Shape implements Collider {
      * Space required: O(1)
      */
 
-    private void transform(Vertex source, TransformedVertex target) {
+    private void transform(NormalizedVertex source, TransformedVertex target) {
         float x = bounds[2] * source.getX();
         float y = bounds[3] * source.getY();
         float cos = cos(bounds[4]);
@@ -234,7 +234,7 @@ public class Shape implements Collider {
      * @throws NullPointerException if {@code shape == null or source == null or target == null}
      */
 
-    public static void transform(Shape shape, Vertex source, TransformedVertex target) {
+    public static void transform(Shape shape, NormalizedVertex source, TransformedVertex target) {
         Objects.requireNonNull(shape);
         Objects.requireNonNull(source);
         Objects.requireNonNull(target);

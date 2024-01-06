@@ -5,15 +5,15 @@ import uia.utility.Utility;
 import java.util.Objects;
 
 /**
- * A vertex is a single geometric point.
+ * A normalized vertex is a single geometric point whose values are constrained between [-0.5, 0.5].
  */
 
-public class Vertex {
+public class NormalizedVertex {
     private float x;
     private float y;
     private boolean primer = false;
 
-    public Vertex(float x, float y) {
+    public NormalizedVertex(float x, float y) {
         this.set(x, y);
     }
 
@@ -30,7 +30,7 @@ public class Vertex {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Vertex vertex = (Vertex) o;
+        NormalizedVertex vertex = (NormalizedVertex) o;
         return Float.compare(x, vertex.x) == 0 && Float.compare(y, vertex.y) == 0 && primer == vertex.primer;
     }
 
@@ -59,7 +59,7 @@ public class Vertex {
      * @return this Vertex
      */
 
-    public Vertex set(float x, float y) {
+    public NormalizedVertex set(float x, float y) {
         this.x = constrainValue(x);
         this.y = constrainValue(y);
         return this;
@@ -72,7 +72,7 @@ public class Vertex {
      * @return this Vertex
      */
 
-    public Vertex setPrimer(boolean primer) {
+    public NormalizedVertex setPrimer(boolean primer) {
         this.primer = primer;
         return this;
     }
