@@ -187,7 +187,7 @@ public final class Geometries {
      */
 
     public static Geometry plus(Geometry geometry, float thickness) {
-        float th = Utility.constrain(Math.abs(thickness), 0, 0.375f);
+        float th = MathUtility.constrain(Math.abs(thickness), 0, 0.375f);
         geometry.removeAllVertices();
         geometry.addVertices(
                 -th, -0.5f,
@@ -214,7 +214,7 @@ public final class Geometries {
      */
 
     public static Geometry delete(Geometry geometry, float thickness) {
-        float th = Utility.constrain(thickness, 0, 0.5f);
+        float th = MathUtility.constrain(thickness, 0, 0.5f);
         geometry.removeAllVertices();
         geometry.addVertices(
                 -0.5f + th, -0.5f,

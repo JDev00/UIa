@@ -10,7 +10,7 @@ import uia.physical.ComponentGroup;
 import uia.physical.WrapperView;
 import uia.physical.Component;
 import uia.utility.TrigTable;
-import uia.utility.Utility;
+import uia.utility.MathUtility;
 
 import java.util.Objects;
 
@@ -83,7 +83,7 @@ public final class UIProgressbar extends WrapperView {
      */
 
     public void setValue(float value) {
-        this.value = Utility.constrain(value, min, max);
+        this.value = MathUtility.constrain(value, min, max);
     }
 
     /**

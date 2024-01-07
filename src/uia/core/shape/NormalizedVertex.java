@@ -1,6 +1,6 @@
 package uia.core.shape;
 
-import uia.utility.Utility;
+import uia.utility.MathUtility;
 
 import java.util.Objects;
 
@@ -48,7 +48,7 @@ public class NormalizedVertex {
      */
 
     private static float constrainValue(float value) {
-        return Utility.constrain(value, -0.5f, 0.5f);
+        return MathUtility.constrain(value, -0.5f, 0.5f);
     }
 
     /**

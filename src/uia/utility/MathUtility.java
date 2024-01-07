@@ -1,37 +1,16 @@
 package uia.utility;
 
-import java.util.*;
 import java.util.List;
 
 import static java.lang.Math.*;
 
 /**
- * Collection of utilities
+ * MathUtility contains a set of math functions.
  */
 
-public final class Utility {
+public final class MathUtility {
 
-    private Utility() {
-    }
-
-    /**
-     * Merge the given List into a String.
-     * <br>
-     * Note that the given List won't be modified.
-     *
-     * @param list         a List to convert into a String
-     * @param concatenator a not null String used to concatenate the List's elements
-     * @return a new String
-     */
-
-    public static <T> String merge(List<T> list, String concatenator) {
-        StringBuilder out = new StringBuilder();
-
-        if (list != null && concatenator != null) {
-            list.forEach(t -> out.append(t.toString()).append(concatenator));
-        }
-
-        return out.toString();
+    private MathUtility() {
     }
 
     /**

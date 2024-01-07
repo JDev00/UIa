@@ -14,7 +14,7 @@ import uia.core.ui.callbacks.OnMouseExit;
 import uia.core.basement.Callback;
 import uia.core.ui.callbacks.OnClick;
 import uia.utility.CalendarUtility;
-import uia.utility.Utility;
+import uia.utility.MathUtility;
 import uia.utility.Geometries;
 
 import java.util.ArrayList;
@@ -178,7 +178,7 @@ public final class UICalendar extends WrapperView {
         // update selection
         if (sDay > days && cells[7 + sDay - 1].selected) cells[7 + sDay - 1].selected = false;
 
-        sDay = Utility.constrain(d, 1, days);
+        sDay = MathUtility.constrain(d, 1, days);
 
         offset = CalendarUtility.getDay(calendar.get(Calendar.DAY_OF_WEEK));
 

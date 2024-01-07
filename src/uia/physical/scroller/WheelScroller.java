@@ -1,7 +1,7 @@
 package uia.physical.scroller;
 
 import uia.core.ScreenTouch;
-import uia.utility.Utility;
+import uia.utility.MathUtility;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public class WheelScroller implements Scroller {
         try {
             ScreenTouch p = screenTouches.get(0);
             if (!pause && p.getWheelRotation() != 0) {
-                value = Utility.constrain(value + factor * p.getWheelRotation(), 0, length);
+                value = MathUtility.constrain(value + factor * p.getWheelRotation(), 0, length);
                 return true;
             }
         } catch (Exception ignored) {

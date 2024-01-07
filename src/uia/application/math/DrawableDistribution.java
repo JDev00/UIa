@@ -8,7 +8,7 @@ import uia.core.ui.Graphic;
 import uia.core.ui.View;
 import uia.physical.theme.Theme;
 import uia.utility.Geometries;
-import uia.utility.Utility;
+import uia.utility.MathUtility;
 
 /**
  * A DrawableDistribution defines the graphical settings to draw a {@link PointDistribution} on screen.
@@ -115,8 +115,8 @@ public class DrawableDistribution extends PointDistribution {
                                          float pointX, float pointY, float rotation,
                                          float minPointX, float maxPointX,
                                          float minPointY, float maxPointY) {
-        float xDist = viewportWidth * (Utility.normalize(pointX, minPointX, maxPointX) - 0.5f);
-        float yDist = -viewportHeight * (Utility.normalize(pointY, minPointY, maxPointY) - 0.5f);
+        float xDist = viewportWidth * (MathUtility.normalize(pointX, minPointX, maxPointX) - 0.5f);
+        float yDist = -viewportHeight * (MathUtility.normalize(pointY, minPointY, maxPointY) - 0.5f);
         target[0] = View.getPositionOnX(componentBounds[0], componentBounds[2], xDist, yDist, rotation);
         target[1] = View.getPositionOnY(componentBounds[1], componentBounds[3], xDist, yDist, rotation);
     }

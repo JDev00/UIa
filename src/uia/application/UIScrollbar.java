@@ -13,7 +13,7 @@ import uia.physical.ComponentGroup;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.theme.Theme;
 import uia.physical.WrapperView;
-import uia.utility.Utility;
+import uia.utility.MathUtility;
 
 /**
  * Standard UIa component.
@@ -126,7 +126,7 @@ public final class UIScrollbar extends WrapperView {
     private float getBarDragOffsetX(float x) {
         float[] bounds = internalBar.getBounds();
         float xOff = bounds[0] - getBounds()[0];
-        return Utility.constrain(Math.max(0f, x - xOff), 0f, bounds[2]);
+        return MathUtility.constrain(Math.max(0f, x - xOff), 0f, bounds[2]);
     }
 
     /**
@@ -139,7 +139,7 @@ public final class UIScrollbar extends WrapperView {
     private float getBarDragOffsetY(float y) {
         float[] bounds = internalBar.getBounds();
         float yOff = bounds[1] - getBounds()[1];
-        return Utility.constrain(Math.max(0f, y - yOff), 0f, bounds[3]);
+        return MathUtility.constrain(Math.max(0f, y - yOff), 0f, bounds[3]);
     }
 
     /**
@@ -183,10 +183,10 @@ public final class UIScrollbar extends WrapperView {
     private void updateInternalBarPosition() {
         if (vertical) {
             float off = 0.5f * internalBar.getHeight() / getHeight();
-            internalBar.setPosition(0.5f, Utility.map(val / max, 0f, 1f, off, 1f - off));
+            internalBar.setPosition(0.5f, MathUtility.map(val / max, 0f, 1f, off, 1f - off));
         } else {
             float off = 0.5f * internalBar.getWidth() / getWidth();
-            internalBar.setPosition(Utility.map(val / max, 0f, 1f, off, 1f - off), 0.5f);
+            internalBar.setPosition(MathUtility.map(val / max, 0f, 1f, off, 1f - off), 0.5f);
         }
     }
 
@@ -198,7 +198,7 @@ public final class UIScrollbar extends WrapperView {
      */
 
     public void setInternalBarSize(float size) {
-        size = Utility.constrain(size, 0, 1f);
+        size = MathUtility.constrain(size, 0, 1f);
         if (vertical) {
             internalBar.setDimension(0.9f, size);
         } else {
@@ -232,7 +232,7 @@ public final class UIScrollbar extends WrapperView {
      */
 
     public void setValue(float value) {
-        val = Utility.constrain(value, 0f, max);
+        val = MathUtility.constrain(value, 0f, max);
         updateInternalBarPosition();
     }
 

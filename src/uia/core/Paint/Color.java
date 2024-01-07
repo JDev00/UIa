@@ -1,6 +1,6 @@
 package uia.core.Paint;
 
-import uia.utility.Utility;
+import uia.utility.MathUtility;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -129,7 +129,7 @@ public final class Color {
      */
 
     private static int getChannelValue(int value) {
-        return Utility.constrain(value, 0, 255);
+        return MathUtility.constrain(value, 0, 255);
     }
 
     /**

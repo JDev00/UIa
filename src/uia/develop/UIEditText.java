@@ -18,7 +18,7 @@ import uia.physical.theme.Theme;
 import uia.utility.Geometries;
 import uia.utility.IOUtility;
 import uia.utility.Timer;
-import uia.utility.Utility;
+import uia.utility.MathUtility;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -145,7 +145,7 @@ public class UIEditText extends WrapperViewText {
 
     private void removeText(int i, int j) {
         if (charList.remove(i, j)) {
-            hIndex = index = Utility.constrain(i, 0, chars());
+            hIndex = index = MathUtility.constrain(i, 0, chars());
             refreshText();
         }
     }
@@ -180,12 +180,12 @@ public class UIEditText extends WrapperViewText {
 
     // test functionality
     private void setIndex(int i) {
-        if (i >= 0) index = Utility.constrain(i, 0, chars());
+        if (i >= 0) index = MathUtility.constrain(i, 0, chars());
     }
 
     // test functionality
     private void setHIndex(int i) {
-        if (i >= 0) hIndex = Utility.constrain(i, 0, chars());
+        if (i >= 0) hIndex = MathUtility.constrain(i, 0, chars());
     }
 
     /**

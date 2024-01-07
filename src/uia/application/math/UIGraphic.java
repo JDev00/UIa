@@ -7,7 +7,7 @@ import uia.physical.Component;
 import uia.core.Paint.Paint;
 import uia.physical.WrapperView;
 import uia.utility.Geometries;
-import uia.utility.Utility;
+import uia.utility.MathUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,8 +140,8 @@ public class UIGraphic extends WrapperView {
 
     private void drawAxis(Graphic graphic, float width, float height, float rotation) {
         float[] bounds = getBounds();
-        float xDist = width * (Utility.normalize(0f, xMin, xMax) - 0.5f);
-        float yDist = -height * (Utility.normalize(0f, yMin, yMax) - 0.5f);
+        float xDist = width * (MathUtility.normalize(0f, xMin, xMax) - 0.5f);
+        float yDist = -height * (MathUtility.normalize(0f, yMin, yMax) - 0.5f);
         float lineX = View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rotation);
         float lineY = View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rotation);
 

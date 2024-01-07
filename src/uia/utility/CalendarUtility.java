@@ -3,7 +3,7 @@ package uia.utility;
 import java.util.Calendar;
 
 /**
- * CalendarUtility contains functions to easily manipulate dates
+ * CalendarUtility contains a set of functions to easily manipulate dates.
  */
 
 public final class CalendarUtility {
