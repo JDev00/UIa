@@ -75,10 +75,9 @@ public class Shape implements Collider {
      */
 
     private void updateDimension() {
-        float cos = cos(bounds[4]);
-        float sin = sin(bounds[4]);
-        r_width = boundX(bounds[2], bounds[3], cos, sin);
-        r_height = boundY(bounds[2], bounds[3], cos, sin);
+        float rotation = bounds[4];
+        r_width = Collider.colliderWidth(bounds[2], bounds[3], rotation);
+        r_height = Collider.colliderHeight(bounds[2], bounds[3], rotation);
     }
 
     /**

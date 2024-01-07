@@ -1,5 +1,7 @@
 package uia.core.basement;
 
+import uia.utility.MathUtility;
+
 import static java.lang.Math.abs;
 
 /**
@@ -81,5 +83,43 @@ public interface Collider {
     static boolean intersects(float x1, float y1, float width1, float height1,
                               float x2, float y2, float width2, float height2) {
         return abs(x1 - x2) <= (width1 + width2) / 2f && abs(y1 - y2) <= (height1 + height2) / 2f;
+    }
+
+    /**
+     * Returns the collider width of the rotated rectangle.
+     * <br>
+     * Time required: T(1)
+     * <br>
+     * Space required: O(1)
+     *
+     * @param width    the rectangle width
+     * @param height   the rectangle height
+     * @param rotation the rectangle rotation in radians
+     * @return the collider width of the rotated rectangle
+     */
+
+    static float colliderWidth(float width, float height, float rotation) {
+        float cos = MathUtility.cos(rotation);
+        float sin = MathUtility.sin(rotation);
+        return abs(width * cos) + abs(height * sin);
+    }
+
+    /**
+     * Returns the collider height of the rotated rectangle.
+     * <br>
+     * Time required: T(1)
+     * <br>
+     * Space required: O(1)
+     *
+     * @param width    the rectangle width
+     * @param height   the rectangle height
+     * @param rotation the rectangle rotation in radians
+     * @return the collider height of the rotated rectangle
+     */
+
+    static float colliderHeight(float width, float height, float rotation) {
+        float cos = MathUtility.cos(rotation);
+        float sin = MathUtility.sin(rotation);
+        return abs(width * sin) + abs(height * cos);
     }
 }

@@ -11,9 +11,7 @@ public final class MathUtility {
     public static final float TWO_PI = 2 * PI;
     public static final float HALF_PI = PI / 2f;
 
-    private static final float DEG_TO_RAD = PI / 180.0f;
     private static final short SIZE = 3000;
-    private static final float PRE = SIZE / TWO_PI;
     private static final float[] COS = new float[SIZE + 1];
     private static final float[] SIN = new float[SIZE + 1];
 
@@ -31,7 +29,7 @@ public final class MathUtility {
     }
 
     /**
-     * Map a given value into a new one
+     * Maps the given value into a new one
      */
 
     public static int map(int value, int istart, int istop, int ostart, int ostop) {
@@ -39,7 +37,7 @@ public final class MathUtility {
     }
 
     /**
-     * Map a given value into a new one
+     * Maps the given value into a new one
      */
 
     public static float map(float value, float istart, float istop, float ostart, float ostop) {
@@ -47,7 +45,7 @@ public final class MathUtility {
     }
 
     /**
-     * Constrain a value between a lower and upper bound
+     * Constrains a value between a lower and upper bound
      */
 
     public static int constrain(int val, int low, int high) {
@@ -55,7 +53,7 @@ public final class MathUtility {
     }
 
     /**
-     * Constrain a value between a lower and upper bound
+     * Constrains a value between a lower and upper bound
      */
 
     public static float constrain(float val, float low, float high) {
@@ -63,7 +61,7 @@ public final class MathUtility {
     }
 
     /**
-     * Check if the given String is a number
+     * Checks if the given String is a number
      *
      * @param input a not null String to control
      * @return true if the given String is a number
@@ -79,22 +77,25 @@ public final class MathUtility {
     }
 
     /**
-     * Cut the decimals to the specified amount
+     * Cuts the decimals to the specified amount
      *
-     * @param str a not null String
-     * @param n   the number of decimals; it must be {@code >= 0}
-     * @return if the given String is a number, a new formatted number, otherwise null
+     * @param number   a not null number
+     * @param decimals the number of decimals; it must be {@code >= 0}
+     * @return if the given number is a number, a new formatted number, otherwise null
      */
 
-    public static String limitDecimals(String str, int n) {
+    public static String limitDecimals(String number, int decimals) {
         String out = null;
-
-        if (isNumber(str)) {
-            out = str;
-            int i = str.indexOf(".");
-            if (i != -1 && n >= 0) out = str.substring(0, min(i + (n == 0 ? 0 : (n + 1)), str.length()));
+        if (isNumber(number)) {
+            out = number;
+            int i = number.indexOf(".");
+            if (i != -1 && decimals >= 0) {
+                out = number.substring(
+                        0,
+                        min(i + (decimals == 0 ? 0 : (decimals + 1)), number.length())
+                );
+            }
         }
-
         return out;
     }
 
@@ -111,6 +112,8 @@ public final class MathUtility {
         return (value - min) / (max - min);
     }
 
+    private static final float DEG_TO_RAD = PI / 180.0f;
+
     /**
      * Converts the specified degrees to radians
      *
@@ -121,6 +124,8 @@ public final class MathUtility {
     public static float radians(float degree) {
         return DEG_TO_RAD * degree;
     }
+
+    private static final float PRE = SIZE / TWO_PI;
 
     /**
      * Maps the specified angle to an index used to access the correspondent
@@ -135,7 +140,6 @@ public final class MathUtility {
      */
 
     private static int mapAngleToTrigonometricIndex(float radians) {
-        // TODO: to refactor
         return (int) (PRE * ((radians < 0 ? TWO_PI : 0) + radians % TWO_PI));
     }
 
@@ -178,15 +182,15 @@ public final class MathUtility {
      * <br>
      * Space required: O(1)
      *
-     * @param x       the point position on the x-axis
-     * @param y       the point position on the y-axis
-     * @param radians the rotation angle in radians
+     * @param x        the point position on the x-axis
+     * @param y        the point position on the y-axis
+     * @param rotation the rotation angle in radians
      * @return the rotated point position on the x-axis
      */
 
-    public static float rotateX(float x, float y, float radians) {
-        float cos = cos(radians);
-        float sin = sin(radians);
+    public static float rotateX(float x, float y, float rotation) {
+        float cos = cos(rotation);
+        float sin = sin(rotation);
         return x * cos - y * sin;
     }
 
@@ -197,47 +201,15 @@ public final class MathUtility {
      * <br>
      * Space required: O(1)
      *
-     * @param x       the position along x-axis
-     * @param y       the position along y-axis
-     * @param radians the rotation angle in radians
+     * @param x        the position along x-axis
+     * @param y        the position along y-axis
+     * @param rotation the rotation angle in radians
      * @return the rotated point position on the y-axis
      */
 
-    public static float rotateY(float x, float y, float radians) {
-        float cos = cos(radians);
-        float sin = sin(radians);
+    public static float rotateY(float x, float y, float rotation) {
+        float cos = cos(rotation);
+        float sin = sin(rotation);
         return x * sin + y * cos;
-    }
-
-    /**
-     * Time required: T(1)
-     * <br>
-     * Space required: O(1)
-     *
-     * @param w   the rectangle width
-     * @param h   the rectangle height
-     * @param cos the cosine value
-     * @param sin the sine value
-     * @return the width of a rotated rectangle
-     */
-
-    public static float boundX(float w, float h, float cos, float sin) {
-        return abs(w * cos) + abs(h * sin);
-    }
-
-    /**
-     * Time required: T(1)
-     * <br>
-     * Space required: O(1)
-     *
-     * @param w   the rectangle's width
-     * @param h   the rectangle's height
-     * @param cos the cosine value
-     * @param sin the sine value
-     * @return the height of a rotated rectangle
-     */
-
-    public static float boundY(float w, float h, float cos, float sin) {
-        return abs(w * sin) + abs(h * cos);
     }
 }

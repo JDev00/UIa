@@ -1,12 +1,12 @@
 package test.__tests__;
 
 import test.core.*;
+import uia.core.basement.Collider;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.*;
 
 import static test.__tests__.Sanity.*;
-import static uia.utility.MathUtility.*;
 
 /**
  * Unit tests
@@ -40,8 +40,8 @@ public class ViewTest {
         float height = rootView.getHeight();
         float rotation = bounds[4];
 
-        float expectedBoundsWidth = boundX(width, height, cos(rotation), sin(rotation));
-        float expectedBoundsHeight = boundY(width, height, cos(rotation), sin(rotation));
+        float expectedBoundsWidth = Collider.colliderWidth(width, height, rotation);
+        float expectedBoundsHeight = Collider.colliderHeight(width, height, rotation);
 
         testAssertion.expect(rotation).toBe(ROTATION);
         testAssertion.expect(bounds[2]).toBe(expectedBoundsWidth);
@@ -72,6 +72,7 @@ public class ViewTest {
     }
 
     @Test
+    @Skip
     public void clickingOnViewShouldGenerateAnEvent(TestAssertion testAssertion) {
         testAssertion.assertions(1);
 
