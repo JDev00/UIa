@@ -16,9 +16,11 @@ import uia.physical.*;
 import uia.physical.text.TextRenderer;
 import uia.physical.theme.Theme;
 import uia.utility.Geometries;
+import uia.utility.IOUtility;
 import uia.utility.Timer;
 import uia.utility.Utility;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -735,7 +737,7 @@ public class UIEditText extends WrapperViewText {
                 new Component("", 0.5f, 0.5f, 0.5f, 0.5f)
         );
         editText.setAlign(AlignX.LEFT);
-        editText.setText(Utility.readAll("src\\test\\TestView.java"));
+        editText.setText(IOUtility.readAll(new File("src\\test\\TestView.java")));
         //editText.setText("ciao!\nhqwrrtre");
         editText.getPaint().setColor(Theme.SILVER);
 

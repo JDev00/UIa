@@ -16,7 +16,9 @@ import uia.physical.ComponentGroup;
 import uia.physical.ComponentImage;
 import uia.physical.ComponentText;
 import uia.physical.theme.Theme;
-import uia.utility.Utility;
+import uia.utility.IOUtility;
+
+import java.io.File;
 
 public class Sanity {
 
@@ -67,7 +69,7 @@ public class Sanity {
 
         ViewText text = createViewText("TEXT", 0.33f, 0.45f, 0.5f, 0.75f);
         text.setAlign(ViewText.AlignX.RIGHT);
-        text.setText(Utility.readAll("src\\test\\Sanity.java"));
+        text.setText(IOUtility.readAll(new File("src\\test\\Sanity.java")));
         text.setRotation(0.3f);
         text.setSingleLine(true);
 

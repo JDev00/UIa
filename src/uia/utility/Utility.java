@@ -16,50 +16,6 @@ public final class Utility {
     }
 
     /**
-     * Read the content of the given file
-     *
-     * @param path a not null file path
-     * @return the file's content otherwise an empty String
-     */
-
-    public static String readAll(String path) {
-        StringBuilder builder = new StringBuilder(2000);
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                builder.append(line).append('\n');
-            }
-            if (builder.length() > 0) builder.deleteCharAt(builder.length() - 1);
-        } catch (Exception ignored) {
-        }
-
-        return builder.toString();
-    }
-
-    /**
-     * Read the content of the given file
-     *
-     * @param path a not null file path
-     * @return the file's lines otherwise an empty list
-     */
-
-    public static List<String> read(String path) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            List<String> lines = new ArrayList<>(2000);
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                lines.add(line);
-            }
-
-            return lines;
-        } catch (Exception e) {
-            return Collections.emptyList();
-        }
-    }
-
-    /**
      * Merge the given List into a String.
      * <br>
      * Note that the given List won't be modified.
