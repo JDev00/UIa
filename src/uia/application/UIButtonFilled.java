@@ -12,7 +12,7 @@ import uia.utility.Geometries;
 import uia.physical.Component;
 import uia.physical.ComponentGroup;
 import uia.physical.ComponentText;
-import uia.utility.TrigTable;
+import uia.utility.MathUtility;
 
 /**
  * Standard UIa component.
@@ -44,7 +44,7 @@ public final class UIButtonFilled extends WrapperView {
         icon.setColliderPolicy(ColliderPolicy.AABB);
         icon.setConsumer(Consumer.SCREEN_TOUCH, false);
         icon.setGeometry(Geometries::arrow, false);
-        icon.setRotation(right ? 0f : TrigTable.PI);
+        icon.setRotation(right ? 0f : MathUtility.PI);
         icon.getPaint().setColor(Theme.BLACK);
 
         ViewGroup.insert(getView(), viewText, icon);

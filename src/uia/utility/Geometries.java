@@ -2,7 +2,7 @@ package uia.utility;
 
 import uia.core.shape.Geometry;
 
-import static uia.utility.TrigTable.*;
+import static uia.utility.MathUtility.*;
 
 /**
  * Collection of geometries

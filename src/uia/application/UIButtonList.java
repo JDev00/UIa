@@ -12,7 +12,7 @@ import uia.utility.Geometries;
 import uia.physical.Component;
 import uia.physical.ComponentGroup;
 import uia.physical.ComponentText;
-import uia.utility.TrigTable;
+import uia.utility.MathUtility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +47,7 @@ public final class UIButtonList extends WrapperView {
         viewLeft.setColliderPolicy(ColliderPolicy.AABB);
         viewLeft.setConsumer(Consumer.SCREEN_TOUCH, false);
         viewLeft.getPaint().setColor(Theme.BLACK);
-        viewLeft.setRotation(TrigTable.PI);
+        viewLeft.setRotation(MathUtility.PI);
         viewLeft.registerCallback((OnClick) touches -> show(index - 1));
 
         viewRight = new Component("RIGHT", 0.9f, 0.5f, 0.1f, 0.5f).setExpanseLimit(1.2f, 1.2f);

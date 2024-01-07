@@ -2,7 +2,7 @@ package uia.core.ui;
 
 import uia.core.basement.*;
 
-import static uia.utility.TrigTable.*;
+import static uia.utility.MathUtility.*;
 
 /**
  * View ADT.

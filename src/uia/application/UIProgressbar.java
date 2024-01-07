@@ -9,7 +9,6 @@ import uia.physical.theme.Theme;
 import uia.physical.ComponentGroup;
 import uia.physical.WrapperView;
 import uia.physical.Component;
-import uia.utility.TrigTable;
 import uia.utility.MathUtility;
 
 import java.util.Objects;
@@ -152,7 +151,7 @@ public final class UIProgressbar extends WrapperView {
     public static UIProgressbar createVertical(View view) {
         Objects.requireNonNull(view);
         UIProgressbar result = new UIProgressbar(view);
-        result.setRotation(-TrigTable.HALF_PI);
+        result.setRotation(-MathUtility.HALF_PI);
         return result;
     }
 }

@@ -6,7 +6,7 @@ import uia.core.Image;
 import uia.core.Paint.Paint;
 import uia.core.shape.Shape;
 import uia.core.ui.Graphic;
-import uia.utility.TrigTable;
+import uia.utility.MathUtility;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
@@ -228,7 +228,7 @@ public class GraphicAWT implements Graphic {
     @Override
     public void drawText(char[] data, int offset, int length, float x, float y, float rotation) {
         Graphics2D graphics = getGraphics();
-        boolean rotated = Float.compare(rotation % TrigTable.TWO_PI, 0f) != 0;
+        boolean rotated = Float.compare(rotation % MathUtility.TWO_PI, 0f) != 0;
         AffineTransform previousMatrix = null;
 
         if (rotated) {
@@ -268,7 +268,7 @@ public class GraphicAWT implements Graphic {
         Graphics2D graphics = getGraphics();
         buildImage(img);
 
-        boolean rotated = Float.compare(rotation % TrigTable.TWO_PI, 0f) != 0;
+        boolean rotated = Float.compare(rotation % MathUtility.TWO_PI, 0f) != 0;
         AffineTransform previousMatrix = null;
 
         if (rotated) {

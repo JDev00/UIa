@@ -5,8 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-import static uia.utility.TrigTable.*;
-import static uia.utility.TrigTable.rotY;
+import static uia.utility.MathUtility.*;
 
 /**
  * Geometry has the responsibility to handle a set of normalized vertices.

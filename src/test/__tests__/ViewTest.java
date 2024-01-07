@@ -6,7 +6,7 @@ import uia.core.ui.View;
 import uia.core.ui.callbacks.*;
 
 import static test.__tests__.Sanity.*;
-import static uia.utility.TrigTable.*;
+import static uia.utility.MathUtility.*;
 
 /**
  * Unit tests

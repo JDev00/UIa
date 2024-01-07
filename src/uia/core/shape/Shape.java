@@ -5,7 +5,7 @@ import uia.core.basement.Collider;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static uia.utility.TrigTable.*;
+import static uia.utility.MathUtility.*;
 
 /**
  * Shape is a graphical object defined by:

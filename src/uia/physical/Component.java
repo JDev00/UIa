@@ -23,7 +23,7 @@ import java.util.Objects;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static uia.utility.TrigTable.*;
+import static uia.utility.MathUtility.*;
 
 /**
  * UIa standard {@link View} implementation
