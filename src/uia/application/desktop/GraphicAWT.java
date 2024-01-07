@@ -3,7 +3,7 @@ package uia.application.desktop;
 import uia.core.Font;
 import uia.core.shape.Geometry;
 import uia.core.Image;
-import uia.core.Paint.Paint;
+import uia.core.paint.Paint;
 import uia.core.shape.Shape;
 import uia.core.ui.Graphic;
 import uia.utility.MathUtility;
@@ -117,8 +117,8 @@ public class GraphicAWT implements Graphic {
 
     private void buildPaint(Paint paint) {
         if (!paint.isValid() || !(paint.getNativeColor() instanceof java.awt.Paint)) {
-            uia.core.Paint.Color color = paint.getColor();
-            uia.core.Paint.Color strokeColor = paint.getStrokeColor();
+            uia.core.paint.Color color = paint.getColor();
+            uia.core.paint.Color strokeColor = paint.getStrokeColor();
             paint.setNative(
                     new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()),
                     new Color(strokeColor.getRed(), strokeColor.getGreen(), strokeColor.getBlue()),

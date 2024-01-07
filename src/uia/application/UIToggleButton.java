@@ -6,7 +6,7 @@ import uia.core.basement.Drawable;
 import uia.core.ui.ViewGroup;
 import uia.physical.theme.Theme;
 import uia.physical.theme.ThemeDarcula;
-import uia.core.Paint.Paint;
+import uia.core.paint.Paint;
 import uia.core.ui.ViewText;
 import uia.physical.ComponentText;
 import uia.physical.WrapperView;

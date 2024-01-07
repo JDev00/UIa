@@ -3,8 +3,8 @@ package example.thirdparty;
 import processing.core.*;
 
 import uia.core.*;
-import uia.core.Paint.Color;
-import uia.core.Paint.Paint;
+import uia.core.paint.Color;
+import uia.core.paint.Paint;
 import uia.core.shape.Geometry;
 import uia.core.shape.Shape;
 import uia.core.ui.Graphic;

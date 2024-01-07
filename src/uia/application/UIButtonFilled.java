@@ -1,7 +1,7 @@
 package uia.application;
 
 import uia.core.Font;
-import uia.core.Paint.Paint;
+import uia.core.paint.Paint;
 import uia.core.basement.Drawable;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;

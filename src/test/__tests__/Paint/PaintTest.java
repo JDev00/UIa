@@ -4,8 +4,8 @@ import test.core.BeforeEachTest;
 import test.core.Test;
 import test.core.TestAssertion;
 import test.core.TestExecutor;
-import uia.core.Paint.Color;
-import uia.core.Paint.Paint;
+import uia.core.paint.Color;
+import uia.core.paint.Paint;
 
 /**
  * Unit tests

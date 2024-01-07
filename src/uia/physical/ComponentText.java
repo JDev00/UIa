@@ -1,7 +1,7 @@
 package uia.physical;
 
 import uia.core.Font;
-import uia.core.Paint.Paint;
+import uia.core.paint.Paint;
 import uia.core.shape.Shape;
 import uia.core.ui.Graphic;
 import uia.physical.scroller.Scroller;

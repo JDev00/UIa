@@ -1,7 +1,7 @@
 package uia.core.basement;
 
 import uia.core.shape.Geometry;
-import uia.core.Paint.Paint;
+import uia.core.paint.Paint;
 import uia.core.ui.Graphic;
 import uia.utility.Geometries;
 

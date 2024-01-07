@@ -1,4 +1,4 @@
-package uia.core.Paint;
+package uia.core.paint;
 
 import java.util.Arrays;
 import java.util.Objects;

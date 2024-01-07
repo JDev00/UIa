@@ -2,8 +2,8 @@ package uia.develop;
 
 import uia.application.desktop.ContextSwing;
 import uia.core.*;
-import uia.core.Paint.Color;
-import uia.core.Paint.Paint;
+import uia.core.paint.Color;
+import uia.core.paint.Paint;
 import uia.core.shape.Shape;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
