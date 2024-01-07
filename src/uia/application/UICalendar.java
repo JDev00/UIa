@@ -13,6 +13,7 @@ import uia.core.ui.callbacks.OnMouseEnter;
 import uia.core.ui.callbacks.OnMouseExit;
 import uia.core.basement.Callback;
 import uia.core.ui.callbacks.OnClick;
+import uia.utility.CalendarUtility;
 import uia.utility.Utility;
 import uia.utility.Geometries;
 
@@ -98,7 +99,7 @@ public final class UICalendar extends WrapperView {
 
         calendar = GregorianCalendar.getInstance();
 
-        int[] date = Utility.getDate();
+        int[] date = CalendarUtility.getDate();
         setDate(date[0], date[1], date[2]);
 
         ViewGroup.insert(getView(), listUI);
@@ -179,7 +180,7 @@ public final class UICalendar extends WrapperView {
 
         sDay = Utility.constrain(d, 1, days);
 
-        offset = Utility.getDay(calendar.get(Calendar.DAY_OF_WEEK));
+        offset = CalendarUtility.getDay(calendar.get(Calendar.DAY_OF_WEEK));
 
         listUI.setText(MONTHS[m - 1] + " " + y);
 
