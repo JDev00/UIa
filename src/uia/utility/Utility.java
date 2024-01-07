@@ -1,6 +1,5 @@
 package uia.utility;
 
-import java.io.*;
 import java.util.*;
 import java.util.List;
 
@@ -33,31 +32,6 @@ public final class Utility {
         }
 
         return out.toString();
-    }
-
-    /**
-     * Write an array on disk.
-     * <br>
-     * Note that every element will be written on a new line.
-     *
-     * @param path a not null file path
-     * @param data a not null array to write on disk
-     * @return true if the file has been written
-     */
-
-    public static boolean write(String path, Object... data) {
-        try (PrintWriter writer = new PrintWriter(path)) {
-
-            for (Object i : data) {
-                writer.println(i.toString());
-            }
-
-            writer.flush();
-
-            return true;
-        } catch (Exception ignored) {
-            return false;
-        }
     }
 
     /**
