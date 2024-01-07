@@ -10,3 +10,4 @@ Version 1.4:
 * revised Geometry, Paint and Color
 * improved TestExecutor: added the the '@BeforeEachTest' annotation
 * revised the existing tests
+* improved utility functions
