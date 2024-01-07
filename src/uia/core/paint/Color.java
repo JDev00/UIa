@@ -1,4 +1,4 @@
-package uia.core.Paint;
+package uia.core.paint;
 
 import uia.utility.MathUtility;
 
