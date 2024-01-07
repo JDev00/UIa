@@ -64,11 +64,9 @@ public class Shape implements Collider {
     private void transform(NormalizedVertex source, TransformedVertex target) {
         float x = bounds[2] * source.getX();
         float y = bounds[3] * source.getY();
-        float cos = cos(bounds[4]);
-        float sin = sin(bounds[4]);
-
-        target.x = bounds[0] + rotX(x, y, cos, sin);
-        target.y = bounds[1] + rotY(x, y, cos, sin);
+        float rotation = bounds[4];
+        target.x = bounds[0] + rotateX(x, y, rotation);
+        target.y = bounds[1] + rotateY(x, y, rotation);
         target.primer = source.isPrimer();
     }
 

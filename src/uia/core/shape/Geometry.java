@@ -147,14 +147,12 @@ public class Geometry implements Iterable<NormalizedVertex> {
 
     public static Geometry rotate(Geometry geometry, float radians) {
         Objects.requireNonNull(geometry);
-        float cos = cos(radians);
-        float sin = sin(radians);
         for (NormalizedVertex vertex : geometry) {
-            float vx = vertex.getX();
-            float vy = vertex.getY();
-            float nx = rotX(vx, vy, cos, sin);
-            float ny = rotY(vx, vy, cos, sin);
-            vertex.set(nx, ny);
+            float vertexX = vertex.getX();
+            float vertexY = vertex.getY();
+            float newVertexX = rotateX(vertexX, vertexY, radians);
+            float newVertexY = rotateY(vertexX, vertexY, radians);
+            vertex.set(newVertexX, newVertexY);
         }
         return geometry;
     }

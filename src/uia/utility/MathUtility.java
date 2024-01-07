@@ -14,15 +14,15 @@ public final class MathUtility {
     private static final float DEG_TO_RAD = PI / 180.0f;
     private static final short SIZE = 3000;
     private static final float PRE = SIZE / TWO_PI;
-    private static final float[] X = new float[SIZE + 1];
-    private static final float[] Y = new float[SIZE + 1];
+    private static final float[] COS = new float[SIZE + 1];
+    private static final float[] SIN = new float[SIZE + 1];
 
     static {
         int index = 0;
         for (int i = 0; i <= SIZE; i++) {
             float a = i * TWO_PI / SIZE;
-            X[index] = (float) java.lang.Math.cos(a);
-            Y[index] = (float) java.lang.Math.sin(a);
+            COS[index] = (float) java.lang.Math.cos(a);
+            SIN[index] = (float) java.lang.Math.sin(a);
             index++;
         }
     }
@@ -114,12 +114,29 @@ public final class MathUtility {
     /**
      * Converts the specified degrees to radians
      *
-     * @param degrees the degrees to convert
+     * @param degree the degree to convert
      * @return the corresponding radians
      */
 
-    public static float radians(float degrees) {
-        return DEG_TO_RAD * degrees;
+    public static float radians(float degree) {
+        return DEG_TO_RAD * degree;
+    }
+
+    /**
+     * Maps the specified angle to an index used to access the correspondent
+     * cosine or sine value.
+     * <br>
+     * Time required: T(1)
+     * <br>
+     * Space required: O(1)
+     *
+     * @param radians the angle in radians
+     * @return the index used to access the cached cosine or sine value
+     */
+
+    private static int mapAngleToTrigonometricIndex(float radians) {
+        // TODO: to refactor
+        return (int) (PRE * ((radians < 0 ? TWO_PI : 0) + radians % TWO_PI));
     }
 
     /**
@@ -129,42 +146,47 @@ public final class MathUtility {
      * <br>
      * Space required: O(1)
      *
-     * @param radians the angle expressed in radians
+     * @param radians the angle in radians
      * @return the cosine of the specified angle
      */
 
     public static float cos(float radians) {
-        return X[(int) (PRE * ((radians < 0 ? TWO_PI : 0) + radians % TWO_PI))];
+        int index = mapAngleToTrigonometricIndex(radians);
+        return COS[index];
     }
 
     /**
-     * Time required: T(1)
-     * <br>
-     * Space required: O(1)
-     *
-     * @param angle the angle expressed in radians
-     * @return the sine of the given angle
-     */
-
-    public static float sin(float angle) {
-        return Y[(int) (PRE * ((angle < 0 ? TWO_PI : 0) + angle % TWO_PI))];
-    }
-
-    /**
-     * Rotate a given point.
+     * Returns the sine value of the specified angle.
      * <br>
      * Time required: T(1)
      * <br>
      * Space required: O(1)
      *
-     * @param x   the position along x-axis
-     * @param y   the position along y-axis
-     * @param cos the cosine value
-     * @param sin the sine value
-     * @return the rotated point's position along x-axis
+     * @param radians the angle in radians
+     * @return the sine of the specified angle
      */
 
-    public static float rotX(float x, float y, float cos, float sin) {
+    public static float sin(float radians) {
+        int index = mapAngleToTrigonometricIndex(radians);
+        return SIN[index];
+    }
+
+    /**
+     * Rotates the specified point.
+     * <br>
+     * Time required: T(1)
+     * <br>
+     * Space required: O(1)
+     *
+     * @param x       the point position on the x-axis
+     * @param y       the point position on the y-axis
+     * @param radians the rotation angle in radians
+     * @return the rotated point position on the x-axis
+     */
+
+    public static float rotateX(float x, float y, float radians) {
+        float cos = cos(radians);
+        float sin = sin(radians);
         return x * cos - y * sin;
     }
 
@@ -175,14 +197,15 @@ public final class MathUtility {
      * <br>
      * Space required: O(1)
      *
-     * @param x   the position along x-axis
-     * @param y   the position along y-axis
-     * @param cos the cosine value
-     * @param sin the sine value
-     * @return the rotated point's position along y-axis
+     * @param x       the position along x-axis
+     * @param y       the position along y-axis
+     * @param radians the rotation angle in radians
+     * @return the rotated point position on the y-axis
      */
 
-    public static float rotY(float x, float y, float cos, float sin) {
+    public static float rotateY(float x, float y, float radians) {
+        float cos = cos(radians);
+        float sin = sin(radians);
         return x * sin + y * cos;
     }
 
@@ -191,8 +214,8 @@ public final class MathUtility {
      * <br>
      * Space required: O(1)
      *
-     * @param w   the rectangle's width
-     * @param h   the rectangle's height
+     * @param w   the rectangle width
+     * @param h   the rectangle height
      * @param cos the cosine value
      * @param sin the sine value
      * @return the width of a rotated rectangle
