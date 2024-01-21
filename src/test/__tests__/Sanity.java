@@ -26,7 +26,7 @@ import static test.__tests__.utility.TestUtility.*;
 public class Sanity {
 
     /**
-     * Shows the based UIa components
+     * Shows the base components
      */
 
     public static void showBaseComponents() {
@@ -54,7 +54,7 @@ public class Sanity {
     }
 
     /**
-     * Shows the UIa widgets component
+     * Shows the widgets component
      */
 
     public static void showWidgets() {
