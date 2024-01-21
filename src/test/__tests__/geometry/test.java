@@ -1,4 +1,4 @@
-package test.__tests__;
+package test.__tests__.geometry;
 
 import test.core.*;
 import uia.core.shape.Geometry;
@@ -7,7 +7,7 @@ import uia.core.shape.Geometry;
  * Unit tests
  */
 
-public class GeometryTest {
+public class test {
     Geometry geometry = new Geometry();
 
     @BeforeEachTest
@@ -68,6 +68,6 @@ public class GeometryTest {
     }
 
     public static void main(String[] args) {
-        TestExecutor.runTests(new GeometryTest());
+        TestExecutor.runTests(new test());
     }
 }

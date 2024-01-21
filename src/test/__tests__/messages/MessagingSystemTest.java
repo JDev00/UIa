@@ -1,4 +1,4 @@
-package test.__tests__;
+package test.__tests__.messages;
 
 import test.core.*;
 import uia.core.ui.View;
@@ -13,7 +13,7 @@ import static test.__tests__.Sanity.*;
  * Unit tests
  */
 
-public class TestMessagingSystem {
+public class MessagingSystemTest {
     Context context;
     ViewGroup rootView;
 
@@ -50,6 +50,6 @@ public class TestMessagingSystem {
     }
 
     public static void main(String[] args) {
-        TestExecutor.runTests(new TestMessagingSystem());
+        TestExecutor.runTests(new MessagingSystemTest());
     }
 }

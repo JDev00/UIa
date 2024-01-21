@@ -1,4 +1,4 @@
-package test.__tests__.Paint;
+package test.__tests__.paint;
 
 import test.core.BeforeEachTest;
 import test.core.Test;
@@ -11,7 +11,7 @@ import uia.core.paint.Paint;
  * Unit tests
  */
 
-public class PaintTest {
+public class test {
     int strokeWidth = 2;
     Color color = Color.createColor(255, 0, 128, 100);
     Color strokeColor = Color.createColor(0, 255, 128, 100);
@@ -78,6 +78,6 @@ public class PaintTest {
     }
 
     public static void main(String[] args) {
-        TestExecutor.runTests(new PaintTest());
+        TestExecutor.runTests(new test());
     }
 }

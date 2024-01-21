@@ -1,4 +1,4 @@
-package test.__tests__;
+package test.__tests__.distribution;
 
 import test.core.BeforeEachTest;
 import test.core.TestExecutor;

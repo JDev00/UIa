@@ -1,4 +1,4 @@
-package test.__tests__;
+package test.__tests__.view;
 
 import test.core.*;
 import uia.core.basement.Collider;
@@ -12,7 +12,7 @@ import static test.__tests__.Sanity.*;
  * Unit tests
  */
 
-public class ViewTest {
+public class test {
     Context context;
     View rootView;
 
@@ -181,6 +181,6 @@ public class ViewTest {
     }
 
     public static void main(String[] args) {
-        TestExecutor.runTests(new ViewTest());
+        TestExecutor.runTests(new test());
     }
 }
