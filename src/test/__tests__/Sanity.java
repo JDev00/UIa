@@ -1,6 +1,5 @@
 package test.__tests__;
 
-import test.__tests__.artefacts.ComponentTracker;
 import uia.application.UIButtonFilled;
 import uia.application.UIButtonList;
 import uia.application.UIToggleButton;
@@ -12,54 +11,23 @@ import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.callbacks.OnClick;
 import uia.physical.Component;
-import uia.physical.ComponentGroup;
 import uia.physical.ComponentImage;
-import uia.physical.ComponentText;
 import uia.physical.theme.Theme;
 import uia.utility.IOUtility;
 
 import java.io.File;
 
+import static test.__tests__.utility.TestUtility.*;
+
+/**
+ * Sanity tests
+ */
+
 public class Sanity {
 
-    public static View createView(String id, float x, float y, float width, float height) {
-        return new Component(id, x, y, width, height);
-    }
-
-    public static ViewText createViewText(String id, float x, float y, float width, float height) {
-        return new ComponentText(new Component(id, x, y, width, height));
-    }
-
-    public static ViewGroup createViewGroup(String id, float x, float y, float width, float height) {
-        return new ComponentGroup(new Component(id, x, y, width, height));
-    }
-
     /**
-     * Create a new ViewGroup that fills the entire screen.
-     * Its dimension is the screen one and is positioned at the screen center.
-     *
-     * @return a new {@link ViewGroup} instance
+     * Shows the based UIa components
      */
-
-    public static ViewGroup createRoot() {
-        ViewGroup result = createViewGroup("ROOT_GROUP", 0.5f, 0.5f, 1f, 1f);
-        result.getPaint().setColor(Theme.DARK_GRAY);
-        return result;
-    }
-
-    public static View createTracker() {
-        return new ComponentTracker(0.95f, 0.95f, 0.1f, 0.1f);
-    }
-
-    /**
-     * Create a new ContextAWT with width: 720 and height: 540 and start it.
-     *
-     * @return a new {@link ContextSwing}
-     */
-
-    public static Context createMockContext() {
-        return ContextSwing.createAndStart(720, 540);
-    }
 
     public static void showBaseComponents() {
         ViewGroup root = createRoot();
@@ -84,6 +52,10 @@ public class Sanity {
         View tracker = createTracker();
         ViewGroup.insert(root, group, tracker);
     }
+
+    /**
+     * Shows the UIa widgets component
+     */
 
     public static void showWidgets() {
         ViewGroup root = createRoot();

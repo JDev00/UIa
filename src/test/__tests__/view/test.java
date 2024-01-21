@@ -6,7 +6,7 @@ import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.*;
 
-import static test.__tests__.Sanity.*;
+import static test.__tests__.utility.TestUtility.*;
 
 /**
  * Unit tests

@@ -7,7 +7,7 @@ import uia.core.ui.callbacks.OnMessageReceived;
 import uia.core.ui.context.Context;
 import uia.physical.message.Messages;
 
-import static test.__tests__.Sanity.*;
+import static test.__tests__.utility.TestUtility.*;
 
 /**
  * Unit tests
