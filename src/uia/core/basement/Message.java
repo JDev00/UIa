@@ -2,6 +2,7 @@ package uia.core.basement;
 
 /**
  * Message ADT.
+ * <br>
  * Message has the responsibility to keep the required information to
  * delivery a message to a recipient.
  */

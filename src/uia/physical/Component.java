@@ -315,35 +315,22 @@ public final class Component implements View {
         }
     }
 
-    /**
-     * Helper function. Read the given message and invoke the callbacks.
-     */
-
-    private void readMessage(Message message) {
-        String sender = message.getSender();
-        String recipient = message.getRecipient();
-        if (Objects.equals(id, recipient) || (recipient == null && !id.equals(sender))) {
-            notifyCallbacks(OnMessageReceived.class, message);
-        }
-    }
-
     @Override
     public void dispatchMessage(Message message) {
-        try {
-            List<ScreenTouch> screenTouches;
-            if (id.equals(message.getRecipient()) &&
-                    message instanceof EventTouchScreenMessage.Lock) {
-                screenTouches = extractLockedScreenTouches(message.getPayload());
-            } else {
-                screenTouches = extractScreenTouches(message.getPayload());
+        if (message instanceof EventTouchScreenMessage.Lock) {
+            if (id.equals(message.getRecipient())) {
+                List<ScreenTouch> screenTouches = message.getPayload();
+                List<ScreenTouch> localTouches = extractLockedScreenTouches(screenTouches);
+                updateScreenTouchCallbacks(localTouches, screenTouches);
             }
-            updateScreenTouchCallbacks(screenTouches, message.getPayload());
-        } catch (Exception ignored) {
-        }
-        if (message instanceof EventKeyMessage) {
+        } else if (message instanceof EventTouchScreenMessage) {
+            List<ScreenTouch> screenTouches = message.getPayload();
+            List<ScreenTouch> localTouches = extractScreenTouches(screenTouches);
+            updateScreenTouchCallbacks(localTouches, screenTouches);
+        } else if (message instanceof EventKeyMessage) {
             updateKeyCallbacks(message.getPayload());
         } else {
-            readMessage(message);
+            ComponentUtility.notifyMessageCallback(this, message);
         }
     }
 
@@ -403,9 +390,10 @@ public final class Component implements View {
 
         if (visible) {
 
-            if (!parent.isOnFocus() && focus) {
+            /*if (!parent.isOnFocus() && focus) {
+                System.out.println(getID() + ", here!");
                 requestFocus(false);
-            }
+            }*/
 
             updateExpansionAnimation();
             updateShape(parent);
