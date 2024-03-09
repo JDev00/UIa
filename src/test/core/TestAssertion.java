@@ -37,6 +37,18 @@ public class TestAssertion {
     }
 
     /**
+     * Sets the expected object as a function to be evaluated.
+     *
+     * @param expected a function to be evaluated; it could be null
+     * @return this TestAssertion
+     */
+
+    public TestAssertion expect(VoidFunction expected) {
+        this.expected = expected;
+        return this;
+    }
+
+    /**
      * Checks if the expected object is equal to the specified value
      *
      * @throws IllegalArgumentException if {@code expected != value}
@@ -154,9 +166,36 @@ public class TestAssertion {
         }
         int expectedElementsNumber = Array.getLength(expected);
         if (expectedElementsNumber != length) {
-            throw new IllegalArgumentException("expected " + expected + "to have length " + length + " but it was " + expectedElementsNumber);
+            throw new IllegalArgumentException("expected " + expected + " to have length " + length + " but it was " + expectedElementsNumber);
         }
         passedAssertions++;
+    }
+
+    /**
+     * Checks whether the expected object, once evaluated, will throw the specified exception.
+     *
+     * @param exceptionClass the expected exception to be thrown
+     * @throws NullPointerException if {@code exceptionClass == null}
+     * @throws ClassCastException   if {@code the expected object is not a VoidFunction }
+     */
+    public void toThrowException(Class<? extends Exception> exceptionClass) {
+        Objects.requireNonNull(exceptionClass);
+
+        if (expected instanceof VoidFunction) {
+            VoidFunction voidFunction = (VoidFunction) expected;
+            try {
+                voidFunction.apply();
+            } catch (Exception error) {
+                Class<?> errorClass = error.getClass();
+                if (errorClass.equals(exceptionClass)) {
+                    passedAssertions++;
+                } else {
+                    throw new IllegalArgumentException("expected to throw " + exceptionClass.getName() + " but throws " + errorClass);
+                }
+            }
+        } else {
+            throw new ClassCastException("expected " + expected + " to be a Supplier but it was not");
+        }
     }
 
     /**
