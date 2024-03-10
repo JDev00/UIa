@@ -218,29 +218,29 @@ public final class Component implements View {
     }
 
     /**
-     * Helper function. Update screen touch callbacks according to the specified screen touches.
+     * Helper function. Notifies screen touch callbacks with the given screen touches.
      *
-     * @param internalTouches the screen touches inside the view area
-     * @param globalTouches   all the window screen touches
+     * @param insideTouches the screen touches within the view area
+     * @param globalTouches all the received screen touches
      */
 
-    private void updateScreenTouchCallbacks(List<ScreenTouch> internalTouches,
+    private void notifyScreenTouchListeners(List<ScreenTouch> insideTouches,
                                             List<ScreenTouch> globalTouches) {
-        if (!internalTouches.isEmpty()) {
+        if (!insideTouches.isEmpty()) {
             // request focus
-            for (int i = 0; i < internalTouches.size() && !focus; i++) {
-                if (internalTouches.get(i).getAction() == ScreenTouch.Action.PRESSED) requestFocus(true);
+            for (int i = 0; i < insideTouches.size() && !focus; i++) {
+                if (insideTouches.get(i).getAction() == ScreenTouch.Action.PRESSED) requestFocus(true);
             }
             // invoke mouse enter or mouse hover callback
             if (!over) {
                 over = true;
-                notifyCallbacks(OnMouseEnter.class, internalTouches);
+                notifyCallbacks(OnMouseEnter.class, insideTouches);
             } else {
-                notifyCallbacks(OnMouseHover.class, internalTouches);
+                notifyCallbacks(OnMouseHover.class, insideTouches);
             }
             // invoke click callback
-            internalTouches.forEach(p -> {
-                if (p.getAction() == ScreenTouch.Action.CLICKED) notifyCallbacks(OnClick.class, internalTouches);
+            insideTouches.forEach(p -> {
+                if (p.getAction() == ScreenTouch.Action.CLICKED) notifyCallbacks(OnClick.class, insideTouches);
             });
         } else {
             // remove focus
@@ -256,10 +256,10 @@ public final class Component implements View {
     }
 
     /**
-     * Helper function. Update key callbacks according to the specified key.
+     * Helper function. Notifies key callbacks with the given key.
      */
 
-    private void updateKeyCallbacks(Key key) {
+    private void notifyKeyListeners(Key key) {
         if (!key.isConsumed() && visible && focus) {
             if (consumeKey) {
                 key.consume();
@@ -286,16 +286,16 @@ public final class Component implements View {
                 List<ScreenTouch> localTouches = ComponentUtility.copyAndConsumeTouches(
                         this, screenTouches
                 );
-                updateScreenTouchCallbacks(localTouches, screenTouches);
+                notifyScreenTouchListeners(localTouches, screenTouches);
             }
         } else if (message instanceof EventTouchScreenMessage) {
             List<ScreenTouch> screenTouches = message.getPayload();
             List<ScreenTouch> localTouches = ComponentUtility.getTouchesInsideViewArea(
                     this, screenTouches, consumePointer
             );
-            updateScreenTouchCallbacks(localTouches, screenTouches);
+            notifyScreenTouchListeners(localTouches, screenTouches);
         } else if (message instanceof EventKeyMessage) {
-            updateKeyCallbacks(message.getPayload());
+            notifyKeyListeners(message.getPayload());
         } else {
             ComponentUtility.notifyMessageCallback(this, message);
         }
