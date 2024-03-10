@@ -45,7 +45,7 @@ public interface ViewGroup extends View, Iterable<View> {
      * @param view  the view to be added
      * @return true if the specified View has been added to this group
      * @throws NullPointerException      if {@code view == null}
-     * @throws IndexOutOfBoundsException if {@code index < 0 or index >= size()}
+     * @throws IndexOutOfBoundsException if {@code index < 0 or index > size()}
      */
 
     boolean insert(int index, View view);

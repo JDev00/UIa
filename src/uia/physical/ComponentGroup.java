@@ -49,10 +49,10 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     @Override
     public boolean insert(int index, View view) {
         Objects.requireNonNull(view);
-        if (index < 0 || index >= size()) {
+        if (index < 0 || index > size()) {
             throw new IndexOutOfBoundsException("the given index is out of bounds for the group with ID = " + getID());
         }
-        
+
         boolean result = false;
         if (!views.contains(view)) {
             views.add(index, view);
