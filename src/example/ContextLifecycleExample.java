@@ -9,7 +9,7 @@ import uia.physical.Component;
 public class ContextLifecycleExample {
 
     public static View createMockView() {
-        return new Component("A", 0.5f, 0.5f, 0.5f, 0.5f, 1.1f, 1.1f);
+        return new Component("A", 0.5f, 0.5f, 0.5f, 0.5f).setExpanseLimit(1.1f, 1.1f);
     }
 
     public static Context createAWTContext() {

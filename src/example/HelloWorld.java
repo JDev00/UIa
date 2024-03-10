@@ -70,7 +70,7 @@ public class HelloWorld extends WrapperView {
 
     private static UIButton createCustomButton() {
         UIButton result = new UIButton(new ComponentText(
-                new Component("BUTTON", 0.25f, 0.5f, 0.1f, 0.1f, 1.2f, 1.2f)
+                new Component("BUTTON", 0.25f, 0.5f, 0.1f, 0.1f).setExpanseLimit(1.2f, 1.2f)
         ));
         // get the Paint used when the button is activated and set: a color, stroke color and stroke width
         result.getPaint(UIButton.STATE.ON)
@@ -104,7 +104,7 @@ public class HelloWorld extends WrapperView {
     private static View createSimplePopup() {
         // now, let us create a viewText. We will use it to emulate a simple popup.
         ViewText result = new ComponentText(
-                new Component("POPUP", 0.66f, 0.5f, 0.33f, 0.5f, 1.1f, 1.1f)
+                new Component("POPUP", 0.66f, 0.5f, 0.33f, 0.5f).setExpanseLimit(1.1f, 1.1f)
         );
         // hide this popup at the beginning
         result.setVisible(false);

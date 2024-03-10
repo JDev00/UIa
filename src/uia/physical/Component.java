@@ -47,8 +47,7 @@ public final class Component implements View {
     private boolean consumePointer = true;
     private boolean consumeKey = true;
 
-    public Component(String id, float x, float y, float width, float height,
-                     float xExpansion, float yExpansion) {
+    public Component(String id, float x, float y, float width, float height) {
         this.id = id;
 
         container = new float[]{x, y, width, height, 0f};
@@ -59,12 +58,6 @@ public final class Component implements View {
 
         shape = new Shape();
         Geometries.rect(shape.getGeometry());
-
-        setExpanseLimit(xExpansion, yExpansion);
-    }
-
-    public Component(String id, float x, float y, float width, float height) {
-        this(id, x, y, width, height, 1f, 1f);
     }
 
     /**

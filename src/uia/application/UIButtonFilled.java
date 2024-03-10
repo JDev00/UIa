@@ -39,8 +39,8 @@ public final class UIButtonFilled extends WrapperView {
         viewText.getPaint().setColor(Theme.TRANSPARENT);
         viewText.getTextPaint().setColor(Theme.BLACK);
 
-        icon = new Component("BUTTON_FILLED_ICON_" + getID(), right ? 0.875f : 0.125f, 0.5f,
-                0.125f, 0.4f, 1.25f, 1.25f);
+        icon = new Component("BUTTON_FILLED_ICON_" + getID(), right ? 0.875f : 0.125f, 0.5f, 0.125f, 0.4f)
+                .setExpanseLimit(1.25f, 1.25f);
         icon.setColliderPolicy(ColliderPolicy.AABB);
         icon.setConsumer(Consumer.SCREEN_TOUCH, false);
         icon.setGeometry(Geometries::arrow, false);
