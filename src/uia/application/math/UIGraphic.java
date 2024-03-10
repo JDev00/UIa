@@ -3,9 +3,9 @@ package uia.application.math;
 import uia.core.shape.Shape;
 import uia.core.ui.Graphic;
 import uia.core.ui.View;
-import uia.physical.Component;
 import uia.core.paint.Paint;
 import uia.physical.WrapperView;
+import uia.physical.utility.ComponentUtility;
 import uia.utility.Geometries;
 import uia.utility.MathUtility;
 
@@ -145,7 +145,7 @@ public class UIGraphic extends WrapperView {
         float lineX = View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rotation);
         float lineY = View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rotation);
 
-        Component.makeShapeForClipRegion(this, clipShape, 0.97f, 0.97f);
+        ComponentUtility.makeShapeForClipRegion(this, clipShape, 0.97f, 0.97f);
         graphic.setClip(clipShape);
 
         // draw ordinate
