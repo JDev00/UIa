@@ -255,29 +255,6 @@ public final class Component implements View {
         }
     }
 
-    /**
-     * Helper function. Notifies key callbacks with the given key.
-     */
-
-    private void notifyKeyListeners(Key key) {
-        if (!key.isConsumed() && visible && focus) {
-            if (consumeKey) {
-                key.consume();
-            }
-            switch (key.getAction()) {
-                case PRESSED:
-                    notifyCallbacks(OnKeyPressed.class, key);
-                    break;
-                case TYPED:
-                    notifyCallbacks(OnKeyTyped.class, key);
-                    break;
-                case RELEASED:
-                    notifyCallbacks(OnKeyReleased.class, key);
-                    break;
-            }
-        }
-    }
-
     @Override
     public void dispatchMessage(Message message) {
         if (message instanceof EventTouchScreenMessage.Lock) {
@@ -295,7 +272,9 @@ public final class Component implements View {
             );
             notifyScreenTouchListeners(localTouches, screenTouches);
         } else if (message instanceof EventKeyMessage) {
-            notifyKeyListeners(message.getPayload());
+            ComponentUtility.notifyKeyListeners(
+                    this, message.getPayload(), consumeKey
+            );
         } else {
             ComponentUtility.notifyMessageCallback(this, message);
         }
