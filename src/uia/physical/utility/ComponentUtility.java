@@ -1,9 +1,13 @@
 package uia.physical.utility;
 
+import uia.core.Key;
 import uia.core.ScreenTouch;
 import uia.core.basement.Message;
 import uia.core.shape.Shape;
 import uia.core.ui.View;
+import uia.core.ui.callbacks.OnKeyPressed;
+import uia.core.ui.callbacks.OnKeyReleased;
+import uia.core.ui.callbacks.OnKeyTyped;
 import uia.core.ui.callbacks.OnMessageReceived;
 
 import java.util.ArrayList;
@@ -114,6 +118,37 @@ public class ComponentUtility {
         String recipient = message.getRecipient();
         if (Objects.equals(id, recipient) || (recipient == null && !id.equals(sender))) {
             view.notifyCallbacks(OnMessageReceived.class, message);
+        }
+    }
+
+    /**
+     * Notifies key listeners with the specified key.
+     *
+     * @param view       a not null {@link View}
+     * @param key        the {@link Key} to be notified
+     * @param consumeKey true to consume to given key
+     * @throws NullPointerException if {@code view == null || key == null}
+     */
+
+    public static void notifyKeyListeners(View view, Key key, boolean consumeKey) {
+        Objects.requireNonNull(view);
+        Objects.requireNonNull(key);
+
+        if (!key.isConsumed() && view.isVisible() && view.isOnFocus()) {
+            if (consumeKey) {
+                key.consume();
+            }
+            switch (key.getAction()) {
+                case PRESSED:
+                    view.notifyCallbacks(OnKeyPressed.class, key);
+                    break;
+                case TYPED:
+                    view.notifyCallbacks(OnKeyTyped.class, key);
+                    break;
+                case RELEASED:
+                    view.notifyCallbacks(OnKeyReleased.class, key);
+                    break;
+            }
         }
     }
 
