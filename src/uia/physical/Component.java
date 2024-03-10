@@ -44,7 +44,7 @@ public final class Component implements View {
     private boolean over = false;
     private boolean focus = false;
     private boolean visible = true;
-    private boolean consumePointer = true;
+    private boolean consumeScreenTouch = true;
     private boolean consumeKey = true;
 
     public Component(String id, float x, float y, float width, float height) {
@@ -197,7 +197,7 @@ public final class Component implements View {
     public void setConsumer(Consumer consumer, boolean enableConsumer) {
         switch (consumer) {
             case SCREEN_TOUCH:
-                consumePointer = enableConsumer;
+                consumeScreenTouch = enableConsumer;
                 break;
             case KEY:
                 consumeKey = enableConsumer;
@@ -261,7 +261,7 @@ public final class Component implements View {
         } else if (message instanceof EventTouchScreenMessage) {
             List<ScreenTouch> screenTouches = message.getPayload();
             List<ScreenTouch> localTouches = ComponentUtility.getTouchesInsideViewArea(
-                    this, screenTouches, consumePointer
+                    this, screenTouches, consumeScreenTouch
             );
             notifyScreenTouchListeners(localTouches, screenTouches);
         } else if (message instanceof EventKeyMessage) {
