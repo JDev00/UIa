@@ -66,7 +66,7 @@ public final class ComponentHiddenRoot implements View {
     }
 
     @Override
-    public void dispatchMessage(Message message) {
+    public void readMessage(Message message) {
         throw new UnsupportedOperationException(unsupported_error);
     }
 

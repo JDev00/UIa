@@ -67,7 +67,7 @@ public class RendererEngineProcessing extends PApplet {
     private void dispatch(KeyEvent event, Key.Action action) {
         if (currentView != null) {
             Key key = new Key(action, event.getModifiers(), event.getKey(), event.getKeyCode());
-            currentView.dispatchMessage(Messages.newKeyEventMessage(key, null));
+            currentView.readMessage(Messages.newKeyEventMessage(key, null));
         }
     }
 
@@ -92,7 +92,7 @@ public class RendererEngineProcessing extends PApplet {
         screenTouches.clear();
         screenTouches.add(new ScreenTouch(action, button, event.getX(), event.getY(), event.getCount()));
         if (currentView != null) {
-            currentView.dispatchMessage(Messages.newScreenEventMessage(screenTouches, null));
+            currentView.readMessage(Messages.newScreenEventMessage(screenTouches, null));
         }
     }
 

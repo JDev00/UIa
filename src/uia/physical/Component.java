@@ -249,7 +249,7 @@ public final class Component implements View {
     }
 
     @Override
-    public void dispatchMessage(Message message) {
+    public void readMessage(Message message) {
         if (message instanceof EventTouchScreenMessage.Lock) {
             if (id.equals(message.getRecipient())) {
                 List<ScreenTouch> screenTouches = message.getPayload();

@@ -61,22 +61,21 @@ public interface View extends Callable, Drawable, Collider {
 
     /**
      * Sends a message to another View.
-     * <br>
-     * If a message is sent to a group, then it will be also delivered to all its children.
      *
      * @param message the message to be sent
+     * @throws NullPointerException if {@code message == null}
      */
 
     void sendMessage(Message message);
 
     /**
-     * Dispatches a Message to this View
+     * Reads the specified message.
      *
-     * @param message a not null {@link Message}
-     * @throws NullPointerException if {@code == null}
+     * @param message a message to read
+     * @throws NullPointerException if {@code message == null}
      */
 
-    void dispatchMessage(Message message);
+    void readMessage(Message message);
 
     /**
      * Updates this View state

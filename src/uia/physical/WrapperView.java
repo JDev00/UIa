@@ -8,7 +8,7 @@ import uia.core.paint.Paint;
 import uia.core.ui.View;
 
 /**
- * WrapperView has the responsibility to wrap a specified View implementation
+ * WrapperView wraps a specified View implementation
  */
 
 public abstract class WrapperView implements View {
@@ -108,8 +108,8 @@ public abstract class WrapperView implements View {
     }
 
     @Override
-    public void dispatchMessage(Message message) {
-        view.dispatchMessage(message);
+    public void readMessage(Message message) {
+        view.readMessage(message);
     }
 
     @Override

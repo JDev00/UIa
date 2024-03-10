@@ -51,7 +51,7 @@ public class MessagingSystem {
             } else if (lockedScreenTouchRecipient != null && message instanceof EventTouchScreenMessage) {
                 message = new EventTouchScreenMessage.Lock(message.getPayload(), lockedScreenTouchRecipient);
             }
-            view.dispatchMessage(message);
+            view.readMessage(message);
         }
     }
 }
