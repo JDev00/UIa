@@ -20,7 +20,6 @@ import uia.core.ui.callbacks.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -218,43 +217,6 @@ public final class Component implements View {
         MessageStore.getInstance().add(message);
     }
 
-    private List<ScreenTouch> extractScreenTouches(List<ScreenTouch> screenTouches) {
-        List<ScreenTouch> out = new ArrayList<>(2);
-        if (visible) {
-            float[] bounds = shape.getBounds();
-            int[] offset = {-(int) (bounds[0]), -(int) (bounds[1])};
-            screenTouches.forEach(p -> {
-                if (!p.isConsumed()
-                        && p.getAction() != ScreenTouch.Action.EXITED
-                        && contains(p.getX(), p.getY())) {
-                    ScreenTouch screenTouch = p.copy();
-                    screenTouch.consume();
-                    screenTouch.translate(offset[0], offset[1]);
-                    out.add(screenTouch);
-                    // consume pointer when necessary
-                    if (consumePointer) p.consume();
-                }
-            });
-        }
-        return out;
-    }
-
-    private List<ScreenTouch> extractLockedScreenTouches(List<ScreenTouch> screenTouches) {
-        List<ScreenTouch> out = new ArrayList<>(2);
-        if (visible) {
-            float[] bounds = shape.getBounds();
-            int[] offset = {-(int) (bounds[0]), -(int) (bounds[1])};
-            screenTouches.forEach(p -> {
-                p.consume();
-                ScreenTouch screenTouch = p.copy();
-                screenTouch.consume();
-                screenTouch.translate(offset[0], offset[1]);
-                out.add(screenTouch);
-            });
-        }
-        return out;
-    }
-
     /**
      * Helper function. Update screen touch callbacks according to the specified screen touches.
      *
@@ -321,12 +283,16 @@ public final class Component implements View {
         if (message instanceof EventTouchScreenMessage.Lock) {
             if (id.equals(message.getRecipient())) {
                 List<ScreenTouch> screenTouches = message.getPayload();
-                List<ScreenTouch> localTouches = extractLockedScreenTouches(screenTouches);
+                List<ScreenTouch> localTouches = ComponentUtility.copyAndConsumeTouches(
+                        this, screenTouches
+                );
                 updateScreenTouchCallbacks(localTouches, screenTouches);
             }
         } else if (message instanceof EventTouchScreenMessage) {
             List<ScreenTouch> screenTouches = message.getPayload();
-            List<ScreenTouch> localTouches = extractScreenTouches(screenTouches);
+            List<ScreenTouch> localTouches = ComponentUtility.getTouchesInsideViewArea(
+                    this, screenTouches, consumePointer
+            );
             updateScreenTouchCallbacks(localTouches, screenTouches);
         } else if (message instanceof EventKeyMessage) {
             updateKeyCallbacks(message.getPayload());

@@ -1,16 +1,91 @@
 package uia.physical.utility;
 
+import uia.core.ScreenTouch;
 import uia.core.basement.Message;
 import uia.core.shape.Shape;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnMessageReceived;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * Collection of utilities for View implementations.
  */
 public class ComponentUtility {
+
+    /**
+     * Returns the screen touches that are within the specified view area.
+     *
+     * @param view           a not null {@link View}
+     * @param screenTouches  the screen touches to control
+     * @param consumeTouches true to consume touches that are within the given view
+     * @return a new list filled with touches (copied) that are within the view area, adjusted to the boundaries of the view
+     * @throws NullPointerException if {@code view == null || screenTouches == null}
+     */
+
+    public static List<ScreenTouch> getTouchesInsideViewArea(View view, List<ScreenTouch> screenTouches, boolean consumeTouches) {
+        Objects.requireNonNull(view);
+        Objects.requireNonNull(screenTouches);
+
+        List<ScreenTouch> result = new ArrayList<>(2);
+        if (view.isVisible()) {
+            float[] viewBounds = view.getBounds();
+            int[] touchOffset = {
+                    -((int) viewBounds[0]),
+                    -((int) viewBounds[1])
+            };
+            // returns touches that lie on the given view
+            screenTouches.forEach(touch -> {
+                if (!touch.isConsumed()
+                        && touch.getAction() != ScreenTouch.Action.EXITED
+                        && view.contains(touch.getX(), touch.getY())) {
+                    ScreenTouch screenTouch = touch.copy();
+                    screenTouch.consume();
+                    screenTouch.translate(touchOffset[0], touchOffset[1]);
+                    result.add(screenTouch);
+
+                    // consumes the original screenTouch if necessary
+                    if (consumeTouches) {
+                        touch.consume();
+                    }
+                }
+            });
+        }
+        return result;
+    }
+
+    /**
+     * Copies and consumes the given screen touches.
+     *
+     * @param view          a not null {@link View}
+     * @param screenTouches the screen touches to copy and consume
+     * @return a new list filled with the copied (and consumed) touches, adjusted to the boundaries of the view
+     * @throws NullPointerException if {@code view == null || screenTouches == null}
+     */
+
+    public static List<ScreenTouch> copyAndConsumeTouches(View view, List<ScreenTouch> screenTouches) {
+        Objects.requireNonNull(view);
+        Objects.requireNonNull(screenTouches);
+
+        List<ScreenTouch> result = new ArrayList<>(2);
+        if (view.isVisible()) {
+            float[] viewBounds = view.getBounds();
+            int[] touchOffset = {
+                    -((int) viewBounds[0]),
+                    -((int) viewBounds[1])
+            };
+            screenTouches.forEach(touch -> {
+                touch.consume();
+                ScreenTouch screenTouch = touch.copy();
+                screenTouch.consume();
+                screenTouch.translate(touchOffset[0], touchOffset[1]);
+                result.add(screenTouch);
+            });
+        }
+        return result;
+    }
 
     /**
      * Reads the message and invoke the appropriate callback.
