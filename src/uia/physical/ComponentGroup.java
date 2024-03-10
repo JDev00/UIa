@@ -10,10 +10,7 @@ import uia.physical.message.EventKeyMessage;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.message.Messages;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Implementation of {@link ViewGroup}.
@@ -50,10 +47,15 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     }
 
     @Override
-    public boolean insert(int i, View view) {
+    public boolean insert(int index, View view) {
+        Objects.requireNonNull(view);
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException("the given index is out of bounds for the group with ID = " + getID());
+        }
+        
         boolean result = false;
         if (!views.contains(view)) {
-            views.add(i, view);
+            views.add(index, view);
             result = true;
         }
         return result;
@@ -76,7 +78,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     private void dispatchMessageToViews(Message message) {
         for (int i = views.size() - 1; i >= 0; i--) {
-            views.get(i).dispatchMessage(message);
+            views.get(i).readMessage(message);
         }
     }
 
@@ -87,7 +89,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     private void dispatchKeyMessage(Message message) {
         if (isVisible()) {
             for (int i = views.size() - 1; i >= 0; i--) {
-                views.get(i).dispatchMessage(message);
+                views.get(i).readMessage(message);
             }
         }
     }
@@ -101,44 +103,58 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     private void dispatchScreenEventMessage(Message message) {
         screenTouches.clear();
 
+        List<ScreenTouch> tempScreenTouches = message.getPayload();
         if (isVisible()) {
-            List<ScreenTouch> tempScreenTouches = message.getPayload();
             tempScreenTouches.forEach(screenTouch -> {
-                if (!clip || ComponentGroup.this.contains(screenTouch.getX(), screenTouch.getY())) {
+                if (!clip || contains(screenTouch.getX(), screenTouch.getY())) {
                     screenTouches.add(screenTouch);
                 }
             });
         }
 
+        // bugfix
+        if (screenTouches.isEmpty()) {
+            boolean pressed = false;
+            for (ScreenTouch screenTouch : tempScreenTouches) {
+                if (screenTouch.getAction() == ScreenTouch.Action.PRESSED) {
+                    pressed = true;
+                    break;
+                }
+            }
+            if (pressed) {
+                screenTouches.add(new ScreenTouch(ScreenTouch.Action.PRESSED, null, -1_000_000, 0, 0));
+            }
+        }
+
         Message outMessage = Messages.newScreenEventMessage(screenTouches, message.getRecipient());
         for (int i = views.size() - 1; i >= 0; i--) {
-            views.get(i).dispatchMessage(outMessage);
+            views.get(i).readMessage(outMessage);
         }
     }
 
     @Override
-    public void dispatchMessage(Message message) {
+    public void readMessage(Message message) {
         if (message instanceof EventTouchScreenMessage) {
             dispatchScreenEventMessage(message);
-            super.dispatchMessage(message);
+            super.readMessage(message);
         } else if (message instanceof EventKeyMessage) {
             dispatchKeyMessage(message);
-            super.dispatchMessage(message);
+            super.readMessage(message);
         } else {
-            super.dispatchMessage(message);
+            super.readMessage(message);
             dispatchMessageToViews(message);
         }
     }
 
-    /**
+    /*
      * Helper function. Update children focus.
-     */
+     *
 
     private void updateGroupFocus(View parent) {
         int i = 0, size = views.size();
         while (i < size && !views.get(i).isOnFocus()) i++;
         if (i < size) requestFocus(parent.isOnFocus());
-    }
+    }*/
 
     /**
      * Helper function. Update group boundaries.
@@ -181,7 +197,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     @Override
     public void update(View parent) {
         super.update(parent);
-        updateGroupFocus(parent);
+        //updateGroupFocus(parent);
         updateGroupBounds();
         updateClipShape();
     }
@@ -204,26 +220,8 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     }
 
     @Override
-    public int size() {
-        return views.size();
-    }
-
-    @Override
-    public View get(int i) {
-        return views.get(i);
-    }
-
-    @Override
-    public View get(String id) {
-        for (View i : views) {
-            if (i.getID().equals(id)) return i;
-        }
-        return null;
-    }
-
-    @Override
-    public int indexOf(View view) {
-        return views.indexOf(view);
+    public Iterator<View> iterator() {
+        return views.iterator();
     }
 
     private final float[] copyBounds = new float[5];
@@ -235,7 +233,31 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     }
 
     @Override
-    public Iterator<View> iterator() {
-        return views.iterator();
+    public int size() {
+        return views.size();
+    }
+
+    @Override
+    public int indexOf(View view) {
+        return views.indexOf(view);
+    }
+
+    @Override
+    public View get(int index) {
+        View result = null;
+        if (index >= 0 && index < size()) {
+            result = views.get(index);
+        }
+        return result;
+    }
+
+    @Override
+    public View get(String viewID) {
+        for (View view : views) {
+            if (view.getID().equals(viewID)) {
+                return view;
+            }
+        }
+        return null;
     }
 }
