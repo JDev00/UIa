@@ -276,7 +276,7 @@ public final class Component implements View {
                     this, message.getPayload(), consumeKey
             );
         } else {
-            ComponentUtility.notifyMessageCallback(this, message);
+            ComponentUtility.notifyMessageListeners(this, message);
         }
     }
 

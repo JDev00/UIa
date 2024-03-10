@@ -92,9 +92,9 @@ public class ComponentUtility {
     }
 
     /**
-     * Reads the message and invoke the appropriate callback.
+     * Notifies the message listeners with the specified message.
      * <br>
-     * The callback notification is invoked if:
+     * Listeners are notified if:
      * <ul>
      *     <li>
      *         the message recipient is equal to the view ID;
@@ -105,11 +105,11 @@ public class ComponentUtility {
      * </ul>
      *
      * @param view    a not null {@link View}
-     * @param message a not null {@link Message} to notify
+     * @param message a {@link Message} to be notified
      * @throws NullPointerException if {@code view == null || message == null}
      */
 
-    public static void notifyMessageCallback(View view, Message message) {
+    public static void notifyMessageListeners(View view, Message message) {
         Objects.requireNonNull(view);
         Objects.requireNonNull(message);
 

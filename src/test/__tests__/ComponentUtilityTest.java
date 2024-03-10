@@ -16,7 +16,7 @@ import uia.physical.utility.ComponentUtility;
 public class ComponentUtilityTest {
 
     @Test
-    public void messageShouldBeNotifiedToAView(TestAssertion assertion) {
+    public void messageShouldBeNotified(TestAssertion assertion) {
         assertion.assertions(1);
 
         // setup
@@ -27,11 +27,11 @@ public class ComponentUtilityTest {
             assertion.expect(mex).toBe(message);
         });
 
-        ComponentUtility.notifyMessageCallback(view, message);
+        ComponentUtility.notifyMessageListeners(view, message);
     }
 
     @Test
-    public void messageWithNullRecipientShouldBeNotifiedToAView(TestAssertion assertion) {
+    public void messageWithNullRecipientShouldBeNotified(TestAssertion assertion) {
         assertion.assertions(1);
 
         // setup
@@ -42,7 +42,7 @@ public class ComponentUtilityTest {
             assertion.expect(mex).toBe(message);
         });
 
-        ComponentUtility.notifyMessageCallback(view, message);
+        ComponentUtility.notifyMessageListeners(view, message);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class ComponentUtilityTest {
         assertion.assertions(1);
         assertion.expect(() -> {
             View view = new Component("", 0, 0, 0, 0);
-            ComponentUtility.notifyMessageCallback(view, null);
+            ComponentUtility.notifyMessageListeners(view, null);
         }).toThrowException(NullPointerException.class);
     }
 
@@ -59,7 +59,7 @@ public class ComponentUtilityTest {
         assertion.assertions(1);
         assertion.expect(() -> {
             Message message = Messages.newMessage("", "");
-            ComponentUtility.notifyMessageCallback(null, message);
+            ComponentUtility.notifyMessageListeners(null, message);
         }).toThrowException(NullPointerException.class);
     }
 
