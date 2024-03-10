@@ -3,98 +3,108 @@ package uia.core.ui;
 import java.util.Objects;
 
 /**
- * ViewGroup ADT.
+ * ViewGroup ADT - ViewGroup is designed to manage a set of Views.
  * <br>
- * ViewGroup is designed to manage a set of Views.
+ * <br>
+ * <b>Responsibilities</b>
+ * <br>
+ * A ViewGroup is responsible for managing its children, including their visibility, and sending
+ * them the right messages.
+ * <br>
+ * <br>
+ * <b>Children management</b>
+ * <br>
+ * ViewGroup isolates its children from the external graphical environment: this means that each child
+ * is contained by its group and receives the information provided by it.
+ * However, it is still possible to let a child communicate with the external environment by sending a message,
+ * either from an external view or manually.
  */
 
 public interface ViewGroup extends View, Iterable<View> {
 
     /**
-     * Clip functionality ensures that every graphical component, that lays outside the View boundaries, isn't drawn.
-     * <br>
-     * <b>Some notes:</b>
-     * <ul>
-     *     <li>clip function could be expensive in term of CPU/GPU cycles, so use it only when really needed;</li>
-     *     <li>for every graphical entity, that isn't totally contained inside the View boundaries, will be
-     *     displayed only the piece that lays inside the View boundaries.</li>
-     * </ul>
+     * The clip feature ensures that any graphical component outside the group boundaries won't be drawn.
+     * This means that for any graphical entity, that isn't completely contained within the group boundaries,
+     * only the part that is inside the group boundaries will be displayed.
      *
-     * @param clipRegion true to enable clip functionality
+     * @param clipRegion true to enable clip feature
      */
 
     void setClip(boolean clipRegion);
 
     /**
-     * @return true if this View has the clip functionality enabled
+     * @return true if this group has the clip feature enabled
      */
 
     boolean hasClip();
 
     /**
-     * Inserts a new View to this group
+     * Inserts a new View to this group.
+     * <br>
+     * <i>Duplicate views are not allowed.</i>
      *
-     * @param i    the position where to insert the View
-     * @param view a new not null {@link View}
+     * @param index the position where the view should be inserted
+     * @param view  the view to insert
      * @return true if the specified View has been added to this group
-     * @throws IndexOutOfBoundsException if {@code i < 0 or i >= size()}
      * @throws NullPointerException      if {@code view == null}
+     * @throws IndexOutOfBoundsException if {@code i < 0 or i >= size()}
+     * @throws IllegalArgumentException  if this group already contains the given view
      */
 
-    boolean insert(int i, View view);
+    boolean insert(int index, View view);
 
     /**
-     * Removes the specified View from this group
+     * Removes the specified View from this group.
      *
-     * @param view a not null {@link View} to remove
+     * @param view the view to remove
      * @return true if the specified View has been removed from this group
      */
 
     boolean remove(View view);
 
     /**
-     * Removes all Views from this group
+     * Removes all Views from this group.
      */
 
     void removeAll();
 
     /**
-     * @return the number of Views inside this group
+     * @return the number of views managed by this group
      */
 
     int size();
 
     /**
-     * @param i the View position inside this group
-     * @return the specified View
+     * @param index the view position (index) within this group
+     * @return the specified view
      * @throws IndexOutOfBoundsException if {@code i < 0 or i >= size()}
      */
 
-    View get(int i);
+    View get(int index);
 
     /**
-     * @param id the View ID to look for
-     * @return the specified View; a null value is returned if no View is found
+     * @param viewID the View ID to look for
+     * @return the specified view or null if no view is found
      */
 
-    View get(String id);
+    View get(String viewID);
 
     /**
-     * Returns the position of the specified View inside this group
+     * Returns the position (index) of the specified view within this group.
      *
-     * @param view a {@link View}
-     * @return the view position inside this group otherwise -1
+     * @param view a view to look for
+     * @return the view position (index) within this group or -1 if no view is found
      */
 
     int indexOf(View view);
 
     /**
-     * Returns the boundaries occupied by the group Views.
+     * Returns the boundaries occupied by the views in this group.
      *
      * @return a new array made up of four elements:
      * <ul>
-     *     <li>left top corner along x-axis;</li>
-     *     <li>left top corner along y-axis;</li>
+     *     <li>the top left-hand corner on the x-axis;</li>
+     *     <li>the top left-hand corner on the y-axis;</li>
      *     <li>width;</li>
      *     <li>height</li>
      * </ul>
@@ -103,11 +113,11 @@ public interface ViewGroup extends View, Iterable<View> {
     float[] boundsContent();
 
     /**
-     * Inserts the specified view as last element in the specified group
+     * Inserts the specified view as last element in the specified group.
      *
      * @param group a not null {@link ViewGroup}
      * @param view  a not null {@link View}
-     * @throws NullPointerException if {@code group == null}
+     * @throws NullPointerException if {@code group == null || view == null}
      */
 
     static void insert(ViewGroup group, View view) {
@@ -116,45 +126,46 @@ public interface ViewGroup extends View, Iterable<View> {
     }
 
     /**
-     * Inserts the specified views inside the specified group
+     * Inserts the specified views inside the specified group.
      *
      * @param group a not null {@link ViewGroup}
      * @param views a not null Array of {@link View}s
-     * @throws NullPointerException if {@code group == null or views == null or views[i] == null}
+     * @throws NullPointerException if {@code group == null || views == null || views[i] == null}
      */
 
     static void insert(ViewGroup group, View... views) {
         Objects.requireNonNull(group);
         Objects.requireNonNull(views);
+
         for (View view : views) {
             group.insert(group.size(), view);
         }
     }
 
     /**
-     * Removes a View from the specified group
+     * Removes a View from the specified group.
      *
      * @param group a not null {@link ViewGroup}
-     * @param i     the position, inside the specified group, of the View to remove
+     * @param index the position (index), inside the specified group, of the View to remove
      * @throws NullPointerException      if {@code group == null}
-     * @throws IndexOutOfBoundsException if {@code i < 0 or i >= group.size()}
+     * @throws IndexOutOfBoundsException if {@code index < 0 or index >= group.size()}
      */
 
-    static void remove(ViewGroup group, int i) {
+    static void remove(ViewGroup group, int index) {
         Objects.requireNonNull(group);
-        group.remove(group.get(i));
+        group.remove(group.get(index));
     }
 
     /**
-     * Removes the first found View from the specified group
+     * Removes the first found View from the specified group.
      *
-     * @param group a not null {@link ViewGroup}
-     * @param id    the id of the View to remove
+     * @param group  a not null {@link ViewGroup}
+     * @param viewID the ID of the View to remove
      * @throws NullPointerException if {@code group == null}
      */
 
-    static void remove(ViewGroup group, String id) {
+    static void remove(ViewGroup group, String viewID) {
         Objects.requireNonNull(group);
-        group.remove(group.get(id));
+        group.remove(group.get(viewID));
     }
 }
