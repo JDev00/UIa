@@ -1,10 +1,9 @@
 package uia.core;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Mouse pointer or Touch (on mobile context) representation
+ * Mouse pointer or Touch (on mobile context) representation.
  */
 
 public class ScreenTouch {
@@ -14,11 +13,15 @@ public class ScreenTouch {
 
     private final Action action;
     private final Button button;
-    private final int[] desc;
+    private final int x;
+    private final int y;
+    private final int wheel;
     private boolean consumed = false;
 
     public ScreenTouch(Action action, Button button, int x, int y, int wheel) {
-        desc = new int[]{x, y, wheel};
+        this.x = x;
+        this.y = y;
+        this.wheel = wheel;
 
         this.action = action;
         this.button = button;
@@ -32,49 +35,39 @@ public class ScreenTouch {
         return "ScreenTouch{" +
                 "action=" + action +
                 ", button=" + button +
-                ", data=" + Arrays.toString(desc) +
+                ", x=" + x +
+                ", y=" + y +
+                ", wheel=" + wheel +
                 ", consumed=" + consumed +
                 '}';
     }
 
     /**
-     * Translates this ScreenTouch
-     *
-     * @param x the translation on x-axis
-     * @param y the translation on y-axis
-     */
-
-    public void translate(int x, int y) {
-        desc[0] += x;
-        desc[1] += y;
-    }
-
-    /**
-     * @return the position on x-axis
+     * @return the position on the x-axis
      */
 
     public int getX() {
-        return desc[0];
+        return x;
     }
 
     /**
-     * @return the position on y-axis
+     * @return the position on the y-axis
      */
 
     public int getY() {
-        return desc[1];
+        return y;
     }
 
     /**
-     * @return the scrolling value
+     * @return mouse wheel rotation
      */
 
     public int getWheelRotation() {
-        return desc[2];
+        return wheel;
     }
 
     /**
-     * Consumes this ScreenTouch. A consumed ScreenTouch can't be used again.
+     * Consumes this ScreenTouch and makes it unusable.
      */
 
     public void consume() {
@@ -106,13 +99,21 @@ public class ScreenTouch {
     }
 
     /**
-     * Copy this ScreenTouch
+     * Copies the specified ScreenTouch.
      *
-     * @return a new ScreenTouch populated with the same attributes of the current one
+     * @param screenTouch a screenTouch to be copied
+     * @param translateX  the translation on the x-axis of the copied screenTouch
+     * @param translateY  the translation on the y-axis of the copied screenTouch
+     * @return a new ScreenTouch populated with the same attributes of the given one
      */
 
-    public ScreenTouch copy() {
-        return new ScreenTouch(action, button, desc[0], desc[1], desc[2]);
+    public static ScreenTouch copy(ScreenTouch screenTouch, int translateX, int translateY) {
+        return new ScreenTouch(
+                screenTouch.getAction(),
+                screenTouch.getButton(),
+                screenTouch.getX() + translateX,
+                screenTouch.getY() + translateY,
+                screenTouch.getWheelRotation());
     }
 
     /**
