@@ -260,7 +260,7 @@ public final class Component implements View {
             }
         } else if (message instanceof EventTouchScreenMessage) {
             List<ScreenTouch> screenTouches = message.getPayload();
-            List<ScreenTouch> localTouches = ComponentUtility.getTouchesInsideViewArea(
+            List<ScreenTouch> localTouches = ComponentUtility.getAndConsumeTouchesOnViewArea(
                     this, screenTouches, consumeScreenTouch
             );
             notifyScreenTouchListeners(localTouches, screenTouches);
