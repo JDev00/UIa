@@ -29,7 +29,7 @@ public class ComponentUtility {
      * @throws NullPointerException if {@code view == null || screenTouches == null}
      */
 
-    public static List<ScreenTouch> getTouchesInsideViewArea(View view, List<ScreenTouch> screenTouches, boolean consumeTouches) {
+    public static List<ScreenTouch> getAndConsumeTouchesOnViewArea(View view, List<ScreenTouch> screenTouches, boolean consumeTouches) {
         Objects.requireNonNull(view);
         Objects.requireNonNull(screenTouches);
 
@@ -45,10 +45,9 @@ public class ComponentUtility {
                 if (!touch.isConsumed()
                         && touch.getAction() != ScreenTouch.Action.EXITED
                         && view.contains(touch.getX(), touch.getY())) {
-                    ScreenTouch screenTouch = touch.copy();
-                    screenTouch.consume();
-                    screenTouch.translate(touchOffset[0], touchOffset[1]);
-                    result.add(screenTouch);
+                    ScreenTouch copiedScreenTouch = ScreenTouch.copy(touch, touchOffset[0], touchOffset[1]);
+                    copiedScreenTouch.consume();
+                    result.add(copiedScreenTouch);
 
                     // consumes the original screenTouch if necessary
                     if (consumeTouches) {
@@ -82,10 +81,9 @@ public class ComponentUtility {
             };
             screenTouches.forEach(touch -> {
                 touch.consume();
-                ScreenTouch screenTouch = touch.copy();
-                screenTouch.consume();
-                screenTouch.translate(touchOffset[0], touchOffset[1]);
-                result.add(screenTouch);
+                ScreenTouch copiedScreenTouch = ScreenTouch.copy(touch, touchOffset[0], touchOffset[1]);
+                copiedScreenTouch.consume();
+                result.add(copiedScreenTouch);
             });
         }
         return result;
