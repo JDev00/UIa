@@ -20,7 +20,7 @@ import java.util.Objects;
 public class ComponentUtility {
 
     /**
-     * Returns the screen touches that are within the specified view area.
+     * Returns the screen touches (not consumed) that are within the specified view area.
      *
      * @param view           a not null {@link View}
      * @param screenTouches  the screen touches to control

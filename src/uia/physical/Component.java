@@ -222,7 +222,9 @@ public final class Component implements View {
         if (!insideTouches.isEmpty()) {
             // request focus
             for (int i = 0; i < insideTouches.size() && !focus; i++) {
-                if (insideTouches.get(i).getAction() == ScreenTouch.Action.PRESSED) requestFocus(true);
+                if (insideTouches.get(i).getAction() == ScreenTouch.Action.PRESSED) {
+                    requestFocus(true);
+                }
             }
             // invoke mouse enter or mouse hover callback
             if (!over) {
@@ -232,18 +234,24 @@ public final class Component implements View {
                 notifyCallbacks(OnMouseHover.class, insideTouches);
             }
             // invoke click callback
-            insideTouches.forEach(p -> {
-                if (p.getAction() == ScreenTouch.Action.CLICKED) notifyCallbacks(OnClick.class, insideTouches);
+            insideTouches.forEach(touch -> {
+                if (touch.getAction() == ScreenTouch.Action.CLICKED) {
+                    notifyCallbacks(OnClick.class, insideTouches);
+                }
             });
         } else {
             // remove focus
             for (int i = 0; i < globalTouches.size() && focus; i++) {
-                if (globalTouches.get(i).getAction() == ScreenTouch.Action.PRESSED) requestFocus(false);
+                if (globalTouches.get(i).getAction() == ScreenTouch.Action.PRESSED) {
+                    requestFocus(false);
+                }
             }
             // invoke mouse exit callback
             if (over) {
                 over = false;
-                if (visible) notifyCallbacks(OnMouseExit.class, new ArrayList<ScreenTouch>(0));
+                if (visible) {
+                    notifyCallbacks(OnMouseExit.class, new ArrayList<ScreenTouch>(0));
+                }
             }
         }
     }
