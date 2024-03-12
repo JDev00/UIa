@@ -26,6 +26,7 @@ public interface View extends Callable, Drawable, Collider {
      * A View is allowed to interact directly with user only when it is on focus.
      *
      * @param request true to request to this View to put on focus; false to remove focus
+     * @implSpec focus can't be requested if a View is not visible
      */
 
     void requestFocus(boolean request);
@@ -38,8 +39,11 @@ public interface View extends Callable, Drawable, Collider {
 
     /**
      * Makes this View visible or not visible.
+     * <br>
+     * A View set to invisible also loses its focus.
      *
      * @param visible true to set this View visible
+     * @implSpec when set to invisible (visible = false), a View must lose its focus.
      */
 
     void setVisible(boolean visible);
