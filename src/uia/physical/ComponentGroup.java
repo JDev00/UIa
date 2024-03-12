@@ -106,14 +106,18 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         List<ScreenTouch> tempScreenTouches = message.getPayload();
         if (isVisible()) {
             tempScreenTouches.forEach(screenTouch -> {
-                if (!clip || contains(screenTouch.getX(), screenTouch.getY())) {
-                    screenTouches.add(screenTouch);
+                ScreenTouch currentTouch = screenTouch;
+
+                if (clip && !contains(screenTouch.getX(), screenTouch.getY())) {
+                    currentTouch = ScreenTouch.copy(screenTouch, 0, 0);
+                    currentTouch.consume();
                 }
+                screenTouches.add(currentTouch);
             });
         }
 
         // bugfix
-        if (screenTouches.isEmpty()) {
+        /*if (screenTouches.isEmpty()) {
             boolean pressed = false;
             for (ScreenTouch screenTouch : tempScreenTouches) {
                 if (screenTouch.getAction() == ScreenTouch.Action.PRESSED) {
@@ -124,7 +128,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
             if (pressed) {
                 screenTouches.add(new ScreenTouch(ScreenTouch.Action.PRESSED, null, -1_000_000, 0, 0));
             }
-        }
+        }*/
 
         Message outMessage = Messages.newScreenEventMessage(screenTouches, message.getRecipient());
         for (int i = views.size() - 1; i >= 0; i--) {
