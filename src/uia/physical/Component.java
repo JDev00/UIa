@@ -336,12 +336,6 @@ public final class Component implements View {
         this.parent = parent;
 
         if (visible) {
-
-            /*if (!parent.isOnFocus() && focus) {
-                System.out.println(getID() + ", here!");
-                requestFocus(false);
-            }*/
-
             updateExpansionAnimation();
             updateShape(parent);
 
