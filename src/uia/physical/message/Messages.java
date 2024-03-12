@@ -4,19 +4,20 @@ import uia.core.Key;
 import uia.core.ScreenTouch;
 import uia.core.basement.Message;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * Message factory
+ * Message factory.
  */
 
 public class Messages {
 
     /**
-     * Create a new screen touch event message
+     * Creates a new screen touch event message.
      *
-     * @param screenTouches a not null List of {@link ScreenTouch}s
+     * @param screenTouches the {@link ScreenTouch}s to be provided
      * @param recipient     the message recipient; it could be null
      * @throws NullPointerException if {@code screenTouches == null}
      */
@@ -27,7 +28,21 @@ public class Messages {
     }
 
     /**
-     * Create a new key event message
+     * Creates a new screen touch event message.
+     *
+     * @param screenTouch the {@link ScreenTouch} to be provided
+     * @param recipient   the message recipient; it could be null
+     * @throws NullPointerException if {@code screenTouch == null}
+     */
+
+    public static Message newScreenEventMessage(ScreenTouch screenTouch, String recipient) {
+        Objects.requireNonNull(screenTouch);
+        List<ScreenTouch> screenTouches = Collections.singletonList(screenTouch);
+        return newScreenEventMessage(screenTouches, recipient);
+    }
+
+    /**
+     * Creates a new key event message.
      *
      * @param key       a not null {@link Key}
      * @param recipient the message recipient; it could be null
@@ -40,20 +55,7 @@ public class Messages {
     }
 
     /**
-     * Create a new generic message
-     *
-     * @param message   a not null Object to delivery
-     * @param recipient the message recipient; it could be null
-     * @throws NullPointerException if {@code message == null}
-     */
-
-    public static Message newMessage(Object message, String recipient) {
-        Objects.requireNonNull(message);
-        return new GenericMessage(message, null, recipient);
-    }
-
-    /**
-     * Create a new generic message
+     * Creates a new generic message.
      *
      * @param message   a not null Object to delivery
      * @param source    the message source; it could be null
@@ -64,5 +66,18 @@ public class Messages {
     public static Message newMessage(Object message, String source, String recipient) {
         Objects.requireNonNull(message);
         return new GenericMessage(message, source, recipient);
+    }
+
+    /**
+     * Creates a new generic message.
+     *
+     * @param message   a not null Object to delivery
+     * @param recipient the message recipient; it could be null
+     * @throws NullPointerException if {@code message == null}
+     */
+
+    public static Message newMessage(Object message, String recipient) {
+        Objects.requireNonNull(message);
+        return newMessage(message, null, recipient);
     }
 }

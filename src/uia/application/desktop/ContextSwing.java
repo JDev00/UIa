@@ -6,7 +6,9 @@ import uia.core.ui.context.Window;
 import uia.physical.input.ArtificialInput;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
+import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.message.MessageStore;
+import uia.physical.message.Messages;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
@@ -43,10 +45,12 @@ public class ContextSwing implements Context {
         MessageStore messageStore = MessageStore.getInstance();
         inputEmulator = new ArtificialInput(message -> {
             int[] insets = window.getInsets();
-            try {
-                ScreenTouch screenTouch = message.<List<ScreenTouch>>getPayload().get(0);
-                screenTouch.translate(insets[0], insets[1]);
-            } catch (Exception ignored) {
+            if (message instanceof EventTouchScreenMessage) {
+                List<ScreenTouch> screenTouch = message.getPayload();
+                // copies and translates the screenTouch
+                ScreenTouch copiedScreenTouch = ScreenTouch.copy(screenTouch.get(0), insets[0], insets[1]);
+                // reallocates the message
+                message = Messages.newScreenEventMessage(copiedScreenTouch, message.getRecipient());
             }
             messageStore.add(message);
         });
