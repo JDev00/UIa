@@ -62,12 +62,12 @@ public final class Component implements View {
 
     /**
      * By default, Component creates a responsive View.
-     * It means that, when user is inside its area, Component will expand its dimension.
+     * It means that, when user is within its area, Component will expand its dimension.
      * <br>
      * With this method you can set the maximum upper expansion limits.
      *
-     * @param x the maximum (relative) value along x-axis
-     * @param y the maximum (relative) value along x-axis
+     * @param x the maximum (relative) value on the x-axis
+     * @param y the maximum (relative) value on the x-axis
      * @return this Component
      */
 
@@ -78,7 +78,7 @@ public final class Component implements View {
     }
 
     /**
-     * Set Component maximum width
+     * Sets the Component maximum width.
      *
      * @param maxWidth the component maximum width in pixels
      * @return this Component
@@ -90,7 +90,7 @@ public final class Component implements View {
     }
 
     /**
-     * Set Component maximum height
+     * Sets the Component maximum height.
      *
      * @param maxHeight the component maximum height in pixels
      * @return this Component
@@ -145,7 +145,7 @@ public final class Component implements View {
         container[2] = max(0, width);
         container[3] = max(0, height);
 
-        // TODO: approfondire
+        // TODO: is it correct?
         if (parent != null) {
             updateShape(parent);
         }
@@ -211,10 +211,10 @@ public final class Component implements View {
     }
 
     /**
-     * Helper function. Notifies screen touch callbacks with the given screen touches.
+     * Helper function. Notifies screenTouch listeners with the specified screen touches.
      *
      * @param insideTouches the screen touches within the view area
-     * @param globalTouches all the received screen touches
+     * @param globalTouches all screen touches
      */
 
     private void notifyScreenTouchListeners(List<ScreenTouch> insideTouches,
@@ -312,14 +312,13 @@ public final class Component implements View {
     }
 
     /**
-     * Update the expansion animation
+     * Updates the expansion animation.
      */
 
-    private void updateExpansionAnimation() {
-        float div = 60f * expanse[4];
-        float xq = (expanse[2] - 1f) / div;
-        float yq = (expanse[3] - 1f) / div;
-
+    private void updateAnimation() {
+        float frameFactor = 60f * expanse[4];
+        float xq = (expanse[2] - 1f) / frameFactor;
+        float yq = (expanse[3] - 1f) / frameFactor;
         if (over) {
             expanse[0] = min(expanse[2], expanse[0] + xq);
             expanse[1] = min(expanse[3], expanse[1] + yq);
@@ -336,9 +335,8 @@ public final class Component implements View {
         this.parent = parent;
 
         if (visible) {
-            updateExpansionAnimation();
+            updateAnimation();
             updateShape(parent);
-
             if (geometryBuilder != null) {
                 geometryBuilder.accept(shape.getGeometry());
             }
