@@ -14,7 +14,7 @@ import uia.physical.theme.Theme;
  * Sanity test.
  */
 
-public class focsTest {
+public class focusTest {
 
     /**
      * Creates a mocked group to test focus behaviour.
