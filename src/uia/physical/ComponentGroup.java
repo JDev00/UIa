@@ -137,16 +137,6 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     }
 
     /**
-     * Helper function. Removes focus from all children.
-     *
-
-    private void removeChildrenFocus(View parent) {
-        int i = 0, size = views.size();
-        while (i < size && !views.get(i).isOnFocus()) i++;
-        if (i < size) requestFocus(parent.isOnFocus());
-    }*/
-
-    /**
      * Helper function. Update group boundaries.
      */
 
@@ -184,10 +174,23 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         clipShape.setRotation(bounds[4]);
     }
 
+    /*
+     * Helper function. Removes focus from all children.
+     *
+
+    private void removeChildrenFocus() {
+        for (View view : this) {
+            view.requestFocus(false);
+        }
+    }*/
+
     @Override
     public void update(View parent) {
         super.update(parent);
-        //updateGroupFocus(parent);
+
+        /*if (!isVisible()) {
+            removeChildrenFocus();
+        }*/
         updateGroupBounds();
         updateClipShape();
     }
