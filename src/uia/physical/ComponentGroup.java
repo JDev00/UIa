@@ -184,6 +184,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         }
     }*/
 
+    // TODO: to remove children focus when the group is set to not visible
     @Override
     public void update(View parent) {
         super.update(parent);
