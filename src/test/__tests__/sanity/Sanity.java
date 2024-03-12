@@ -1,4 +1,4 @@
-package test.__tests__;
+package test.__tests__.sanity;
 
 import uia.application.UIButtonFilled;
 import uia.application.UIButtonList;
