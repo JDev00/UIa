@@ -73,7 +73,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     }
 
     /**
-     * Helper function. Dispatch a message to the group children
+     * Helper function. Dispatches a message to the group children.
      */
 
     private void dispatchMessageToViews(Message message) {
@@ -97,7 +97,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     private final List<ScreenTouch> screenTouches = new ArrayList<>();
 
     /**
-     * Helper function. Dispatch screen event to the group children.
+     * Helper function. Dispatches screenTouch event to the group children.
      */
 
     private void dispatchScreenEventMessage(Message message) {
@@ -115,20 +115,6 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
                 screenTouches.add(currentTouch);
             });
         }
-
-        // bugfix
-        /*if (screenTouches.isEmpty()) {
-            boolean pressed = false;
-            for (ScreenTouch screenTouch : tempScreenTouches) {
-                if (screenTouch.getAction() == ScreenTouch.Action.PRESSED) {
-                    pressed = true;
-                    break;
-                }
-            }
-            if (pressed) {
-                screenTouches.add(new ScreenTouch(ScreenTouch.Action.PRESSED, null, -1_000_000, 0, 0));
-            }
-        }*/
 
         Message outMessage = Messages.newScreenEventMessage(screenTouches, message.getRecipient());
         for (int i = views.size() - 1; i >= 0; i--) {
@@ -150,11 +136,11 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         }
     }
 
-    /*
-     * Helper function. Update children focus.
+    /**
+     * Helper function. Removes focus from all children.
      *
 
-    private void updateGroupFocus(View parent) {
+    private void removeChildrenFocus(View parent) {
         int i = 0, size = views.size();
         while (i < size && !views.get(i).isOnFocus()) i++;
         if (i < size) requestFocus(parent.isOnFocus());
