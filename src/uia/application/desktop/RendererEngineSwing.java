@@ -1,6 +1,6 @@
 package uia.application.desktop;
 
-import uia.core.ui.Graphic;
+import uia.core.ui.Graphics;
 import uia.core.ui.View;
 import uia.core.ui.context.Context;
 import uia.physical.ComponentHiddenRoot;
@@ -21,7 +21,7 @@ public class RendererEngineSwing extends JPanel {
     private final MessagingSystem messagingSystem;
     private final Timer timer;
     private Graphics2D nativeGraphics;
-    private final Graphic graphic;
+    private final Graphics graphics;
     private final List<Context.RenderingHint> hints;
     private final View rootView;
     private View view;
@@ -33,7 +33,7 @@ public class RendererEngineSwing extends JPanel {
     public RendererEngineSwing() {
         messagingSystem = new MessagingSystem();
 
-        graphic = new GraphicAWT(() -> nativeGraphics);
+        graphics = new GraphicAWT(() -> nativeGraphics);
 
         rootView = new ComponentHiddenRoot();
 
@@ -113,13 +113,17 @@ public class RendererEngineSwing extends JPanel {
      */
 
     private void updateRootView(int x, int y, boolean focus) {
+        // remove focus when rootView loses it
+        if (view != null && !focus && rootView.isOnFocus()) {
+            view.requestFocus(false);
+        }
         rootView.setPosition(0f, 0f);
         rootView.setDimension(x, y);
         rootView.requestFocus(focus);
     }
 
     /**
-     * Helper function. Update View.
+     * Helper function. Updates the managed View.
      */
 
     private void updateView() {
@@ -145,7 +149,7 @@ public class RendererEngineSwing extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics graphics) {
+    protected void paintComponent(java.awt.Graphics graphics) {
         super.paintComponent(graphics);
 
         nativeGraphics = (Graphics2D) graphics;
@@ -154,7 +158,7 @@ public class RendererEngineSwing extends JPanel {
             calculateMetrics();
             updateView();
             if (view != null) {
-                view.draw(graphic);
+                view.draw(this.graphics);
             }
         } catch (Exception exception) {
             exception.printStackTrace();

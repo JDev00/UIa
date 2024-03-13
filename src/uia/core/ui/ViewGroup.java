@@ -23,6 +23,35 @@ import java.util.Objects;
 public interface ViewGroup extends View, Iterable<View> {
 
     /**
+     * Requests or removes the focus of the group.
+     * <br>
+     * Note: when a group loses focus, its children also lose focus, but when it regains focus,
+     * its children are not automatically set to focus.
+     * <br>
+     * A group can only interact directly with the user when it has focus.
+     *
+     * @param request true to request to this group to put on focus; false to remove focus
+     * @implSpec <ul>
+     * <li>focus can't be requested if a group is not visible;</li>
+     * <li>when the group focus is removed, the children focus must also be removed.</li>
+     * </ul>
+     */
+
+    @Override
+    void requestFocus(boolean request);
+
+    /**
+     * Makes this group visible or not visible.
+     * <br>
+     * Note: <i>a group that becomes invisible loses its focus and all its children lose their focus.</i>
+     *
+     * @param visible true to make this group visible; false otherwise
+     * @implSpec when set to invisible, a group must lose focus and all its children must lose their focus.
+     */
+    @Override
+    void setVisible(boolean visible);
+
+    /**
      * The clip feature ensures that any graphical component outside the group boundaries won't be drawn.
      * This means that for any graphical entity, that isn't completely contained within the group boundaries,
      * only the part that is inside the group boundaries will be displayed.

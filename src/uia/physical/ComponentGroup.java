@@ -5,7 +5,7 @@ import uia.core.basement.Message;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
 import uia.core.ScreenTouch;
-import uia.core.ui.Graphic;
+import uia.core.ui.Graphics;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.message.Messages;
@@ -34,6 +34,30 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
         clipShape = new Shape();
         clipShape.setGeometry(getGeometry());
+    }
+
+    @Override
+    public void requestFocus(boolean request) {
+        super.requestFocus(request);
+
+        if (!request) {
+            // removes children focus
+            for (View view : this) {
+                view.requestFocus(false);
+            }
+        }
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+
+        if (!visible) {
+            // removes children focus
+            for (View view : this) {
+                view.requestFocus(false);
+            }
+        }
     }
 
     @Override
@@ -174,41 +198,26 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         clipShape.setRotation(bounds[4]);
     }
 
-    /*
-     * Helper function. Removes focus from all children.
-     *
-
-    private void removeChildrenFocus() {
-        for (View view : this) {
-            view.requestFocus(false);
-        }
-    }*/
-
-    // TODO: to remove children focus when the group is set to not visible
     @Override
     public void update(View parent) {
         super.update(parent);
-
-        /*if (!isVisible()) {
-            removeChildrenFocus();
-        }*/
         updateGroupBounds();
         updateClipShape();
     }
 
     @Override
-    public void draw(Graphic graphic) {
-        super.draw(graphic);
+    public void draw(Graphics graphics) {
+        super.draw(graphics);
 
         if (isVisible()) {
             if (clip) {
-                graphic.setClip(clipShape);
+                graphics.setClip(clipShape);
             }
             for (View i : views) {
-                i.draw(graphic);
+                i.draw(graphics);
             }
             if (clip) {
-                graphic.restoreClip();
+                graphics.restoreClip();
             }
         }
     }
