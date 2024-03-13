@@ -3,7 +3,7 @@ package uia.physical;
 import uia.core.Font;
 import uia.core.paint.Paint;
 import uia.core.shape.Shape;
-import uia.core.ui.Graphic;
+import uia.core.ui.Graphics;
 import uia.physical.scroller.Scroller;
 import uia.core.ui.View;
 import uia.core.ui.ViewText;
@@ -216,19 +216,19 @@ public final class ComponentText extends WrapperView implements ViewText {
     }
 
     @Override
-    public void draw(Graphic graphic) {
-        super.draw(graphic);
+    public void draw(Graphics graphics) {
+        super.draw(graphics);
 
         if (isVisible()) {
-            graphic.setFont(font);
-            graphic.setPaint(paintText);
-            graphic.setClip(clipShape);
+            graphics.setFont(font);
+            graphics.setPaint(paintText);
+            graphics.setClip(clipShape);
 
             int index = singleLine ? 0 : 1;
-            textBounds[2] = textRenderer[index].draw(this, graphic, !text.isEmpty() ? text : description,
+            textBounds[2] = textRenderer[index].draw(this, graphics, !text.isEmpty() ? text : description,
                     textBounds[0], textBounds[1], textBounds[4]);
 
-            graphic.restoreClip();
+            graphics.restoreClip();
         }
     }
 }

@@ -5,7 +5,7 @@ import uia.core.*;
 import uia.core.paint.Color;
 import uia.core.paint.Paint;
 import uia.core.shape.Shape;
-import uia.core.ui.Graphic;
+import uia.core.ui.Graphics;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.callbacks.OnFocus;
@@ -360,17 +360,17 @@ public class UIEditText extends WrapperViewText {
      * <br>
      * Space required: O(1)
      *
-     * @param graphic a not null {@link Graphic}
+     * @param graphics a not null {@link Graphics}
      */
 
-    private void drawBox(Graphic graphic) {
+    private void drawBox(Graphics graphics) {
         if (getSelectionCount() > 0) {
-            graphic.setPaint(paintHighlight);
+            graphics.setPaint(paintHighlight);
 
             if (isSingleLine()) {
-                drawInlineBox(graphic);
+                drawInlineBox(graphics);
             } else {
-                drawMultilineBox(graphic);
+                drawMultilineBox(graphics);
             }
         }
     }
@@ -379,7 +379,7 @@ public class UIEditText extends WrapperViewText {
      * Helper function. Draws a box on single line text.
      */
 
-    private void drawInlineBox(Graphic graphic) {
+    private void drawInlineBox(Graphics graphics) {
         Font font = getFont();
         char[] chars = charList.toArray();
         int length = chars();
@@ -402,14 +402,14 @@ public class UIEditText extends WrapperViewText {
 
         highlight.setPosition(x + frame / 2f, y + lineHeight / 2f);
         highlight.setDimension(frame, lineHeight);
-        graphic.drawShape(highlight);
+        graphics.drawShape(highlight);
     }
 
     /**
      * Helper function. Draws a box on multiline text.
      */
 
-    private void drawMultilineBox(Graphic graphic) {
+    private void drawMultilineBox(Graphics graphics) {
         // TODO: handle the centered text
 
         Font font = getFont();
@@ -465,7 +465,7 @@ public class UIEditText extends WrapperViewText {
                         y + (line - 0.5f) * lineHeight
                 );
                 highlight.setDimension(wShape, lineHeight);
-                graphic.drawShape(highlight);
+                graphics.drawShape(highlight);
 
                 o = i;
                 line++;
@@ -534,16 +534,16 @@ public class UIEditText extends WrapperViewText {
     }
 
     @Override
-    public void draw(Graphic graphic) {
-        super.draw(graphic);
+    public void draw(Graphics graphics) {
+        super.draw(graphics);
 
         if (isVisible()) {
-            graphic.setClip(clipShape);
-            drawBox(graphic);
+            graphics.setClip(clipShape);
+            drawBox(graphics);
             if (isOnFocus()) {
-                cursor.draw(graphic);
+                cursor.draw(graphics);
             }
-            graphic.restoreClip();
+            graphics.restoreClip();
         }
     }
 
@@ -706,10 +706,10 @@ public class UIEditText extends WrapperViewText {
         }
 
         @Override
-        public void draw(Graphic graphic) {
+        public void draw(Graphics graphics) {
             float seconds = timer.seconds();
             if (seconds <= 0.5f) {
-                super.draw(graphic);
+                super.draw(graphics);
             } else if (seconds >= 1f) {
                 timer.reset();
             }

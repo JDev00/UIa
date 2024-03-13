@@ -5,15 +5,15 @@ import uia.core.paint.Paint;
 import uia.core.shape.Shape;
 
 /**
- * Graphic ADT.
+ * Graphics ADT.
  * <br>
- * A Graphic is responsible for drawing things on the screen. It is designed to provide a set of functionalities
+ * A Graphics is responsible for drawing things on the screen. It is designed to provide a set of functionalities
  * that are unrelated to the specific platform.
  * <br>
  * <br>
  * <b>Purpose</b>:
  * <br>
- * to provide a set of features that are platform independent to:
+ * to provide a set of features, that are platform independent, to:
  * <ul>
  *     <li>draw a shape;</li>
  *     <li>draw a text;</li>
@@ -23,17 +23,17 @@ import uia.core.shape.Shape;
  * (depending on the drawing operation).
  */
 
-public interface Graphic {
+public interface Graphics {
 
     /**
-     * Dispose of this Graphic and releases any system resources that it is using.
-     * A Graphic object cannot be used after <code>dispose</code>has been called.
+     * Dispose of this Graphics and releases any system resources that it is using.
+     * A Graphics object cannot be used after <code>dispose</code>has been called.
      */
 
     void dispose();
 
     /**
-     * Set the current clipping area to an arbitrary clip shape.
+     * Sets the current clipping area to an arbitrary clip shape.
      * This method set the user clip, which is independent of the clipping associated
      * with device bounds and window visibility.
      *
@@ -43,13 +43,13 @@ public interface Graphic {
     void setClip(Shape shape);
 
     /**
-     * Restore the previous clipping area
+     * Restores the previous clipping area.
      */
 
     void restoreClip();
 
     /**
-     * Set a Paint used to control the graphic properties of a Shape/text.
+     * Sets a Paint used to control the graphic properties of a Shape/text.
      * <br>
      * Every piece of Shape/text rendered after {@code setPaint(Paint)} will be affected.
      *
@@ -60,7 +60,7 @@ public interface Graphic {
     void setPaint(Paint paint);
 
     /**
-     * Set the Font used to display text.
+     * Sets the Font used to display text.
      * <br>
      * Every text rendered after {@code setFont(Font)} will be affected.
      *
@@ -71,7 +71,7 @@ public interface Graphic {
     void setFont(Font font);
 
     /**
-     * Draws an on-the-fly shape on this Graphic.
+     * Draws an on-the-fly shape on this Graphics.
      *
      * @param vertices an array with the shape vertices. The array shape must be: [x1,y1, x2,y2, x3,y3, ...]
      * @throws NullPointerException     if {@code vertices == null}
@@ -87,7 +87,7 @@ public interface Graphic {
     void drawShape(float... vertices);
 
     /**
-     * Draw the given {@link Shape} on this Graphic.
+     * Draws the given {@link Shape} on this Graphics.
      *
      * @param shape a not null {@link Shape} to be drawn
      * @throws NullPointerException if {@code font == null}
@@ -96,7 +96,7 @@ public interface Graphic {
     void drawShape(Shape shape);
 
     /**
-     * Draw the given character array. The baseline of the first character is at position (<i>x</i>,<i>y</i>).
+     * Draws the given character array. The baseline of the first character is at position (<i>x</i>,<i>y</i>).
      *
      * @param data     a not null array of characters to draw
      * @param offset   the start offset in the data
@@ -110,7 +110,7 @@ public interface Graphic {
     void drawText(char[] data, int offset, int length, float x, float y, float rotation);
 
     /**
-     * Draw as much of the specified image as has already been scaled to fit inside the specified rectangle.
+     * Draws as much of the specified image as has already been scaled to fit inside the specified rectangle.
      * The image is drawn inside the specified rectangle and is scaled if necessary.
      * Transparent pixels do not affect whatever pixels are already there.
      *

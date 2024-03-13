@@ -7,7 +7,7 @@ import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 import uia.core.Key;
 import uia.core.ScreenTouch;
-import uia.core.ui.Graphic;
+import uia.core.ui.Graphics;
 import uia.core.ui.View;
 import uia.physical.ComponentHiddenRoot;
 import uia.physical.message.Messages;
@@ -21,7 +21,7 @@ public class RendererEngineProcessing extends PApplet {
     public static final int[] initScreenDimension = new int[2];
 
     private final MessagingSystem messagingSystem = new MessagingSystem();
-    private Graphic graphic;
+    private Graphics graphics;
     private PGraphics nativeGraphics;
     public static View currentView;
     private final View rootView = new ComponentHiddenRoot();
@@ -35,7 +35,7 @@ public class RendererEngineProcessing extends PApplet {
 
     @Override
     public void setup() {
-        graphic = new GraphicProcessing(
+        graphics = new GraphicProcessing(
                 () -> this,
                 () -> nativeGraphics);
     }
@@ -56,7 +56,7 @@ public class RendererEngineProcessing extends PApplet {
             messagingSystem.sendMessagesTo(currentView);
 
             currentView.update(rootView);
-            currentView.draw(graphic);
+            currentView.draw(graphics);
         }
     }
 

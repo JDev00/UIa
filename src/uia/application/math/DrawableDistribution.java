@@ -4,7 +4,7 @@ import uia.core.shape.Geometry;
 import uia.core.paint.Paint;
 import uia.core.shape.Shape;
 import uia.core.shape.NormalizedVertex;
-import uia.core.ui.Graphic;
+import uia.core.ui.Graphics;
 import uia.core.ui.View;
 import uia.physical.theme.Theme;
 import uia.utility.Geometries;
@@ -127,17 +127,17 @@ public class DrawableDistribution extends PointDistribution {
     /**
      * Draws the data distribution on the specified Graphic
      *
-     * @param graphic a not null {@link Graphic} used to display the distribution
+     * @param graphics a not null {@link Graphics} used to display the distribution
      */
 
-    public void draw(Graphic graphic, float[] bounds, float width, float height, float rotation) {
+    public void draw(Graphics graphics, float[] bounds, float width, float height, float rotation) {
         float xMin = getMin(PointDistribution.AXIS.X);
         float yMin = getMin(PointDistribution.AXIS.Y);
         float xMax = getMax(PointDistribution.AXIS.X);
         float yMax = getMax(PointDistribution.AXIS.Y);
 
         if (enableLine) {
-            graphic.setPaint(paintLine);
+            graphics.setPaint(paintLine);
 
             for (int i = 0; i < size() - 1; i++) {
                 float pointX = get(i, PointDistribution.AXIS.X);
@@ -155,7 +155,7 @@ public class DrawableDistribution extends PointDistribution {
                         nextPointX, nextPointY, rotation,
                         xMin, xMax, yMin, yMax);
 
-                graphic.drawShape(
+                graphics.drawShape(
                         markerPosition[0], markerPosition[1],
                         nextMarkerPosition[0], nextMarkerPosition[1]
                 );
@@ -163,7 +163,7 @@ public class DrawableDistribution extends PointDistribution {
         }
 
         if (enablePoint) {
-            graphic.setPaint(paintPoint);
+            graphics.setPaint(paintPoint);
 
             for (int i = 0; i < size(); i++) {
                 float pointX = get(i, PointDistribution.AXIS.X);
@@ -176,7 +176,7 @@ public class DrawableDistribution extends PointDistribution {
 
                 shapeMarker.setPosition(markerPosition[0], markerPosition[1]);
                 shapeMarker.setDimension(pointDimension, pointDimension);
-                graphic.drawShape(shapeMarker);
+                graphics.drawShape(shapeMarker);
             }
         }
     }

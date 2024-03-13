@@ -1,7 +1,7 @@
 package uia.physical.text;
 
 import uia.core.Font;
-import uia.core.ui.Graphic;
+import uia.core.ui.Graphics;
 import uia.core.ui.View;
 import uia.core.ui.ViewText;
 
@@ -12,7 +12,7 @@ import uia.core.ui.ViewText;
 public class MultilineRendererV1 implements TextRenderer {
 
     @Override
-    public float draw(ViewText view, Graphic graphic, String text, float x, float y, float rotation) {
+    public float draw(ViewText view, Graphics graphics, String text, float x, float y, float rotation) {
         Font font = view.getFont();
 
         char[] chars = text.toCharArray();
@@ -41,7 +41,7 @@ public class MultilineRendererV1 implements TextRenderer {
                 float xDist = TextRenderer.map(view.getAlignX()) * (lineWidth - lineLength) / 2f;
                 float yDist = (lines + 0.75f) * lineHeight + y_adj;
 
-                graphic.drawText(chars, sol, eol - sol,
+                graphics.drawText(chars, sol, eol - sol,
                         View.getPositionOnX(x, 0f, xDist, yDist, rot),
                         View.getPositionOnY(y, 0f, xDist, yDist, rot),
                         rotation);

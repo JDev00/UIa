@@ -7,12 +7,12 @@ import uia.core.paint.Color;
 import uia.core.paint.Paint;
 import uia.core.shape.Geometry;
 import uia.core.shape.Shape;
-import uia.core.ui.Graphic;
+import uia.core.ui.Graphics;
 
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class GraphicProcessing implements Graphic {
+public class GraphicProcessing implements Graphics {
     private final Supplier<PApplet> pAppletSupplier;
     private final Supplier<PGraphics> pGraphicsSupplier;
     private final PImage fakeImage = new PImage(1, 1, PConstants.RGB);

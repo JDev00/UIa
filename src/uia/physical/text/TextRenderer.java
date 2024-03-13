@@ -1,6 +1,6 @@
 package uia.physical.text;
 
-import uia.core.ui.Graphic;
+import uia.core.ui.Graphics;
 import uia.core.ui.ViewText;
 import uia.core.ui.ViewText.AlignX;
 import uia.core.ui.ViewText.AlignY;
@@ -8,7 +8,7 @@ import uia.core.ui.ViewText.AlignY;
 /**
  * TextRenderer ADT.
  * <br>
- * This class is responsible to display a text on a {@link Graphic}.
+ * This class is responsible to display a text on a {@link Graphics}.
  */
 
 public interface TextRenderer {
@@ -17,14 +17,14 @@ public interface TextRenderer {
      * Draw an array of chars on the given Graphic.
      *
      * @param view     a not null {@link ViewText}
-     * @param graphic  a not null {@link Graphic} used to render text
+     * @param graphics  a not null {@link Graphics} used to render text
      * @param text     a not null String to display on screen
      * @param x        the position along x-axis
      * @param y        the position along y-axis
      * @param rotation the text rotation in radians
      */
 
-    float draw(ViewText view, Graphic graphic, String text, float x, float y, float rotation);
+    float draw(ViewText view, Graphics graphics, String text, float x, float y, float rotation);
 
     /**
      * Map the given {@link AlignX} into an integer.

@@ -5,7 +5,7 @@ import uia.core.shape.Geometry;
 import uia.core.Image;
 import uia.core.paint.Paint;
 import uia.core.shape.Shape;
-import uia.core.ui.Graphic;
+import uia.core.ui.Graphics;
 import uia.utility.MathUtility;
 
 import javax.imageio.ImageIO;
@@ -23,10 +23,10 @@ import java.util.*;
 import java.util.function.Supplier;
 
 /**
- * {@link Graphic} implementation based on Java AWT.
+ * {@link Graphics} implementation based on Java AWT.
  */
 
-public class GraphicAWT implements Graphic {
+public class GraphicAWT implements Graphics {
     private final Supplier<Graphics2D> graphics2DSupplier;
     private final Path2D shapePath;
 

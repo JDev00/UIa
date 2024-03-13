@@ -15,7 +15,7 @@ import uia.physical.utility.ComponentUtility;
 import uia.utility.Geometries;
 import uia.core.basement.Callback;
 import uia.core.ui.View;
-import uia.core.ui.Graphic;
+import uia.core.ui.Graphics;
 import uia.core.ui.callbacks.*;
 
 import java.util.ArrayList;
@@ -344,10 +344,10 @@ public final class Component implements View {
     }
 
     @Override
-    public void draw(Graphic graphic) {
+    public void draw(Graphics graphics) {
         if (visible) {
-            graphic.setPaint(paint);
-            graphic.drawShape(shape);
+            graphics.setPaint(paint);
+            graphics.drawShape(shape);
         }
     }
 

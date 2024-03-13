@@ -2,14 +2,14 @@ package uia.core.basement;
 
 import uia.core.shape.Geometry;
 import uia.core.paint.Paint;
-import uia.core.ui.Graphic;
+import uia.core.ui.Graphics;
 import uia.utility.Geometries;
 
 import java.util.function.Consumer;
 
 /**
  * Drawable is designed to group together all the aspects that characterise a complex graphical object
- * that can be rendered on a {@link uia.core.ui.Graphic}.
+ * that can be rendered on a {@link Graphics}.
  */
 
 public interface Drawable {
@@ -64,11 +64,11 @@ public interface Drawable {
     /**
      * Draws this Drawable on the specified Graphic
      *
-     * @param graphic a not null {@link Graphic}
+     * @param graphics a not null {@link Graphics}
      * @throws NullPointerException if {@code graphic == null}
      */
 
-    void draw(Graphic graphic);
+    void draw(Graphics graphics);
 
     /**
      * Returns the Drawable width. Note that width won't change as consequence of a rotation.

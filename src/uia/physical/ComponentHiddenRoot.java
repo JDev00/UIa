@@ -4,7 +4,7 @@ import uia.core.shape.Geometry;
 import uia.core.paint.Paint;
 import uia.core.basement.Callback;
 import uia.core.basement.Message;
-import uia.core.ui.Graphic;
+import uia.core.ui.Graphics;
 import uia.core.ui.View;
 
 /**
@@ -107,7 +107,7 @@ public final class ComponentHiddenRoot implements View {
     }
 
     @Override
-    public void draw(Graphic graphic) {
+    public void draw(Graphics graphics) {
         throw new UnsupportedOperationException(unsupported_error);
     }
 

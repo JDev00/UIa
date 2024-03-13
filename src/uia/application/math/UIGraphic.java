@@ -1,7 +1,7 @@
 package uia.application.math;
 
 import uia.core.shape.Shape;
-import uia.core.ui.Graphic;
+import uia.core.ui.Graphics;
 import uia.core.ui.View;
 import uia.core.paint.Paint;
 import uia.physical.WrapperView;
@@ -138,7 +138,7 @@ public class UIGraphic extends WrapperView {
         drawableDistributions.clear();
     }
 
-    private void drawAxis(Graphic graphic, float width, float height, float rotation) {
+    private void drawAxis(Graphics graphics, float width, float height, float rotation) {
         float[] bounds = getBounds();
         float xDist = width * (MathUtility.normalize(0f, xMin, xMax) - 0.5f);
         float yDist = -height * (MathUtility.normalize(0f, yMin, yMax) - 0.5f);
@@ -146,27 +146,27 @@ public class UIGraphic extends WrapperView {
         float lineY = View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rotation);
 
         ComponentUtility.makeShapeForClipRegion(this, clipShape, 0.97f, 0.97f);
-        graphic.setClip(clipShape);
+        graphics.setClip(clipShape);
 
         // draw ordinate
         axis.setRotation(rotation);
         axis.setPosition(lineX, lineY);
         axis.setDimension(1, 2 * height);
-        graphic.setPaint(paintAxis);
-        graphic.drawShape(axis);
+        graphics.setPaint(paintAxis);
+        graphics.drawShape(axis);
 
         // draw abscissa
         axis.setPosition(lineX, lineY);
         axis.setDimension(2 * width, 1);
-        graphic.setPaint(paintAxis);
-        graphic.drawShape(axis);
+        graphics.setPaint(paintAxis);
+        graphics.drawShape(axis);
 
-        graphic.restoreClip();
+        graphics.restoreClip();
     }
 
     @Override
-    public void draw(Graphic graphic) {
-        super.draw(graphic);
+    public void draw(Graphics graphics) {
+        super.draw(graphics);
 
         if (isVisible()) {
             float[] bounds = getBounds();
@@ -174,7 +174,7 @@ public class UIGraphic extends WrapperView {
             float height = 0.95f * getHeight();
             float rot = bounds[4];
 
-            drawAxis(graphic, width, height, rot);
+            drawAxis(graphics, width, height, rot);
 
             for (DrawableDistribution distribution : drawableDistributions) {
                 updateMinAndMax(
@@ -185,7 +185,7 @@ public class UIGraphic extends WrapperView {
                         distribution.getMin(PointDistribution.AXIS.X),
                         distribution.getMin(PointDistribution.AXIS.Y)
                 );
-                distribution.draw(graphic, bounds, width, height, rot);
+                distribution.draw(graphics, bounds, width, height, rot);
             }
         }
     }
