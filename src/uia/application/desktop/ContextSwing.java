@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ContextSwing implements Context {
     private ScheduledExecutorService renderingThread;
-    private LifecycleStage lifecycleStage = LifecycleStage.STOP;
+    private LifecycleStage lifecycleStage = LifecycleStage.PAUSED;
     private final WindowSwing window;
     private final RendererEngineSwing rendererEngine;
     private final InputEmulator inputEmulator;
@@ -80,7 +80,7 @@ public class ContextSwing implements Context {
         this.lifecycleStage = Objects.requireNonNull(lifecycleStage);
 
         switch (lifecycleStage) {
-            case RUN:
+            case RUNNING:
                 int repaintPeriodMillis = 1000 / 60;
                 renderingThread = Executors.newSingleThreadScheduledExecutor();
                 renderingThread.scheduleAtFixedRate(() -> rendererEngine.draw(
@@ -92,10 +92,10 @@ public class ContextSwing implements Context {
                         repaintPeriodMillis,
                         TimeUnit.MILLISECONDS);
                 break;
-            case STOP:
+            case PAUSED:
                 killRenderingThread();
                 break;
-            case TERMINATE:
+            case TERMINATED:
                 killRenderingThread();
                 window.destroy();
                 break;
@@ -159,7 +159,7 @@ public class ContextSwing implements Context {
     public static Context createAndStart(int width, int height) {
         Context context = new ContextSwing(width, height);
         context.getWindow().setVisible(true);
-        context.setLifecycleStage(LifecycleStage.RUN);
+        context.setLifecycleStage(LifecycleStage.RUNNING);
         return context;
     }
 }

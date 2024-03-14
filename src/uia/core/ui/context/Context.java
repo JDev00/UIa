@@ -12,14 +12,15 @@ import uia.core.ui.View;
  * Like any application, Context has its own lifecycle. The key idea is that the single lifecycle stage capture
  * a well-defined Context state. There are a few rules that must be followed when implementing lifecycle mechanism:
  * <ul>
- *     <li>at the {@link LifecycleStage#STOP} stage, Context stops rendering and doesn't update the view's state.
- *     It also stops handling user input and artificially generated input;
+ *     <li>at the {@link LifecycleStage#RUNNING} stage, Context is fully operational: it manages a View and processes
+ *     user input and artificially generated input;
  *     </li>
- *     <li>at the {@link LifecycleStage#RUN} stage, Context is fully operational: it manages a View and handles user input and
- *     artificially generated input;
+ *     <li>at the {@link LifecycleStage#PAUSED} stage, Context stops rendering and managing a View.
+ *     It also stops handling user and artificial input. However, the window frame remains visible.
+ *     At this stage, Context can resume its operations.
  *     </li>
- *     <li>at the {@link LifecycleStage#TERMINATE} stage, Context stops all its operations, including View management and closes
- *     the window frame.
+ *     <li>at the {@link LifecycleStage#TERMINATED} stage, Context stops all its operations, including View management,
+ *     and closes the window frame. At this stage, Context is can't be resumed.
  *     </li>
  * </ul>
  * <br>
@@ -50,13 +51,13 @@ public interface Context {
     enum ClipboardOperation {COPY, PASTE}
 
     /**
-     * Lifecycle Context stage
+     * LifecycleStage defines the Context life stages.
      */
 
-    enum LifecycleStage {RUN, STOP, TERMINATE}
+    enum LifecycleStage {RUNNING, PAUSED, TERMINATED}
 
     /**
-     * Set the Context lifecycle stage
+     * Sets the lifecycle stage.
      *
      * @param lifecycleStage a not null {@link LifecycleStage}
      * @throws NullPointerException if {@code lifecycleStage == null}

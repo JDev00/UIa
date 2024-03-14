@@ -17,7 +17,7 @@ import java.util.Objects;
 public class ContextProcessing implements Context {
     private final Window window;
     private final RendererEngineProcessing rendererEngineProcessing;
-    private LifecycleStage lifecycleStage = LifecycleStage.STOP;
+    private LifecycleStage lifecycleStage = LifecycleStage.PAUSED;
 
     public ContextProcessing(int w, int h) {
         window = new WindowProcessing();
@@ -42,7 +42,7 @@ public class ContextProcessing implements Context {
         }
 
         this.lifecycleStage = lifecycleStage;
-        if (lifecycleStage == LifecycleStage.RUN) {
+        if (lifecycleStage == LifecycleStage.RUNNING) {
             PApplet.runSketch(new String[]{"RendererEngine"}, rendererEngineProcessing);
         } else {
             rendererEngineProcessing.stop();
@@ -93,7 +93,7 @@ public class ContextProcessing implements Context {
     public static Context createAndStart(int width, int height) {
         Context context = new ContextProcessing(width, height);
         context.getWindow().setVisible(true);
-        context.setLifecycleStage(LifecycleStage.RUN);
+        context.setLifecycleStage(LifecycleStage.RUNNING);
         return context;
     }
 }

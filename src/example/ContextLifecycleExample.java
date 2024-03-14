@@ -23,7 +23,7 @@ public class ContextLifecycleExample {
         View view = createMockView();
         view.registerCallback((OnClick) touches -> {
             System.out.println("Terminated!");
-            context.setLifecycleStage(Context.LifecycleStage.TERMINATE);
+            context.setLifecycleStage(Context.LifecycleStage.TERMINATED);
         });
 
         context.setView(view);
