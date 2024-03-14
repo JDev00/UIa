@@ -4,6 +4,9 @@ Current version 1.5.0
 Version 1.5.0
 ################
 
+* BugFix: adjusts Component autofocus and specifies View focus behaviour
+* improves UIa testing library
+
 ################
 Version 1.4.0
 ################
