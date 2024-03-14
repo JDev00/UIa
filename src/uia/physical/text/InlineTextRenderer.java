@@ -6,12 +6,12 @@ import uia.core.ui.View;
 import uia.core.ui.ViewText;
 
 /**
- * Single line text renderer
+ * Single line text renderer.
  */
 
-public class InlineRendererV1 implements TextRenderer {
+public class InlineTextRenderer implements TextRenderer {
 
-    // TODO: change text rotation. Bug.
+    // BUG: change text rotation
 
     @Override
     public float draw(ViewText view, Graphics graphics, String text, float x, float y, float rotation) {
