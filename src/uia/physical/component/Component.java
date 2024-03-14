@@ -11,7 +11,7 @@ import uia.physical.message.EventKeyMessage;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.message.MessageStore;
 import uia.physical.theme.Theme;
-import uia.physical.utility.ComponentUtility;
+import uia.physical.component.utility.ComponentUtility;
 import uia.utility.Geometries;
 import uia.core.basement.Callback;
 import uia.core.ui.View;

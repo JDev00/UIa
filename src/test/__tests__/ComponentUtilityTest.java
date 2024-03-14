@@ -8,7 +8,7 @@ import uia.core.ui.View;
 import uia.core.ui.callbacks.OnMessageReceived;
 import uia.physical.component.Component;
 import uia.physical.message.Messages;
-import uia.physical.utility.ComponentUtility;
+import uia.physical.component.utility.ComponentUtility;
 
 /**
  * Unit tests

@@ -1,4 +1,4 @@
-package uia.physical.utility;
+package uia.physical.component.utility;
 
 import uia.core.Key;
 import uia.core.ScreenTouch;
