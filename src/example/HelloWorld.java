@@ -12,10 +12,10 @@ import uia.core.ui.callbacks.OnClick;
 import uia.core.ui.callbacks.OnMessageReceived;
 import uia.physical.component.Component;
 import uia.physical.ComponentGroup;
-import uia.physical.ComponentText;
+import uia.physical.component.ComponentText;
 import uia.physical.message.Messages;
 import uia.physical.theme.Theme;
-import uia.physical.WrapperView;
+import uia.physical.component.WrapperView;
 
 /**
  * Demonstrative example. Display a simple button that allows to show and hide a popup.

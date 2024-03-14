@@ -6,7 +6,7 @@ import uia.core.ui.ViewGroup;
 import uia.physical.component.Component;
 import uia.physical.ComponentGroup;
 import uia.physical.theme.Theme;
-import uia.physical.WrapperView;
+import uia.physical.component.WrapperView;
 
 import java.util.Iterator;
 import java.util.Objects;

@@ -12,7 +12,7 @@ import uia.physical.component.Component;
 import uia.physical.ComponentGroup;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.theme.Theme;
-import uia.physical.WrapperView;
+import uia.physical.component.WrapperView;
 import uia.utility.MathUtility;
 
 /**

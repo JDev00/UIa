@@ -9,7 +9,7 @@ import uia.core.Key;
 import uia.core.ScreenTouch;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
-import uia.physical.ComponentHiddenRoot;
+import uia.physical.component.ComponentHiddenRoot;
 import uia.physical.message.Messages;
 import uia.physical.message.MessagingSystem;
 

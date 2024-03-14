@@ -4,7 +4,7 @@ import uia.core.shape.Shape;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
 import uia.core.paint.Paint;
-import uia.physical.WrapperView;
+import uia.physical.component.WrapperView;
 import uia.physical.utility.ComponentUtility;
 import uia.utility.Geometries;
 import uia.utility.MathUtility;

@@ -6,12 +6,12 @@ import uia.core.basement.Drawable;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
 import uia.physical.theme.Theme;
-import uia.physical.WrapperView;
+import uia.physical.component.WrapperView;
 import uia.core.ui.ViewText;
 import uia.utility.Geometries;
 import uia.physical.component.Component;
 import uia.physical.ComponentGroup;
-import uia.physical.ComponentText;
+import uia.physical.component.ComponentText;
 import uia.utility.MathUtility;
 
 /**

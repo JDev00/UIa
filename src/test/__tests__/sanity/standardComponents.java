@@ -6,7 +6,7 @@ import uia.core.ui.ViewText;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.ui.context.Context;
 import uia.physical.component.Component;
-import uia.physical.ComponentImage;
+import uia.physical.component.ComponentImage;
 import uia.physical.theme.Theme;
 
 import static test.__tests__.utility.TestUtility.*;

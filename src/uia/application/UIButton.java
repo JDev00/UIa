@@ -5,7 +5,7 @@ import uia.core.ui.View;
 import uia.core.paint.Paint;
 import uia.core.ui.callbacks.OnClick;
 import uia.physical.theme.Theme;
-import uia.physical.WrapperView;
+import uia.physical.component.WrapperView;
 
 /**
  * Standard UIa component.

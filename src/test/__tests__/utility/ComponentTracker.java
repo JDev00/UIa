@@ -4,8 +4,8 @@ import uia.core.Font;
 import uia.core.ui.View;
 import uia.core.ui.ViewText;
 import uia.physical.component.Component;
-import uia.physical.ComponentText;
-import uia.physical.WrapperView;
+import uia.physical.component.ComponentText;
+import uia.physical.component.WrapperView;
 
 /**
  * Component designed to display the UIa used resources

@@ -1,4 +1,4 @@
-package uia.physical;
+package uia.physical.component;
 
 import uia.core.basement.Callback;
 import uia.core.basement.Message;

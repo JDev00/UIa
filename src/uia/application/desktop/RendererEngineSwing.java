@@ -3,7 +3,7 @@ package uia.application.desktop;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
 import uia.core.ui.context.Context;
-import uia.physical.ComponentHiddenRoot;
+import uia.physical.component.ComponentHiddenRoot;
 import uia.physical.message.MessagingSystem;
 import uia.utility.Timer;
 
