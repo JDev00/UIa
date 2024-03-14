@@ -4,11 +4,10 @@ import uia.core.shape.Shape;
 import uia.core.basement.Message;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
-import uia.core.ScreenTouch;
 import uia.core.ui.Graphics;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.message.EventTouchScreenMessage;
-import uia.physical.message.Messages;
+import uia.physical.utility.GroupUtility;
 
 import java.util.*;
 
@@ -23,7 +22,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     private final Shape clipShape;
 
-    private final float[] cBound = {0f, 0f, 0f, 0f};
+    private final float[] contentBounds = {0f, 0f, 0f, 0f};
 
     private boolean clip = true;
 
@@ -63,14 +62,14 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     @Override
     public void readMessage(Message message) {
         if (message instanceof EventTouchScreenMessage) {
-            dispatchScreenEventMessage(message);
+            GroupUtility.dispatchScreenTouchMessageToChildren(this, message);
             super.readMessage(message);
         } else if (message instanceof EventKeyMessage) {
-            dispatchKeyMessage(message);
+            GroupUtility.dispatchKeyMessageToChildren(this, message);
             super.readMessage(message);
         } else {
             super.readMessage(message);
-            dispatchMessageToViews(message);
+            GroupUtility.dispatchMessageToChildren(this, message);
         }
     }
 
@@ -107,57 +106,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     @Override
     public void removeAll() {
         views.clear();
-        Arrays.fill(cBound, 0);
-    }
-
-    /**
-     * Helper function. Dispatches a message to the group children.
-     */
-
-    private void dispatchMessageToViews(Message message) {
-        for (int i = views.size() - 1; i >= 0; i--) {
-            views.get(i).readMessage(message);
-        }
-    }
-
-    /**
-     * Helper function. Dispatch Key event message to the group children.
-     */
-
-    private void dispatchKeyMessage(Message message) {
-        if (isVisible()) {
-            for (int i = views.size() - 1; i >= 0; i--) {
-                views.get(i).readMessage(message);
-            }
-        }
-    }
-
-    private final List<ScreenTouch> screenTouches = new ArrayList<>();
-
-    /**
-     * Helper function. Dispatches screenTouch event to the group children.
-     */
-
-    private void dispatchScreenEventMessage(Message message) {
-        screenTouches.clear();
-
-        List<ScreenTouch> tempScreenTouches = message.getPayload();
-        if (isVisible()) {
-            tempScreenTouches.forEach(screenTouch -> {
-                ScreenTouch currentTouch = screenTouch;
-
-                if (clip && !contains(screenTouch.getX(), screenTouch.getY())) {
-                    currentTouch = ScreenTouch.copy(screenTouch, 0, 0);
-                    currentTouch.consume();
-                }
-                screenTouches.add(currentTouch);
-            });
-        }
-
-        Message outMessage = Messages.newScreenEventMessage(screenTouches, message.getRecipient());
-        for (int i = views.size() - 1; i >= 0; i--) {
-            views.get(i).readMessage(outMessage);
-        }
+        Arrays.fill(contentBounds, 0);
     }
 
     /**
@@ -174,17 +123,17 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
             float xi = bounds[0], yi = bounds[1];
 
             if (i == 0) {
-                cBound[0] = cBound[2] = xi;
-                cBound[1] = cBound[3] = yi;
+                contentBounds[0] = contentBounds[2] = xi;
+                contentBounds[1] = contentBounds[3] = yi;
             }
-            if (xi < cBound[0]) cBound[0] = xi;
-            if (yi < cBound[1]) cBound[1] = yi;
-            if (xi + bounds[2] > cBound[2]) cBound[2] = xi + bounds[2];
-            if (yi + bounds[3] > cBound[3]) cBound[3] = yi + bounds[3];
+            if (xi < contentBounds[0]) contentBounds[0] = xi;
+            if (yi < contentBounds[1]) contentBounds[1] = yi;
+            if (xi + bounds[2] > contentBounds[2]) contentBounds[2] = xi + bounds[2];
+            if (yi + bounds[3] > contentBounds[3]) contentBounds[3] = yi + bounds[3];
         }
 
-        cBound[2] -= cBound[0];
-        cBound[3] -= cBound[1];
+        contentBounds[2] -= contentBounds[0];
+        contentBounds[3] -= contentBounds[1];
     }
 
     /**
@@ -231,7 +180,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     @Override
     public float[] boundsContent() {
-        System.arraycopy(cBound, 0, copyBounds, 0, cBound.length);
+        System.arraycopy(contentBounds, 0, copyBounds, 0, contentBounds.length);
         return copyBounds;
     }
 
