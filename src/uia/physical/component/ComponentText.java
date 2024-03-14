@@ -39,7 +39,7 @@ public final class ComponentText extends WrapperView implements ViewText {
     private String description = "";
 
     private final float[] textBounds = {0f, 0f, 0f, 0f, 0f};
-    private int lines;
+    private int lines = 1;
     private boolean singleLine = false;
 
     public ComponentText(View view) {

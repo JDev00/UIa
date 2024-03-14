@@ -351,61 +351,52 @@ public class UIEditText extends WrapperViewText {
         } else if (key.isKeystroke(2, 86)) {// ctrl-v
             return true;
         }
-
-        System.out.println(key.getKeyCode());
-
         return false;
     }
 
     /**
-     * Draws a rectangle around the highlighted text.
-     * <br>
-     * Time required: O(n);
-     * <br>
-     * Space required: O(1)
      *
-     * @param graphics a not null {@link Graphics}
      */
+    private float[] calculateInlineBoxDimension() {
+        Font font = getFont();
+        int iMin = getMinIndex();
 
-    private void drawBox(Graphics graphics) {
-        if (getSelectionCount() > 0) {
-            graphics.setPaint(paintHighlight);
+        char[] chars = charList.toArray();
+        float[] bounds = getBounds();
 
-            if (isSingleLine()) {
-                drawInlineBox(graphics);
-            } else {
-                drawMultilineBox(graphics);
-            }
-        }
+        int ax = TextRenderer.map(getAlignX());
+        int ay = TextRenderer.map(getAlignY());
+        float deltaTextX = ax * (bounds[2] - font.getWidth(0, chars(), chars)) / 2f;
+        float deltaTextY = ay * (bounds[3] - getTextBounds()[3]) / 2f;
+        return new float[]{
+                bounds[0]
+                        + deltaTextX
+                        + font.getWidth(0, iMin, chars)
+                        - (ax - 1f) * 4f,
+                bounds[1] + deltaTextY
+        };
     }
 
     /**
      * Helper function. Draws a box on single line text.
      */
 
-    private void drawInlineBox(Graphics graphics) {
-        Font font = getFont();
+    private void drawInlineBox(Graphics graphics, float[] boxPosition) {
         char[] chars = charList.toArray();
-        int length = chars();
+        Font font = getFont();
 
         int iMin = getMinIndex();
         int iMax = getMaxIndex();
-        int ax = TextRenderer.map(getAlignX());
-
-        float[] bounds = getBounds();
-        float width = bounds[2];
-        float lineHeight = font.getLineHeight();
-
-        float x = bounds[0]
-                + ax * (width - font.getWidth(0, length, chars)) / 2f
-                + font.getWidth(0, iMin, chars)
-                - (ax - 1f) * 4f;
-        // TODO: handle the centered text
-        float y = bounds[1];
-        float frame = font.getWidth(iMin, iMax - iMin, chars);
-
-        highlight.setPosition(x + frame / 2f, y + lineHeight / 2f);
-        highlight.setDimension(frame, lineHeight);
+        float width = font.getWidth(iMin, iMax - iMin, chars);
+        float height = font.getLineHeight();
+        highlight.setPosition(
+                boxPosition[0] + width / 2f,
+                boxPosition[1] + height / 2f
+        );
+        highlight.setDimension(
+                width,
+                height
+        );
         graphics.drawShape(highlight);
     }
 
@@ -478,22 +469,67 @@ public class UIEditText extends WrapperViewText {
         }
     }
 
+    /**
+     * Calculates the relative cursor position according to the give line and start of line.
+     */
+
+    private float[] calculateCursorPosition(int currentLine, int startOfLine) {
+        char[] chars = charList.toArray();
+        float[] bounds = getBounds();
+
+        Font font = getFont();
+        float lineHeight = font.getLineHeight();
+
+        int ax = TextRenderer.map(getAlignX());
+        int ay = TextRenderer.map(getAlignY());
+        float deltaTextX = ax * (bounds[2] - font.getWidth(0, chars(), chars)) / 2f;
+        float deltaTextY = ay * (bounds[3] - getTextBounds()[3]) / 2f;
+        return new float[]{
+                (deltaTextX
+                        + font.getWidth(startOfLine, index - startOfLine, chars)
+                        - (ax - 1f) * 4f
+                ) / bounds[2],
+                (deltaTextY
+                        + (currentLine - 0.5f) * lineHeight
+                        - getScrollValue()[1]
+                ) / bounds[3]
+        };
+    }
+
+    /**
+     * Updates cursor.
+     */
+
+    private void updateCursor(float[] cursorPosition) {
+        if (isOnFocus()) {
+            float[] bounds = getBounds();
+            float lineHeight = getFont().getLineHeight();
+            cursor.setPosition(
+                    cursorPosition[0],
+                    cursorPosition[1]
+            );
+            cursor.setDimension(
+                    2f / bounds[2],
+                    lineHeight / bounds[3]
+            );
+            cursor.update(this);
+        }
+    }
+
     @Override
-    public void update(View container) {
-        super.update(container);
+    public void update(View parent) {
+        super.update(parent);
 
         if (isVisible()) {
-            float[] bounds = getBounds();
             ComponentUtility.makeShapeForClipRegion(this, clipShape);
 
             int sol = 0;  // start of line
             int eol = -1; // end of line
-            int cLine = 0;
+            int currentLine = 0;
             int length = chars();
             char[] chars = charList.toArray();
 
             if (!isSingleLine()) {
-
                 // calculate the cursor's line.
                 // Time required: T(n). Space required: O(1)
                 for (int i = 0; i <= length; i++) {
@@ -501,38 +537,40 @@ public class UIEditText extends WrapperViewText {
                         if (index > eol) {
                             sol = eol + 1;
                             eol = getBr(chars, length, i);
-                            cLine++;
+                            currentLine++;
                         }
                     }
                 }
-
             } else {
-                cLine = 1;
+                currentLine = 1;
                 eol = length;
             }
 
-            Font font = getFont();
-            int ax = TextRenderer.map(getAlignX());
-            float width = getBounds()[2];
-            float[] textBounds = getTextBounds();
-            float lineHeight = font.getLineHeight();
-            float lineFactor = 1f;
+            // updates cursor
+            float[] cursorPosition = calculateCursorPosition(currentLine, sol);
+            updateCursor(cursorPosition);
+        }
+    }
 
-            // update cursor position on the x-axis
-            float cursorX = (textBounds[0] + ((ax - 1f) * width - ax * font.getWidth(sol, max(0, eol - sol), chars)) / 2f
-                    + font.getWidth(sol, index - sol, chars)) / bounds[2];
+    /**
+     * Draws a rectangle around the highlighted text.
+     * <br>
+     * Time required: O(n);
+     * <br>
+     * Space required: O(1)
+     *
+     * @param graphics a not null {@link Graphics}
+     */
 
-            // update cursor position on the y-axis
-            float cursorY = ((cLine - 0.5f) * lineHeight - getScrollValue()[1]) / bounds[3];
+    private void drawBox(Graphics graphics) {
+        if (getSelectionCount() > 0) {
+            graphics.setPaint(paintHighlight);
 
-            // update cursor
-            if (isOnFocus()) {
-                cursor.setPosition(cursorX, cursorY);
-                cursor.setDimension(
-                        2f / bounds[2],
-                        (lineHeight / lineFactor) / bounds[3]
-                );
-                cursor.update(this);
+            if (isSingleLine()) {
+                float[] boxPosition = calculateInlineBoxDimension();
+                drawInlineBox(graphics, boxPosition);
+            } else {
+                drawMultilineBox(graphics);
             }
         }
     }
@@ -587,11 +625,10 @@ public class UIEditText extends WrapperViewText {
         Font font = getFont();
 
         float[] bounds = getBounds();
-        //float[] textBounds = getTextBounds();
         float heightLine = font.getLineHeight();
 
         int ax = TextRenderer.map(getAlignX());
-        float y = 0f;
+        float y = TextRenderer.map(getAlignY()) * (bounds[3] - heightLine) / 2f;
 
         if (my > y && my < y + heightLine) {
             float x = ax * (bounds[2] - font.getWidth(0, length, chars)) / 2f;
@@ -745,7 +782,7 @@ public class UIEditText extends WrapperViewText {
         editText.registerCallback((OnFocus) focus -> {
             System.out.println(editText.getID() + " focus " + focus);
         });
-        editText.setText(IOUtility.readAll(new File("src\\test\\__tests__\\Sanity.java")));
+        editText.setText(IOUtility.readAll(new File("src\\test\\develop\\UIEditText.java")));
         editText.getPaint().setColor(Theme.LIGHT_GRAY);
 
         //
