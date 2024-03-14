@@ -9,9 +9,9 @@ import uia.core.ui.View;
 import uia.core.ui.ViewText;
 import uia.core.ui.callbacks.OnMouseHover;
 import uia.physical.scroller.WheelScroller;
-import uia.physical.text.MultilineTextRenderer;
-import uia.physical.text.TextRenderer;
-import uia.physical.text.InlineTextRenderer;
+import uia.physical.component.text.MultilineTextRenderer;
+import uia.physical.component.text.TextRenderer;
+import uia.physical.component.text.InlineTextRenderer;
 import uia.physical.theme.Theme;
 
 /**

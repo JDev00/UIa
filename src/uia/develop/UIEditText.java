@@ -18,7 +18,7 @@ import uia.physical.component.ComponentText;
 import uia.physical.component.WrapperView;
 import uia.physical.component.WrapperViewText;
 import uia.physical.group.ComponentGroup;
-import uia.physical.text.TextRenderer;
+import uia.physical.component.text.TextRenderer;
 import uia.physical.theme.Theme;
 import uia.physical.component.utility.ComponentUtility;
 import uia.utility.Geometries;
