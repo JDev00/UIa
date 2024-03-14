@@ -1,4 +1,4 @@
-package uia.physical.utility;
+package uia.physical.group.utility;
 
 import uia.core.ScreenTouch;
 import uia.core.basement.Message;

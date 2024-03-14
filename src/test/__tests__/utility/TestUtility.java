@@ -6,7 +6,7 @@ import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.context.Context;
 import uia.physical.component.Component;
-import uia.physical.ComponentGroup;
+import uia.physical.group.ComponentGroup;
 import uia.physical.component.ComponentText;
 import uia.physical.theme.Theme;
 

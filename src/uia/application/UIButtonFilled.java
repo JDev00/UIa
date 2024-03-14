@@ -10,7 +10,7 @@ import uia.physical.component.WrapperView;
 import uia.core.ui.ViewText;
 import uia.utility.Geometries;
 import uia.physical.component.Component;
-import uia.physical.ComponentGroup;
+import uia.physical.group.ComponentGroup;
 import uia.physical.component.ComponentText;
 import uia.utility.MathUtility;
 

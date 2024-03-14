@@ -11,7 +11,7 @@ import uia.core.ui.ViewText;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.ui.callbacks.OnMessageReceived;
 import uia.physical.component.Component;
-import uia.physical.ComponentGroup;
+import uia.physical.group.ComponentGroup;
 import uia.physical.component.ComponentText;
 import uia.physical.message.Messages;
 import uia.physical.theme.Theme;

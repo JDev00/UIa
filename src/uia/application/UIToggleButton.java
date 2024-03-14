@@ -13,7 +13,7 @@ import uia.physical.component.WrapperView;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnClick;
 import uia.physical.component.Component;
-import uia.physical.ComponentGroup;
+import uia.physical.group.ComponentGroup;
 
 /**
  * Standard UIa component.

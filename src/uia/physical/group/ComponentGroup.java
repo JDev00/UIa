@@ -1,4 +1,4 @@
-package uia.physical;
+package uia.physical.group;
 
 import uia.core.shape.Shape;
 import uia.core.basement.Message;
@@ -8,7 +8,7 @@ import uia.core.ui.Graphics;
 import uia.physical.component.WrapperView;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.message.EventTouchScreenMessage;
-import uia.physical.utility.GroupUtility;
+import uia.physical.group.utility.GroupUtility;
 
 import java.util.*;
 
