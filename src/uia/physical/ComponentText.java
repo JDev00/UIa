@@ -9,7 +9,7 @@ import uia.core.ui.View;
 import uia.core.ui.ViewText;
 import uia.core.ui.callbacks.OnMouseHover;
 import uia.physical.scroller.WheelScroller;
-import uia.physical.text.MultilineRendererV1;
+import uia.physical.text.MultilineTextRenderer;
 import uia.physical.text.TextRenderer;
 import uia.physical.text.InlineTextRenderer;
 import uia.physical.theme.Theme;
@@ -49,7 +49,7 @@ public final class ComponentText extends WrapperView implements ViewText {
 
         scroller = new Scroller[]{new WheelScroller(), new WheelScroller()};
 
-        textRenderer = new TextRenderer[]{new InlineTextRenderer(), new MultilineRendererV1()};
+        textRenderer = new TextRenderer[]{new InlineTextRenderer(), new MultilineTextRenderer()};
 
         font = new Font("Arial", Font.STYLE.PLAIN, Font.FONT_SIZE_DESKTOP);
 

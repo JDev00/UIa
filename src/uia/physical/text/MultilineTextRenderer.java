@@ -6,10 +6,10 @@ import uia.core.ui.View;
 import uia.core.ui.ViewText;
 
 /**
- * Multi line text renderer
+ * Multiline text renderer.
  */
 
-public class MultilineRendererV1 implements TextRenderer {
+public class MultilineTextRenderer implements TextRenderer {
 
     @Override
     public float draw(ViewText view, Graphics graphics, String text, float x, float y, float rotation) {
