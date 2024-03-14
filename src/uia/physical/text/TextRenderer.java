@@ -8,26 +8,27 @@ import uia.core.ui.ViewText.AlignY;
 /**
  * TextRenderer ADT.
  * <br>
- * This class is responsible to display a text on a {@link Graphics}.
+ * TextRenderer is responsible to display a text on a {@link Graphics}.
  */
 
 public interface TextRenderer {
 
     /**
-     * Draw an array of chars on the given Graphic.
+     * Draws an array of chars on the specified graphics.
      *
-     * @param view     a not null {@link ViewText}
-     * @param graphics  a not null {@link Graphics} used to render text
-     * @param text     a not null String to display on screen
-     * @param x        the position along x-axis
-     * @param y        the position along y-axis
+     * @param viewText a not null {@link ViewText}
+     * @param graphics a not null {@link Graphics} used to render text
+     * @param text     the text to display
+     * @param x        the text position on the x-axis
+     * @param y        the text position on the y-axis
      * @param rotation the text rotation in radians
+     * @throws NullPointerException if {@code viewText == null || graphics == null || text == null}
      */
 
-    float draw(ViewText view, Graphics graphics, String text, float x, float y, float rotation);
+    float draw(ViewText viewText, Graphics graphics, String text, float x, float y, float rotation);
 
     /**
-     * Map the given {@link AlignX} into an integer.
+     * Maps the specified {@link AlignX} value to an integer.
      *
      * @return a number between {0,1,2} where: LEFT = 0, CENTER = 1 and RIGHT = 2
      */
@@ -44,9 +45,9 @@ public interface TextRenderer {
     }
 
     /**
-     * Map the given {@link AlignY} into an integer.
+     * Maps the specified {@link AlignY} value to an integer.
      *
-     * @return a number between {0,1} where: TOP = 0 and CENTER = 1
+     * @return a number between {0, 1} where: TOP = 0 and CENTER = 1
      */
 
     static int map(AlignY alignY) {

@@ -5,6 +5,8 @@ import uia.core.ui.Graphics;
 import uia.core.ui.View;
 import uia.core.ui.ViewText;
 
+import java.util.Objects;
+
 /**
  * Multiline text renderer.
  */
@@ -12,19 +14,23 @@ import uia.core.ui.ViewText;
 public class MultilineTextRenderer implements TextRenderer {
 
     @Override
-    public float draw(ViewText view, Graphics graphics, String text, float x, float y, float rotation) {
-        Font font = view.getFont();
+    public float draw(ViewText viewText, Graphics graphics, String text, float x, float y, float rotation) {
+        Objects.requireNonNull(viewText);
+        Objects.requireNonNull(graphics);
+        Objects.requireNonNull(text);
+
+        Font font = viewText.getFont();
 
         char[] chars = text.toCharArray();
         int length = chars.length;
 
-        float lineWidth = view.getWidth();
+        float lineWidth = viewText.getWidth();
         float lineHeight = font.getLineHeight();
         float longestLine = 0f;
         float textHeight = ViewText.countLines(text) * lineHeight;
 
-        float y_adj = TextRenderer.map(view.getAlignY()) * (view.getHeight() - textHeight - 0.75f * lineHeight) / 2f;
-        float rot = view.getBounds()[4];
+        float y_adj = TextRenderer.map(viewText.getAlignY()) * (viewText.getHeight() - textHeight - 0.75f * lineHeight) / 2f;
+        float rot = viewText.getBounds()[4];
 
         int sol; // start of line
         int eol = -1; // end of line
@@ -38,7 +44,7 @@ public class MultilineTextRenderer implements TextRenderer {
 
                 float lineLength = font.getWidth(sol, eol - sol, chars);
 
-                float xDist = TextRenderer.map(view.getAlignX()) * (lineWidth - lineLength) / 2f;
+                float xDist = TextRenderer.map(viewText.getAlignX()) * (lineWidth - lineLength) / 2f;
                 float yDist = (lines + 0.75f) * lineHeight + y_adj;
 
                 graphics.drawText(chars, sol, eol - sol,
