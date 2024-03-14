@@ -3,7 +3,7 @@ package uia.application;
 import uia.core.basement.Callback;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
-import uia.physical.Component;
+import uia.physical.component.Component;
 import uia.physical.ComponentGroup;
 import uia.physical.theme.Theme;
 import uia.physical.WrapperView;

@@ -8,7 +8,7 @@ import uia.core.ui.ViewGroup;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.ui.callbacks.OnMouseExit;
 import uia.core.ui.callbacks.OnMouseHover;
-import uia.physical.Component;
+import uia.physical.component.Component;
 import uia.physical.ComponentGroup;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.theme.Theme;

@@ -12,7 +12,7 @@ import uia.physical.ComponentText;
 import uia.physical.WrapperView;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnClick;
-import uia.physical.Component;
+import uia.physical.component.Component;
 import uia.physical.ComponentGroup;
 
 /**

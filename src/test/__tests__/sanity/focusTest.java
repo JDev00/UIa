@@ -6,7 +6,7 @@ import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.callbacks.OnFocus;
 import uia.core.ui.context.Context;
-import uia.physical.Component;
+import uia.physical.component.Component;
 import uia.physical.ComponentGroup;
 import uia.physical.theme.Theme;
 

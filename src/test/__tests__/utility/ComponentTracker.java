@@ -3,7 +3,7 @@ package test.__tests__.utility;
 import uia.core.Font;
 import uia.core.ui.View;
 import uia.core.ui.ViewText;
-import uia.physical.Component;
+import uia.physical.component.Component;
 import uia.physical.ComponentText;
 import uia.physical.WrapperView;
 

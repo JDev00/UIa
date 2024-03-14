@@ -14,6 +14,7 @@ import uia.core.ui.callbacks.OnMouseExit;
 import uia.core.ui.callbacks.OnMouseHover;
 import uia.core.ui.context.Context;
 import uia.physical.*;
+import uia.physical.component.Component;
 import uia.physical.text.TextRenderer;
 import uia.physical.theme.Theme;
 import uia.physical.utility.ComponentUtility;

@@ -5,7 +5,7 @@ import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.ui.context.Context;
-import uia.physical.Component;
+import uia.physical.component.Component;
 import uia.physical.ComponentImage;
 import uia.physical.theme.Theme;
 

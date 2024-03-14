@@ -9,7 +9,7 @@ import uia.core.ui.callbacks.OnClick;
 import uia.physical.theme.Theme;
 import uia.physical.WrapperView;
 import uia.utility.Geometries;
-import uia.physical.Component;
+import uia.physical.component.Component;
 import uia.physical.ComponentGroup;
 import uia.physical.ComponentText;
 import uia.utility.MathUtility;

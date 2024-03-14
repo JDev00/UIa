@@ -6,7 +6,7 @@ import uia.application.UIToggleButton;
 import uia.application.UICalendar;
 import uia.core.ui.context.Context;
 import uia.core.ui.ViewGroup;
-import uia.physical.Component;
+import uia.physical.component.Component;
 import uia.physical.theme.Theme;
 
 import static test.__tests__.utility.TestUtility.*;
