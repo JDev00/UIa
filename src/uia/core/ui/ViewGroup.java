@@ -1,5 +1,7 @@
 package uia.core.ui;
 
+import uia.core.basement.Message;
+
 import java.util.Objects;
 
 /**
@@ -50,6 +52,17 @@ public interface ViewGroup extends View, Iterable<View> {
      */
     @Override
     void setVisible(boolean visible);
+
+    /**
+     * Reads the specified message and dispatches it to the children.
+     *
+     * @param message a message to be read and sent to the children
+     * @throws NullPointerException if {@code message == null}
+     * @implSpec the specified message must also be sent to the children.
+     */
+
+    @Override
+    void readMessage(Message message);
 
     /**
      * The clip feature ensures that any graphical component outside the group boundaries won't be drawn.

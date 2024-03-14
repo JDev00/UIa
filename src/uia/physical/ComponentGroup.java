@@ -61,6 +61,20 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     }
 
     @Override
+    public void readMessage(Message message) {
+        if (message instanceof EventTouchScreenMessage) {
+            dispatchScreenEventMessage(message);
+            super.readMessage(message);
+        } else if (message instanceof EventKeyMessage) {
+            dispatchKeyMessage(message);
+            super.readMessage(message);
+        } else {
+            super.readMessage(message);
+            dispatchMessageToViews(message);
+        }
+    }
+
+    @Override
     public void setClip(boolean clipRegion) {
         clip = clipRegion;
     }
@@ -143,20 +157,6 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         Message outMessage = Messages.newScreenEventMessage(screenTouches, message.getRecipient());
         for (int i = views.size() - 1; i >= 0; i--) {
             views.get(i).readMessage(outMessage);
-        }
-    }
-
-    @Override
-    public void readMessage(Message message) {
-        if (message instanceof EventTouchScreenMessage) {
-            dispatchScreenEventMessage(message);
-            super.readMessage(message);
-        } else if (message instanceof EventKeyMessage) {
-            dispatchKeyMessage(message);
-            super.readMessage(message);
-        } else {
-            super.readMessage(message);
-            dispatchMessageToViews(message);
         }
     }
 
