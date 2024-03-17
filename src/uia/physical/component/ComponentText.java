@@ -14,6 +14,8 @@ import uia.physical.component.text.TextRenderer;
 import uia.physical.component.text.InlineTextRenderer;
 import uia.physical.theme.Theme;
 
+import java.util.Objects;
+
 /**
  * Implementation of {@link ViewText}
  * <br>
@@ -51,7 +53,7 @@ public final class ComponentText extends WrapperView implements ViewText {
 
         textRenderer = new TextRenderer[]{new InlineTextRenderer(), new MultilineTextRenderer()};
 
-        font = new Font("Arial", Font.Style.PLAIN, Font.DESKTOP_SIZE);
+        font = Font.createDesktopFont(Font.Style.PLAIN);
 
         paintText = new Paint().setColor(Theme.BLACK);
 
@@ -66,7 +68,8 @@ public final class ComponentText extends WrapperView implements ViewText {
 
     @Override
     public void setFont(Font font) {
-        if (font != null) this.font = font;
+        Objects.requireNonNull(font);
+        this.font = font;
     }
 
     @Override
@@ -206,12 +209,12 @@ public final class ComponentText extends WrapperView implements ViewText {
 
         if (isVisible()) {
             float[] bounds = getBounds();
-            float w = getWidth();
-            float h = getHeight();
+            float width = getWidth();
+            float height = getHeight();
 
-            calculateAndSetScrollerData(w, h);
-            updateTextBounds(bounds, w, h);
-            updateClipShape(bounds, w, h);
+            calculateAndSetScrollerData(width, height);
+            updateTextBounds(bounds, width, height);
+            updateClipShape(bounds, width, height);
         }
     }
 
@@ -224,9 +227,14 @@ public final class ComponentText extends WrapperView implements ViewText {
             graphics.setPaint(paintText);
             graphics.setClip(clipShape);
 
-            int index = singleLine ? 0 : 1;
-            textBounds[2] = textRenderer[index].draw(this, graphics, !text.isEmpty() ? text : description,
-                    textBounds[0], textBounds[1], textBounds[4]);
+            String textToDisplay = !text.isEmpty() ? text : description;
+            int renderer = singleLine ? 0 : 1;
+            textBounds[2] = textRenderer[renderer].draw(this, graphics,
+                    textToDisplay,
+                    textBounds[0],
+                    textBounds[1],
+                    textBounds[4]
+            );
 
             graphics.restoreClip();
         }

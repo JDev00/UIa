@@ -60,7 +60,8 @@ public interface ViewText extends View {
     /**
      * Sets a new text font.
      *
-     * @param font a {@link Font} object; if it is null, the parent font will be used.
+     * @param font a {@link Font} object
+     * @throws NullPointerException if {@code font == null}
      */
 
     void setFont(Font font);
