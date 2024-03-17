@@ -90,7 +90,7 @@ public class HelloWorld extends WrapperView {
         viewText.setText("Show\npopup!");
         // get the ViewText's Font and set a new size and a new style
         viewText.getFont()
-                .setStyle(Font.STYLE.BOLD)
+                .setStyle(Font.Style.BOLD)
                 .setSize(18);
         // get the Paint used by viewText and set a new color
         viewText.getTextPaint().setColor(Theme.LIME);
@@ -109,11 +109,11 @@ public class HelloWorld extends WrapperView {
         // hide this popup at the beginning
         result.setVisible(false);
         // set some text to this popup
-        result.setText("Hi, I'm a popup!");
+        result.setText("Hello!\nI'm a simple popup.");
         // set text properties
         result.setAlign(ViewText.AlignY.CENTER);
         result.getFont()
-                .setStyle(Font.STYLE.ITALIC)
+                .setStyle(Font.Style.ITALIC)
                 .setLeadingFactor(1.2f)
                 .setSize(25);
         // set text color
