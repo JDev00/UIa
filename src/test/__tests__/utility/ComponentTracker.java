@@ -21,7 +21,7 @@ public class ComponentTracker extends WrapperView {
 
         viewText = this.getView();
         viewText.setAlign(ViewText.AlignY.CENTER);
-        viewText.getFont().setStyle(Font.STYLE.ITALIC);
+        viewText.getFont().setStyle(Font.Style.ITALIC);
     }
 
     @Override

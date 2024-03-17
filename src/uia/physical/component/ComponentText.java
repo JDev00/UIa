@@ -51,7 +51,7 @@ public final class ComponentText extends WrapperView implements ViewText {
 
         textRenderer = new TextRenderer[]{new InlineTextRenderer(), new MultilineTextRenderer()};
 
-        font = new Font("Arial", Font.STYLE.PLAIN, Font.FONT_SIZE_DESKTOP);
+        font = new Font("Arial", Font.Style.PLAIN, Font.DESKTOP_SIZE);
 
         paintText = new Paint().setColor(Theme.BLACK);
 
