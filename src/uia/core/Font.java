@@ -296,6 +296,19 @@ public class Font {
     }
 
     /**
+     * Copies the specified font.
+     *
+     * @param font a font to be copied
+     * @return a new font as a copy of the given font
+     * @throws NullPointerException if {@code font == null}
+     */
+
+    public static Font copy(Font font) {
+        Objects.requireNonNull(font);
+        return new Font(font.getName(), font.getStyle(), font.getSize());
+    }
+
+    /**
      * Creates a new desktop Font of "Arial" type.
      *
      * @return a new {@link Font} object
