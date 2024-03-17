@@ -3,58 +3,78 @@ package uia.core;
 import java.util.Objects;
 
 /**
- * Platform font abstraction.
+ * Font abstraction.
  * <br>
- * The Font class acts as an adapter: the native font must be set with {@link #setNative(Object, float, float, float, Measure)}.
+ * The Font class acts as an adapter: the native font must be set with
+ * {@link #setNative(Object, float, float, float, Measure)}.
  */
 
 public class Font {
-    private static final Measure NO_MEASURE = (off, len, in) -> 0;
+    private static final Measure NO_MEASURE = (offset, length, text) -> 0;
 
     /**
-     * Default Desktop Font size
+     * Default desktop font size.
      */
 
-    public static final float FONT_SIZE_DESKTOP = 21f;
+    public static final float DESKTOP_SIZE = 21f;
 
     /**
-     * Font styles
+     * Font style representation.
      */
 
-    public enum STYLE {PLAIN, BOLD, ITALIC}
+    public enum Style {PLAIN, BOLD, ITALIC}
 
+    private Measure measure = NO_MEASURE;
+    private Object nativeFont;
+
+    private Style style;
     private String name;
-    private STYLE style;
     private float size;
-
     private float ascent = 1f;
     private float descent = 1f;
     private float leading = 1f;
     private float leadingFactor = 1f;
 
-    private Measure measure = NO_MEASURE;
-    private Object nativeFont;
-
-    public Font(String name, STYLE style, float size) {
+    public Font(String name, Style style, float size) {
         this.name = name;
         this.style = style;
         this.size = size;
     }
 
     /**
-     * Measure ADT
+     * Measure ADT.
+     * <br>
+     * Measure is responsible for measuring text based on a given Font.
      */
 
     public interface Measure {
 
         /**
-         * @param in  an array of chars to measure
-         * @param off the first position used to measure the array
-         * @param len the number of chars to measure
+         * Measures the given text and returns its length in pixels.
+         *
+         * @param text   the text to be measured
+         * @param offset the position (index) of the first character to be taken into account when measuring text
+         * @param length the number of text characters to be measured
          * @return the width in pixels of the given array
          */
 
-        float width(int off, int len, char... in);
+        float width(int offset, int length, char... text);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Font font = (Font) o;
+        return Float.compare(size, font.size) == 0
+                && Float.compare(leadingFactor, font.leadingFactor) == 0
+                && Objects.equals(name, font.name)
+                && style == font.style;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, style, size, leadingFactor);
     }
 
     @Override
@@ -67,12 +87,12 @@ public class Font {
                 ", descent=" + descent +
                 ", leading=" + leading +
                 ", leadingFactor=" + leadingFactor +
-                ", nativeFont=" + nativeFont +
+                ", measure=" + measure +
                 '}';
     }
 
     /**
-     * Invalidate this Font and force the system to rebuild its state
+     * Invalidates this font and force UIa to rebuild its state.
      */
 
     public void invalidate() {
@@ -88,10 +108,13 @@ public class Font {
     }
 
     /**
-     * Set the native Font and FontMetrics objects
+     * Sets the native Font and the {@link Measure} object.
      *
      * @param nativeFont the native Font object
-     * @param measure    a {@link Measure} object
+     * @param ascent     the font ascent
+     * @param descent    the font descent
+     * @param leading    the font leading
+     * @param measure    the font {@link Measure} object
      */
 
     public void setNative(Object nativeFont, float ascent, float descent, float leading, Measure measure) {
@@ -111,13 +134,16 @@ public class Font {
     }
 
     /**
-     * Copy and set the given Font
+     * Copies and sets the specified font.
      *
-     * @param font a not null {@link Font} to copy
+     * @param font a {@link Font} to be copied
+     * @return this font
      * @throws NullPointerException if {@code font == null}
      */
 
     public Font set(Font font) {
+        Objects.requireNonNull(font);
+
         name = font.name;
         size = font.size;
         style = font.style;
@@ -128,9 +154,10 @@ public class Font {
     }
 
     /**
-     * Change the Font's name
+     * Changes font name.
      *
-     * @param name a not null String
+     * @param name the new font name; if null, nothing is done
+     * @return this font
      */
 
     public Font setName(String name) {
@@ -142,7 +169,7 @@ public class Font {
     }
 
     /**
-     * @return the Font's name
+     * @return the font name
      */
 
     public String getName() {
@@ -150,12 +177,13 @@ public class Font {
     }
 
     /**
-     * Change the Font's style
+     * Changes font style.
      *
-     * @param style a not null {@link STYLE}
+     * @param style the new font {@link Style}; if null, nothing is done
+     * @return this font
      */
 
-    public Font setStyle(STYLE style) {
+    public Font setStyle(Style style) {
         if (style != null) {
             this.style = style;
             invalidate();
@@ -164,17 +192,18 @@ public class Font {
     }
 
     /**
-     * @return the Font {@link STYLE}
+     * @return the font {@link Style}
      */
 
-    public STYLE getStyle() {
+    public Style getStyle() {
         return style;
     }
 
     /**
-     * Change the Font's size
+     * Changes font size.
      *
-     * @param size a value greater than zero
+     * @param size the new font size; if it is less than 1, nothing is done
+     * @return this font
      */
 
     public Font setSize(float size) {
@@ -186,7 +215,7 @@ public class Font {
     }
 
     /**
-     * @return the Font size
+     * @return the font size
      */
 
     public float getSize() {
@@ -194,9 +223,10 @@ public class Font {
     }
 
     /**
-     * Set the leading multiple factor
+     * Sets the leading multiplier factor.
      *
      * @param leadingFactor a value {@code > 0} used to multiply the current font leading value
+     * @return this font
      */
 
     public Font setLeadingFactor(float leadingFactor) {
@@ -205,7 +235,7 @@ public class Font {
     }
 
     /**
-     * @return the font's ascent
+     * @return the font ascent value
      */
 
     public float getAscent() {
@@ -213,7 +243,7 @@ public class Font {
     }
 
     /**
-     * @return the font's descent
+     * @return the font descent value
      */
 
     public float getDescent() {
@@ -221,7 +251,7 @@ public class Font {
     }
 
     /**
-     * @return the leading value, eventually multiplied by the leadingFactor
+     * @return the leading value multiplied by the leadingFactor
      */
 
     public float getLeading() {
@@ -229,7 +259,7 @@ public class Font {
     }
 
     /**
-     * @return the height of a line of text in pixel
+     * @return the height of a line of text in pixels
      */
 
     public float getLineHeight() {
@@ -237,39 +267,43 @@ public class Font {
     }
 
     /**
-     * @return the given char's width in pixel
+     * @return the width in pixels of the provided character
      */
 
-    public float getWidth(char c) {
-        return measure.width(0, 1, c);
+    public float getWidth(char character) {
+        return measure.width(0, 1, character);
     }
 
     /**
-     * @param off the initial position offset
-     * @param len the amount of chars to measure
-     * @param in  a not null array to measure
-     * @return the chars cumulative width in pixel
-     * @throws NullPointerException      if {@code in == null}
-     * @throws IndexOutOfBoundsException if {@code (off < 0 or off >= in.length) or (len < 0 or len > in.length - offset)}
+     * Returns the width in pixels of the given text.
+     *
+     * @param offset the initial position offset
+     * @param length the amount of chars to measure
+     * @param text   the text to be measured
+     * @return the width in pixels of the provided text
+     * @throws NullPointerException      if {@code text == null}
+     * @throws IndexOutOfBoundsException when:
+     *                                   <ul>
+     *                                       <li>offset < 0</li>
+     *                                       <li>offset >= text.length</li>
+     *                                       <li>length < 0</li>
+     *                                       <li>length > text.length - offset</li>
+     *                                   </ul>
      */
 
-    public float getWidth(int off, int len, char... in) {
-        return measure.width(off, len, in);
+    public float getWidth(int offset, int length, char... text) {
+        return measure.width(offset, length, text);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Font font = (Font) o;
-        return Float.compare(size, font.size) == 0
-                && Float.compare(leadingFactor, font.leadingFactor) == 0
-                && Objects.equals(name, font.name)
-                && style == font.style;
-    }
+    /**
+     * Creates a new desktop Font of "Arial" type.
+     *
+     * @return a new {@link Font} object
+     * @throws NullPointerException if {@code style == null}
+     */
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, style, size, leadingFactor);
+    public static Font createDesktopFont(Style style) {
+        Objects.requireNonNull(style);
+        return new Font("Arial", style, Font.DESKTOP_SIZE);
     }
 }
