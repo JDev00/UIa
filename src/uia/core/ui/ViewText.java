@@ -12,39 +12,41 @@ import uia.core.paint.Paint;
 public interface ViewText extends View {
 
     /**
-     * Align text along x-axis
+     * Align text on the x-axis.
      */
     enum AlignX {LEFT, CENTER, RIGHT}
 
     /**
-     * Align text along y-axis
+     * Align text on the y-axis.
      */
     enum AlignY {TOP, CENTER}
 
     /**
-     * Set the text alignment along x-axis
+     * Sets the text alignment on the x-axis.
      *
      * @param alignX a not null {@link AlignX}
+     * @throws NullPointerException if {@code alignX == null}
      */
 
     void setAlign(AlignX alignX);
 
     /**
-     * @return the text alignment along x-axis
+     * @return the text alignment on the x-axis
      */
 
     AlignX getAlignX();
 
     /**
-     * Set the text alignment along y-axis
+     * Sets the text alignment on the y-axis.
      *
      * @param alignY a not null {@link AlignY}
+     * @throws NullPointerException if {@code alignY == null}
      */
 
     void setAlign(AlignY alignY);
 
     /**
-     * @return the text alignment along y-axis
+     * @return the text alignment on the y-axis
      */
 
     AlignY getAlignY();
@@ -56,9 +58,9 @@ public interface ViewText extends View {
     Paint getTextPaint();
 
     /**
-     * Sets a new Font for text
+     * Sets a new text font.
      *
-     * @param font a not null {@link Font} object
+     * @param font a {@link Font} object; if it is null, the parent font will be used.
      */
 
     void setFont(Font font);
@@ -84,19 +86,19 @@ public interface ViewText extends View {
     boolean isSingleLine();
 
     /**
-     * Set a description to display when no text is available.
+     * Sets a description to display when no text is available.
      *
-     * @param description a String; it could be null
+     * @param description the description to be displayed; it could be null
      */
 
     void setDescription(String description);
 
     /**
-     * Sets a String to display.
+     * Sets a text to be displayed.
      * <br>
      * A null String will reset the text and all its attributes.
      *
-     * @param text a String to display; it could be null
+     * @param text the text to be displayed; it could be null
      */
 
     void setText(String text);
@@ -145,10 +147,10 @@ public interface ViewText extends View {
      * @return the number of break lines in the specified String or 0 if it is null
      */
 
-    static int countLines(String string) {
+    static int countLines(String text) {
         int lines = 0;
-        if (string != null) {
-            char[] chars = string.toCharArray();
+        if (text != null) {
+            char[] chars = text.toCharArray();
             for (char i : chars) {
                 if (i == '\n') {
                     lines++;
