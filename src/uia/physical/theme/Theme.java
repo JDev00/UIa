@@ -25,6 +25,7 @@ public interface Theme {
     Color DARK_RED = Color.createColor(139, 0, 0);
     Color CHOCOLATE = Color.createColor(210, 105, 30);
     Color LIGHT_CORAL = Color.createColor(240, 128, 128);
+    Color PINK = Color.createColor(255, 192, 203);
 
     // green
     Color LIME = Color.createColor(0, 255, 0);
