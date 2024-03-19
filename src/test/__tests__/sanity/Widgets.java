@@ -3,7 +3,7 @@ package test.__tests__.sanity;
 import uia.application.UIButtonFilled;
 import uia.application.UIButtonList;
 import uia.application.UIToggleButton;
-import uia.application.UICalendar;
+import uia.application.calendar.UICalendar;
 import uia.core.ui.context.Context;
 import uia.core.ui.ViewGroup;
 import uia.physical.component.Component;
