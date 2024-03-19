@@ -19,7 +19,6 @@ import uia.core.ui.View;
 import uia.core.ui.ViewText;
 import uia.core.ui.callbacks.OnMouseEnter;
 import uia.core.ui.callbacks.OnMouseExit;
-import uia.core.basement.Callback;
 import uia.core.ui.callbacks.OnClick;
 import uia.utility.CalendarUtility;
 import uia.utility.MathUtility;
@@ -115,24 +114,6 @@ public final class UICalendar extends WrapperView {
         // sets the current date
         int[] currentDate = CalendarUtility.getDate();
         setDate(currentDate[0], currentDate[1], currentDate[2]);
-    }
-
-    /**
-     * Callback invoked when a day or day range is selected.
-     * <br>
-     * It provides the selected day range.
-     */
-
-    public interface OnSelect extends Callback<Integer[]> {
-    }
-
-    /**
-     * Callback invoked when a change in calendar month or year is detected.
-     * <br>
-     * It provides the date as an array made of: day, month and year.
-     */
-
-    public interface OnChange extends Callback<Integer[]> {
     }
 
     /**
