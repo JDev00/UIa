@@ -5,10 +5,10 @@ import uia.utility.MathUtility;
 import static java.lang.Math.abs;
 
 /**
- * Collider can be seen as an invisible cloth that wrap an object. It allows for collision detection between two objects.
+ * Collidable allows for collision detection with another object.
  */
 
-public interface Collider {
+public interface Collidable {
 
     /**
      * ColliderPolicy defines some common-supported collisions detection mechanisms between two objects.
@@ -24,13 +24,26 @@ public interface Collider {
     enum ColliderPolicy {AABB, CIRCLE, SAT}
 
     /**
-     * Sets the collision detection mechanism.
+     * Sets the collision detection policy.
      *
      * @param colliderPolicy a not null {@link ColliderPolicy}
      * @throws NullPointerException if {@code colliderPolicy == null}
      */
 
     void setColliderPolicy(ColliderPolicy colliderPolicy);
+
+    /**
+     * Checks if the specified point is inside this collider.
+     * <br>
+     * The algorithm, used to check for a collision, is selected according to the specified collision
+     * policy (set with {@link #setColliderPolicy(ColliderPolicy)}).
+     *
+     * @param x the point position on the x-axis
+     * @param y the point position on the y-axis
+     * @return true if the specified point is inside this collider
+     */
+
+    boolean contains(float x, float y);
 
     /**
      * Returns the collider boundaries as a rectangle.
@@ -48,19 +61,6 @@ public interface Collider {
      */
 
     float[] getBounds();
-
-    /**
-     * Checks if the specified point is inside this collider.
-     * <br>
-     * The algorithm, used to check for a collision, is selected according to the specified collision
-     * policy (set with {@link #setColliderPolicy(ColliderPolicy)}).
-     *
-     * @param x the point position on the x-axis
-     * @param y the point position on the y-axis
-     * @return true if the specified point is inside this collider
-     */
-
-    boolean contains(float x, float y);
 
     /**
      * Checks if two rectangles intersect.

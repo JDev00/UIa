@@ -16,7 +16,7 @@ import static uia.utility.MathUtility.*;
  * <b>A View is identified by an ID assigned at declaration time.</b>
  */
 
-public interface View extends Callable, Drawable, Collider {
+public interface View extends Callable, Drawable, Collidable {
 
     enum Consumer {SCREEN_TOUCH, KEY}
 

@@ -1,7 +1,7 @@
 package test.__tests__.view;
 
 import test.core.*;
-import uia.core.basement.Collider;
+import uia.core.basement.Collidable;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.*;
@@ -40,8 +40,8 @@ public class test {
         float height = rootView.getHeight();
         float rotation = bounds[4];
 
-        float expectedBoundsWidth = Collider.colliderWidth(width, height, rotation);
-        float expectedBoundsHeight = Collider.colliderHeight(width, height, rotation);
+        float expectedBoundsWidth = Collidable.colliderWidth(width, height, rotation);
+        float expectedBoundsHeight = Collidable.colliderHeight(width, height, rotation);
 
         testAssertion.expect(rotation).toBe(ROTATION);
         testAssertion.expect(bounds[2]).toBe(expectedBoundsWidth);

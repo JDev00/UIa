@@ -1,6 +1,6 @@
 package uia.core.shape;
 
-import uia.core.basement.Collider;
+import uia.core.basement.Collidable;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -19,7 +19,7 @@ import static uia.utility.MathUtility.*;
  * <b>By design, shape geometry is center based.</b>
  */
 
-public class Shape implements Collider {
+public class Shape implements Collidable {
     private Geometry geometry;
     private ColliderPolicy policy = ColliderPolicy.SAT;
 
@@ -76,8 +76,8 @@ public class Shape implements Collider {
 
     private void updateDimension() {
         float rotation = bounds[4];
-        r_width = Collider.colliderWidth(bounds[2], bounds[3], rotation);
-        r_height = Collider.colliderHeight(bounds[2], bounds[3], rotation);
+        r_width = Collidable.colliderWidth(bounds[2], bounds[3], rotation);
+        r_height = Collidable.colliderHeight(bounds[2], bounds[3], rotation);
     }
 
     /**
@@ -171,7 +171,7 @@ public class Shape implements Collider {
      */
 
     private boolean containsRECT(float x, float y) {
-        return Collider.intersects(bounds[0], bounds[1], r_width, r_height, x, y, 1, 1);
+        return Collidable.intersects(bounds[0], bounds[1], r_width, r_height, x, y, 1, 1);
     }
 
     /**
