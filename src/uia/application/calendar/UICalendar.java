@@ -221,7 +221,7 @@ public final class UICalendar extends WrapperView {
         }
 
         int[] rangeCopy = {range[0], range[1]};
-        notifyCallbacks(OnSelect.class, rangeCopy);
+        notifyCallbacks(OnDaySelect.class, rangeCopy);
     }
 
     /**
