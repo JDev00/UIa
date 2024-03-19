@@ -278,7 +278,7 @@ public final class UICalendar extends WrapperView {
 
         markCurrentDateCell(currentDate[0]);
 
-        notifyCallbacks(OnChange.class, getDate());
+        notifyCallbacks(OnDateChange.class, getDate());
     }
 
     /**
