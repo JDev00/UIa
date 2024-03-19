@@ -27,7 +27,7 @@ import uia.utility.Geometries;
 import java.util.*;
 
 /**
- * UIa built-in gregorian calendar.
+ * Standard UIa gregorian calendar.
  */
 
 public final class UICalendar extends WrapperView {
@@ -557,8 +557,8 @@ public final class UICalendar extends WrapperView {
         );
         calendar.setSelectionType(SelectionType.RANGE);
         calendar.setDaySelectionInterval(10, 20);
-        calendar.setSelectionType(SelectionType.SINGLE);
-        calendar.setDaySelectionInterval(0, 0);
+        //calendar.setSelectionType(SelectionType.SINGLE);
+        //calendar.setDaySelectionInterval(0, 0);
 
         Context context = TestUtility.createMockContext();
         context.setView(calendar);
