@@ -3,7 +3,8 @@ package test.__tests__.sanity;
 import uia.application.UIButtonFilled;
 import uia.application.UIButtonList;
 import uia.application.UIToggleButton;
-import uia.application.calendar.UICalendar;
+import uia.application.calendar.CalendarView;
+import uia.application.calendar.SingleDaySelectionCalendar;
 import uia.core.ui.context.Context;
 import uia.core.ui.ViewGroup;
 import uia.physical.component.Component;
@@ -41,7 +42,7 @@ public class Widgets {
         );
         buttonList.setText("1\n1", "2", "3", "4", "5");
 
-        UICalendar calendar = new UICalendar(
+        CalendarView calendar = new SingleDaySelectionCalendar(
                 new Component("CALENDAR", 0.15f, 0.7f, 0.25f, 0.5f)
         );
         calendar.setRotation(0.05f);
