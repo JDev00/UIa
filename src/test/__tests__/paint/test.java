@@ -40,7 +40,7 @@ public class test {
                 strokeColor.getRed(),
                 strokeColor.getGreen(),
                 strokeColor.getBlue(),
-                255
+                strokeColor.getAlpha()
         );
 
         int expectedStrokeWidth = paint.getStrokeWidth();
@@ -70,7 +70,7 @@ public class test {
                 strokeColor.getRed(),
                 strokeColor.getGreen(),
                 strokeColor.getBlue(),
-                255
+                strokeColor.getAlpha()
         );
 
         int expectedStrokeWidth = paint.getStrokeWidth();
