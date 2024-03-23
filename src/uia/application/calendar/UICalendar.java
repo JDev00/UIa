@@ -1,24 +1,18 @@
 package uia.application.calendar;
 
-import test.__tests__.utility.TestUtility;
 import uia.application.UIButtonList;
 import uia.core.paint.Color;
 import uia.core.paint.Paint;
 import uia.core.basement.Drawable;
 import uia.core.ui.ViewGroup;
-import uia.core.ui.context.Context;
 import uia.physical.component.Component;
-import uia.physical.component.ComponentText;
 import uia.physical.component.WrapperView;
-import uia.physical.component.WrapperViewText;
 import uia.physical.group.ComponentGroup;
 import uia.physical.theme.Theme;
 import uia.physical.theme.ThemeDarcula;
 import uia.core.*;
 import uia.core.ui.View;
 import uia.core.ui.ViewText;
-import uia.core.ui.callbacks.OnMouseEnter;
-import uia.core.ui.callbacks.OnMouseExit;
 import uia.core.ui.callbacks.OnClick;
 import uia.utility.CalendarUtility;
 import uia.utility.MathUtility;
@@ -28,21 +22,17 @@ import java.util.*;
 
 /**
  * Standard UIa gregorian calendar.
+ *
+ * @deprecated
  */
 
 public final class UICalendar extends WrapperView {
 
     public enum SelectionType {SINGLE, RANGE}
 
-    public static final String[] WEEK = new String[]{"M", "T", "W", "T", "F", "S", "S"};
-    public static final String[] MONTHS = new String[]{
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-    };
-
     private final Calendar calendar;
     private final UIButtonList header;
-    private final Cell[] cells = new Cell[38];
+    private final CalendarCell[] cells = new CalendarCell[38];
     private final View overlayCell;
     private final Font font;
     private final Paint[] paintCell = {
@@ -88,12 +78,12 @@ public final class UICalendar extends WrapperView {
         );
 
         for (int i = 0; i < 7; i++) {
-            cells[i] = Cell.createWeekDay(WEEK[i]);
+            cells[i] = CalendarCell.createWeekDay(CalendarView.WEEK[i]);
             cells[i].getTextPaint().setColor(Theme.BLUE);
         }
 
         for (int i = 0; i < 31; i++) {
-            Cell cell = Cell.createDay(String.valueOf(i + 1));
+            CalendarCell cell = CalendarCell.createDay(String.valueOf(i + 1));
             cell.registerCallback((OnClick) touches -> {
                 int day = Integer.parseInt(cell.getText()) - 1;
                 updateDaySelection(day);
@@ -102,7 +92,7 @@ public final class UICalendar extends WrapperView {
             cells[i + 7] = cell;
         }
 
-        for (Cell cell : cells) {
+        for (CalendarCell cell : cells) {
             cell.getPaint().set(paintCell[0]);
             cell.setFont(font);
         }
@@ -122,7 +112,7 @@ public final class UICalendar extends WrapperView {
 
     private void updateDayCellsHighlight() {
         for (int j = 0; j < 31; j++) {
-            Cell currentCell = cells[7 + j];
+            CalendarCell currentCell = cells[7 + j];
             Paint cellPaint = currentCell.getPaint();
             if (currentCell.selected) {
                 cellPaint.set(paintCell[1]);
@@ -160,19 +150,19 @@ public final class UICalendar extends WrapperView {
         int minValue = Math.min(range[0], range[1]);
         int maxValue = Math.max(range[0], range[1]);
         for (int j = 0; j < 31; j++) {
-            Cell currentCell = cells[7 + j];
+            CalendarCell currentCell = cells[7 + j];
             currentCell.selected = j == day || range[1] >= 0 && j >= minValue && j <= maxValue;
             currentCell.setGeometry(Geometries::rect, false);
         }
 
         // update cells geometry
         if (range[1] != -1) {
-            Cell startCell = cells[7 + minValue];
+            CalendarCell startCell = cells[7 + minValue];
             startCell.setGeometry(
                     g -> Geometries.rect(g, Geometries.STD_VERT, 1f, 0f, 0f, 1f, startCell.getWidth() / startCell.getHeight()),
                     true);
 
-            Cell endCell = cells[7 + maxValue];
+            CalendarCell endCell = cells[7 + maxValue];
             endCell.setGeometry(
                     g -> Geometries.rect(g, Geometries.STD_VERT, 0f, 1f, 1f, 0f, endCell.getWidth() / endCell.getHeight()),
                     true);
@@ -195,12 +185,12 @@ public final class UICalendar extends WrapperView {
         range[0] = range[1] = day;
 
         for (int j = 0; j < 31; j++) {
-            Cell currentCell = cells[7 + j];
+            CalendarCell currentCell = cells[7 + j];
             currentCell.setGeometry(Geometries::rect, false);
             currentCell.selected = false;
         }
 
-        Cell selectedCell = cells[7 + day];
+        CalendarCell selectedCell = cells[7 + day];
         selectedCell.selected = true;
         selectedCell.setGeometry(
                 g -> Geometries.rect(g, Geometries.STD_VERT, 1f, selectedCell.getWidth() / selectedCell.getHeight()),
@@ -231,7 +221,7 @@ public final class UICalendar extends WrapperView {
      */
 
     private void markCurrentDateCell(int day) {
-        for (Cell cell : cells) {
+        for (CalendarCell cell : cells) {
             cell.current = false;
         }
         // update current cell
@@ -274,7 +264,7 @@ public final class UICalendar extends WrapperView {
         currentDate[2] = year;
 
         // update month
-        header.setText(MONTHS[month - 1] + " " + year);
+        header.setText(CalendarView.MONTHS[month - 1] + " " + year);
 
         markCurrentDateCell(currentDate[0]);
 
@@ -382,7 +372,7 @@ public final class UICalendar extends WrapperView {
             float px = 0.15f + cellDim[0] * ((i + offset) % 7);
             float py = posY + gap * ((i + offset) / 7);
 
-            Cell cell = cells[7 + i];
+            CalendarCell cell = cells[7 + i];
             cell.setPosition(px, py);
             cell.setVisible(i < days);
 
@@ -419,7 +409,7 @@ public final class UICalendar extends WrapperView {
             float dayCellPosY = weekCellPosY + cellDim[0];
             updateDayCells(dayCellPosY, cellDim);
 
-            for (Cell cell : cells) {
+            for (CalendarCell cell : cells) {
                 cell.setDimension(cellDim[0], cellDim[1]);
                 cell.update(this);
             }
@@ -506,61 +496,5 @@ public final class UICalendar extends WrapperView {
         left.getPaint().setColor(Theme.WHITE);
 
         return result;
-    }
-
-    /**
-     * Cell is a generic item used to represent a day or a week day.
-     */
-
-    private static class Cell extends WrapperViewText {
-        public boolean selected = false;
-        public boolean current = false;
-        public boolean active = false;
-
-        public Cell(String id) {
-            super(new ComponentText(
-                    new Component("CALENDAR_CELL_" + id, 0f, 0f, 0f, 0f))
-            );
-            registerCallback((OnMouseEnter) touches -> active = true);
-            registerCallback((OnMouseExit) touches -> active = false);
-            setConsumer(Consumer.SCREEN_TOUCH, false);
-            setAlign(ViewText.AlignY.CENTER);
-        }
-
-        /**
-         * Creates a new Cell used to represent a week day.
-         */
-
-        public static Cell createWeekDay(String weekDay) {
-            Cell cell = new Cell(weekDay);
-            cell.setText(weekDay);
-            cell.getTextPaint().setColor(ThemeDarcula.BLUE);
-            return cell;
-        }
-
-        /**
-         * Creates a new Cell used to represent a day.
-         */
-
-        public static Cell createDay(String day) {
-            Cell cell = new Cell(day);
-            cell.setText(day);
-            cell.getTextPaint().setColor(Theme.WHITE);
-            return cell;
-        }
-
-    }
-
-    public static void main(String[] args) {
-        UICalendar calendar = new UICalendar(
-                new Component("CALENDAR", 0.5f, 0.5f, 0.5f, 0.5f)
-        );
-        calendar.setSelectionType(SelectionType.RANGE);
-        calendar.setDaySelectionInterval(10, 20);
-        //calendar.setSelectionType(SelectionType.SINGLE);
-        //calendar.setDaySelectionInterval(0, 0);
-
-        Context context = TestUtility.createMockContext();
-        context.setView(calendar);
     }
 }
