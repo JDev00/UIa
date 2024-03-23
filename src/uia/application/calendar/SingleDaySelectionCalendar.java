@@ -12,10 +12,12 @@ import uia.utility.Geometries;
  */
 
 public class SingleDaySelectionCalendar extends AbstractCalendarView {
-    private final Paint[] paintCell = {
-            new Paint().setColor(Theme.TRANSPARENT),
-            new Paint().setColor(ThemeDarcula.BLUE)
-    };
+    private final Paint deselectedCellPaint = new Paint()
+            .setColor(Theme.TRANSPARENT)
+            .setTextColor(Theme.WHITE);
+    private final Paint selectedCellPaint = new Paint()
+            .setColor(ThemeDarcula.BLUE)
+            .setTextColor(Theme.WHITE);
 
     public SingleDaySelectionCalendar(View view) {
         super(view);
@@ -48,9 +50,9 @@ public class SingleDaySelectionCalendar extends AbstractCalendarView {
         for (int i = 1; i <= 31; i++) {
             Paint cellPaint = getDayCellPaint(i);
             if (isDayMarkedAsSelected(i)) {
-                cellPaint.set(paintCell[1]);
+                cellPaint.set(selectedCellPaint);
             } else {
-                cellPaint.set(paintCell[0]);
+                cellPaint.set(deselectedCellPaint);
             }
         }
     }
