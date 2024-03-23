@@ -1,5 +1,7 @@
 package uia.application.calendar;
 
+import uia.core.ui.View;
+
 import java.util.List;
 
 /**
@@ -8,7 +10,7 @@ import java.util.List;
  * CalendarView is responsible for drawing a calendar.
  */
 
-public interface CalendarView {
+public interface CalendarView extends View {
     String[] WEEK = {
             "M", "T", "W", "T", "F", "S", "S"
     };
