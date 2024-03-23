@@ -10,10 +10,10 @@ import uia.physical.message.Messages;
 import static test.__tests__.utility.TestUtility.*;
 
 /**
- * Unit tests
+ * Unit tests.
  */
 
-public class MessagingSystemTest {
+public class messagingSystemTest {
     Context context;
     ViewGroup rootView;
 
@@ -50,6 +50,6 @@ public class MessagingSystemTest {
     }
 
     public static void main(String[] args) {
-        TestExecutor.runTests(new MessagingSystemTest());
+        TestExecutor.runTests(new messagingSystemTest());
     }
 }
