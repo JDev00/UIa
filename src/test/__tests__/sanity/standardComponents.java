@@ -23,6 +23,7 @@ public class standardComponents {
 
     public static ViewGroup buildBasementsComponents() {
         ViewText text = createViewText("TEXT", 0.33f, 0.45f, 0.5f, 0.75f);
+        text.getPaint().setTextColor(Theme.LIME);
         text.setAlign(ViewText.AlignX.RIGHT);
         text.setAlign(ViewText.AlignY.CENTER);
         text.setText("Hello world!");
@@ -31,8 +32,8 @@ public class standardComponents {
         ComponentImage image = new ComponentImage(
                 new Component("IMAGE", 0.7f, 0.5f, 0.33f, 0.5f)
         );
-        image.getImage().load("sample\\img0.png");
         image.registerCallback((OnClick) touches -> System.out.println("ComponentImage clicked!"));
+        image.getImage().load("sample\\img0.png");
 
         ViewGroup group = createViewGroup("GROUP", 0.4f, 0.5f, 0.5f, 0.5f);
         group.getPaint().setColor(Theme.LIGHT_GRAY);

@@ -69,31 +69,32 @@ public class HelloWorld extends WrapperView {
      */
 
     private static UIButton createCustomButton() {
-        UIButton result = new UIButton(new ComponentText(
+        ViewText text = new ComponentText(
                 new Component("BUTTON", 0.25f, 0.5f, 0.1f, 0.1f).setExpanseLimit(1.2f, 1.2f)
-        ));
-        // get the Paint used when the button is activated and set: a color, stroke color and stroke width
-        result.getPaint(UIButton.STATE.ON)
-                .setColor(Color.createColor(100, 200, 255, 100))
-                .setStrokeColor(Theme.WHITE)
-                .setStrokeWidth(8);
-        // get the Paint used when the button isn't activated and set: a new color, stroke color and stroke width
-        result.getPaint(UIButton.STATE.OFF)
-                .setColor(Color.createColor(200, 100, 0, 50))
-                .setStrokeColor(Theme.RED)
-                .setStrokeWidth(4);
-        // get the ViewText passed to the button constructor
-        ViewText viewText = result.getView();
+        );
         // set the text alignment along y-axis
-        viewText.setAlign(ViewText.AlignY.CENTER);
+        text.setAlign(ViewText.AlignY.CENTER);
         // set some text
-        viewText.setText("Show\npopup!");
+        text.setText("Show\npopup!");
         // get the ViewText's Font and set a new size and a new style
-        viewText.getFont()
+        text.getFont()
                 .setStyle(Font.Style.BOLD)
                 .setSize(18);
-        // get the Paint used by viewText and set a new color
-        viewText.getTextPaint().setColor(Theme.LIME);
+
+        UIButton result = new UIButton(text);
+        // get the Paint used when the button is activated and set: a color, stroke color and stroke width
+        result.getPaint(UIButton.STATE.OFF)
+                .setColor(Color.createColor(100, 200, 100, 50))
+                .setStrokeColor(Theme.LIME)
+                .setTextColor(Theme.LIME)
+                .setStrokeWidth(6);
+        // get the Paint used when the button isn't activated and set: a new color, stroke color and stroke width
+        result.getPaint(UIButton.STATE.ON)
+                .setColor(Color.createColor(200, 100, 0, 50))
+                .setStrokeColor(Theme.RED)
+                .setTextColor(Theme.RED)
+                .setStrokeWidth(2);
+
         return result;
     }
 
@@ -104,7 +105,7 @@ public class HelloWorld extends WrapperView {
     private static View createSimplePopup() {
         // now, let us create a viewText. We will use it to emulate a simple popup.
         ViewText result = new ComponentText(
-                new Component("POPUP", 0.66f, 0.5f, 0.33f, 0.5f).setExpanseLimit(1.1f, 1.1f)
+                new Component("POPUP", 0.66f, 0.5f, 0.33f, 0.5f)
         );
         // hide this popup at the beginning
         result.setVisible(false);
@@ -117,7 +118,7 @@ public class HelloWorld extends WrapperView {
                 .setLeadingFactor(1.2f)
                 .setSize(25);
         // set text color
-        result.getTextPaint().setColor(Color.createColor("0xe813dd"));
+        result.getPaint().setTextColor(Theme.DARK_GRAY);
         return result;
     }
 

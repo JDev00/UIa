@@ -71,18 +71,15 @@ public class AbstractCalendarView extends WrapperView implements CalendarView {
 
         for (int i = 0; i < 7; i++) {
             cells[i] = CalendarCell.createWeekDay(CalendarView.WEEK[i]);
-            cells[i].getTextPaint().setColor(Theme.BLUE);
+            cells[i].getPaint().setTextColor(Theme.BLUE);
         }
 
         for (int i = 0; i < 31; i++) {
             CalendarCell cell = CalendarCell.createDay(String.valueOf(i + 1));
-            cell.getTextPaint().setColor(Theme.WHITE);
+            cell.getPaint().setTextColor(Theme.WHITE);
             cell.registerCallback((OnClick) touches -> {
                 int day = Integer.parseInt(cell.getText());
                 notifyCallbacks(OnDaySelect.class, day);
-
-                //updateDaySelection(day);
-                //updateDayCellsHighlight();
             });
             cells[i + 7] = cell;
         }
@@ -114,7 +111,7 @@ public class AbstractCalendarView extends WrapperView implements CalendarView {
         result.getPaint().setColor(Theme.TRANSPARENT);
 
         ViewText text = result.getViewText();
-        text.getTextPaint().setColor(Theme.WHITE);
+        text.getPaint().setTextColor(Theme.WHITE);
         text.setPosition(0.35f, 0.5f);
         text.setFont(font);
 

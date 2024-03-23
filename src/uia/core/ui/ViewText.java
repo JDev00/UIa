@@ -1,7 +1,6 @@
 package uia.core.ui;
 
 import uia.core.Font;
-import uia.core.paint.Paint;
 
 /**
  * ViewText ADT.
@@ -12,12 +11,12 @@ import uia.core.paint.Paint;
 public interface ViewText extends View {
 
     /**
-     * Align text on the x-axis.
+     * Aligns text on the x-axis.
      */
     enum AlignX {LEFT, CENTER, RIGHT}
 
     /**
-     * Align text on the y-axis.
+     * Aligns text on the y-axis.
      */
     enum AlignY {TOP, CENTER}
 
@@ -50,12 +49,6 @@ public interface ViewText extends View {
      */
 
     AlignY getAlignY();
-
-    /**
-     * @return the {@link Paint} object used to set the graphical text properties
-     */
-
-    Paint getTextPaint();
 
     /**
      * Sets a new text font.

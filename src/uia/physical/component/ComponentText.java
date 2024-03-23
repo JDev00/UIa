@@ -1,7 +1,6 @@
 package uia.physical.component;
 
 import uia.core.Font;
-import uia.core.paint.Paint;
 import uia.core.shape.Shape;
 import uia.core.ui.Graphics;
 import uia.physical.scroller.Scroller;
@@ -12,7 +11,6 @@ import uia.physical.scroller.WheelScroller;
 import uia.physical.component.text.MultilineTextRenderer;
 import uia.physical.component.text.TextRenderer;
 import uia.physical.component.text.InlineTextRenderer;
-import uia.physical.theme.Theme;
 
 import java.util.Objects;
 
@@ -34,7 +32,6 @@ public final class ComponentText extends WrapperView implements ViewText {
     private AlignY alignY = AlignY.TOP;
 
     private Font font;
-    private final Paint paintText;
     private final Shape clipShape;
 
     private String text = "";
@@ -55,15 +52,8 @@ public final class ComponentText extends WrapperView implements ViewText {
 
         font = Font.createDesktopFont(Font.Style.PLAIN);
 
-        paintText = new Paint().setColor(Theme.BLACK);
-
         clipShape = new Shape();
         clipShape.setGeometry(getGeometry());
-    }
-
-    @Override
-    public Paint getTextPaint() {
-        return paintText;
     }
 
     @Override
@@ -224,7 +214,6 @@ public final class ComponentText extends WrapperView implements ViewText {
 
         if (isVisible()) {
             graphics.setFont(font);
-            graphics.setPaint(paintText);
             graphics.setClip(clipShape);
 
             String textToDisplay = !text.isEmpty() ? text : description;

@@ -1,7 +1,6 @@
 package uia.physical.component;
 
 import uia.core.Font;
-import uia.core.paint.Paint;
 import uia.core.ui.ViewText;
 
 /**
@@ -35,11 +34,6 @@ public abstract class WrapperViewText extends WrapperView implements ViewText {
     @Override
     public AlignY getAlignY() {
         return viewText.getAlignY();
-    }
-
-    @Override
-    public Paint getTextPaint() {
-        return viewText.getTextPaint();
     }
 
     @Override

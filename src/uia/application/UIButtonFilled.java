@@ -36,8 +36,9 @@ public final class UIButtonFilled extends WrapperView {
         viewText.setConsumer(Consumer.SCREEN_TOUCH, false);
         viewText.setAlign(right ? ComponentText.AlignX.LEFT : ComponentText.AlignX.RIGHT);
         viewText.setAlign(ComponentText.AlignY.CENTER);
-        viewText.getPaint().setColor(Theme.TRANSPARENT);
-        viewText.getTextPaint().setColor(Theme.BLACK);
+        viewText.getPaint()
+                .setColor(Theme.TRANSPARENT)
+                .setTextColor(Theme.BLACK);
 
         icon = new Component("BUTTON_FILLED_ICON_" + getID(), right ? 0.875f : 0.125f, 0.5f, 0.125f, 0.4f)
                 .setExpanseLimit(1.25f, 1.25f);
@@ -61,11 +62,11 @@ public final class UIButtonFilled extends WrapperView {
     }
 
     /**
-     * @return the {@link Paint} object used to color text
+     * @return the text {@link Paint} object
      */
 
     public Paint getTextPaint() {
-        return viewText.getTextPaint();
+        return viewText.getPaint();
     }
 
     /**
