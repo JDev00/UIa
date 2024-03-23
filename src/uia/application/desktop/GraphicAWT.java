@@ -20,6 +20,7 @@ import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -100,7 +101,8 @@ public class GraphicAWT implements Graphics {
 
             FontMetrics metrics = new Canvas().getFontMetrics(fontNative);
             font.setNative(fontNative, metrics.getAscent(), metrics.getDescent(), metrics.getLeading(),
-                    (off, len, in) -> metrics.charsWidth(in, off, len));
+                    (off, len, in) -> metrics.charsWidth(in, off, len)
+            );
         }
     }
 
@@ -117,12 +119,23 @@ public class GraphicAWT implements Graphics {
 
     private void buildPaint(Paint paint) {
         if (!paint.isValid() || !(paint.getNativeColor() instanceof java.awt.Paint)) {
-            uia.core.paint.Color color = paint.getColor();
-            uia.core.paint.Color strokeColor = paint.getStrokeColor();
+
+            Function<uia.core.paint.Color, Color> createNativeColor = color -> new Color(
+                    color.getRed(),
+                    color.getGreen(),
+                    color.getBlue(),
+                    color.getAlpha()
+            );
+
+            Color nativeColor = createNativeColor.apply(paint.getColor());
+            Color nativeTextColor = createNativeColor.apply(paint.getTextColor());
+            Color nativeStrokeColor = createNativeColor.apply(paint.getStrokeColor());
             paint.setNative(
-                    new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()),
-                    new Color(strokeColor.getRed(), strokeColor.getGreen(), strokeColor.getBlue()),
-                    new BasicStroke(paint.getStrokeWidth()));
+                    nativeColor,
+                    nativeTextColor,
+                    nativeStrokeColor,
+                    new BasicStroke(paint.getStrokeWidth())
+            );
         }
     }
 
@@ -131,6 +144,7 @@ public class GraphicAWT implements Graphics {
         this.paint = paint;
 
         buildPaint(paint);
+
         Graphics2D graphics = getGraphics();
         graphics.setPaint((java.awt.Paint) paint.getNativeColor());
         graphics.setStroke((Stroke) paint.getNativeStrokeWidth());
@@ -146,8 +160,9 @@ public class GraphicAWT implements Graphics {
 
         if (paint.hasStroke()) {
             java.awt.Paint previousPaint = graphics.getPaint();
+            java.awt.Paint nativeStrokePaint = (java.awt.Paint) paint.getNativeStrokeColor();
 
-            graphics.setPaint((java.awt.Paint) paint.getNativeStrokeColor());
+            graphics.setPaint(nativeStrokePaint);
             graphics.draw(path);
 
             graphics.setPaint(previousPaint);
@@ -227,16 +242,22 @@ public class GraphicAWT implements Graphics {
 
     @Override
     public void drawText(char[] data, int offset, int length, float x, float y, float rotation) {
-        Graphics2D graphics = getGraphics();
         boolean rotated = Float.compare(rotation % MathUtility.TWO_PI, 0f) != 0;
         AffineTransform previousMatrix = null;
+        Graphics2D graphics = getGraphics();
 
         if (rotated) {
             previousMatrix = graphics.getTransform();
             graphics.rotate(rotation, x, y);
         }
 
+        java.awt.Paint previousPaint = graphics.getPaint();
+        java.awt.Paint nativeTextPaint = (java.awt.Paint) paint.getNativeTextColor();
+
+        graphics.setPaint(nativeTextPaint);
         graphics.drawChars(data, offset, length, (int) x, (int) y);
+
+        graphics.setPaint(previousPaint);
 
         if (rotated) {
             graphics.setTransform(previousMatrix);
