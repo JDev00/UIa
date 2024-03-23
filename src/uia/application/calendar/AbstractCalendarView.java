@@ -16,6 +16,7 @@ import uia.physical.group.ComponentGroup;
 import uia.physical.theme.Theme;
 import uia.physical.theme.ThemeDarcula;
 import uia.utility.CalendarUtility;
+import uia.utility.Geometries;
 import uia.utility.MathUtility;
 
 import java.util.ArrayList;
@@ -106,9 +107,10 @@ public class AbstractCalendarView extends WrapperView implements CalendarView {
 
     private static UIButtonList createHeader(String id, Font font) {
         UIButtonList result = new UIButtonList(
-                new Component(id, 0.5f, 0.15f, 0.9f, 0.2f)
+                new Component(id, 0.5f, 0.15f, 0.8f, 0.2f)
         );
         result.setConsumer(Consumer.SCREEN_TOUCH, false);
+        result.setGeometry(Geometries::rect, false);
         result.getPaint().setColor(Theme.TRANSPARENT);
 
         ViewText text = result.getViewText();
@@ -118,11 +120,12 @@ public class AbstractCalendarView extends WrapperView implements CalendarView {
 
         View right = result.getViewRight();
         right.setDimension(0.05f, 0.4f);
+        right.setPosition(0.95f, 0.5f);
         right.getPaint().setColor(Theme.WHITE);
 
         View left = result.getViewLeft();
         left.setDimension(0.05f, 0.4f);
-        left.setPosition(0.7f, 0.5f);
+        left.setPosition(0.75f, 0.5f);
         left.getPaint().setColor(Theme.WHITE);
 
         return result;

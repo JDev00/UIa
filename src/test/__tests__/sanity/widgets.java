@@ -16,7 +16,7 @@ import static test.__tests__.utility.TestUtility.*;
  * Sanity test.
  */
 
-public class Widgets {
+public class widgets {
 
     /**
      * Builds some widgets component.
