@@ -10,6 +10,7 @@ import uia.utility.Geometries;
  * Implementation of {@link CalendarView} for range day selection.
  */
 
+// TODO: to complete
 public class RangeDaySelectionCalendar extends AbstractCalendarView {
     private final Paint deselectedCellPaint = new Paint()
             .setColor(Theme.TRANSPARENT)
