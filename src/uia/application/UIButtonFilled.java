@@ -1,7 +1,6 @@
 package uia.application;
 
 import uia.core.Font;
-import uia.core.paint.Paint;
 import uia.core.basement.Drawable;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
@@ -21,12 +20,11 @@ import uia.utility.MathUtility;
  */
 
 public final class UIButtonFilled extends WrapperView {
-    private final View icon;
     private final ViewText viewText;
+    private final View icon;
 
     public UIButtonFilled(View view, boolean right) {
         super(new ComponentGroup(view));
-
         setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
 
         viewText = new ComponentText(
@@ -38,10 +36,10 @@ public final class UIButtonFilled extends WrapperView {
         viewText.setAlign(ComponentText.AlignY.CENTER);
         viewText.getPaint()
                 .setColor(Theme.TRANSPARENT)
-                .setTextColor(Theme.BLACK);
+                .setTextColor(getPaint().getTextColor());
 
         icon = new Component("BUTTON_FILLED_ICON_" + getID(), right ? 0.875f : 0.125f, 0.5f, 0.125f, 0.4f)
-                .setExpanseLimit(1.25f, 1.25f);
+                .setExpanseLimit(1.15f, 1.15f);
         icon.setColliderPolicy(ColliderPolicy.AABB);
         icon.setConsumer(Consumer.SCREEN_TOUCH, false);
         icon.setGeometry(Geometries::arrow, false);
@@ -52,7 +50,7 @@ public final class UIButtonFilled extends WrapperView {
     }
 
     /**
-     * Sets the button text
+     * Sets the button text.
      *
      * @param text a String to display; it could be null
      */
@@ -61,12 +59,12 @@ public final class UIButtonFilled extends WrapperView {
         viewText.setText(text);
     }
 
-    /**
-     * @return the text {@link Paint} object
-     */
-
-    public Paint getTextPaint() {
-        return viewText.getPaint();
+    @Override
+    public void update(View parent) {
+        super.update(parent);
+        viewText.getPaint().setTextColor(
+                getPaint().getTextColor()
+        );
     }
 
     /**
@@ -78,7 +76,7 @@ public final class UIButtonFilled extends WrapperView {
     }
 
     /**
-     * @return the {@link View} used to represent an icon
+     * @return the {@link View} used to represent the icon
      */
 
     public View getIcon() {

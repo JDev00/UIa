@@ -30,9 +30,8 @@ public class widgets {
         buttonFilled.getPaint()
                 .setColor(Theme.TRANSPARENT)
                 .setStrokeColor(Theme.WHITE)
+                .setTextColor(Theme.WHITE)
                 .setStrokeWidth(4);
-        buttonFilled.getTextPaint()
-                .setColor(Theme.WHITE);
 
         UIToggleButton buttonSwitch = new UIToggleButton(
                 new Component("BUTTON_1", 0.85f, 0.5f, 0.15f, 0.1f)
