@@ -26,6 +26,7 @@ public class widgets {
         UIButtonFilled buttonFilled = new UIButtonFilled(
                 new Component("BUTTON_0", 0.85f, 0.25f, 0.15f, 0.1f), true
         );
+        buttonFilled.setText("Hello");
         buttonFilled.getPaint()
                 .setColor(Theme.TRANSPARENT)
                 .setStrokeColor(Theme.WHITE)
