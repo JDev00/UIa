@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Color has the responsibility to store an RGBA color.
+ * Color stores a RGBA color.
  */
 
 public final class Color {
@@ -49,14 +49,17 @@ public final class Color {
 
     private final int[] channels;
 
-    private Color(int r, int g, int b, int a) {
-        channels = new int[]{r, g, b, a};
+    private Color(int red, int green, int blue, int alpha) {
+        channels = new int[]{red, green, blue, alpha};
     }
 
     @Override
     public String toString() {
         return "Color{" +
-                "channels=" + Arrays.toString(channels) +
+                "red=" + channels[0] +
+                ", green=" + channels[1] +
+                ", blue=" + channels[2] +
+                ", alpha=" + channels[3] +
                 '}';
     }
 
