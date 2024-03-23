@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Paint is used to set the Shape color, stroke color and stroke width.
+ * Paint is used to set the shape color, stroke color, stroke width and text color.
  * <br>
  * The Paint class acts as a bridge between the UIa framework and the third-party graphic library or framework.
  */
@@ -12,26 +12,35 @@ import java.util.Objects;
 public final class Paint {
     public static final int WITHOUT_STROKE = 0;
 
-    private int strokeWidth = WITHOUT_STROKE;
-    private Color color = Color.createColor(255);
-    private Color strokeColor = Color.createColor(0);
-    private final Object[] natives = new Object[3];
+    private final Object[] natives;
+    private int strokeWidth;
+    private Color color;
+    private Color textColor;
+    private Color strokeColor;
+
+    public Paint() {
+        natives = new Object[4];
+
+        strokeWidth = WITHOUT_STROKE;
+        color = Color.createColor(255);
+        textColor = Color.createColor(0);
+        strokeColor = Color.createColor(0);
+    }
 
     @Override
     public String toString() {
         return "Paint{" +
                 "color=" + color +
+                ", textColor=" + textColor +
                 ", strokeColor=" + strokeColor +
                 ", strokeWidth=" + strokeWidth +
-                ", natives=" + Arrays.toString(natives) +
                 '}';
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(strokeWidth);
-        result = 31 * result + color.hashCode();
-        result = 31 * result + strokeColor.hashCode();
+        int result = Objects.hash(strokeWidth, color, textColor, strokeColor);
+        result = 31 * result + Arrays.hashCode(natives);
         return result;
     }
 
@@ -41,12 +50,14 @@ public final class Paint {
         if (o == null || getClass() != o.getClass()) return false;
         Paint paint = (Paint) o;
         return strokeWidth == paint.strokeWidth
-                && color.equals(paint.color)
-                && strokeColor.equals(paint.strokeColor);
+                && Arrays.equals(natives, paint.natives)
+                && Objects.equals(color, paint.color)
+                && Objects.equals(textColor, paint.textColor)
+                && Objects.equals(strokeColor, paint.strokeColor);
     }
 
     /**
-     * Invalidates this Paint and force UIa to rebuild its state
+     * Invalidates this Paint and force UIa to rebuild its state.
      */
 
     public void invalidate() {
@@ -62,17 +73,22 @@ public final class Paint {
     }
 
     /**
-     * Sets the objects required by the platform
+     * Sets the objects required by the platform.
      *
      * @param nativeColor       the platform color
+     * @param nativeTextColor   the platform text color
      * @param nativeStrokeColor the platform stroke color
      * @param nativeStrokeWidth the platform stroke width
      */
 
-    public void setNative(Object nativeColor, Object nativeStrokeColor, Object nativeStrokeWidth) {
+    public void setNative(Object nativeColor,
+                          Object nativeTextColor,
+                          Object nativeStrokeColor,
+                          Object nativeStrokeWidth) {
         natives[0] = nativeColor;
-        natives[1] = nativeStrokeColor;
-        natives[2] = nativeStrokeWidth;
+        natives[1] = nativeTextColor;
+        natives[2] = nativeStrokeColor;
+        natives[3] = nativeStrokeWidth;
     }
 
     /**
@@ -84,11 +100,19 @@ public final class Paint {
     }
 
     /**
+     * @return the platform text color object
+     */
+
+    public Object getNativeTextColor() {
+        return natives[1];
+    }
+
+    /**
      * @return the platform stroke color object
      */
 
     public Object getNativeStrokeColor() {
-        return natives[1];
+        return natives[2];
     }
 
     /**
@@ -96,11 +120,11 @@ public final class Paint {
      */
 
     public Object getNativeStrokeWidth() {
-        return natives[2];
+        return natives[3];
     }
 
     /**
-     * Applies the specified Paint to this one
+     * Applies the specified Paint to this one.
      *
      * @param paint a not null {@link Paint} to copy
      * @throws NullPointerException if {@code paint == null}
@@ -108,34 +132,14 @@ public final class Paint {
      */
 
     public void set(Paint paint) {
-        strokeWidth = paint.strokeWidth;
-        setColor(paint.getColor());
+        setStrokeWidth(paint.getStrokeWidth());
         setStrokeColor(paint.getStrokeColor());
-        invalidate();
+        setTextColor(paint.getTextColor());
+        setColor(paint.getColor());
     }
 
     /**
-     * Sets the Paint color
-     *
-     * @param red   the red color channel between [0,255]
-     * @param green the green color channel between [0,255]
-     * @param blue  the blue color channel between [0,255]
-     * @param alpha the alpha color channel between [0,255]
-     * @return this Paint
-     */
-
-    private Paint setColor(int red, int green, int blue, int alpha) {
-        if (!Color.equals(color, red, green, blue, alpha)) {
-            color = Color.createColor(red, green, blue, alpha);
-            invalidate();
-        }
-        return this;
-    }
-
-    /**
-     * Sets the Paint color.
-     * <br>
-     * More formally, copies the given color and applies the copy to this Paint color.
+     * Sets the color.
      *
      * @param color a not null {@link Color}
      * @return this Paint
@@ -143,16 +147,16 @@ public final class Paint {
      */
 
     public Paint setColor(Color color) {
-        return setColor(
-                color.getRed(),
-                color.getGreen(),
-                color.getBlue(),
-                color.getAlpha()
-        );
+        Objects.requireNonNull(color);
+        if (!this.color.equals(color)) {
+            this.color = Color.copy(color);
+            invalidate();
+        }
+        return this;
     }
 
     /**
-     * @return the Paint color
+     * @return the color
      */
 
     public Color getColor() {
@@ -160,39 +164,48 @@ public final class Paint {
     }
 
     /**
-     * Sets the Paint stroke color
+     * Sets the text color.
      *
-     * @param red   the red channel between [0,255]
-     * @param green the green channel between [0,255]
-     * @param blue  the blue channel between [0,255]
+     * @param color a not null {@link Color}
      * @return this Paint
+     * @throws NullPointerException if {@code color == null}
      */
 
-    private Paint setStrokeColor(int red, int green, int blue) {
-        if (!Color.equals(strokeColor, red, green, blue, 255)) {
-            strokeColor = Color.createColor(red, green, blue);
+    public Paint setTextColor(Color color) {
+        Objects.requireNonNull(color);
+        if (!this.textColor.equals(color)) {
+            this.textColor = Color.copy(color);
             invalidate();
         }
         return this;
     }
 
     /**
-     * Sets the Paint stroke color
+     * @return the text color
+     */
+
+    public Color getTextColor() {
+        return textColor;
+    }
+
+    /**
+     * Sets the stroke color.
      *
      * @param color a not null {@link Color}
      * @throws NullPointerException if {@code color == null}
      */
 
     public Paint setStrokeColor(Color color) {
-        return setStrokeColor(
-                color.getRed(),
-                color.getGreen(),
-                color.getBlue()
-        );
+        Objects.requireNonNull(color);
+        if (!this.strokeColor.equals(color)) {
+            this.strokeColor = Color.copy(color);
+            invalidate();
+        }
+        return this;
     }
 
     /**
-     * @return the Paint stroke color
+     * @return the stroke color
      */
 
     public Color getStrokeColor() {
@@ -200,7 +213,7 @@ public final class Paint {
     }
 
     /**
-     * Sets the Paint stroke width
+     * Sets the stroke width.
      *
      * @param strokeWidth a value {@code >= 0}
      * @throws IllegalArgumentException if {@code strokeWidth < 0}
@@ -231,20 +244,5 @@ public final class Paint {
 
     public boolean hasStroke() {
         return strokeWidth != WITHOUT_STROKE;
-    }
-
-    /**
-     * Checks if the given Paints have the same color
-     *
-     * @param paint1 a not null {@link Paint}
-     * @param paint2 a not null {@link Paint}
-     * @return true if the specified Paints have the same color
-     * @throws NullPointerException if {@code paint1 == null or paint2 == null}
-     */
-
-    public static boolean haveTheSameColor(Paint paint1, Paint paint2) {
-        Objects.requireNonNull(paint1);
-        Objects.requireNonNull(paint2);
-        return paint1.equals(paint2);
     }
 }
