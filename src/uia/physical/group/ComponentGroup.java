@@ -15,7 +15,16 @@ import java.util.*;
 /**
  * Implementation of {@link ViewGroup}.
  * <br>
- * Note that the first View to handle events is the last added one.
+ * Implementation choices:
+ * <ul>
+ *     <li>
+ *         the clipping functionality is enabled at build time. If you want to disable it, use the {@link #setClip(boolean)}
+ *         method;
+ *     </li>
+ *     <li>
+ *         the last added View is the first to handle events.
+ *     </li>
+ * </ul>
  */
 
 public final class ComponentGroup extends WrapperView implements ViewGroup {
