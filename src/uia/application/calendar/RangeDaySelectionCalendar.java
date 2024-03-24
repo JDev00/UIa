@@ -9,7 +9,6 @@ import uia.utility.Geometries;
  * Implementation of {@link CalendarView} for range day selection.
  */
 
-// TODO: to complete
 public class RangeDaySelectionCalendar extends AbstractCalendarView {
     private final Paint deselectedCellPaint = new Paint()
             .setColor(Theme.TRANSPARENT)
@@ -32,17 +31,28 @@ public class RangeDaySelectionCalendar extends AbstractCalendarView {
 
     @Override
     public void selectDay(int day) {
+        if (day < 1 || day > 31) {
+            throw new IllegalArgumentException("the day must be between [1, 31]. " + day + " provided");
+        }
+
         notifyCallbacks(OnDaySelect.class, day);
     }
 
+    // TODO: to complete
     @Override
     public void deselectDay(int day) {
+        if (day < 1 || day > 31) {
+            throw new IllegalArgumentException("the day must be between [1, 31]. " + day + " provided");
+        }
+
         notifyCallbacks(OnDaySelect.class, day);
     }
 
     @Override
     public void clearDaySelection() {
-
+        deselectsAllDays();
+        updateDayStyle();
+        notifyCallbacks(OnSelectionCleared.class, this);
     }
 
     /**
@@ -61,7 +71,19 @@ public class RangeDaySelectionCalendar extends AbstractCalendarView {
     }
 
     /**
-     * Selects a range of days.
+     * Helper function. Deselects all days.
+     */
+
+    private void deselectsAllDays() {
+        range[0] = range[1] = -1;
+        for (int i = 1; i <= 31; i++) {
+            setDayCellGeometry(i, Geometries::rect, false);
+            markDayAsSelected(i, false);
+        }
+    }
+
+    /**
+     * Helper function. Selects a range of days.
      *
      * @param day the selected day; with -1 the range is cleared
      */
