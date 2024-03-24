@@ -6,6 +6,7 @@ import test.core.TestAssertion;
 import test.core.TestExecutor;
 import uia.core.paint.Color;
 import uia.core.paint.Paint;
+import uia.physical.theme.Theme;
 
 /**
  * Unit tests
@@ -13,8 +14,8 @@ import uia.core.paint.Paint;
 
 public class test {
     int strokeWidth = 2;
-    Color color = Color.createColor(255, 0, 128, 100);
-    Color strokeColor = Color.createColor(0, 255, 128, 100);
+    Color color = Theme.LIME;
+    Color strokeColor = Theme.BLUE;
     Paint paint;
 
     @BeforeEachTest
@@ -45,7 +46,6 @@ public class test {
 
         int expectedStrokeWidth = paint.getStrokeWidth();
         testAssertion.expect(expectedStrokeWidth).toBe(strokeWidth);
-
         testAssertion.expect(paint.hasStroke()).toBe(true);
     }
 
