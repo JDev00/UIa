@@ -35,7 +35,7 @@ public class Shape implements Collidable {
     public String toString() {
         return "Shape{" +
                 "vertices=" + geometry.vertices() +
-                "policy=" + policy +
+                ", policy=" + policy +
                 ", bounds=" + Arrays.toString(bounds) +
                 '}';
     }
