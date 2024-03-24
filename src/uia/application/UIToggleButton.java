@@ -18,13 +18,13 @@ import uia.physical.group.ComponentGroup;
 /**
  * Standard UIa component.
  * <br>
- * Two states switchable button.
+ * UIToggleButton is a toggle button with two states.
  */
 
 public final class UIToggleButton extends WrapperView {
 
     /**
-     * Toggle button states
+     * Toggle button states.
      */
     public enum State {FIRST, SECOND}
 
@@ -60,17 +60,16 @@ public final class UIToggleButton extends WrapperView {
      */
 
     private static ViewText createView(String id, float x, String text) {
-        ViewText out = new ComponentText(
+        ViewText result = new ComponentText(
                 new Component(id, x, 0.5f, 0.5f, 1f)
         );
-        out.setGeometry(
-                g -> Drawable.buildRect(g, out.getWidth(), out.getHeight(), 1f),
-                true
-        );
-        out.setConsumer(Consumer.SCREEN_TOUCH, false);
-        out.setAlign(ViewText.AlignY.CENTER);
-        out.setText(text);
-        return out;
+        result.setConsumer(Consumer.SCREEN_TOUCH, false);
+        result.setAlign(ViewText.AlignY.CENTER);
+        result.setText(text);
+        result.setGeometry(
+                g -> Drawable.buildRect(g, result.getWidth(), result.getHeight(), 1f),
+                true);
+        return result;
     }
 
     /**
@@ -82,45 +81,35 @@ public final class UIToggleButton extends WrapperView {
     }
 
     /**
-     * Set the button's text
+     * Sets the text for the two states.
      *
-     * @param s1 the text on the left
-     * @param s2 the text on the right
+     * @param textFirstState  the text for the first state
+     * @param textSecondState the text for the second state
      */
 
-    public void setText(String s1, String s2) {
-        states[0].setText(s1);
-        states[1].setText(s2);
+    public void setText(String textFirstState, String textSecondState) {
+        states[0].setText(textFirstState);
+        states[1].setText(textSecondState);
     }
 
     /**
-     * Helper function. Applies che specified source color.
-     */
-
-    private void applyColor(Paint target, Paint source) {
-        target.setColor(source.getColor());
-    }
-
-    /**
-     * Switches this button to the first or second state
+     * Switches this button to the first or second state.
      *
      * @param state true to set this button on the first state
      */
 
     public void setState(State state) {
+        // sets the text color for the two states
+        activePaint.setTextColor(getPaint().getColor());
+        defaultPaint.setTextColor(activePaint.getColor());
+
         this.firstState = State.FIRST.equals(state);
         if (firstState) {
             states[0].getPaint().set(activePaint);
-            applyColor(states[0].getTextPaint(), getPaint());
-
             states[1].getPaint().set(defaultPaint);
-            applyColor(states[1].getTextPaint(), activePaint);
         } else {
             states[0].getPaint().set(defaultPaint);
-            applyColor(states[0].getTextPaint(), activePaint);
-
             states[1].getPaint().set(activePaint);
-            applyColor(states[1].getTextPaint(), getPaint());
         }
     }
 
@@ -133,7 +122,7 @@ public final class UIToggleButton extends WrapperView {
     }
 
     /**
-     * Sets the geometry for the specified state
+     * Sets the geometry for the specified state.
      *
      * @param state          the button state, see {@link State}
      * @param builder        the geometry builder
@@ -150,29 +139,25 @@ public final class UIToggleButton extends WrapperView {
     }
 
     /**
-     * Helper function. Refreshes Paint when necessary.
+     * Helper function. Refreshes the state color when necessary.
      */
 
-    private void refreshPaint() {
-        if (isFirstState()) {
-
-            if (!Paint.haveTheSameColor(states[0].getTextPaint(), getPaint())
-                    || !Paint.haveTheSameColor(states[1].getTextPaint(), activePaint)) {
+    private void refreshStateColor() {
+        if (firstState) {
+            if (!states[0].getPaint().getTextColor().equals(getPaint().getColor())
+                    || !states[1].getPaint().getTextColor().equals(activePaint.getColor())) {
                 setState(State.FIRST);
             }
-        } else {
-
-            if (!Paint.haveTheSameColor(states[0].getTextPaint(), activePaint)
-                    || !Paint.haveTheSameColor(states[1].getTextPaint(), getPaint())) {
-                setState(State.SECOND);
-            }
+        } else if (!states[0].getPaint().getTextColor().equals(activePaint.getColor())
+                || !states[1].getPaint().getTextColor().equals(getPaint().getColor())) {
+            setState(State.SECOND);
         }
     }
 
     @Override
     public void update(View parent) {
         super.update(parent);
-        refreshPaint();
+        refreshStateColor();
     }
 
     /**

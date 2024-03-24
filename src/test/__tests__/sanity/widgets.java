@@ -33,9 +33,11 @@ public class widgets {
                 .setStrokeColor(Theme.WHITE)
                 .setStrokeWidth(4);
 
-        UIToggleButton buttonSwitch = new UIToggleButton(
+        UIToggleButton toggleButton = new UIToggleButton(
                 new Component("BUTTON_1", 0.85f, 0.5f, 0.15f, 0.1f)
         );
+        toggleButton.getActivePaint().setColor(Theme.WHITE);
+        toggleButton.getPaint().setColor(Theme.LIME);
 
         UIButtonList buttonList = new UIButtonList(
                 new Component("BUTTON_2", 0.85f, 0.75f, 0.15f, 0.1f)
@@ -49,7 +51,7 @@ public class widgets {
         calendar.setRotation(0.05f);
 
         ViewGroup result = createRoot();
-        ViewGroup.insert(result, buttonFilled, buttonSwitch, buttonList, calendar);
+        ViewGroup.insert(result, buttonFilled, toggleButton, buttonList, calendar);
         return result;
     }
 
