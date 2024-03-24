@@ -6,9 +6,16 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Paint is used to set the shape color, stroke color, stroke width and text color.
+ * Paint is used to set the geometry colour, stroke colour, stroke width and text colour.
  * <br>
- * The Paint class acts as a bridge between the UIa framework and the third-party graphic library or framework.
+ * The Paint class acts as a bridge between the UIa framework and the third-party graphic library/framework.
+ * <br><br>
+ * The Paint object must contain at least the geometry color. Optional attributes include:
+ * <ul>
+ *     <li>geometry stroke color;</li>
+ *     <li>geometry stroke width;</li>
+ *     <li>text color.</li>
+ * </ul>
  */
 
 public final class Paint {
@@ -145,7 +152,7 @@ public final class Paint {
     }
 
     /**
-     * Sets the color.
+     * Sets the geometry color.
      *
      * @param color a not null {@link Color}
      * @return this Paint
@@ -162,7 +169,7 @@ public final class Paint {
     }
 
     /**
-     * @return the color
+     * @return the geometry color
      */
 
     public Color getColor() {
@@ -196,7 +203,7 @@ public final class Paint {
     }
 
     /**
-     * Sets the stroke color.
+     * Sets the geometry stroke color.
      *
      * @param color the stroke {@link Color}; it could be null
      * @return this Paint
@@ -214,7 +221,7 @@ public final class Paint {
     }
 
     /**
-     * @return the stroke color or null if the stroke color has not been set
+     * @return the stroke colour of the geometry or null if the stroke colour is not set
      */
 
     public Color getStrokeColor() {
@@ -222,7 +229,7 @@ public final class Paint {
     }
 
     /**
-     * Sets the stroke width.
+     * Sets the geometry stroke width.
      *
      * @param strokeWidth a value {@code >= 0}
      * @return this Paint
@@ -241,7 +248,7 @@ public final class Paint {
     }
 
     /**
-     * @return the stroke width
+     * @return the geometry stroke width
      */
 
     public int getStrokeWidth() {
