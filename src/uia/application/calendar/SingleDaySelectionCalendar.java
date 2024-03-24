@@ -24,21 +24,34 @@ public class SingleDaySelectionCalendar extends AbstractCalendarView {
         // updates day selection
         registerCallback((OnDaySelect) day -> {
             boolean isDayAlreadySelected = isDayMarkedAsSelected(day);
-
-            for (int i = 1; i <= 31; i++) {
-                setDayCellGeometry(i, Geometries::rect, false);
-                markDayAsSelected(i, false);
-            }
-
+            deselectAllDays();
             if (!isDayAlreadySelected) {
-                markDayAsSelected(day, true);
-                setDayCellGeometry(day,
-                        g -> Drawable.buildRect(g, getDayCelWidth(), getDayCelHeight(), 1f),
-                        true);
+                _selectDay(day);
             }
-
             updateDayStyle();
         });
+    }
+
+    /**
+     * Helper function. Deselects all days.
+     */
+
+    private void deselectAllDays() {
+        for (int i = 1; i <= 31; i++) {
+            setDayCellGeometry(i, Geometries::rect, false);
+            markDayAsSelected(i, false);
+        }
+    }
+
+    /**
+     * Helper function. Selects the specified day.
+     */
+
+    private void _selectDay(int day) {
+        markDayAsSelected(day, true);
+        setDayCellGeometry(day,
+                g -> Drawable.buildRect(g, getDayCelWidth(), getDayCelHeight(), 1f),
+                true);
     }
 
     /**
@@ -58,11 +71,28 @@ public class SingleDaySelectionCalendar extends AbstractCalendarView {
 
     @Override
     public void selectDay(int day) {
+        if (day < 1 || day > 31) {
+            throw new IllegalArgumentException("the day must be between [1, 31]. " + day + " provided");
+        }
+
         notifyCallbacks(OnDaySelect.class, day);
     }
 
     @Override
     public void deselectDay(int day) {
-        notifyCallbacks(OnDaySelect.class, day);
+        if (day < 1 || day > 31) {
+            throw new IllegalArgumentException("the day must be between [1, 31]. " + day + " provided");
+        }
+
+        if (isDayMarkedAsSelected(day)) {
+            notifyCallbacks(OnDaySelect.class, day);
+        }
+    }
+
+    @Override
+    public void clearDaySelection() {
+        deselectAllDays();
+        updateDayStyle();
+        notifyCallbacks(OnSelectionCleared.class, this);
     }
 }

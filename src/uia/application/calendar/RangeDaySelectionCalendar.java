@@ -40,6 +40,11 @@ public class RangeDaySelectionCalendar extends AbstractCalendarView {
         notifyCallbacks(OnDaySelect.class, day);
     }
 
+    @Override
+    public void clearDaySelection() {
+
+    }
+
     /**
      * Helper function. Updates the day cells selection color.
      */

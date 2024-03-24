@@ -39,6 +39,7 @@ public interface CalendarView extends View {
      * Selects the specified day.
      *
      * @param day the day to be selected
+     * @throws IllegalArgumentException if {@code day < 1 || day > 31}
      */
 
     void selectDay(int day);
@@ -46,10 +47,17 @@ public interface CalendarView extends View {
     /**
      * Deselects the specified day.
      *
-     * @param day the day to be deselected; if -1 is given, all the selected days will be deselected.
+     * @param day the day to be deselected; if -1 is given, all the selected days will be deselected
+     * @throws IllegalArgumentException if {@code day < 1 || day > 31}
      */
 
     void deselectDay(int day);
+
+    /**
+     * Deselects all the selected days.
+     */
+
+    void clearDaySelection();
 
     /**
      * @return all the selected days
