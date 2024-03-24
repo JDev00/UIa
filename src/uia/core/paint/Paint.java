@@ -1,5 +1,7 @@
 package uia.core.paint;
 
+import uia.physical.theme.Theme;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -22,9 +24,9 @@ public final class Paint {
         natives = new Object[4];
 
         strokeWidth = WITHOUT_STROKE;
-        color = Color.createColor(255);
-        textColor = Color.createColor(0);
-        strokeColor = Color.createColor(0);
+        textColor = Theme.BLACK;
+        color = Theme.WHITE;
+        strokeColor = null;
     }
 
     @Override
@@ -127,15 +129,19 @@ public final class Paint {
      * Applies the specified Paint to this one.
      *
      * @param paint a not null {@link Paint} to copy
+     * @return this Paint
      * @throws NullPointerException if {@code paint == null}
-     * @implNote This operation doesn't modify the platform objects
+     * @implNote This method doesn't modify the platform objects
      */
 
-    public void set(Paint paint) {
+    public Paint set(Paint paint) {
+        Objects.requireNonNull(paint);
+
         setStrokeWidth(paint.getStrokeWidth());
         setStrokeColor(paint.getStrokeColor());
         setTextColor(paint.getTextColor());
         setColor(paint.getColor());
+        return this;
     }
 
     /**
@@ -166,22 +172,23 @@ public final class Paint {
     /**
      * Sets the text color.
      *
-     * @param color a not null {@link Color}
+     * @param color the text {@link Color}; it could be null
      * @return this Paint
-     * @throws NullPointerException if {@code color == null}
      */
 
     public Paint setTextColor(Color color) {
-        Objects.requireNonNull(color);
-        if (!this.textColor.equals(color)) {
-            this.textColor = Color.copy(color);
+        if (!Objects.equals(this.textColor, color)) {
+            this.textColor = null;
+            if (color != null) {
+                this.textColor = Color.copy(color);
+            }
             invalidate();
         }
         return this;
     }
 
     /**
-     * @return the text color
+     * @return the text color or null if the text color has not been set
      */
 
     public Color getTextColor() {
@@ -191,21 +198,23 @@ public final class Paint {
     /**
      * Sets the stroke color.
      *
-     * @param color a not null {@link Color}
-     * @throws NullPointerException if {@code color == null}
+     * @param color the stroke {@link Color}; it could be null
+     * @return this Paint
      */
 
     public Paint setStrokeColor(Color color) {
-        Objects.requireNonNull(color);
-        if (!this.strokeColor.equals(color)) {
-            this.strokeColor = Color.copy(color);
+        if (!Objects.equals(this.strokeColor, color)) {
+            this.strokeColor = null;
+            if (color != null) {
+                this.strokeColor = Color.copy(color);
+            }
             invalidate();
         }
         return this;
     }
 
     /**
-     * @return the stroke color
+     * @return the stroke color or null if the stroke color has not been set
      */
 
     public Color getStrokeColor() {
@@ -216,12 +225,13 @@ public final class Paint {
      * Sets the stroke width.
      *
      * @param strokeWidth a value {@code >= 0}
+     * @return this Paint
      * @throws IllegalArgumentException if {@code strokeWidth < 0}
      */
 
     public Paint setStrokeWidth(int strokeWidth) {
         if (strokeWidth < 0) {
-            throw new IllegalArgumentException("the stroke width value must be greater than or equal to 0");
+            throw new IllegalArgumentException("stroke width must be >= 0");
         }
         if (this.strokeWidth != strokeWidth) {
             this.strokeWidth = strokeWidth;
