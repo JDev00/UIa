@@ -44,9 +44,7 @@ public final class UIProgressbar extends WrapperView {
         internalBar = new Component("PROGRESSBAR_INTERNAL_BAR_" + getID(), 0.5f, 0.5f, 1f, 1f);
         internalBar.getPaint().setColor(Theme.LIME);
 
-        ViewGroup group = getView();
-        group.setClip(true);
-        ViewGroup.insert(group, internalBar);
+        ViewGroup.insert(getView(), internalBar);
 
         setRange(0f, 1f);
         setValue(value);

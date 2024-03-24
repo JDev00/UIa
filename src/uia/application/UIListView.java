@@ -15,6 +15,7 @@ import java.util.Objects;
  * Standard UIa component.
  * <br>
  * UIListView has been designed to handle a set of views.
+ * <br>
  * Formally, it is a layout with vertical and horizontal scrollbars.
  */
 
@@ -55,22 +56,16 @@ public final class UIListView extends WrapperView implements ViewGroup {
 
         containerGroup = getView();
         ViewGroup.insert(containerGroup, viewsContainer, horizontalBar, verticalBar);
-
-        /*registerCallback((OnMouseHover) touches -> {
-            ScreenTouch screenTouch = touches.get(0);
-            //System.out.println(screenTouch.getWheelRotation());
-            //verticalBar.scroll(0.1f * screenTouch.getWheelRotation());
-        });*/
     }
 
     /**
-     * ViewPositioner has been designed to position a set of views
+     * ViewPositioner positions a set of views.
      */
 
     public interface ViewPositioner {
 
         /**
-         * Place the specified View
+         * Positions the specified View.
          *
          * @param view a not null {@link View} to be placed
          * @param i    the View position (index)
@@ -80,14 +75,14 @@ public final class UIListView extends WrapperView implements ViewGroup {
     }
 
     /**
-     * OnAdd is called when a new View is added to a ListView
+     * Callback invoked when a new View is added to a ListView.
      */
 
     public interface OnAdd extends Callback<View> {
     }
 
     /**
-     * OnRemove is called when a View is removed from a ListView
+     * Callback invoked when a View is removed from a ListView.
      */
 
     public interface OnRemove extends Callback<View> {
@@ -157,7 +152,7 @@ public final class UIListView extends WrapperView implements ViewGroup {
     }
 
     /**
-     * Set a new ViewPositioner
+     * Sets a new ViewPositioner.
      *
      * @param viewPositioner a {@link ViewPositioner}; it could be null
      */
@@ -167,7 +162,7 @@ public final class UIListView extends WrapperView implements ViewGroup {
     }
 
     /**
-     * Sets the current scroll value
+     * Sets the current scroll value.
      *
      * @param x the scroll value on the x-axis between [0, group content width]
      * @param y the scroll value on the y-axis between [0, group content height]
