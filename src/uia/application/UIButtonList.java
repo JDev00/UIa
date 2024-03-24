@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * UIa standard component.
+ * Standard UIa component.
  * <br>
  * UIButtonList is a horizontal scrollable list.
  */

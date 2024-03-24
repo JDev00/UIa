@@ -19,6 +19,7 @@ import uia.physical.component.WrapperView;
  */
 
 public final class UIButton extends WrapperView {
+
     /**
      * Button state representation
      */
@@ -55,12 +56,15 @@ public final class UIButton extends WrapperView {
     }
 
     /**
-     * Enables or disables this button
+     * Enables or disables this button.
      *
      * @param enabled true to enable this button
      */
 
     public void enable(boolean enabled) {
+        this.enabled = enabled;
+        applyPaintByState();
+
         if (this.enabled != enabled) {
             if (enabled) {
                 notifyCallbacks(onEnabled.class, this);
@@ -68,8 +72,6 @@ public final class UIButton extends WrapperView {
                 notifyCallbacks(onDisabled.class, this);
             }
         }
-        this.enabled = enabled;
-        applyPaintByState();
     }
 
     /**
@@ -81,7 +83,7 @@ public final class UIButton extends WrapperView {
     }
 
     /**
-     * Helper function. Applies the appropriate Paint according to the button state
+     * Helper function. Applies the appropriate Paint according to the button state.
      */
 
     private void applyPaintByState() {
