@@ -6,6 +6,7 @@ import uia.core.ui.View;
 import uia.core.paint.Paint;
 import uia.physical.component.WrapperView;
 import uia.physical.component.utility.ComponentUtility;
+import uia.physical.theme.Theme;
 import uia.utility.Geometries;
 import uia.utility.MathUtility;
 
@@ -50,7 +51,9 @@ public class UIGraphic extends WrapperView {
         axis = new Shape();
         axis.setGeometry(Geometries.rect(axis.getGeometry()));
 
-        paintAxis = new Paint().setStrokeWidth(1);
+        paintAxis = new Paint()
+                .setColor(Theme.BLACK)
+                .setStrokeWidth(1);
 
         reset();
     }
