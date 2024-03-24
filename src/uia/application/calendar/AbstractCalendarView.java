@@ -19,10 +19,7 @@ import uia.utility.CalendarUtility;
 import uia.utility.Geometries;
 import uia.utility.MathUtility;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * Abstract calendar representation. It does not support day selection.
@@ -34,17 +31,24 @@ public class AbstractCalendarView extends WrapperView implements CalendarView {
     private final CalendarCell[] cells = new CalendarCell[38];
     private final UIButtonList header;
     private final View overlayCell;
+    private Color currentDayColor;
+    private final String[] months;
     private final Font font;
+
 
     private int days;
     private int offset;
     private final int[] currentDate = {1, 1, 2024};
 
-    public AbstractCalendarView(View view) {
+    protected AbstractCalendarView(View view, String[] weekdays, String[] months) {
         super(new ComponentGroup(view));
         getPaint().setColor(ThemeDarcula.DARK_GRAY);
 
+        this.months = months;
+
         font = Font.createDesktopFont(Font.Style.ITALIC);
+
+        currentDayColor = Theme.PINK;
 
         header = createHeader("CALENDAR_HEADER_" + getID(), font);
         header.getViewRight().registerCallback((OnClick) touches -> setDate(
@@ -70,8 +74,8 @@ public class AbstractCalendarView extends WrapperView implements CalendarView {
         );
 
         for (int i = 0; i < 7; i++) {
-            cells[i] = CalendarCell.createWeekDay(CalendarView.WEEK[i]);
-            cells[i].getPaint().setTextColor(Theme.BLUE);
+            cells[i] = CalendarCell.createWeekDay(weekdays[i]);
+            cells[i].getPaint().setTextColor(Theme.SILVER);
         }
 
         for (int i = 0; i < 31; i++) {
@@ -104,7 +108,7 @@ public class AbstractCalendarView extends WrapperView implements CalendarView {
 
     private static UIButtonList createHeader(String id, Font font) {
         UIButtonList result = new UIButtonList(
-                new Component(id, 0.5f, 0.15f, 0.8f, 0.2f)
+                new Component(id, 0.5f, 0.15f, 0.75f, 0.2f)
         );
         result.setConsumer(Consumer.SCREEN_TOUCH, false);
         result.setGeometry(Geometries::rect, false);
@@ -112,12 +116,13 @@ public class AbstractCalendarView extends WrapperView implements CalendarView {
 
         ViewText text = result.getViewText();
         text.getPaint().setTextColor(Theme.WHITE);
+        text.setAlign(ViewText.AlignX.LEFT);
         text.setPosition(0.35f, 0.5f);
         text.setFont(font);
 
         View right = result.getViewRight();
         right.setDimension(0.05f, 0.4f);
-        right.setPosition(0.95f, 0.5f);
+        right.setPosition(0.965f, 0.5f);
         right.getPaint().setColor(Theme.WHITE);
 
         View left = result.getViewLeft();
@@ -195,12 +200,24 @@ public class AbstractCalendarView extends WrapperView implements CalendarView {
     }
 
     /**
+     * Sets the color used to paint the current day.
+     *
+     * @param color the current day color
+     * @throws NullPointerException if {@code color == null}
+     */
+
+    public void setCurrentDayColor(Color color) {
+        Objects.requireNonNull(color);
+        currentDayColor = color;
+    }
+
+    /**
      * Helper function. Adjusts the font size according to the calendar View dimension.
      */
 
     private void updateFontSize(float width, float height) {
         int fontSize = (int) Math.min(
-                Math.min(width * getWidth(), height * getHeight()),
+                Math.min(0.75f * width * getWidth(), 0.75f * height * getHeight()),
                 Font.DESKTOP_SIZE
         );
         if (fontSize != (int) font.getSize()) {
@@ -242,6 +259,9 @@ public class AbstractCalendarView extends WrapperView implements CalendarView {
         super.update(container);
 
         if (isVisible()) {
+            // highlights the current day
+            cells[7 + currentDate[0] - 1].getPaint().setTextColor(currentDayColor);
+
             float[] cellDim = {0.7f / 6f, 0.08f};
 
             updateFontSize(cellDim[0], cellDim[1]);
@@ -306,7 +326,7 @@ public class AbstractCalendarView extends WrapperView implements CalendarView {
         currentDate[2] = year;
 
         // update month
-        header.setText(CalendarView.MONTHS[month - 1] + " " + year);
+        header.setText(months[month - 1] + " " + year);
 
         markCurrentDateCell(currentDate[0]);
 

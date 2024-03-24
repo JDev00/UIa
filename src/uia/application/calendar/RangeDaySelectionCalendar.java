@@ -20,8 +20,8 @@ public class RangeDaySelectionCalendar extends AbstractCalendarView {
 
     private final int[] range = {-1, -1};
 
-    public RangeDaySelectionCalendar(View view) {
-        super(view);
+    public RangeDaySelectionCalendar(View view, String[] weekdays, String[] months) {
+        super(view, weekdays, months);
 
         // updates day selection
         registerCallback((OnDaySelect) day -> {

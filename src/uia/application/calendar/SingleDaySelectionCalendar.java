@@ -18,8 +18,8 @@ public class SingleDaySelectionCalendar extends AbstractCalendarView {
             .setColor(Theme.ROYAL_BLUE)
             .setTextColor(Theme.WHITE);
 
-    public SingleDaySelectionCalendar(View view) {
-        super(view);
+    public SingleDaySelectionCalendar(View view, String[] weekdays, String[] months) {
+        super(view, weekdays, months);
 
         // updates day selection
         registerCallback((OnDaySelect) day -> {
