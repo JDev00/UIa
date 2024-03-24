@@ -10,6 +10,8 @@ import uia.physical.theme.Theme;
 import uia.utility.Geometries;
 import uia.utility.MathUtility;
 
+import java.util.Objects;
+
 /**
  * A DrawableDistribution defines the graphical settings to draw a {@link PointDistribution} on screen.
  */
@@ -35,7 +37,7 @@ public class DrawableDistribution extends PointDistribution {
     }
 
     /**
-     * Set the point dimension
+     * Sets the point dimension.
      *
      * @param pointDim a value {@code >= 0}
      */
@@ -46,29 +48,23 @@ public class DrawableDistribution extends PointDistribution {
     }
 
     /**
-     * Sets a new Paint to customize the line graphical appearance
-     *
-     * @param paint a not null {@link Paint}
+     * @return the {@link Paint} used to customize the line (between points) appearance
      */
 
-    public DrawableDistribution setLinePaint(Paint paint) {
-        paintLine.set(paint);
-        return this;
+    public Paint getLinePaint() {
+        return paintLine;
     }
 
     /**
-     * Sets a new Paint to customize the point graphical appearance
-     *
-     * @param paint a not null {@link Paint}
+     * @return the {@link Paint} used to customize the point markers appearance
      */
 
-    public DrawableDistribution setColorPoint(Paint paint) {
-        paintPoint.set(paint);
-        return this;
+    public Paint getPointPaint() {
+        return paintPoint;
     }
 
     /**
-     * Sets the geometry used to render the point marker
+     * Sets the geometry used to render the point marker.
      *
      * @param markerGeometry a not null {@link Geometry}
      */
@@ -84,7 +80,7 @@ public class DrawableDistribution extends PointDistribution {
     }
 
     /**
-     * Enable or disable the line that connects each point
+     * Enables or disables the line that connects each point.
      *
      * @param enableLine true to enable the line
      */
@@ -95,7 +91,7 @@ public class DrawableDistribution extends PointDistribution {
     }
 
     /**
-     * Enable or disable the drawing of points
+     * Enables or disables the drawing of points.
      *
      * @param enablePoint true to draw points
      */
@@ -106,7 +102,7 @@ public class DrawableDistribution extends PointDistribution {
     }
 
     /**
-     * Calculates the marker position according to the component viewport
+     * Calculates the marker position according to the component viewport.
      */
 
     private void calculateMarkerPosition(float[] target,
@@ -125,12 +121,15 @@ public class DrawableDistribution extends PointDistribution {
     private final float[] nextMarkerPosition = {0f, 0f};
 
     /**
-     * Draws the data distribution on the specified Graphic
+     * Draws the data distribution on the given Graphic.
      *
-     * @param graphics a not null {@link Graphics} used to display the distribution
+     * @param graphics a {@link Graphics} used to display the distribution
+     * @throws NullPointerException if {@code graphics == null}
      */
 
     public void draw(Graphics graphics, float[] bounds, float width, float height, float rotation) {
+        Objects.requireNonNull(graphics);
+
         float xMin = getMin(PointDistribution.AXIS.X);
         float yMin = getMin(PointDistribution.AXIS.Y);
         float xMax = getMax(PointDistribution.AXIS.X);
