@@ -28,9 +28,9 @@ public class widgets {
         );
         buttonFilled.setText("Hello");
         buttonFilled.getPaint()
+                .setTextColor(Theme.LIGHT_CORAL)
                 .setColor(Theme.TRANSPARENT)
                 .setStrokeColor(Theme.WHITE)
-                .setTextColor(Theme.WHITE)
                 .setStrokeWidth(4);
 
         UIToggleButton buttonSwitch = new UIToggleButton(
