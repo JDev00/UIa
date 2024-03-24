@@ -41,6 +41,7 @@ public class widgets {
                 new Component("BUTTON_2", 0.85f, 0.75f, 0.15f, 0.1f)
         );
         buttonList.setText("1\n1", "2", "3", "4", "5");
+        buttonList.getPaint().setTextColor(Theme.BLUE);
 
         CalendarView calendar = new SingleDaySelectionCalendar(
                 new Component("CALENDAR", 0.15f, 0.7f, 0.25f, 0.5f)

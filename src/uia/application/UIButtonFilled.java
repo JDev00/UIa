@@ -36,7 +36,7 @@ public final class UIButtonFilled extends WrapperView {
         viewText.setAlign(ComponentText.AlignY.CENTER);
         viewText.getPaint()
                 .setColor(Theme.TRANSPARENT)
-                .setTextColor(getPaint().getTextColor());
+                .setTextColor(null);
 
         icon = new Component("BUTTON_FILLED_ICON_" + getID(), right ? 0.875f : 0.125f, 0.5f, 0.125f, 0.4f)
                 .setExpanseLimit(1.15f, 1.15f);
@@ -57,14 +57,6 @@ public final class UIButtonFilled extends WrapperView {
 
     public void setText(String text) {
         viewText.setText(text);
-    }
-
-    @Override
-    public void update(View parent) {
-        super.update(parent);
-        viewText.getPaint().setTextColor(
-                getPaint().getTextColor()
-        );
     }
 
     /**
