@@ -113,6 +113,8 @@ public class GraphicAWT implements Graphics {
         graphics.setFont((java.awt.Font) font.getNative());
     }
 
+    java.awt.Paint lastSeenTextPaint = null;
+
     /**
      * Helper function. Builds the given Paint.
      */
@@ -120,12 +122,17 @@ public class GraphicAWT implements Graphics {
     private void buildPaint(Paint paint) {
         if (!paint.isValid() || !(paint.getNativeColor() instanceof java.awt.Paint)) {
 
-            Function<uia.core.paint.Color, Color> createNativeColor = color -> new Color(
-                    color.getRed(),
-                    color.getGreen(),
-                    color.getBlue(),
-                    color.getAlpha()
-            );
+            Function<uia.core.paint.Color, Color> createNativeColor = color -> {
+                Color result = null;
+                if (color != null) {
+                    result = new Color(
+                            color.getRed(),
+                            color.getGreen(),
+                            color.getBlue(),
+                            color.getAlpha());
+                }
+                return result;
+            };
 
             Color nativeColor = createNativeColor.apply(paint.getColor());
             Color nativeTextColor = createNativeColor.apply(paint.getTextColor());
@@ -136,6 +143,11 @@ public class GraphicAWT implements Graphics {
                     nativeStrokeColor,
                     new BasicStroke(paint.getStrokeWidth())
             );
+        }
+
+        // spike
+        if (paint.getNativeTextColor() != null) {
+            lastSeenTextPaint = (java.awt.Paint) paint.getNativeTextColor();
         }
     }
 
@@ -158,13 +170,15 @@ public class GraphicAWT implements Graphics {
         Graphics2D graphics = getGraphics();
         graphics.fill(path);
 
-        if (paint.hasStroke()) {
+        if (paint.getStrokeWidth() > 0) {
             java.awt.Paint previousPaint = graphics.getPaint();
             java.awt.Paint nativeStrokePaint = (java.awt.Paint) paint.getNativeStrokeColor();
+            if (nativeStrokePaint == null) {
+                nativeStrokePaint = (java.awt.Paint) paint.getNativeColor();
+            }
 
             graphics.setPaint(nativeStrokePaint);
             graphics.draw(path);
-
             graphics.setPaint(previousPaint);
         }
     }
@@ -252,11 +266,9 @@ public class GraphicAWT implements Graphics {
         }
 
         java.awt.Paint previousPaint = graphics.getPaint();
-        java.awt.Paint nativeTextPaint = (java.awt.Paint) paint.getNativeTextColor();
 
-        graphics.setPaint(nativeTextPaint);
+        graphics.setPaint(lastSeenTextPaint);
         graphics.drawChars(data, offset, length, (int) x, (int) y);
-
         graphics.setPaint(previousPaint);
 
         if (rotated) {

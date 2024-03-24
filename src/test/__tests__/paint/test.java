@@ -25,7 +25,7 @@ public class test {
 
     @Test
     public void shouldBePossibleToSetThePaintColorTheStrokeColorAndTheStrokeWidth(TestAssertion testAssertion) {
-        testAssertion.assertions(4);
+        testAssertion.assertions(3);
 
         // test setup
         paint.setColor(color);
@@ -46,7 +46,6 @@ public class test {
 
         int expectedStrokeWidth = paint.getStrokeWidth();
         testAssertion.expect(expectedStrokeWidth).toBe(strokeWidth);
-        testAssertion.expect(paint.hasStroke()).toBe(true);
     }
 
     @Test

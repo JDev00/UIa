@@ -247,12 +247,4 @@ public final class Paint {
     public int getStrokeWidth() {
         return strokeWidth;
     }
-
-    /**
-     * @return true if {@link #getStrokeWidth()} > 0
-     */
-
-    public boolean hasStroke() {
-        return strokeWidth != WITHOUT_STROKE;
-    }
 }

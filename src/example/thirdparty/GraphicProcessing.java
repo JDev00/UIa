@@ -72,7 +72,7 @@ public class GraphicProcessing implements Graphics {
         PGraphics graphics = getGraphics();
         graphics.fill(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 
-        if (paint.hasStroke()) {
+        if (paint.getStrokeWidth() > 0) {
             graphics.stroke(strokeColor.getRed(), strokeColor.getGreen(), strokeColor.getBlue());
         } else {
             graphics.noStroke();
