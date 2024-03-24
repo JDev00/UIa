@@ -25,7 +25,7 @@ import java.util.*;
  * Abstract calendar representation. It does not support day selection.
  */
 
-public class AbstractCalendarView extends WrapperView implements CalendarView {
+public abstract class AbstractCalendarView extends WrapperView implements CalendarView {
     private final Calendar calendar = GregorianCalendar.getInstance();
 
     private final CalendarCell[] cells = new CalendarCell[38];
@@ -336,16 +336,6 @@ public class AbstractCalendarView extends WrapperView implements CalendarView {
     @Override
     public int[] getDate() {
         return new int[]{currentDate[0], currentDate[1], currentDate[2]};
-    }
-
-    @Override
-    public void selectDay(int day) {
-        throw new UnsupportedOperationException("This method is supported");
-    }
-
-    @Override
-    public void deselectDay(int day) {
-        throw new UnsupportedOperationException("This method is supported");
     }
 
     @Override
