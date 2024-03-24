@@ -4,6 +4,7 @@ import uia.application.UIButtonFilled;
 import uia.application.UIButtonList;
 import uia.application.UIToggleButton;
 import uia.application.calendar.CalendarView;
+import uia.application.calendar.Calendars;
 import uia.application.calendar.SingleDaySelectionCalendar;
 import uia.core.ui.context.Context;
 import uia.core.ui.ViewGroup;
@@ -45,7 +46,8 @@ public class widgets {
         buttonList.setText("1\n1", "2", "3", "4", "5");
         buttonList.getPaint().setTextColor(Theme.BLUE);
 
-        CalendarView calendar = new SingleDaySelectionCalendar(
+        CalendarView calendar = Calendars.create(
+                SingleDaySelectionCalendar.class,
                 new Component("CALENDAR", 0.15f, 0.7f, 0.25f, 0.5f)
         );
         calendar.setRotation(0.05f);
