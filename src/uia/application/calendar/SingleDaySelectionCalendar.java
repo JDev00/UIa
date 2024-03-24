@@ -4,7 +4,6 @@ import uia.core.basement.Drawable;
 import uia.core.paint.Paint;
 import uia.core.ui.View;
 import uia.physical.theme.Theme;
-import uia.physical.theme.ThemeDarcula;
 import uia.utility.Geometries;
 
 /**
@@ -16,7 +15,7 @@ public class SingleDaySelectionCalendar extends AbstractCalendarView {
             .setColor(Theme.TRANSPARENT)
             .setTextColor(Theme.WHITE);
     private final Paint selectedCellPaint = new Paint()
-            .setColor(ThemeDarcula.BLUE)
+            .setColor(Theme.ROYAL_BLUE)
             .setTextColor(Theme.WHITE);
 
     public SingleDaySelectionCalendar(View view) {

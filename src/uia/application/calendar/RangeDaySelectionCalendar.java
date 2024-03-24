@@ -3,7 +3,6 @@ package uia.application.calendar;
 import uia.core.paint.Paint;
 import uia.core.ui.View;
 import uia.physical.theme.Theme;
-import uia.physical.theme.ThemeDarcula;
 import uia.utility.Geometries;
 
 /**
@@ -16,7 +15,7 @@ public class RangeDaySelectionCalendar extends AbstractCalendarView {
             .setColor(Theme.TRANSPARENT)
             .setTextColor(Theme.WHITE);
     private final Paint selectedCellPaint = new Paint()
-            .setColor(ThemeDarcula.BLUE)
+            .setColor(Theme.ROYAL_BLUE)
             .setTextColor(Theme.WHITE);
 
     private final int[] range = {-1, -1};
