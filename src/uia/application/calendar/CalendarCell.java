@@ -8,7 +8,7 @@ import uia.physical.component.ComponentText;
 import uia.physical.component.WrapperViewText;
 
 /**
- * CalendarCell is a generic view used to represent a calendar day or a week day.
+ * CalendarCell is designed to be used as a calendar day or a week day.
  */
 
 public class CalendarCell extends WrapperViewText {
