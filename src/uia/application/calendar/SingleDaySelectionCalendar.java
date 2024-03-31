@@ -7,7 +7,9 @@ import uia.physical.theme.Theme;
 import uia.utility.Geometries;
 
 /**
- * Implementation of {@link CalendarView} for single day selection.
+ * Standard UIa component.
+ * <br>
+ * Gregorian calendar with single day selection.
  */
 
 public class SingleDaySelectionCalendar extends AbstractCalendarView {
