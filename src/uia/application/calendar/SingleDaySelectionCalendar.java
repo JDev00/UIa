@@ -95,6 +95,6 @@ public class SingleDaySelectionCalendar extends AbstractCalendarView {
     public void clearDaySelection() {
         deselectAllDays();
         updateDayStyle();
-        notifyCallbacks(OnSelectionCleared.class, this);
+        notifyCallbacks(onSelectionClear.class, this);
     }
 }

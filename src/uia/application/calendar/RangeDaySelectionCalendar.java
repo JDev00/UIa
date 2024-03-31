@@ -48,7 +48,7 @@ public class RangeDaySelectionCalendar extends AbstractCalendarView {
     public void clearDaySelection() {
         deselectsAllDays();
         updateDayStyle();
-        notifyCallbacks(OnSelectionCleared.class, this);
+        notifyCallbacks(onSelectionClear.class, this);
     }
 
     /**
