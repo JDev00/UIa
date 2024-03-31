@@ -22,7 +22,8 @@ import uia.utility.MathUtility;
 import java.util.*;
 
 /**
- * Abstract calendar representation. It does not support day selection.
+ * Abstract representation of the Gregorian calendar.
+ * It provides all the basement operations expect day selection.
  */
 
 public abstract class AbstractCalendarView extends WrapperView implements CalendarView {
@@ -133,7 +134,7 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         return result;
     }
 
-    // TODO: to be removed
+    //
 
     /**
      * Marks the specified as selected.
