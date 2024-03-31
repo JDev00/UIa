@@ -6,7 +6,9 @@ import uia.physical.theme.Theme;
 import uia.utility.Geometries;
 
 /**
- * Implementation of {@link CalendarView} for range day selection.
+ * Standard UIa component.
+ * <br>
+ * Gregorian calendar with day range selection.
  */
 
 public class RangeDaySelectionCalendar extends AbstractCalendarView {
@@ -34,18 +36,12 @@ public class RangeDaySelectionCalendar extends AbstractCalendarView {
         if (day < 1 || day > 31) {
             throw new IllegalArgumentException("the day must be between [1, 31]. " + day + " provided");
         }
-
         notifyCallbacks(OnDaySelect.class, day);
     }
 
-    // TODO: to complete
     @Override
     public void deselectDay(int day) {
-        if (day < 1 || day > 31) {
-            throw new IllegalArgumentException("the day must be between [1, 31]. " + day + " provided");
-        }
-
-        notifyCallbacks(OnDaySelect.class, day);
+        throw new UnsupportedOperationException();
     }
 
     @Override

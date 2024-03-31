@@ -48,7 +48,8 @@ public interface CalendarView extends View {
      * Deselects the specified day.
      *
      * @param day the day to be deselected; if -1 is given, all the selected days will be deselected
-     * @throws IllegalArgumentException if {@code day < 1 || day > 31}
+     * @throws IllegalArgumentException      if {@code day < 1 || day > 31}
+     * @throws UnsupportedOperationException if this method is not supported on the specific implementation
      */
 
     void deselectDay(int day);
