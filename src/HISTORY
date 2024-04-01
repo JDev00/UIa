@@ -1,4 +1,10 @@
-UIa current version is 1.5.1
+UIa current version is 1.5.2
+
+################
+Version 1.5.2
+################
+
+* BugFix: only the 'current' day is highlighted in the calendar
 
 ################
 Version 1.5.1
