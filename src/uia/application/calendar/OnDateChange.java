@@ -3,9 +3,9 @@ package uia.application.calendar;
 import uia.core.basement.Callback;
 
 /**
- * OnDateChange is a callback that is invoked when the calendar month or year is changed.
+ * OnDateChange is triggered when the calendar month or year is changed.
  * <br>
- * It provides the date as an array made of: day, month and year.
+ * It provides the current date as an array consisting of: day, month and year.
  */
 
 public interface OnDateChange extends Callback<Integer[]> {
