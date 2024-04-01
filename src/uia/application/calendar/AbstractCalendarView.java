@@ -17,13 +17,12 @@ import uia.physical.theme.Theme;
 import uia.physical.theme.ThemeDarcula;
 import uia.utility.CalendarUtility;
 import uia.utility.Geometries;
-import uia.utility.MathUtility;
 
 import java.util.*;
 
 /**
  * Abstract representation of the Gregorian calendar.
- * It provides all the basement operations expect day selection.
+ * It provides all the calendar basement operations expect day selection.
  */
 
 public abstract class AbstractCalendarView extends WrapperView implements CalendarView {
@@ -51,17 +50,22 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
 
         currentDayColor = Theme.PINK;
 
+        java.util.function.Consumer<Boolean> changeDate = (next) -> {
+            int offset = next ? 1 : -1;
+            int month = currentDate[1] + offset;
+            int year = currentDate[2];
+            int day = 0;
+
+            int[] date = CalendarUtility.getDate();
+            if (month == date[1] && year == date[2]) {
+                day = date[0];
+            }
+            setDate(day, month, year);
+        };
+
         header = createHeader("CALENDAR_HEADER_" + getID(), font);
-        header.getViewRight().registerCallback((OnClick) touches -> setDate(
-                currentDate[0],
-                currentDate[1] + 1,
-                currentDate[2])
-        );
-        header.getViewLeft().registerCallback((OnClick) touches -> setDate(
-                currentDate[0],
-                currentDate[1] - 1,
-                currentDate[2])
-        );
+        header.getViewRight().registerCallback((OnClick) touches -> changeDate.accept(true));
+        header.getViewLeft().registerCallback((OnClick) touches -> changeDate.accept(false));
 
         overlayCell = new Component("CALENDAR_OVERLAY_" + getID(), 0f, 0f, 0f, 0f);
         overlayCell.setConsumer(Consumer.SCREEN_TOUCH, false);
@@ -261,7 +265,9 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
 
         if (isVisible()) {
             // highlights the current day
-            cells[7 + currentDate[0] - 1].getPaint().setTextColor(currentDayColor);
+            if (currentDate[0] > 0) {
+                cells[7 + currentDate[0] - 1].getPaint().setTextColor(currentDayColor);
+            }
 
             float[] cellDim = {0.7f / 6f, 0.08f};
 
@@ -316,11 +322,13 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         offset = CalendarUtility.getDay(calendar.get(Calendar.DAY_OF_WEEK));
 
         // deselects the previous current day
-        Color dayTextColor = cells[7 + currentDate[0] % 31].getPaint().getTextColor();
-        cells[7 + currentDate[0] - 1].getPaint().setTextColor(dayTextColor);
+        if (currentDate[0] > 0) {
+            Color dayTextColor = cells[7 + currentDate[0] % 31].getPaint().getTextColor();
+            cells[7 + currentDate[0] - 1].getPaint().setTextColor(dayTextColor);
+        }
 
         // update current date
-        currentDate[0] = MathUtility.constrain(day, 1, days);
+        currentDate[0] = day;
         currentDate[1] = month;
         currentDate[2] = year;
 
