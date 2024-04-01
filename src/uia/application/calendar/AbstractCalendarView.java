@@ -315,11 +315,9 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         days = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         offset = CalendarUtility.getDay(calendar.get(Calendar.DAY_OF_WEEK));
 
-        // update selection
-        int prevCurrentDay = currentDate[0];
-        if (prevCurrentDay > days && cells[7 + prevCurrentDay - 1].selected) {
-            cells[7 + prevCurrentDay - 1].selected = false;
-        }
+        // deselects the previous current day
+        Color dayTextColor = cells[7 + currentDate[0] % 31].getPaint().getTextColor();
+        cells[7 + currentDate[0] - 1].getPaint().setTextColor(dayTextColor);
 
         // update current date
         currentDate[0] = MathUtility.constrain(day, 1, days);
