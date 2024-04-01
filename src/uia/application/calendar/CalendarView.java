@@ -22,9 +22,11 @@ public interface CalendarView extends View {
     /**
      * Sets the current calendar date.
      *
-     * @param day   the current calendar day between [1, 31]
+     * @param day   the current calendar day between [1, 31]; if 0 is given, it means that the specified month is not
+     *              the current one
      * @param month the current calendar month between [1, 12]
      * @param year  the current calendar year
+     * @throws IllegalArgumentException if {@code day < 0 || day > 31}
      */
 
     void setDate(int day, int month, int year);
