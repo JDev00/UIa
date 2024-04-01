@@ -1,4 +1,4 @@
-package uia.utility;
+package uia.application.calendar;
 
 import java.util.Calendar;
 
