@@ -48,9 +48,10 @@ public class widgets {
 
         CalendarView calendar = Calendars.create(
                 SingleDaySelectionCalendar.class,
-                new Component("CALENDAR", 0.15f, 0.7f, 0.25f, 0.5f)
+                new Component("CALENDAR", 0.25f, 0.5f, 0.25f, 0.5f)
         );
         calendar.setRotation(0.05f);
+        calendar.setDate(31, 3, 2024);
 
         ViewGroup result = createRoot();
         ViewGroup.insert(result, buttonFilled, toggleButton, buttonList, calendar);

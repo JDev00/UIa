@@ -19,6 +19,7 @@ import uia.utility.CalendarUtility;
 import uia.utility.Geometries;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 /**
  * Abstract representation of the Gregorian calendar.
@@ -54,13 +55,16 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
             int offset = next ? 1 : -1;
             int month = currentDate[1] + offset;
             int year = currentDate[2];
-            int day = 0;
 
-            int[] date = CalendarUtility.getDate();
-            if (month == date[1] && year == date[2]) {
-                day = date[0];
+            if (month > 12) {
+                month = 1;
+                year++;
+            } else if (month < 1) {
+                month = 12;
+                year--;
             }
-            setDate(day, month, year);
+
+            changeDate(month, year);
         };
 
         header = createHeader("CALENDAR_HEADER_" + getID(), font);
@@ -304,16 +308,12 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         cells[7 + day - 1].current = true;
     }
 
-    @Override
-    public void setDate(int day, int month, int year) {
-        if (month > 12) {
-            month = 1;
-            year++;
-        } else if (month < 1) {
-            month = 12;
-            year--;
-        }
+    /**
+     * Helper function. Updates the calendar date.
+     */
 
+    private void updateDate(int day, int month, int year) {
+        // updates internal calendar
         calendar.clear();
         calendar.set(year, month - 1, 1);
 
@@ -325,6 +325,11 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         if (currentDate[0] > 0) {
             Color dayTextColor = cells[7 + currentDate[0] % 31].getPaint().getTextColor();
             cells[7 + currentDate[0] - 1].getPaint().setTextColor(dayTextColor);
+
+            // makes all the cells non-current
+            for (int i = 0; i < 31; i++) {
+                cells[7 + i].current = false;
+            }
         }
 
         // update current date
@@ -332,11 +337,53 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         currentDate[1] = month;
         currentDate[2] = year;
 
+        // marks the current day
+        if (currentDate[0] > 0) {
+            markCurrentDateCell(currentDate[0]);
+        }
+
         // update month
         header.setText(months[month - 1] + " " + year);
+    }
 
-        markCurrentDateCell(currentDate[0]);
+    private final int[] setDate = {1, 1, 2024};
 
+    @Override
+    public void setDate(int day, int month, int year) {
+        if (day < 1 || day > 31) {
+            throw new IllegalArgumentException("the day must be between [1, 31]");
+        }
+        if (month < 1 || month > 12) {
+            throw new IllegalArgumentException("the month must be between [1, 12]");
+        }
+
+        // sets the calendar date
+        setDate[0] = day;
+        setDate[1] = month;
+        setDate[2] = year;
+
+        updateDate(day, month, year);
+        notifyCallbacks(OnDateSet.class, getDate());
+    }
+
+    @Override
+    public int[] getSetDate() {
+        return new int[]{setDate[0], setDate[1], setDate[2]};
+    }
+
+    @Override
+    public void changeDate(int month, int year) {
+        if (month < 1 || month > 12) {
+            throw new IllegalArgumentException("the month must be between [1, 12]");
+        }
+
+        int day = 0;
+        int[] setDate = getSetDate();
+        if (setDate[1] == month && setDate[2] == year) {
+            day = setDate[0];
+        }
+
+        updateDate(day, month, year);
         notifyCallbacks(OnDateChange.class, getDate());
     }
 
@@ -346,13 +393,9 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
     }
 
     @Override
-    public List<Integer> getSelectedDays() {
-        List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < days; i++) {
-            if (cells[7 + i].selected) {
-                result.add(i + 1);
-            }
-        }
-        return result;
+    public int[] getSelectedDays() {
+        return IntStream.range(1, 32)
+                .filter(index -> cells[7 + index - 1].selected)
+                .toArray();
     }
 }

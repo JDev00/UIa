@@ -2,8 +2,6 @@ package uia.application.calendar;
 
 import uia.core.ui.View;
 
-import java.util.List;
-
 /**
  * CalendarView ADT.
  * <br>
@@ -20,19 +18,43 @@ public interface CalendarView extends View {
     };
 
     /**
-     * Sets the current calendar date.
+     * Sets the calendar date.
      *
-     * @param day   the current calendar day between [1, 31]; if 0 is given, it means that the specified month is not
-     *              the current one
-     * @param month the current calendar month between [1, 12]
-     * @param year  the current calendar year
-     * @throws IllegalArgumentException if {@code day < 0 || day > 31}
+     * @param day   the calendar day between [1, 31]
+     * @param month the calendar month between [1, 12]
+     * @param year  the calendar year
+     * @throws IllegalArgumentException if:
+     *                                  <ul>
+     *                                      <li>{@code day < 1 || day > 31};</li>
+     *                                      <li>{@code month < 1 || month > 12};</li>
+     *                                  </ul>
      */
 
     void setDate(int day, int month, int year);
 
     /**
-     * @return the current calendar date
+     * @return the calendar set date as an array of three elements:
+     * <ul>
+     *     <li>the day between [1, 31];</li>
+     *     <li>the month between [1, 12];</li>
+     *     <li>the year.</li>
+     * </ul>
+     */
+
+    int[] getSetDate();
+
+    /**
+     * Changes the calendar date but keeps the set date.
+     *
+     * @param month the new calendar month between [1, 12]
+     * @param year  the new calendar year
+     * @throws IllegalArgumentException if {@code month < 1 || month > 12}
+     */
+
+    void changeDate(int month, int year);
+
+    /**
+     * @return the current calendar date. It could be different from {@link #getSetDate()}.
      */
 
     int[] getDate();
@@ -66,5 +88,5 @@ public interface CalendarView extends View {
      * @return all the selected days
      */
 
-    List<Integer> getSelectedDays();
+    int[] getSelectedDays();
 }
