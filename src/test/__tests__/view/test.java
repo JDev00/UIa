@@ -5,11 +5,13 @@ import uia.core.basement.Collidable;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.*;
+import uia.physical.message.store.ConcreteMessageStore;
+import uia.physical.message.store.GlobalMessageStore;
 
 import static test.__tests__.utility.TestUtility.*;
 
 /**
- * Unit tests
+ * Unit tests.
  */
 
 public class test {
@@ -22,7 +24,16 @@ public class test {
 
         context = createMockContext();
         context.setView(rootView);
+
+        GlobalMessageStore globalMessageStore = GlobalMessageStore.getInstance();
+        globalMessageStore.mount(new ConcreteMessageStore());
     }
+
+    /*@AfterEachTest
+    public void afterEach() {
+        System.out.println("after each!");
+        context.setLifecycleStage(Context.LifecycleStage.TERMINATED);
+    }*/
 
     @Test
     public void viewBoundsWidthAndHeightShouldBeDifferentAfterARotation(TestAssertion testAssertion) {
@@ -72,7 +83,6 @@ public class test {
     }
 
     @Test
-    @Skip
     public void clickingOnViewShouldGenerateAnEvent(TestAssertion testAssertion) {
         testAssertion.assertions(1);
 
@@ -80,7 +90,9 @@ public class test {
             testAssertion.expect(true).toBe(true);
         });
 
+        TestUtils.wait(40);
         context.getInputEmulator().clickOn(100, 100);
+        TestUtils.wait(20);
     }
 
     @Test
