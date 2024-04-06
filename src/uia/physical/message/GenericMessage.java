@@ -3,7 +3,7 @@ package uia.physical.message;
 import uia.core.basement.Message;
 
 /**
- * Built-in {@link Message} implementation.
+ * UIa standard {@link Message} implementation.
  */
 
 public class GenericMessage implements Message {

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Message factory.
+ * Messages collects a set of utilities to easily create the desired type of message.
  */
 
 public class Messages {

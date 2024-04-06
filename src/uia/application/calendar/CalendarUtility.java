@@ -1,4 +1,4 @@
-package uia.utility;
+package uia.application.calendar;
 
 import java.util.Calendar;
 
@@ -14,9 +14,9 @@ public final class CalendarUtility {
     /**
      * @return the current date as an array of three elements:
      * <ul>
-     *     <li>day between [1,31];</li>
-     *     <li>month between [1,12];></li>
-     *     <li>year</li>
+     *     <li>the day between [1,31];</li>
+     *     <li>the month between [1,12];</li>
+     *     <li>the year.</li>
      * </ul>
      */
 
@@ -30,14 +30,14 @@ public final class CalendarUtility {
     }
 
     /**
-     * Given an integer, returns the day of the week, where 0 is monday and 6 is sunday
+     * Given an integer, returns the day of the week, where 0 is monday and 6 is sunday.
      *
-     * @param i an integer
+     * @param day an integer
      * @return the day of the week otherwise -1
      */
 
-    public static int getDay(int i) {
-        switch (i) {
+    public static int getDay(int day) {
+        switch (day) {
             case Calendar.MONDAY:
                 return 0;
             case Calendar.TUESDAY:
@@ -58,7 +58,7 @@ public final class CalendarUtility {
     }
 
     /**
-     * Checks if the given string is equal to the given value
+     * Checks if the given string is equal to the given value.
      *
      * @param in    a not null String to compare to
      * @param value a value to compare to
@@ -69,7 +69,7 @@ public final class CalendarUtility {
     }
 
     /**
-     * Check if the given date contains the given day
+     * Check if the given date contains the given day.
      *
      * @param date a not null date to control
      * @param day  the day to look for
@@ -81,7 +81,7 @@ public final class CalendarUtility {
     }
 
     /**
-     * Check if the given date contains the given month
+     * Checks if the given date contains the specified month.
      *
      * @param date  a not null date to control
      * @param month the month to look for
@@ -97,7 +97,7 @@ public final class CalendarUtility {
     }
 
     /**
-     * Check if the given date contains the given year
+     * Checks if the given date contains the specified year.
      *
      * @param date a not null date to control
      * @param year the year to look for

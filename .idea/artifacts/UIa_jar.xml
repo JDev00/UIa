@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="UIa:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/UIa_jar</output-path>
+    <root id="archive" name="UIa.jar">
+      <element id="module-output" name="UIa" />
+    </root>
+  </artifact>
+</component>

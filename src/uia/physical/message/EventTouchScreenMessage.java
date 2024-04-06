@@ -6,7 +6,8 @@ import uia.core.basement.Message;
 import java.util.List;
 
 /**
- * EventTouchScreenMessage has the responsibility to wrap a List of {@link ScreenTouch}s as payload
+ * EventTouchScreenMessage is a UIa framework message that carries
+ * a list of {@link ScreenTouch} as payload.
  */
 
 public final class EventTouchScreenMessage implements Message {
