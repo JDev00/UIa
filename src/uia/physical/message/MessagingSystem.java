@@ -2,17 +2,20 @@ package uia.physical.message;
 
 import uia.core.basement.Message;
 import uia.core.ui.View;
+import uia.physical.message.store.GlobalMessageStore;
+import uia.physical.message.store.MessageStore;
 
 import java.util.List;
 import java.util.Objects;
 
 /**
- * MessagingSystem has the responsibility to manage and dispatch the available messages.
+ * MessagingSystem is responsible for managing and dispatching messages.
  */
 
 public class MessagingSystem {
     public static final int MAX_MESSAGES_TO_PROCESS = 20000;
-    private final MessageStore messageStore = MessageStore.getInstance();
+
+    private final MessageStore globalMessageStore = GlobalMessageStore.getInstance();
     private String lockedScreenTouchRecipient = null;
 
     private int maxMessagesToProcess = MAX_MESSAGES_TO_PROCESS;
@@ -41,7 +44,7 @@ public class MessagingSystem {
     public void sendMessagesTo(View view) {
         Objects.requireNonNull(view);
 
-        List<Message> messages = messageStore.pop(maxMessagesToProcess);
+        List<Message> messages = globalMessageStore.pop(maxMessagesToProcess);
         for (Message message : messages) {
             // try to lock messages
             if (message instanceof EventTouchScreenMessage.RequestLock && lockedScreenTouchRecipient == null) {

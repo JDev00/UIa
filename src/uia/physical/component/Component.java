@@ -9,7 +9,8 @@ import uia.core.shape.Shape;
 import uia.physical.callbacks.CallbackStore;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.message.EventTouchScreenMessage;
-import uia.physical.message.MessageStore;
+import uia.physical.message.store.GlobalMessageStore;
+import uia.physical.message.store.MessageStore;
 import uia.physical.theme.Theme;
 import uia.physical.component.utility.ComponentUtility;
 import uia.utility.Geometries;
@@ -207,7 +208,8 @@ public final class Component implements View {
 
     @Override
     public void sendMessage(Message message) {
-        MessageStore.getInstance().add(message);
+        MessageStore globalMessageStore = GlobalMessageStore.getInstance();
+        globalMessageStore.add(message);
     }
 
     /**

@@ -3,8 +3,9 @@ package uia.application.desktop;
 import uia.core.Key;
 import uia.core.ScreenTouch;
 import uia.core.ui.context.Window;
-import uia.physical.message.MessageStore;
 import uia.physical.message.Messages;
+import uia.physical.message.store.GlobalMessageStore;
+import uia.physical.message.store.MessageStore;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class WindowSwing implements Window {
     private final JFrame jFrame;
-    private final MessageStore messageStore = MessageStore.getInstance();
+    private final MessageStore globalMessageStore = GlobalMessageStore.getInstance();
     private final int[] screenSize = new int[2];
     private boolean focus = false;
 
@@ -122,11 +123,11 @@ public class WindowSwing implements Window {
     }
 
     private void addKeyEvent(Key key) {
-        messageStore.add(Messages.newKeyEventMessage(key, null));
+        globalMessageStore.add(Messages.newKeyEventMessage(key, null));
     }
 
     private void addScreenTouchEvent(List<ScreenTouch> screenTouches) {
-        messageStore.add(Messages.newScreenEventMessage(screenTouches, null));
+        globalMessageStore.add(Messages.newScreenEventMessage(screenTouches, null));
     }
 
     /**

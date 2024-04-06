@@ -7,8 +7,9 @@ import uia.physical.input.ArtificialInput;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.physical.message.EventTouchScreenMessage;
-import uia.physical.message.MessageStore;
 import uia.physical.message.Messages;
+import uia.physical.message.store.GlobalMessageStore;
+import uia.physical.message.store.MessageStore;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
@@ -42,7 +43,7 @@ public class ContextSwing implements Context {
         window = new WindowSwing(x, y);
         window.addUIComponent(rendererEngine);
 
-        MessageStore messageStore = MessageStore.getInstance();
+        MessageStore globalMessageStore = GlobalMessageStore.getInstance();
         inputEmulator = new ArtificialInput(message -> {
             int[] insets = window.getInsets();
             if (message instanceof EventTouchScreenMessage) {
@@ -52,7 +53,7 @@ public class ContextSwing implements Context {
                 // reallocates the message
                 message = Messages.newScreenEventMessage(copiedScreenTouch, message.getRecipient());
             }
-            messageStore.add(message);
+            globalMessageStore.add(message);
         });
     }
 
