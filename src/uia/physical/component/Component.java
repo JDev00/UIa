@@ -27,7 +27,7 @@ import static java.lang.Math.min;
 import static uia.utility.MathUtility.*;
 
 /**
- * UIa standard {@link View} implementation
+ * UIa standard {@link View} implementation.
  */
 
 public final class Component implements View {

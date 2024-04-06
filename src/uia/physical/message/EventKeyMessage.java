@@ -4,7 +4,7 @@ import uia.core.Key;
 import uia.core.basement.Message;
 
 /**
- * EventKeyMessage has the responsibility to wrap a {@link Key} as payload
+ * EventKeyMessage is a UIa framework message that carries a {@link Key} as payload.
  */
 
 public class EventKeyMessage implements Message {
