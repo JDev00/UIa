@@ -1,4 +1,11 @@
-UIa current version is 1.5.2
+UIa current version is 1.5.3
+
+################
+Version 1.5.3
+################
+
+* Makes the MessageStore interchangeable
+* improves UIa testing library
 
 ################
 Version 1.5.2
