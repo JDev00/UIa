@@ -1,32 +1,25 @@
 package uia.preview;
 
-import uia.platform.swing.ContextSwing;
 import uia.core.*;
 import uia.core.paint.Color;
 import uia.core.paint.Paint;
 import uia.core.shape.Shape;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
-import uia.core.ui.ViewGroup;
-import uia.core.ui.callbacks.OnFocus;
 import uia.core.ui.callbacks.OnKeyPressed;
 import uia.core.ui.callbacks.OnMouseExit;
 import uia.core.ui.callbacks.OnMouseHover;
-import uia.core.ui.context.Context;
 import uia.physical.component.Component;
 import uia.physical.component.ComponentText;
 import uia.physical.component.WrapperView;
 import uia.physical.component.WrapperViewText;
-import uia.physical.group.ComponentGroup;
 import uia.physical.component.text.TextRenderer;
 import uia.physical.theme.Theme;
 import uia.physical.component.utility.ComponentUtility;
 import uia.utility.Geometries;
-import uia.utility.IOUtility;
 import uia.utility.Timer;
 import uia.utility.MathUtility;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,6 +32,8 @@ import static java.lang.Math.min;
  * <br>
  * Component designed to edit text.
  */
+
+// TODO: to refactor
 
 public class UIEditText extends WrapperViewText {
     private final CharList charList = new CharList(10);
@@ -773,37 +768,5 @@ public class UIEditText extends WrapperViewText {
     private static int getBr(char[] chars, int length, int i) {
         while (i < length && chars[i] != '\n') i++;
         return i;
-    }
-
-    public static void main(String[] args) {
-        UIEditText editText = new UIEditText(
-                new Component("EDIT-TEXT", 0.5f, 0.5f, 0.5f, 0.5f)
-        );
-        editText.registerCallback((OnFocus) focus -> {
-            System.out.println(editText.getID() + " focus " + focus);
-        });
-        editText.setText(IOUtility.readAll(new File("src\\test\\develop\\UIEditText.java")));
-        editText.getPaint().setColor(Theme.LIGHT_GRAY);
-
-        //
-        ViewGroup externalGroup = new ComponentGroup(
-                new Component("EXTERNAL", 0.5f, 0.5f, 1f, 1f)
-        );
-        externalGroup.registerCallback((OnFocus) focus -> {
-            System.out.println(externalGroup.getID() + " focus " + focus);
-        });
-        externalGroup.getPaint().setColor(Theme.GREEN);
-
-        ViewGroup internalGroup = new ComponentGroup(
-                new Component("INTERNAL", 0.5f, 0.5f, 0.5f, 0.5f)
-        );
-        internalGroup.getPaint().setColor(Theme.GREEN_YELLOW);
-        ViewGroup.insert(internalGroup, editText);
-
-        ViewGroup.insert(externalGroup, internalGroup);
-        //ViewGroup.insert(externalGroup, editText);
-
-        Context context = ContextSwing.createAndStart(1000, 500);
-        context.setView(externalGroup);
     }
 }
