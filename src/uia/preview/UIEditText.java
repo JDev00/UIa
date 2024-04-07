@@ -1,4 +1,4 @@
-package uia.develop;
+package uia.preview;
 
 import uia.application.desktop.ContextSwing;
 import uia.core.*;
