@@ -1,6 +1,6 @@
 package test.__tests__.utility;
 
-import uia.application.desktop.ContextSwing;
+import uia.platform.swing.ContextSwing;
 import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;

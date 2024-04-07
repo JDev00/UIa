@@ -1,7 +1,7 @@
 package example;
 
 import uia.application.UIButton;
-import uia.application.desktop.ContextSwing;
+import uia.platform.swing.ContextSwing;
 import uia.core.Font;
 import uia.core.paint.Color;
 import uia.core.ui.ViewGroup;

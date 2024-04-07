@@ -1,6 +1,6 @@
 package example;
 
-import uia.application.desktop.ContextSwing;
+import uia.platform.swing.ContextSwing;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.ui.context.Context;

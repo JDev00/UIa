@@ -1,6 +1,6 @@
 package uia.preview;
 
-import uia.application.desktop.ContextSwing;
+import uia.platform.swing.ContextSwing;
 import uia.core.*;
 import uia.core.paint.Color;
 import uia.core.paint.Paint;

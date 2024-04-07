@@ -1,4 +1,4 @@
-package uia.application.desktop;
+package uia.platform.swing;
 
 import uia.core.ui.Graphics;
 import uia.core.ui.View;

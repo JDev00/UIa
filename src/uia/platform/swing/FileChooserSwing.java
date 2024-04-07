@@ -1,4 +1,4 @@
-package uia.application.desktop;
+package uia.platform.swing;
 
 import java.awt.Color;
 import java.io.File;

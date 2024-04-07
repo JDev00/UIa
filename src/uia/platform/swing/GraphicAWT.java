@@ -1,4 +1,4 @@
-package uia.application.desktop;
+package uia.platform.swing;
 
 import uia.core.Font;
 import uia.core.shape.Geometry;

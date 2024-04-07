@@ -1,4 +1,4 @@
-package uia.application.desktop;
+package uia.platform.swing;
 
 import uia.core.Key;
 import uia.core.ScreenTouch;
