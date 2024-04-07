@@ -7,7 +7,7 @@ import java.util.Objects;
 import static uia.utility.MathUtility.*;
 
 /**
- * Collection of geometries.
+ * Collection of utilities for the creation of geometries.
  */
 
 public final class Geometries {
@@ -18,14 +18,15 @@ public final class Geometries {
     public static final int STD_VERT = 25;
 
     /**
-     * Standard corner radius for rounded shapes (ie: rounded rect).
+     * Standard corner radius for rounded geometry (ie: rounded rect).
      */
     public static final float STD_ROUND = 0.1f;
 
     /**
-     * Builds a rectangle.
+     * Resets the given geometry and creates a rectangle.
      *
      * @param geometry the geometry where the vertices are to be stored
+     * @return the given geometry object filled with geometry vertices
      * @throws NullPointerException if {@code geometry == null}
      */
 
@@ -40,9 +41,7 @@ public final class Geometries {
     }
 
     /**
-     * Builds a rectangle with rounded corners.
-     * <br>
-     * This method must be called at runtime because of corner rounding calculation.
+     * Resets the given geometry and creates a rectangle with rounded corners.
      *
      * @param geometry the geometry where the vertices are to be stored
      * @param vertices the amount of vertices (> 0) used to create the geometry
@@ -51,7 +50,7 @@ public final class Geometries {
      * @param c        the lower-right corner radius between [0,1]
      * @param d        the lower-left corner radius between [0,1]
      * @param ratio    the width to height ration between [0,1]
-     * @return the specified geometry filled with the rounded corners rectangle vertices
+     * @return the given geometry object filled with geometry vertices
      * @throws NullPointerException if {@code geometry == null}
      */
 
@@ -99,8 +98,9 @@ public final class Geometries {
     }
 
     /**
-     * Builds a rectangle with rounded corners.
+     * Resets the given geometry and creates a rectangle with rounded corners.
      *
+     * @return the given geometry object filled with geometry vertices
      * @see #rect(Geometry, int, float, float, float, float, float)
      */
 
@@ -109,9 +109,10 @@ public final class Geometries {
     }
 
     /**
-     * Builds a triangle.
+     * Resets the given geometry and creates a triangle.
      *
      * @param geometry the geometry where the vertices are to be stored
+     * @return the given geometry object filled with geometry vertices
      * @throws NullPointerException if {@code geometry == null}
      */
 
@@ -125,10 +126,11 @@ public final class Geometries {
     }
 
     /**
-     * Builds an oval.
+     * Resets the given geometry and creates an oval.
      *
      * @param geometry the geometry where the vertices are to be stored
      * @param vertices the amount of vertices (> 0) used to create the geometry
+     * @return the given geometry object filled with geometry vertices
      * @throws NullPointerException if {@code geometry == null}
      */
 
@@ -142,9 +144,10 @@ public final class Geometries {
     }
 
     /**
-     * Builds a pause geometry.
+     * Resets the given geometry and creates a pause geometry.
      *
      * @param geometry the geometry where the vertices are to be stored
+     * @return the given geometry object filled with geometry vertices
      * @throws NullPointerException if {@code geometry == null}
      */
 
@@ -164,9 +167,10 @@ public final class Geometries {
     }
 
     /**
-     * Builds an arrow.
+     * Resets the given geometry and creates an arrow.
      *
      * @param geometry the geometry where the vertices are to be stored
+     * @return the given geometry object filled with geometry vertices
      * @throws NullPointerException if {@code geometry == null}
      */
 
@@ -181,10 +185,11 @@ public final class Geometries {
     }
 
     /**
-     * Builds a plus geometry.
+     * Resets the given geometry and creates a plus geometry.
      *
      * @param geometry  the geometry where the vertices are to be stored
      * @param thickness the geometry thickness between [0, 0.375]
+     * @return the given geometry object filled with geometry vertices
      * @throws NullPointerException if {@code geometry == null}
      */
 
@@ -208,10 +213,11 @@ public final class Geometries {
     }
 
     /**
-     * Builds a delete geometry.
+     * Resets the given geometry and creates a delete geometry.
      *
      * @param geometry  the geometry where the vertices are to be stored
      * @param thickness the geometry thickness between [0, 0.5]
+     * @return the given geometry object filled with geometry vertices
      * @throws NullPointerException if {@code geometry == null}
      */
 
@@ -240,7 +246,7 @@ public final class Geometries {
      * @param geometry  the geometry where the vertices are to be stored
      * @param vertices  the number of vertices (> 0) used to create the geometry
      * @param angle     the angle of the arc
-     * @param thickness the arc thickness between (0, 0.5]
+     * @param thickness the arc thickness between [0, 0.5]
      * @return the given geometry object filled with geometry vertices
      * @throws NullPointerException if {@code geometry == null}
      */
