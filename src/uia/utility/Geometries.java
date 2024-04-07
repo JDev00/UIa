@@ -2,6 +2,8 @@ package uia.utility;
 
 import uia.core.shape.Geometry;
 
+import java.util.Objects;
+
 import static uia.utility.MathUtility.*;
 
 /**
@@ -229,6 +231,43 @@ public final class Geometries {
                 0.5f, -0.5f,
                 0.5f - th, -0.5f,
                 0, -th / 2f);
+        return geometry;
+    }
+
+    /**
+     * Resets the given geometry and creates an arc.
+     *
+     * @param geometry  the geometry where the vertices are to be stored
+     * @param vertices  the number of vertices (> 0) used to create the geometry
+     * @param angle     the angle of the arc
+     * @param thickness the arc thickness between (0, 0.5]
+     * @return the given geometry object filled with geometry vertices
+     * @throws NullPointerException if {@code geometry == null}
+     */
+
+    public static Geometry arc(Geometry geometry, int vertices, float angle, float thickness) {
+        Objects.requireNonNull(geometry);
+        geometry.removeAllVertices();
+
+        // outer part
+        for (int i = vertices; i >= 0; i--) {
+            float tempAngle = angle * i / vertices;
+            geometry.addVertex(
+                    cos(tempAngle) / 2f,
+                    sin(tempAngle) / 2f
+            );
+        }
+
+        // internal part
+        float normThickness = 0.5f - MathUtility.constrain(thickness, 0f, 0.5f);
+        for (int i = 0; i <= vertices; i++) {
+            float tempAngle = angle * i / vertices;
+            geometry.addVertex(
+                    normThickness * cos(tempAngle),
+                    normThickness * sin(tempAngle)
+            );
+        }
+
         return geometry;
     }
 }
