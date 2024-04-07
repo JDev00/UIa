@@ -5,25 +5,25 @@ import uia.core.shape.Geometry;
 import static uia.utility.MathUtility.*;
 
 /**
- * Collection of geometries
+ * Collection of geometries.
  */
 
 public final class Geometries {
 
     /**
-     * Standard number of geometry vertices
+     * Standard number of geometry vertices.
      */
     public static final int STD_VERT = 25;
 
     /**
-     * Standard corner radius for rounded shapes (ie: rounded rect)
+     * Standard corner radius for rounded shapes (ie: rounded rect).
      */
     public static final float STD_ROUND = 0.1f;
 
     /**
-     * Builds a rectangle
+     * Builds a rectangle.
      *
-     * @param geometry a not null {@link Geometry} to fill
+     * @param geometry the geometry where the vertices are to be stored
      * @throws NullPointerException if {@code geometry == null}
      */
 
@@ -42,7 +42,7 @@ public final class Geometries {
      * <br>
      * This method must be called at runtime because of corner rounding calculation.
      *
-     * @param geometry a not null {@link Geometry} to fill
+     * @param geometry the geometry where the vertices are to be stored
      * @param vertices the amount of vertices (> 0) used to create the geometry
      * @param a        the upper-left corner radius between [0,1]
      * @param b        the upper-right corner radius between [0,1]
@@ -97,7 +97,7 @@ public final class Geometries {
     }
 
     /**
-     * Builds a rectangle with rounded corners
+     * Builds a rectangle with rounded corners.
      *
      * @see #rect(Geometry, int, float, float, float, float, float)
      */
@@ -107,9 +107,9 @@ public final class Geometries {
     }
 
     /**
-     * Builds a triangle
+     * Builds a triangle.
      *
-     * @param geometry a not null {@link Geometry} to fill
+     * @param geometry the geometry where the vertices are to be stored
      * @throws NullPointerException if {@code geometry == null}
      */
 
@@ -123,9 +123,9 @@ public final class Geometries {
     }
 
     /**
-     * Builds an oval
+     * Builds an oval.
      *
-     * @param geometry a not null {@link Geometry} to fill
+     * @param geometry the geometry where the vertices are to be stored
      * @param vertices the amount of vertices (> 0) used to create the geometry
      * @throws NullPointerException if {@code geometry == null}
      */
@@ -140,9 +140,9 @@ public final class Geometries {
     }
 
     /**
-     * Builds a pause figure
+     * Builds a pause geometry.
      *
-     * @param geometry a not null {@link Geometry} to fill
+     * @param geometry the geometry where the vertices are to be stored
      * @throws NullPointerException if {@code geometry == null}
      */
 
@@ -162,9 +162,9 @@ public final class Geometries {
     }
 
     /**
-     * Builds an arrow
+     * Builds an arrow.
      *
-     * @param geometry a not null {@link Geometry} to fill
+     * @param geometry the geometry where the vertices are to be stored
      * @throws NullPointerException if {@code geometry == null}
      */
 
@@ -179,10 +179,10 @@ public final class Geometries {
     }
 
     /**
-     * Builds a plus shape
+     * Builds a plus geometry.
      *
-     * @param geometry  a not null {@link Geometry} to fill
-     * @param thickness the figure thickness between [0, 0.375]
+     * @param geometry  the geometry where the vertices are to be stored
+     * @param thickness the geometry thickness between [0, 0.375]
      * @throws NullPointerException if {@code geometry == null}
      */
 
@@ -206,10 +206,10 @@ public final class Geometries {
     }
 
     /**
-     * Builds a delete figure
+     * Builds a delete geometry.
      *
-     * @param geometry  a not null {@link Geometry} to fill
-     * @param thickness the shape's thickness between [0, 0.5]
+     * @param geometry  the geometry where the vertices are to be stored
+     * @param thickness the geometry thickness between [0, 0.5]
      * @throws NullPointerException if {@code geometry == null}
      */
 
