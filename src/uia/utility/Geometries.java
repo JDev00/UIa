@@ -72,26 +72,26 @@ public final class Geometries {
         float bx = b * f1, by = b * f2;
         float cx = c * f1, cy = c * f2;
         float dx = d * f1, dy = d * f2;
-        float an;
+        float angle;
 
         for (int i = 0; i <= vertices; i++) {
-            an = PI - HALF_PI * i / vertices;
-            geometry.addVertex((-1 + ax + ax * cos(an)) / 2f, (-1 + ay * (1 - sin(an))) / 2f);
+            angle = PI - HALF_PI * i / vertices;
+            geometry.addVertex((-1 + ax + ax * cos(angle)) / 2f, (-1 + ay * (1 - sin(angle))) / 2f);
         }
 
         for (int i = 0; i <= vertices; i++) {
-            an = HALF_PI - HALF_PI * i / vertices;
-            geometry.addVertex((1 - bx + bx * cos(an)) / 2f, (-1 + by - by * sin(an)) / 2f);
+            angle = HALF_PI - HALF_PI * i / vertices;
+            geometry.addVertex((1 - bx + bx * cos(angle)) / 2f, (-1 + by - by * sin(angle)) / 2f);
         }
 
         for (int i = 0; i <= vertices; i++) {
-            an = -HALF_PI * i / vertices;
-            geometry.addVertex((1 - cx + cx * cos(an)) / 2f, (1 - cy - cy * sin(an)) / 2f);
+            angle = -HALF_PI * i / vertices;
+            geometry.addVertex((1 - cx + cx * cos(angle)) / 2f, (1 - cy - cy * sin(angle)) / 2f);
         }
 
         for (int i = 0; i <= vertices; i++) {
-            an = -HALF_PI - HALF_PI * i / vertices;
-            geometry.addVertex((-1 + dx + dx * cos(an)) / 2f, (1 - dy - dy * sin(an)) / 2f);
+            angle = -HALF_PI - HALF_PI * i / vertices;
+            geometry.addVertex((-1 + dx + dx * cos(angle)) / 2f, (1 - dy - dy * sin(angle)) / 2f);
         }
 
         return geometry;
