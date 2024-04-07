@@ -1,4 +1,4 @@
-package uia.application.animator;
+package uia.develop.animator;
 
 /**
  * AnimatorPath ADT
