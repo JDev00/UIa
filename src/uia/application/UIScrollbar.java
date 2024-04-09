@@ -63,10 +63,8 @@ public final class UIScrollbar extends WrapperView {
                 }
                 updateScroll(touch.getX() - barDragOffset, touch.getY() - barDragOffset);
             }
-            if (touch.getAction().equals(ScreenTouch.Action.RELEASED)) {
-                if (releaseLock()) {
-                    barDragOffset = 0f;
-                }
+            if (touch.getAction().equals(ScreenTouch.Action.RELEASED) && releaseLock()) {
+                barDragOffset = 0f;
             }
         });
         registerCallback((OnMouseExit) o -> {

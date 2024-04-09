@@ -14,7 +14,7 @@ import uia.core.ui.View;
 public abstract class WrapperView implements View {
     private final View view;
 
-    public WrapperView(View view) {
+    protected WrapperView(View view) {
         this.view = view;
     }
 

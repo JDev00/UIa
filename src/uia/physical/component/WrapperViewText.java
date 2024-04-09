@@ -11,7 +11,7 @@ import uia.core.ui.ViewText;
 public abstract class WrapperViewText extends WrapperView implements ViewText {
     private final ViewText viewText;
 
-    public WrapperViewText(ViewText viewText) {
+    protected WrapperViewText(ViewText viewText) {
         super(viewText);
         this.viewText = viewText;
     }
