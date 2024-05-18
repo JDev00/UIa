@@ -8,5 +8,5 @@ import uia.core.basement.Callback;
  * It provides the set date as an array consisting of: day, month and year.
  */
 
-public interface OnDateSet extends Callback<Integer[]> {
+public interface OnDateSet extends Callback<int[]> {
 }

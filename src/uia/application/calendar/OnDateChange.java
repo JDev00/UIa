@@ -8,5 +8,5 @@ import uia.core.basement.Callback;
  * It provides the current date as an array consisting of: day, month and year.
  */
 
-public interface OnDateChange extends Callback<Integer[]> {
+public interface OnDateChange extends Callback<int[]> {
 }
