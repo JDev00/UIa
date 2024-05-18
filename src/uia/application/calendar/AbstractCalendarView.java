@@ -1,24 +1,24 @@
 package uia.application.calendar;
 
-import uia.application.UIButtonList;
-import uia.core.Font;
-import uia.core.basement.Drawable;
-import uia.core.paint.Color;
-import uia.core.paint.Paint;
-import uia.core.shape.Geometry;
-import uia.core.ui.View;
-import uia.core.ui.ViewGroup;
-import uia.core.ui.ViewText;
-import uia.core.ui.callbacks.OnClick;
-import uia.physical.component.Component;
 import uia.physical.component.WrapperView;
 import uia.physical.group.ComponentGroup;
-import uia.physical.theme.Theme;
+import uia.physical.component.Component;
 import uia.physical.theme.ThemeDarcula;
+import uia.core.ui.callbacks.OnClick;
+import uia.application.UIButtonList;
+import uia.core.basement.Drawable;
+import uia.physical.theme.Theme;
+import uia.core.shape.Geometry;
 import uia.utility.Geometries;
+import uia.core.ui.ViewGroup;
+import uia.core.ui.ViewText;
+import uia.core.paint.Color;
+import uia.core.paint.Paint;
+import uia.core.ui.View;
+import uia.core.Font;
 
-import java.util.*;
 import java.util.stream.IntStream;
+import java.util.*;
 
 /**
  * Abstract representation of the Gregorian calendar.
@@ -50,7 +50,7 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
 
         currentDayColor = Theme.PINK;
 
-        java.util.function.Consumer<Boolean> changeDate = (next) -> {
+        java.util.function.Consumer<Boolean> shiftDate = next -> {
             int offset = next ? 1 : -1;
             int month = currentDate[1] + offset;
             int year = currentDate[2];
@@ -62,13 +62,12 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
                 month = 12;
                 year--;
             }
-
             changeDate(month, year);
         };
 
         header = createHeader("CALENDAR_HEADER_" + getID(), font);
-        header.getViewRight().registerCallback((OnClick) touches -> changeDate.accept(true));
-        header.getViewLeft().registerCallback((OnClick) touches -> changeDate.accept(false));
+        header.getViewRight().registerCallback((OnClick) touches -> shiftDate.accept(true));
+        header.getViewLeft().registerCallback((OnClick) touches -> shiftDate.accept(false));
 
         overlayCell = new Component("CALENDAR_OVERLAY_" + getID(), 0f, 0f, 0f, 0f);
         overlayCell.setConsumer(Consumer.SCREEN_TOUCH, false);
@@ -362,7 +361,10 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         setDate[2] = year;
 
         updateDate(day, month, year);
-        notifyCallbacks(OnDateSet.class, getDate());
+
+        // notifies clients
+        int[] date = getDate();
+        notifyCallbacks(OnDateSet.class, date);
     }
 
     @Override
@@ -383,7 +385,10 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         }
 
         updateDate(day, month, year);
-        notifyCallbacks(OnDateChange.class, getDate());
+
+        // notifies clients
+        int[] date = getDate();
+        notifyCallbacks(OnDateChange.class, date);
     }
 
     @Override
