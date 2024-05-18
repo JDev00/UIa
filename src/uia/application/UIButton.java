@@ -1,11 +1,11 @@
 package uia.application;
 
-import uia.core.basement.Callback;
-import uia.core.ui.View;
-import uia.core.paint.Paint;
-import uia.core.ui.callbacks.OnClick;
-import uia.physical.theme.Theme;
 import uia.physical.component.WrapperView;
+import uia.core.ui.callbacks.OnClick;
+import uia.core.basement.Callback;
+import uia.physical.theme.Theme;
+import uia.core.paint.Paint;
+import uia.core.ui.View;
 
 /**
  * Standard UIa component.
@@ -21,7 +21,7 @@ import uia.physical.component.WrapperView;
 public final class UIButton extends WrapperView {
 
     /**
-     * Button state representation
+     * Button states.
      */
     public enum STATE {ON, OFF}
 
