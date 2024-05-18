@@ -14,12 +14,11 @@ import uia.core.ui.View;
  * Its only behaviour is to switch on or off. By default, when clicked, it switches.
  *
  * @apiNote The color of a Button is defined by its state. As a result, any change to the object retrieved with
- * {@link #getPaint()} will have no effect. To change the Button color (or stroke) you must modify the Paint associated
- * with the state with {@link #getPaint(STATE)}.
+ * {@link #getPaint()} will have no effect. To change the Button color (or stroke) you must modify the Paint
+ * associated with the state with {@link #getPaint(STATE)}.
  */
 
 public final class UIButton extends WrapperView {
-
     /**
      * Button states.
      */
@@ -44,7 +43,7 @@ public final class UIButton extends WrapperView {
      * <br>
      * It provides the Button.
      */
-    public interface onEnabled extends Callback<View> {
+    public interface OnEnabled extends Callback<View> {
     }
 
     /**
@@ -52,7 +51,7 @@ public final class UIButton extends WrapperView {
      * <br>
      * It provides the Button.
      */
-    public interface onDisabled extends Callback<View> {
+    public interface OnDisabled extends Callback<View> {
     }
 
     /**
@@ -62,14 +61,17 @@ public final class UIButton extends WrapperView {
      */
 
     public void enable(boolean enabled) {
+        boolean oldEnabledValue = this.enabled;
+
+        // updates button state
         this.enabled = enabled;
         applyPaintByState();
 
-        if (this.enabled != enabled) {
+        if (oldEnabledValue != enabled) {
             if (enabled) {
-                notifyCallbacks(onEnabled.class, this);
+                notifyCallbacks(OnEnabled.class, this);
             } else {
-                notifyCallbacks(onDisabled.class, this);
+                notifyCallbacks(OnDisabled.class, this);
             }
         }
     }
