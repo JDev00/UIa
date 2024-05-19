@@ -60,22 +60,6 @@ public final class UIListView extends WrapperView implements ViewGroup {
     }
 
     /**
-     * ViewPositioner positions a set of views.
-     */
-
-    public interface ViewPositioner {
-
-        /**
-         * Positions the specified View.
-         *
-         * @param view a not null {@link View} to be placed
-         * @param i    the View position (index)
-         */
-
-        void place(View view, int i);
-    }
-
-    /**
      * Callback invoked when a new View is added to a ListView.
      */
 
