@@ -1,4 +1,4 @@
-package uia.application.list;
+package uia.application.list.positioner;
 
 import uia.core.ui.View;
 
