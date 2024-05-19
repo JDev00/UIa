@@ -3,7 +3,7 @@ package uia.application.list.positioner;
 import uia.core.ui.View;
 
 /**
- * ViewPositioner positions is responsible for positioning a View within a view list.
+ * ViewPositioner is responsible for positioning a View within a view list.
  */
 
 public interface ViewPositioner {
