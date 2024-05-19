@@ -1,12 +1,13 @@
-package uia.application;
+package uia.application.list;
 
-import uia.core.basement.Callback;
-import uia.core.ui.View;
-import uia.core.ui.ViewGroup;
-import uia.physical.component.Component;
-import uia.physical.group.ComponentGroup;
-import uia.physical.theme.Theme;
 import uia.physical.component.WrapperView;
+import uia.physical.group.ComponentGroup;
+import uia.physical.component.Component;
+import uia.application.UIScrollbar;
+import uia.core.basement.Callback;
+import uia.physical.theme.Theme;
+import uia.core.ui.ViewGroup;
+import uia.core.ui.View;
 
 import java.util.Iterator;
 import java.util.Objects;
@@ -16,7 +17,7 @@ import java.util.Objects;
  * <br>
  * UIListView has been designed to handle a set of views.
  * <br>
- * Formally, it is a layout with vertical and horizontal scrollbars.
+ * Specifically, it is a layout with vertical and horizontal scrollbars.
  */
 
 public final class UIListView extends WrapperView implements ViewGroup {
