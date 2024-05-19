@@ -60,13 +60,6 @@ public final class UIListView extends WrapperView implements ViewGroup {
     }
 
     /**
-     * Callback invoked when a new View is added to a ListView.
-     */
-
-    public interface OnAdd extends Callback<View> {
-    }
-
-    /**
      * Callback invoked when a View is removed from a ListView.
      */
 
@@ -87,7 +80,7 @@ public final class UIListView extends WrapperView implements ViewGroup {
     public boolean insert(int i, View view) {
         boolean result = viewsContainer.insert(i, view);
         if (result) {
-            notifyCallbacks(OnAdd.class, view);
+            notifyCallbacks(OnViewAdded.class, view);
         }
         return result;
     }
