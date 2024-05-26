@@ -137,19 +137,6 @@ public class WindowSwing implements Window {
         });
     }
 
-    protected void addUIComponent(Component component) {
-        jFrame.add(component);
-    }
-
-    /**
-     * Destroy this Window
-     */
-
-    protected void destroy() {
-        jFrame.dispatchEvent(new WindowEvent(jFrame, WindowEvent.WINDOW_CLOSING));
-        jFrame.dispose();
-    }
-
     /**
      * Helper function. Adds a new Key event to the global store.
      */
@@ -211,6 +198,23 @@ public class WindowSwing implements Window {
         } else {
             notifyCallbacks(OnWindowLostFocus.class, WindowSwing.this);
         }
+    }
+
+    /**
+     * Helper function. Adds a new UI component to render.
+     */
+
+    protected void addUIComponent(Component component) {
+        jFrame.add(component);
+    }
+
+    /**
+     * Helper function. Destroys this Window.
+     */
+
+    protected void destroy() {
+        jFrame.dispatchEvent(new WindowEvent(jFrame, WindowEvent.WINDOW_CLOSING));
+        jFrame.dispose();
     }
 
     @Override
