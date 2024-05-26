@@ -1,4 +1,4 @@
-package uia.core.ui.context;
+package uia.core.ui.context.window;
 
 /**
  * Window ADT.

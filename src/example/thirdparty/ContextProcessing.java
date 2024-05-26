@@ -4,7 +4,7 @@ import processing.core.PApplet;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.context.InputEmulator;
-import uia.core.ui.context.Window;
+import uia.core.ui.context.window.Window;
 
 import java.util.Objects;
 

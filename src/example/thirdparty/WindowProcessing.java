@@ -1,6 +1,6 @@
 package example.thirdparty;
 
-import uia.core.ui.context.Window;
+import uia.core.ui.context.window.Window;
 
 public class WindowProcessing implements Window {
 

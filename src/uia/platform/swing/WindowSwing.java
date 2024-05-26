@@ -2,7 +2,7 @@ package uia.platform.swing;
 
 import uia.core.Key;
 import uia.core.ScreenTouch;
-import uia.core.ui.context.Window;
+import uia.core.ui.context.window.Window;
 import uia.physical.message.Messages;
 import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.store.MessageStore;
