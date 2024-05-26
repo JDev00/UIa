@@ -1,19 +1,22 @@
 package uia.core.ui.context.window;
 
+import uia.core.basement.Callable;
+
 /**
  * Window ADT.
  * <br>
- * Window is responsible for managing a native window (the one the user sees and interacts with when an application is running).
- * Such a Window can be either system or third-party generated.
+ * Window is responsible for managing a native window (the one the user sees and interacts with
+ * when an application is running). Such a Window can be either system or third-party generated.
  * <br>
- * By default, a window has a specific part dedicated to rendering things. This area is automatically managed, and
- * only it's width and height can be accessed externally via {@link #getViewportWidth()} and {@link #getViewportHeight()}.
+ * A window has a specific part dedicated to rendering things. This area is automatically managed;
+ * by design only it's width and height can be accessed externally via {@link #getViewportWidth()}
+ * and {@link #getViewportHeight()}.
  */
 
-public interface Window {
+public interface Window extends Callable {
 
     /**
-     * Shows or hides this Window
+     * Shows or hides this window.
      *
      * @param visible true to make this Window visible
      * @return this Window
@@ -46,7 +49,7 @@ public interface Window {
     Window setResizable(boolean resizable);
 
     /**
-     * Sets the window title
+     * Sets the window title.
      *
      * @param title a title; it could be null
      * @return this Window
@@ -55,7 +58,7 @@ public interface Window {
     Window setTitle(String title);
 
     /**
-     * Resizes this window to the specified width and height
+     * Resizes this window to the specified width and height.
      *
      * @param width  the new window width; it must be greater than 200 pixels
      * @param height the new window height; it must be greater than 200 pixels
@@ -66,19 +69,19 @@ public interface Window {
     Window resize(int width, int height);
 
     /**
-     * @return the width of the area in which the UIa GUI components can be seen
+     * @return the width of the area in which the GUI components can be seen
      */
 
     int getViewportWidth();
 
     /**
-     * @return the height of the area in which the UIa GUI components can be seen
+     * @return the height of the area in which the GUI components can be seen
      */
 
     int getViewportHeight();
 
     /**
-     * @return true if this Window is on focus
+     * @return true if this window is on focus
      */
 
     boolean isFocused();
