@@ -1,18 +1,18 @@
 package uia.platform.swing;
 
-import uia.core.Key;
-import uia.core.ScreenTouch;
-import uia.core.ui.context.window.Window;
-import uia.physical.message.Messages;
 import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.store.MessageStore;
+import uia.core.ui.context.window.Window;
+import uia.physical.message.Messages;
+import uia.core.ScreenTouch;
+import uia.core.Key;
 
+import java.util.Collections;
+import java.util.ArrayList;
+import java.awt.event.*;
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * {@link Window} implementation based on Java Swing.
@@ -55,17 +55,20 @@ public class WindowSwing implements Window {
         jFrame.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                addKeyEvent(new Key(Key.Action.TYPED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                Key key = new Key(Key.Action.TYPED, e.getModifiers(), e.getKeyChar(), e.getKeyCode());
+                addKeyEvent(key);
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
-                addKeyEvent(new Key(Key.Action.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                Key key = new Key(Key.Action.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode());
+                addKeyEvent(key);
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                addKeyEvent(new Key(Key.Action.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                Key key = new Key(Key.Action.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode());
+                addKeyEvent(key);
             }
         });
         jFrame.addMouseListener(new MouseListener() {
