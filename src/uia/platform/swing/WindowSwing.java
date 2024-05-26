@@ -2,15 +2,13 @@ package uia.platform.swing;
 
 import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.store.MessageStore;
-import uia.core.ui.window.OnWindowGainedFocus;
-import uia.core.ui.window.OnWindowLostFocus;
 import uia.physical.callbacks.CallbackStore;
-import uia.core.ui.window.OnWindowResized;
 import uia.physical.message.Messages;
 import uia.core.basement.Callable;
 import uia.core.basement.Callback;
 import uia.core.ui.window.Window;
 import uia.core.ScreenTouch;
+import uia.core.ui.window.*;
 import uia.core.Key;
 
 import java.util.function.IntFunction;
@@ -52,6 +50,12 @@ public class WindowSwing implements Window {
                 screenSize[1] = container.getHeight();
                 // notifies clients when window resizes
                 notifyCallbacks(OnWindowResized.class, WindowSwing.this);
+            }
+        });
+        jFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                notifyCallbacks(OnWindowClosed.class, WindowSwing.this);
             }
         });
         jFrame.addFocusListener(new FocusListener() {
