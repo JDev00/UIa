@@ -33,7 +33,7 @@ public class RendererEngineSwing extends JPanel {
     public RendererEngineSwing() {
         messagingSystem = new MessagingSystem();
 
-        graphics = new GraphicAWT(() -> nativeGraphics);
+        graphics = new GraphicsAWT(() -> nativeGraphics);
 
         rootView = new ComponentHiddenRoot();
 
