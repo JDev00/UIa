@@ -1,23 +1,23 @@
 package uia.platform.swing;
 
-import uia.core.ScreenTouch;
-import uia.core.ui.context.InputEmulator;
-import uia.core.ui.window.Window;
-import uia.physical.input.ArtificialInput;
-import uia.core.ui.context.Context;
-import uia.core.ui.View;
-import uia.physical.message.EventTouchScreenMessage;
-import uia.physical.message.Messages;
 import uia.physical.message.store.GlobalMessageStore;
+import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.message.store.MessageStore;
+import uia.physical.input.ArtificialInput;
+import uia.core.ui.context.InputEmulator;
+import uia.physical.message.Messages;
+import uia.core.ui.context.Context;
+import uia.core.ui.window.Window;
+import uia.core.ScreenTouch;
+import uia.core.ui.View;
 
-import java.awt.*;
-import java.awt.datatransfer.*;
-import java.util.*;
-import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.awt.datatransfer.*;
+import java.util.List;
+import java.util.*;
+import java.awt.*;
 
 /**
  * Framework built-in {@link Context} implementation based on Java Swing.
@@ -63,13 +63,14 @@ public class ContextSwing implements Context {
     }
 
     /**
-     * Helper function. Kill the rendering process.
+     * Helper function. Kills the rendering process.
      */
 
     private void killRenderingThread() {
         try {
             renderingThread.shutdownNow();
         } catch (Exception ignored) {
+            //
         }
     }
 
@@ -135,6 +136,7 @@ public class ContextSwing implements Context {
             try {
                 return (String) t.getTransferData(DataFlavor.stringFlavor);
             } catch (Exception ignored) {
+                //
             }
         }
         return null;
