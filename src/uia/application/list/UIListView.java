@@ -15,7 +15,7 @@ import java.util.Iterator;
 /**
  * Standard UIa component.
  * <br>
- * UIListView has been designed to handle a set of views.
+ * UIListView has been designed to handle a list of views.
  * <br>
  * Specifically, it is a layout with vertical and horizontal scrollbars.
  */
@@ -26,6 +26,9 @@ public final class UIListView extends WrapperView implements ViewGroup {
     private final ViewGroup containerGroup;
     private final ViewGroup viewsContainer;
     private ViewPositioner viewPositioner;
+
+    private float barWidth = 0f;
+    private float barHeight = 0f;
 
     public UIListView(View view) {
         super(new ComponentGroup(view));
@@ -156,9 +159,6 @@ public final class UIListView extends WrapperView implements ViewGroup {
         }
     }
 
-    float barWidth = 0f;
-    float barHeight = 0f;
-
     @Override
     public void update(View parent) {
         updatePositioner();
@@ -185,7 +185,6 @@ public final class UIListView extends WrapperView implements ViewGroup {
             verticalBar.setMaxValue(height);
 
             float vx = verticalBar.isVisible() ? 0.475f : 0.5f;
-
             viewsContainer.setPosition(
                     vx - horizontalBar.getValue() / getBounds()[2],
                     0.475f - verticalBar.getValue() / getBounds()[3]
