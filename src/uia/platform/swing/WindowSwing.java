@@ -2,11 +2,18 @@ package uia.platform.swing;
 
 import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.store.MessageStore;
-import uia.core.ui.context.window.Window;
+import uia.core.ui.window.OnWindowGainedFocus;
+import uia.core.ui.window.OnWindowLostFocus;
+import uia.physical.callbacks.CallbackStore;
+import uia.core.ui.window.OnWindowResized;
 import uia.physical.message.Messages;
+import uia.core.basement.Callable;
+import uia.core.basement.Callback;
+import uia.core.ui.window.Window;
 import uia.core.ScreenTouch;
 import uia.core.Key;
 
+import java.util.function.IntFunction;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.awt.event.*;
@@ -19,14 +26,18 @@ import java.awt.*;
  */
 
 public class WindowSwing implements Window {
-    private final JFrame jFrame;
     private final MessageStore globalMessageStore = GlobalMessageStore.getInstance();
+    private final Callable callable;
+
+    private final JFrame jFrame;
     private final int[] screenSize = new int[2];
     private boolean focus = false;
 
     public WindowSwing(int x, int y) {
         screenSize[0] = x;
         screenSize[1] = y;
+
+        callable = new CallbackStore(10);
 
         jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -39,17 +50,19 @@ public class WindowSwing implements Window {
                 Container container = jFrame.getContentPane();
                 screenSize[0] = container.getWidth();
                 screenSize[1] = container.getHeight();
+                // notifies clients when window resizes
+                notifyCallbacks(OnWindowResized.class, WindowSwing.this);
             }
         });
         jFrame.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                focus = true;
+                updateFocus(true);
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                focus = false;
+                updateFocus(false);
             }
         });
         jFrame.addKeyListener(new KeyListener() {
@@ -89,6 +102,7 @@ public class WindowSwing implements Window {
 
             @Override
             public void mouseEntered(MouseEvent e) {
+                // useless
             }
 
             @Override
@@ -107,9 +121,9 @@ public class WindowSwing implements Window {
                 addScreenTouchEvent(getScreenTouches(e, 0, ScreenTouch.Action.MOVED));
             }
         });
-        jFrame.addMouseWheelListener(e -> {
-            addScreenTouchEvent(getScreenTouches(e, e.getWheelRotation(), ScreenTouch.Action.WHEEL));
-        });
+        jFrame.addMouseWheelListener(event -> addScreenTouchEvent(
+                getScreenTouches(event, event.getWheelRotation(), ScreenTouch.Action.WHEEL))
+        );
     }
 
     protected void addUIComponent(Component component) {
@@ -125,36 +139,40 @@ public class WindowSwing implements Window {
         jFrame.dispose();
     }
 
+    /**
+     * Helper function. Adds a new Key event to the global store.
+     */
+
     private void addKeyEvent(Key key) {
         globalMessageStore.add(Messages.newKeyEventMessage(key, null));
     }
+
+    /**
+     * Helper function. Adds a new ScreenTouch event to the global store.
+     */
 
     private void addScreenTouchEvent(List<ScreenTouch> screenTouches) {
         globalMessageStore.add(Messages.newScreenEventMessage(screenTouches, null));
     }
 
     /**
-     * @return the corresponding {@link ScreenTouch.Button} or null
-     */
-
-    private static ScreenTouch.Button mapNativeMouseButton(int button) {
-        switch (button) {
-            case 1:
-                return ScreenTouch.Button.LEFT;
-            case 2:
-                return ScreenTouch.Button.CENTER;
-            case 3:
-                return ScreenTouch.Button.RIGHT;
-            default:
-                return null;
-        }
-    }
-
-    /**
-     * Helper function. Returns a List of {@link ScreenTouch}s.
+     * Helper function. Returns a new List of {@link ScreenTouch}s.
      */
 
     private List<ScreenTouch> getScreenTouches(MouseEvent mouseEvent, int wheelRotation, ScreenTouch.Action action) {
+        IntFunction<ScreenTouch.Button> mapNativeMouseButton = button -> {
+            switch (button) {
+                case 1:
+                    return ScreenTouch.Button.LEFT;
+                case 2:
+                    return ScreenTouch.Button.CENTER;
+                case 3:
+                    return ScreenTouch.Button.RIGHT;
+                default:
+                    return null;
+            }
+        };
+
         int x = mouseEvent.getX();
         int y = mouseEvent.getY();
         int[] insets = getInsets();
@@ -162,11 +180,41 @@ public class WindowSwing implements Window {
 
         ScreenTouch screenTouch = new ScreenTouch(
                 action,
-                mapNativeMouseButton(mouseEvent.getButton()),
+                mapNativeMouseButton.apply(mouseEvent.getButton()),
                 position[0],
                 position[1],
                 wheelRotation);
         return new ArrayList<>(Collections.singletonList(screenTouch));
+    }
+
+    /**
+     * Helper function. Updates the window focus.
+     *
+     * @param focus true to set window on focus
+     */
+
+    private void updateFocus(boolean focus) {
+        this.focus = focus;
+        if (focus) {
+            notifyCallbacks(OnWindowGainedFocus.class, WindowSwing.this);
+        } else {
+            notifyCallbacks(OnWindowLostFocus.class, WindowSwing.this);
+        }
+    }
+
+    @Override
+    public void registerCallback(Callback<?> callback) {
+        callable.registerCallback(callback);
+    }
+
+    @Override
+    public void unregisterCallback(Callback<?> callback) {
+        callable.unregisterCallback(callback);
+    }
+
+    @Override
+    public void notifyCallbacks(Class<? extends Callback> type, Object data) {
+        callable.notifyCallbacks(type, data);
     }
 
     @Override
