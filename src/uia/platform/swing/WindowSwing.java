@@ -90,18 +90,21 @@ public class WindowSwing implements Window {
         });
         jFrame.addMouseListener(new MouseListener() {
             @Override
-            public void mousePressed(MouseEvent e) {
-                addScreenTouchEvent(createScreenTouches(e, 0, ScreenTouch.Action.PRESSED));
+            public void mousePressed(MouseEvent event) {
+                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.PRESSED);
+                addScreenTouchEvent(screenTouches);
             }
 
             @Override
-            public void mouseReleased(MouseEvent e) {
-                addScreenTouchEvent(createScreenTouches(e, 0, ScreenTouch.Action.RELEASED));
+            public void mouseReleased(MouseEvent event) {
+                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.RELEASED);
+                addScreenTouchEvent(screenTouches);
             }
 
             @Override
-            public void mouseClicked(MouseEvent e) {
-                addScreenTouchEvent(createScreenTouches(e, 0, ScreenTouch.Action.CLICKED));
+            public void mouseClicked(MouseEvent event) {
+                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.CLICKED);
+                addScreenTouchEvent(screenTouches);
             }
 
             @Override
@@ -110,24 +113,28 @@ public class WindowSwing implements Window {
             }
 
             @Override
-            public void mouseExited(MouseEvent e) {
-                addScreenTouchEvent(createScreenTouches(e, 0, ScreenTouch.Action.EXITED));
+            public void mouseExited(MouseEvent event) {
+                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.EXITED);
+                addScreenTouchEvent(screenTouches);
             }
         });
         jFrame.addMouseMotionListener(new MouseMotionListener() {
             @Override
-            public void mouseDragged(MouseEvent e) {
-                addScreenTouchEvent(createScreenTouches(e, 0, ScreenTouch.Action.DRAGGED));
+            public void mouseDragged(MouseEvent event) {
+                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.DRAGGED);
+                addScreenTouchEvent(screenTouches);
             }
 
             @Override
-            public void mouseMoved(MouseEvent e) {
-                addScreenTouchEvent(createScreenTouches(e, 0, ScreenTouch.Action.MOVED));
+            public void mouseMoved(MouseEvent event) {
+                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.MOVED);
+                addScreenTouchEvent(screenTouches);
             }
         });
-        jFrame.addMouseWheelListener(event -> addScreenTouchEvent(
-                createScreenTouches(event, event.getWheelRotation(), ScreenTouch.Action.WHEEL))
-        );
+        jFrame.addMouseWheelListener(event -> {
+            List<ScreenTouch> screenTouches = createScreenTouches(event, event.getWheelRotation(), ScreenTouch.Action.WHEEL);
+            addScreenTouchEvent(screenTouches);
+        });
     }
 
     protected void addUIComponent(Component component) {
