@@ -2,7 +2,7 @@ package uia.platform.swing;
 
 import uia.core.ScreenTouch;
 import uia.core.ui.context.InputEmulator;
-import uia.core.ui.context.window.Window;
+import uia.core.ui.window.Window;
 import uia.physical.input.ArtificialInput;
 import uia.core.ui.context.Context;
 import uia.core.ui.View;

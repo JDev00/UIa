@@ -1,4 +1,4 @@
-package uia.core.ui.context.window;
+package uia.core.ui.window;
 
 import uia.core.basement.Callback;
 

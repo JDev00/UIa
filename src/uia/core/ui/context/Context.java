@@ -1,7 +1,7 @@
 package uia.core.ui.context;
 
+import uia.core.ui.window.Window;
 import uia.core.ui.View;
-import uia.core.ui.context.window.Window;
 
 /**
  * Context is the base of the UIa framework. It is responsible for managing a single {@link View} displayed on
