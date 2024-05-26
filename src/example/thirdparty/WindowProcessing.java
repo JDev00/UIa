@@ -1,6 +1,7 @@
 package example.thirdparty;
 
-import uia.core.ui.context.window.Window;
+import uia.core.basement.Callback;
+import uia.core.ui.window.Window;
 
 public class WindowProcessing implements Window {
 
@@ -52,5 +53,20 @@ public class WindowProcessing implements Window {
     @Override
     public int[] getInsets() {
         return new int[0];
+    }
+
+    @Override
+    public void registerCallback(Callback<?> callback) {
+
+    }
+
+    @Override
+    public void unregisterCallback(Callback<?> callback) {
+
+    }
+
+    @Override
+    public void notifyCallbacks(Class<? extends Callback> type, Object data) {
+
     }
 }

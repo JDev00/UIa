@@ -1,8 +1,8 @@
 package uia.core.ui;
 
-import uia.core.*;
 import uia.core.paint.Paint;
 import uia.core.shape.Shape;
+import uia.core.*;
 
 /**
  * Graphics ADT.
