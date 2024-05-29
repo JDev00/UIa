@@ -32,7 +32,7 @@ public class GroupLayoutUtility {
      * </ul>
      */
 
-    public static float[] measureBoundary(List<View> views) {
+    public static float[] measureBoundaries(List<View> views) {
         Objects.requireNonNull(views);
 
         float[] result = {0f, 0f, 0f, 0f};

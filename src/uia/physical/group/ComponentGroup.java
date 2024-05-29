@@ -132,7 +132,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         }
 
         // updates boundary
-        contentBounds = GroupLayoutUtility.measureBoundary(views);
+        contentBounds = GroupLayoutUtility.measureBoundaries(views);
     }
 
     /**
