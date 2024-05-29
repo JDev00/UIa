@@ -121,10 +121,10 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     }
 
     /**
-     * Helper function. Updates views and group boundaries.
+     * Helper function. Updates views and their boundaries.
      */
 
-    private void updateGroupBounds() {
+    private void updateGroup() {
         if (isVisible()) {
             for (View view : views) {
                 view.update(this);
@@ -149,7 +149,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     @Override
     public void update(View parent) {
         super.update(parent);
-        updateGroupBounds();
+        updateGroup();
         updateClipShape();
     }
 
