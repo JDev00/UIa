@@ -30,6 +30,7 @@ public class GroupLayoutUtility {
      *     <li>the boundary width</li>
      *     <li>the boundary height</li>
      * </ul>
+     * @throws NullPointerException if {@code views == null}
      */
 
     public static float[] measureBoundaries(List<View> views) {
