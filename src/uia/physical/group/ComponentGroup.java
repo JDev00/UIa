@@ -35,7 +35,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     private float[] boundaries = {0f, 0f, 0f, 0f};
 
-    private boolean clip = true;
+    private boolean clipRegion = true;
 
     public ComponentGroup(View view) {
         super(view);
@@ -86,12 +86,12 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     @Override
     public void setClip(boolean clipRegion) {
-        clip = clipRegion;
+        this.clipRegion = clipRegion;
     }
 
     @Override
     public boolean hasClip() {
-        return clip;
+        return clipRegion;
     }
 
     @Override
@@ -158,13 +158,13 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         super.draw(graphics);
 
         if (isVisible()) {
-            if (clip) {
+            if (clipRegion) {
                 graphics.setClip(clipShape);
             }
             for (View i : views) {
                 i.draw(graphics);
             }
-            if (clip) {
+            if (clipRegion) {
                 graphics.restoreClip();
             }
         }
