@@ -33,7 +33,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     private final Shape clipShape;
 
-    private float[] contentBounds = {0f, 0f, 0f, 0f};
+    private float[] boundaries = {0f, 0f, 0f, 0f};
 
     private boolean clip = true;
 
@@ -117,7 +117,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     @Override
     public void removeAll() {
         views.clear();
-        Arrays.fill(contentBounds, 0);
+        Arrays.fill(boundaries, 0);
     }
 
     /**
@@ -131,8 +131,8 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
             }
         }
 
-        // updates boundary
-        contentBounds = GroupLayoutUtility.measureBoundaries(views);
+        // updates boundaries
+        boundaries = GroupLayoutUtility.measureBoundaries(views);
     }
 
     /**
@@ -179,7 +179,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     @Override
     public float[] boundsContent() {
-        System.arraycopy(contentBounds, 0, copyBounds, 0, contentBounds.length);
+        System.arraycopy(boundaries, 0, copyBounds, 0, boundaries.length);
         return copyBounds;
     }
 
