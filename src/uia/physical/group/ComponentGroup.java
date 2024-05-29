@@ -120,17 +120,20 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     }
 
     /**
-     * Helper function. Update group boundaries.
+     * Helper function. Updates group boundaries.
      */
 
     private void updateGroupBounds() {
         for (int i = 0; i < views.size(); i++) {
             View view = views.get(i);
 
-            if (isVisible()) view.update(this);
+            if (isVisible()) {
+                view.update(this);
+            }
 
             float[] bounds = view.getBounds();
-            float xi = bounds[0], yi = bounds[1];
+            float xi = bounds[0];
+            float yi = bounds[1];
 
             if (i == 0) {
                 contentBounds[0] = contentBounds[2] = xi;
@@ -147,7 +150,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     }
 
     /**
-     * Helper function. Update clip shape position, dimension and rotation.
+     * Helper function. Updates clip shape position, dimension and rotation.
      */
 
     private void updateClipShape() {

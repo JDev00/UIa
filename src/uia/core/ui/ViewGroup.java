@@ -5,7 +5,7 @@ import uia.core.basement.Message;
 import java.util.Objects;
 
 /**
- * ViewGroup ADT - ViewGroup is designed to manage a set of Views.
+ * ViewGroup ADT - ViewGroup is designed to manage a list of Views.
  * <br>
  * <br>
  * <b>Responsibilities</b>
