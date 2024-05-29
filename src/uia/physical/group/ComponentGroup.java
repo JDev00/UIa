@@ -1,14 +1,15 @@
 package uia.physical.group;
 
-import uia.core.shape.Shape;
-import uia.core.basement.Message;
-import uia.core.ui.View;
-import uia.core.ui.ViewGroup;
-import uia.core.ui.Graphics;
-import uia.physical.component.WrapperView;
-import uia.physical.message.EventKeyMessage;
+import uia.physical.group.utility.GroupLayoutUtility;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.group.utility.GroupUtility;
+import uia.physical.message.EventKeyMessage;
+import uia.physical.component.WrapperView;
+import uia.core.basement.Message;
+import uia.core.ui.ViewGroup;
+import uia.core.shape.Shape;
+import uia.core.ui.Graphics;
+import uia.core.ui.View;
 
 import java.util.*;
 
@@ -32,7 +33,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     private final Shape clipShape;
 
-    private final float[] contentBounds = {0f, 0f, 0f, 0f};
+    private float[] contentBounds = {0f, 0f, 0f, 0f};
 
     private boolean clip = true;
 
@@ -120,33 +121,18 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     }
 
     /**
-     * Helper function. Updates group boundaries.
+     * Helper function. Updates views and group boundaries.
      */
 
     private void updateGroupBounds() {
-        for (int i = 0; i < views.size(); i++) {
-            View view = views.get(i);
-
-            if (isVisible()) {
+        if (isVisible()) {
+            for (View view : views) {
                 view.update(this);
             }
-
-            float[] bounds = view.getBounds();
-            float xi = bounds[0];
-            float yi = bounds[1];
-
-            if (i == 0) {
-                contentBounds[0] = contentBounds[2] = xi;
-                contentBounds[1] = contentBounds[3] = yi;
-            }
-            if (xi < contentBounds[0]) contentBounds[0] = xi;
-            if (yi < contentBounds[1]) contentBounds[1] = yi;
-            if (xi + bounds[2] > contentBounds[2]) contentBounds[2] = xi + bounds[2];
-            if (yi + bounds[3] > contentBounds[3]) contentBounds[3] = yi + bounds[3];
         }
 
-        contentBounds[2] -= contentBounds[0];
-        contentBounds[3] -= contentBounds[1];
+        // updates boundary
+        contentBounds = GroupLayoutUtility.measureBoundary(views);
     }
 
     /**
