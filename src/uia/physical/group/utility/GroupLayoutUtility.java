@@ -3,7 +3,6 @@ package uia.physical.group.utility;
 import uia.core.ui.View;
 
 import java.util.Objects;
-import java.util.List;
 
 /**
  * GroupLayoutUtility collects utility functions for measuring group layout.
@@ -33,17 +32,18 @@ public class GroupLayoutUtility {
      * @throws NullPointerException if {@code views == null}
      */
 
-    public static float[] measureBoundaries(List<View> views) {
+    public static float[] measureBoundaries(Iterable<View> views) {
         Objects.requireNonNull(views);
 
         float[] result = {0f, 0f, 0f, 0f};
-        for (int i = 0; i < views.size(); i++) {
-            View view = views.get(i);
+
+        int index = 0;
+        for (View view : views) {
             float[] bounds = view.getBounds();
             float xi = bounds[0];
             float yi = bounds[1];
 
-            if (i == 0) {
+            if (index == 0) {
                 result[0] = result[2] = xi;
                 result[1] = result[3] = yi;
             }
@@ -51,6 +51,8 @@ public class GroupLayoutUtility {
             if (yi < result[1]) result[1] = yi;
             if (xi + bounds[2] > result[2]) result[2] = xi + bounds[2];
             if (yi + bounds[3] > result[3]) result[3] = yi + bounds[3];
+
+            index++;
         }
 
         // adjusts with and height according to the starting point of the container
