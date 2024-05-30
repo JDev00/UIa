@@ -161,10 +161,12 @@ public final class UIListView extends WrapperView implements ViewGroup {
 
     @Override
     public void update(View parent) {
-        updatePositioner();
-
         horizontalBar.setInternalBarSize(barWidth);
         verticalBar.setInternalBarSize(barHeight);
+        super.update(parent);
+
+        // TODO: quick fix. It needs to be studied further.
+        updatePositioner();
         super.update(parent);
 
         if (isVisible()) {
