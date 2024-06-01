@@ -3,10 +3,7 @@ package uia.core;
 import java.util.Objects;
 
 /**
- * Font abstraction.
- * <br>
- * The Font class acts as an adapter: the native font must be set with
- * {@link #setNative(Object, float, float, float, Measure)}.
+ * UIa text font abstraction.
  */
 
 public class Font {
@@ -25,15 +22,16 @@ public class Font {
     public enum FontStyle {PLAIN, BOLD, ITALIC}
 
     private Measure measure = NO_MEASURE;
-    private Object nativeFont;
 
     private FontStyle fontStyle;
     private String name;
-    private float size;
-    private float ascent = 1f;
+    private float leadingFactor = 1f;
     private float descent = 1f;
     private float leading = 1f;
-    private float leadingFactor = 1f;
+    private float ascent = 1f;
+    private float size;
+
+    private boolean isValid = false;
 
     public Font(String name, FontStyle fontStyle, float size) {
         this.fontStyle = fontStyle;
@@ -91,12 +89,17 @@ public class Font {
                 '}';
     }
 
+    @Override
+    protected Object clone() {
+        return new Font(getName(), getStyle(), getSize());
+    }
+
     /**
-     * Invalidates this font and force UIa to rebuild its state.
+     * Invalidates this font and force UIa to rebuild it.
      */
 
     public void invalidate() {
-        nativeFont = null;
+        isValid = false;
     }
 
     /**
@@ -104,33 +107,27 @@ public class Font {
      */
 
     public boolean isValid() {
-        return nativeFont != null;
+        return isValid;
     }
 
     /**
-     * Sets the native Font and the {@link Measure} object.
+     * Builds this Font with the given data.
      *
-     * @param nativeFont the native Font object
-     * @param ascent     the font ascent
-     * @param descent    the font descent
-     * @param leading    the font leading
-     * @param measure    the font {@link Measure} object
+     * @param ascent  the font ascent
+     * @param descent the font descent
+     * @param leading the font leading
+     * @param measure the font {@link Measure} object
+     * @throws NullPointerException if {@code measure == null}
      */
 
-    public void setNative(Object nativeFont, float ascent, float descent, float leading, Measure measure) {
-        this.nativeFont = nativeFont;
-        this.measure = (measure == null) ? NO_MEASURE : measure;
+    public void buildFont(float ascent, float descent, float leading, Measure measure) {
+        Objects.requireNonNull(measure);
+
+        this.isValid = true;
+        this.measure = measure;
         this.ascent = ascent;
         this.descent = descent;
         this.leading = leading;
-    }
-
-    /**
-     * @return the native Font object
-     */
-
-    public Object getNative() {
-        return nativeFont;
     }
 
     /**
@@ -293,19 +290,6 @@ public class Font {
 
     public float getWidth(int offset, int length, char... text) {
         return measure.width(offset, length, text);
-    }
-
-    /**
-     * Copies the specified font.
-     *
-     * @param font a font to be copied
-     * @return a new font as a copy of the given font
-     * @throws NullPointerException if {@code font == null}
-     */
-
-    public static Font copy(Font font) {
-        Objects.requireNonNull(font);
-        return new Font(font.getName(), font.getStyle(), font.getSize());
     }
 
     /**
