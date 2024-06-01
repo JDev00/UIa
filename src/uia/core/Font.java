@@ -1,5 +1,7 @@
 package uia.core;
 
+import uia.core.font.FontMeasure;
+
 import java.util.Objects;
 
 /**
@@ -7,7 +9,7 @@ import java.util.Objects;
  */
 
 public class Font {
-    private static final Measure NO_MEASURE = (offset, length, text) -> 0;
+    private static final FontMeasure NO_MEASURE = (offset, length, text) -> 0;
 
     /**
      * Default desktop font size.
@@ -21,7 +23,7 @@ public class Font {
 
     public enum FontStyle {PLAIN, BOLD, ITALIC}
 
-    private Measure measure = NO_MEASURE;
+    private FontMeasure measure = NO_MEASURE;
 
     private FontStyle fontStyle;
     private String name;
@@ -37,26 +39,6 @@ public class Font {
         this.fontStyle = fontStyle;
         this.name = name;
         this.size = size;
-    }
-
-    /**
-     * Measure ADT.
-     * <br>
-     * Measure is responsible for measuring text based on a given Font.
-     */
-
-    public interface Measure {
-
-        /**
-         * Measures the given text and returns its length in pixels.
-         *
-         * @param text   the text to be measured
-         * @param offset the position (index) of the first character to be taken into account when measuring text
-         * @param length the number of text characters to be measured
-         * @return the width in pixels of the given array
-         */
-
-        float width(int offset, int length, char... text);
     }
 
     @Override
@@ -116,11 +98,11 @@ public class Font {
      * @param ascent  the font ascent
      * @param descent the font descent
      * @param leading the font leading
-     * @param measure the font {@link Measure} object
+     * @param measure the {@link FontMeasure} object
      * @throws NullPointerException if {@code measure == null}
      */
 
-    public void buildFont(float ascent, float descent, float leading, Measure measure) {
+    public void buildFont(float ascent, float descent, float leading, FontMeasure measure) {
         Objects.requireNonNull(measure);
 
         this.isValid = true;
