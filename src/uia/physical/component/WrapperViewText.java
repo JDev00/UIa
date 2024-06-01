@@ -1,11 +1,10 @@
 package uia.physical.component;
 
-import uia.core.Font;
 import uia.core.ui.ViewText;
 
 /**
- * WrapperViewText enables the creation of complex components, like every day graphical widgets, specifically
- * designed to handle texts.
+ * WrapperViewText enables the creation of complex components, like every day graphical widgets,
+ * specifically designed to handle text.
  */
 
 public abstract class WrapperViewText extends WrapperView implements ViewText {
@@ -14,36 +13,6 @@ public abstract class WrapperViewText extends WrapperView implements ViewText {
     protected WrapperViewText(ViewText viewText) {
         super(viewText);
         this.viewText = viewText;
-    }
-
-    @Override
-    public void setAlign(AlignX alignX) {
-        viewText.setAlign(alignX);
-    }
-
-    @Override
-    public AlignX getAlignX() {
-        return viewText.getAlignX();
-    }
-
-    @Override
-    public void setAlign(AlignY alignY) {
-        viewText.setAlign(alignY);
-    }
-
-    @Override
-    public AlignY getAlignY() {
-        return viewText.getAlignY();
-    }
-
-    @Override
-    public void setFont(Font font) {
-        viewText.setFont(font);
-    }
-
-    @Override
-    public Font getFont() {
-        return viewText.getFont();
     }
 
     @Override
