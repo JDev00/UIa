@@ -1,6 +1,4 @@
-package uia.core;
-
-import uia.core.font.FontMeasure;
+package uia.core.font;
 
 import java.util.Objects;
 

@@ -10,8 +10,8 @@ import uia.physical.scroller.Scroller;
 import uia.core.ui.ViewText;
 import uia.core.ui.Graphics;
 import uia.core.shape.Shape;
+import uia.core.font.Font;
 import uia.core.ui.View;
-import uia.core.Font;
 
 /**
  * Implementation of {@link ViewText}

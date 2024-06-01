@@ -2,6 +2,7 @@ package uia.core.ui;
 
 import uia.core.paint.Color;
 import uia.core.shape.Shape;
+import uia.core.font.Font;
 import uia.core.*;
 
 /**

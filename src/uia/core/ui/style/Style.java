@@ -2,7 +2,7 @@ package uia.core.ui.style;
 
 import uia.physical.theme.Theme;
 import uia.core.paint.Color;
-import uia.core.Font;
+import uia.core.font.Font;
 
 import java.util.Objects;
 
