@@ -1,43 +1,113 @@
 package uia.core;
 
-import uia.core.paint.Color;
-import uia.core.paint.Paint;
 import uia.physical.theme.Theme;
+import uia.core.paint.Color;
 
 /**
  * Style is responsible for storing the UI component graphical settings.
  */
 
 public final class Style {
-    private final Paint paint;
-    private Font font;
+    private Color backgroundColor;
+    private Color borderColor;
+    private Color textColor;
+
+    private final Font font;
+
+    private int borderWidth = 1;
 
     public Style() {
-        paint = new Paint();
+        backgroundColor = Theme.WHITE;
+        textColor = Theme.BLACK;
+        borderColor = null;
+
         font = Font.createDesktopFont(Font.Style.PLAIN);
     }
 
-    // color
+    /**
+     * Sets the component background color.
+     *
+     * @param color the background color
+     * @return this Style
+     * @throws NullPointerException if {@code color == null}
+     */
 
     public Style setBackgroundColor(Color color) {
-        paint.setColor(color);
+        backgroundColor = color.clone();
         return this;
     }
+
+    /**
+     * @return the component background color
+     */
+
+    public Color getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    /**
+     * Sets the component border color.
+     *
+     * @param color the component border color
+     * @return this Style
+     * @throws NullPointerException if {@code color == null}
+     */
 
     public Style setBorderColor(Color color) {
-        paint.setStrokeColor(color);
+        borderColor = color.clone();
         return this;
     }
+
+    /**
+     * @return the component border color
+     */
+
+    public Color getBorderColor() {
+        return borderColor;
+    }
+
+    /**
+     * Sets the component text color.
+     *
+     * @param color the component text color
+     * @return this Style
+     * @throws NullPointerException if {@code color == null}
+     */
 
     public Style setTextColor(Color color) {
-        paint.setTextColor(color);
+        this.textColor = color;
         return this;
     }
 
-    // temp
+    /**
+     * @return the component text color
+     */
 
-    public Paint getPaint() {
-        return paint;
+    public Color getTextColor() {
+        return this.textColor;
+    }
+
+    /**
+     * Sets the component border width.
+     *
+     * @param borderWidth the component border width greater than or equal to zero
+     * @throws IllegalArgumentException if {@code borderWidth < 0}
+     */
+
+    public Style setBorderWidth(int borderWidth) {
+        if (borderWidth < 0) {
+            throw new IllegalArgumentException("borderWidth can't be < 0");
+        }
+        this.borderWidth = borderWidth;
+        return this;
+    }
+
+    /**
+     * @return the component border width
+     */
+
+    public int getBorderWidth() {
+        return borderWidth;
     }
 
     // font
@@ -57,17 +127,8 @@ public final class Style {
         return this;
     }
 
-    // temp
-
     public Font getFont() {
         return font;
-    }
-
-    // geometry style
-
-    public Style setBorderWidth(int borderWidth) {
-        paint.setStrokeWidth(borderWidth);
-        return this;
     }
 
     // positioning
@@ -151,7 +212,7 @@ public final class Style {
         return 0f;
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Style style = new Style();
         style.setBorderColor(Theme.GREEN_YELLOW)
                 .setFontName("ciao!")
@@ -159,5 +220,5 @@ public final class Style {
                 .setMaxWidth(10f)
                 .setPosition(10f, 10f)
                 .translate(20f, 0f);
-    }
+    }*/
 }
