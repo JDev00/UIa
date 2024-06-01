@@ -1,7 +1,5 @@
 package uia.core.ui;
 
-import uia.core.Font;
-
 /**
  * ViewText ADT.
  * <br>
@@ -9,75 +7,6 @@ import uia.core.Font;
  */
 
 public interface ViewText extends View {
-
-    /**
-     * Aligns text on the x-axis.
-     */
-    enum AlignX {LEFT, CENTER, RIGHT}
-
-    /**
-     * Aligns text on the y-axis.
-     */
-    enum AlignY {TOP, CENTER}
-
-    /**
-     * Sets the text alignment on the x-axis.
-     *
-     * @param alignX a not null {@link AlignX}
-     * @throws NullPointerException if {@code alignX == null}
-     */
-
-    void setAlign(AlignX alignX);
-
-    /**
-     * @return the text alignment on the x-axis
-     */
-
-    AlignX getAlignX();
-
-    /**
-     * Sets the text alignment on the y-axis.
-     *
-     * @param alignY a not null {@link AlignY}
-     * @throws NullPointerException if {@code alignY == null}
-     */
-
-    void setAlign(AlignY alignY);
-
-    /**
-     * @return the text alignment on the y-axis
-     */
-
-    AlignY getAlignY();
-
-    /**
-     * Sets a new text font.
-     *
-     * @param font a {@link Font} object
-     * @throws NullPointerException if {@code font == null}
-     */
-
-    void setFont(Font font);
-
-    /**
-     * @return the {@link Font} object used to display text
-     */
-
-    Font getFont();
-
-    /**
-     * Single line functionality displays all the text on a single line.
-     *
-     * @param singleLine true to display text on a single line
-     */
-
-    void setSingleLine(boolean singleLine);
-
-    /**
-     * @return true if single line functionality is enabled
-     */
-
-    boolean isSingleLine();
 
     /**
      * Sets a description to display when no text is available.
@@ -102,6 +31,20 @@ public interface ViewText extends View {
      */
 
     String getText();
+
+    /**
+     * Single line functionality displays all the text on a single line.
+     *
+     * @param singleLine true to display text on a single line
+     */
+
+    void setSingleLine(boolean singleLine);
+
+    /**
+     * @return true if single line functionality is enabled
+     */
+
+    boolean isSingleLine();
 
     /**
      * Scrolls text on the x-axis and y-axis.

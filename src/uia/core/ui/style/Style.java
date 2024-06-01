@@ -1,7 +1,10 @@
-package uia.core;
+package uia.core.ui.style;
 
+import uia.core.Font;
 import uia.physical.theme.Theme;
 import uia.core.paint.Color;
+
+import java.util.Objects;
 
 /**
  * Style is responsible for storing the UI component graphical settings.
@@ -12,6 +15,9 @@ public final class Style {
     private Color borderColor;
     private Color textColor;
 
+    // text
+    private TextHorizontalAlignment textHorizontalAlignment;
+    private TextVerticalAlignment textVerticalAlignment;
     private final Font font;
 
     private int borderWidth = 1;
@@ -110,7 +116,51 @@ public final class Style {
         return borderWidth;
     }
 
-    // font
+    // text
+
+    /**
+     * Sets the horizontal text alignment.
+     *
+     * @param textAlignment one of {@link TextHorizontalAlignment}
+     * @return this Style
+     * @throws NullPointerException if {@code textAlignment == null}
+     */
+
+    Style setTextAlignment(TextHorizontalAlignment textAlignment) {
+        Objects.requireNonNull(textAlignment);
+        textHorizontalAlignment = textAlignment;
+        return this;
+    }
+
+    /**
+     * @return the horizontal text alignment
+     */
+
+    TextHorizontalAlignment getHorizontalTextAlignment() {
+        return textHorizontalAlignment;
+    }
+
+    /**
+     * Sets the vertical text alignment.
+     *
+     * @param textAlignment one of {@link TextVerticalAlignment}
+     * @return this Style
+     * @throws NullPointerException if {@code textAlignment == null}
+     */
+
+    Style setTextAlignment(TextVerticalAlignment textAlignment) {
+        Objects.requireNonNull(textAlignment);
+        textVerticalAlignment = textAlignment;
+        return this;
+    }
+
+    /**
+     * @return the vertical text alignment
+     */
+
+    TextVerticalAlignment getVerticalTextAlignment() {
+        return textVerticalAlignment;
+    }
 
     public Style setFontName(String name) {
         font.setName(name);
