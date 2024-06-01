@@ -162,7 +162,7 @@ public final class Paint {
     public Paint setColor(Color color) {
         Objects.requireNonNull(color);
         if (!this.color.equals(color)) {
-            this.color = Color.copy(color);
+            this.color = color.clone();
             invalidate();
         }
         return this;
@@ -187,7 +187,7 @@ public final class Paint {
         if (!Objects.equals(this.textColor, color)) {
             this.textColor = null;
             if (color != null) {
-                this.textColor = Color.copy(color);
+                this.textColor = color.clone();
             }
             invalidate();
         }
@@ -213,7 +213,7 @@ public final class Paint {
         if (!Objects.equals(this.strokeColor, color)) {
             this.strokeColor = null;
             if (color != null) {
-                this.strokeColor = Color.copy(color);
+                this.strokeColor = color.clone();
             }
             invalidate();
         }

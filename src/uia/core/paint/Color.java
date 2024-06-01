@@ -38,6 +38,11 @@ public final class Color {
         return Arrays.hashCode(channels);
     }
 
+    @Override
+    public Color clone() {
+        return createColor(getRed(), getGreen(), getBlue(), getAlpha());
+    }
+
     /**
      * @return the red color channel
      */
@@ -190,21 +195,5 @@ public final class Color {
             //
         }
         return result;
-    }
-
-    /**
-     * Copies the given color.
-     *
-     * @param color a {@link Color} to copy
-     * @return a new copy of the specified color
-     */
-
-    public static Color copy(Color color) {
-        return createColor(
-                color.getRed(),
-                color.getGreen(),
-                color.getBlue(),
-                color.getAlpha()
-        );
     }
 }
