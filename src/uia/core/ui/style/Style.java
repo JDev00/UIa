@@ -20,7 +20,7 @@ public final class Style {
     private TextVerticalAlignment textVerticalAlignment;
     private final Font font;
 
-    private int borderWidth = 1;
+    private float borderWidth = 1;
 
     public Style() {
         backgroundColor = Theme.WHITE;
@@ -115,7 +115,7 @@ public final class Style {
      * @return the component border width
      */
 
-    public int getBorderWidth() {
+    public float getBorderWidth() {
         return borderWidth;
     }
 

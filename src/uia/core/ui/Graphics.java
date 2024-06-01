@@ -44,7 +44,7 @@ public interface Graphics {
      * @since 1.6.0
      */
 
-    Graphics setShapeBorderWidth(int lineWidth);
+    Graphics setShapeBorderWidth(float lineWidth);
 
     /**
      * Sets the shape border color.
