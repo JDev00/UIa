@@ -1,5 +1,6 @@
 package uia.physical.component;
 
+import uia.core.ui.style.Style;
 import uia.physical.component.utility.ComponentUtility;
 import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.EventTouchScreenMessage;

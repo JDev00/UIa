@@ -1,8 +1,8 @@
 package uia.core.ui.style;
 
-import uia.core.Font;
 import uia.physical.theme.Theme;
 import uia.core.paint.Color;
+import uia.core.Font;
 
 import java.util.Objects;
 
@@ -26,6 +26,9 @@ public final class Style {
         backgroundColor = Theme.WHITE;
         textColor = Theme.BLACK;
         borderColor = null;
+
+        textHorizontalAlignment = TextHorizontalAlignment.CENTER;
+        textVerticalAlignment = TextVerticalAlignment.TOP;
 
         font = Font.createDesktopFont(Font.Style.PLAIN);
     }
