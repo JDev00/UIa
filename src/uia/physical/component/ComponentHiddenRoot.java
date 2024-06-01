@@ -1,9 +1,9 @@
 package uia.physical.component;
 
-import uia.core.shape.Geometry;
-import uia.core.paint.Paint;
 import uia.core.basement.Callback;
 import uia.core.basement.Message;
+import uia.core.shape.Geometry;
+import uia.core.ui.style.Style;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
 
@@ -15,29 +15,29 @@ import uia.core.ui.View;
  */
 
 public final class ComponentHiddenRoot implements View {
+    private static final String UNSUPPORTED_ERROR = "method not supported by ROOT View!";
+
     private final float[] bounds = new float[5];
     private boolean focus = true;
 
-    private final String unsupported_error = "method not supported by ROOT View!";
-
     @Override
     public void registerCallback(Callback<?> callback) {
-        throw new UnsupportedOperationException(unsupported_error);
+        throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
     }
 
     @Override
     public void unregisterCallback(Callback<?> callback) {
-        throw new UnsupportedOperationException(unsupported_error);
+        throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
     }
 
     @Override
     public void notifyCallbacks(Class<? extends Callback> type, Object o) {
-        throw new UnsupportedOperationException(unsupported_error);
+        throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
     }
 
     @Override
     public void setVisible(boolean visible) {
-        throw new UnsupportedOperationException(unsupported_error);
+        throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
     }
 
     @Override
@@ -57,26 +57,26 @@ public final class ComponentHiddenRoot implements View {
 
     @Override
     public void setConsumer(Consumer consumer, boolean enableConsumer) {
-        throw new UnsupportedOperationException(unsupported_error);
+        throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
     }
 
     @Override
     public void sendMessage(Message message) {
-        throw new UnsupportedOperationException(unsupported_error);
+        throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
     }
 
     @Override
     public void readMessage(Message message) {
-        throw new UnsupportedOperationException(unsupported_error);
+        throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
     }
 
     @Override
     public void setGeometry(java.util.function.Consumer<Geometry> builder, boolean inTimeBuilding) {
-        throw new UnsupportedOperationException(unsupported_error);
+        throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
     }
 
     @Override
-    public Paint getPaint() {
+    public Style getStyle() {
         return null;
     }
 
@@ -99,21 +99,22 @@ public final class ComponentHiddenRoot implements View {
 
     @Override
     public void setRotation(float radians) {
+        // hidden root can not be rotated as it fits to the window frame
     }
 
     @Override
     public void update(View parent) {
-        throw new UnsupportedOperationException(unsupported_error);
+        throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
     }
 
     @Override
     public void draw(Graphics graphics) {
-        throw new UnsupportedOperationException(unsupported_error);
+        throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
     }
 
     @Override
     public void setColliderPolicy(ColliderPolicy policy) {
-        throw new UnsupportedOperationException(unsupported_error);
+        throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
     }
 
     @Override
