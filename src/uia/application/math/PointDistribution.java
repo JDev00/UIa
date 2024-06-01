@@ -1,9 +1,9 @@
 package uia.application.math;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Distribution of bi-dimensional points.
@@ -23,7 +23,8 @@ public class PointDistribution {
 
     private final List<float[]> data;
 
-    private final FloatArray minPoint, maxPoint;
+    private final FloatArray minPoint;
+    private final FloatArray maxPoint;
 
     private final FloatArray mean;
     private final FloatArray standardDeviation;
