@@ -1,18 +1,17 @@
 package uia.physical.component;
 
-import uia.core.Font;
-import uia.core.shape.Shape;
-import uia.core.ui.Graphics;
-import uia.physical.scroller.Scroller;
-import uia.core.ui.View;
-import uia.core.ui.ViewText;
-import uia.core.ui.callbacks.OnMouseHover;
-import uia.physical.scroller.WheelScroller;
 import uia.physical.component.text.MultilineTextRenderer;
-import uia.physical.component.text.TextRenderer;
 import uia.physical.component.text.InlineTextRenderer;
-
-import java.util.Objects;
+import uia.core.ui.style.TextHorizontalAlignment;
+import uia.physical.component.text.TextRenderer;
+import uia.physical.scroller.WheelScroller;
+import uia.core.ui.callbacks.OnMouseHover;
+import uia.physical.scroller.Scroller;
+import uia.core.ui.ViewText;
+import uia.core.ui.Graphics;
+import uia.core.shape.Shape;
+import uia.core.ui.View;
+import uia.core.Font;
 
 /**
  * Implementation of {@link ViewText}
@@ -28,10 +27,6 @@ public final class ComponentText extends WrapperView implements ViewText {
 
     private final TextRenderer[] textRenderer;
 
-    private AlignX alignX = AlignX.CENTER;
-    private AlignY alignY = AlignY.TOP;
-
-    private Font font;
     private final Shape clipShape;
 
     private String text = "";
@@ -50,21 +45,8 @@ public final class ComponentText extends WrapperView implements ViewText {
 
         textRenderer = new TextRenderer[]{new InlineTextRenderer(), new MultilineTextRenderer()};
 
-        font = Font.createDesktopFont(Font.Style.PLAIN);
-
         clipShape = new Shape();
         clipShape.setGeometry(getGeometry());
-    }
-
-    @Override
-    public void setFont(Font font) {
-        Objects.requireNonNull(font);
-        this.font = font;
-    }
-
-    @Override
-    public Font getFont() {
-        return font;
     }
 
     @Override
@@ -90,26 +72,6 @@ public final class ComponentText extends WrapperView implements ViewText {
     @Override
     public void setDescription(String description) {
         this.description = (description == null) ? "" : description;
-    }
-
-    @Override
-    public void setAlign(AlignX alignX) {
-        if (alignX != null) this.alignX = alignX;
-    }
-
-    @Override
-    public AlignX getAlignX() {
-        return alignX;
-    }
-
-    @Override
-    public void setAlign(AlignY alignY) {
-        if (alignY != null) this.alignY = alignY;
-    }
-
-    @Override
-    public AlignY getAlignY() {
-        return alignY;
     }
 
     @Override
@@ -158,33 +120,36 @@ public final class ComponentText extends WrapperView implements ViewText {
      */
 
     private void calculateAndSetScrollerData(float width, float height) {
-        float n_lines = singleLine ? 1 : lines;
+        float numberOfLines = singleLine ? 1 : lines;
 
         scroller[0].setMax(textBounds[2] - 0.975f * width);
+        Font font = getFont();
         scroller[0].setFactor(font.getWidth('a'));
 
         scroller[1].setMax(textBounds[3] - height);
-        scroller[1].setFactor(textBounds[3] / (n_lines + 1));
+        scroller[1].setFactor(textBounds[3] / (numberOfLines + 1));
     }
 
     /**
-     * Update text bounds
+     * Updates text bounds.
      */
 
     private void updateTextBounds(float[] bounds, float width, float height) {
-        float xDist = -width / 2f + (TextRenderer.map(alignX) - 1f) * (scroller[0].getValue() - 4f);
+        TextHorizontalAlignment textAlignment = getStyle().getHorizontalTextAlignment();
+        float xDist = -width / 2f + (TextHorizontalAlignment.map(textAlignment) - 1f) * (scroller[0].getValue() - 4f);
         float yDist = -height / 2f - scroller[1].getValue();
         float rot = bounds[4];
-        float n_lines = singleLine ? 1 : lines;
+        float numberOfLines = singleLine ? 1 : lines;
+        Font font = getFont();
 
         textBounds[0] = View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rot);
         textBounds[1] = View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rot);
-        textBounds[3] = n_lines * font.getLineHeight();
+        textBounds[3] = numberOfLines * font.getLineHeight();
         textBounds[4] = rot;
     }
 
     /**
-     * Update clip shape position, dimension and rotation
+     * Updates clip shape position, dimension and rotation.
      */
 
     private void updateClipShape(float[] bounds, float width, float height) {
@@ -213,7 +178,7 @@ public final class ComponentText extends WrapperView implements ViewText {
         super.draw(graphics);
 
         if (isVisible()) {
-            graphics.setFont(font);
+            graphics.setFont(getFont());
             graphics.setClip(clipShape);
 
             String textToDisplay = !text.isEmpty() ? text : description;
@@ -227,5 +192,15 @@ public final class ComponentText extends WrapperView implements ViewText {
 
             graphics.restoreClip();
         }
+    }
+
+    /**
+     * Helper function.
+     *
+     * @return the text font used
+     */
+
+    private Font getFont() {
+        return getStyle().getFont();
     }
 }

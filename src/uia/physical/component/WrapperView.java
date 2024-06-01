@@ -3,9 +3,9 @@ package uia.physical.component;
 import uia.core.basement.Callback;
 import uia.core.basement.Message;
 import uia.core.shape.Geometry;
+import uia.core.ui.style.Style;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
-import uia.core.Style;
 
 /**
  * WrapperView wraps a specified View implementation
