@@ -1,37 +1,37 @@
 package uia.physical.component;
 
-import uia.core.*;
-import uia.core.paint.Paint;
+import uia.physical.component.utility.ComponentUtility;
+import uia.physical.message.store.GlobalMessageStore;
+import uia.physical.message.EventTouchScreenMessage;
+import uia.physical.message.store.MessageStore;
+import uia.physical.callbacks.CallbackStore;
+import uia.physical.message.EventKeyMessage;
+import uia.core.basement.Callback;
 import uia.core.basement.Callable;
 import uia.core.basement.Message;
 import uia.core.shape.Geometry;
-import uia.core.shape.Shape;
-import uia.physical.callbacks.CallbackStore;
-import uia.physical.message.EventKeyMessage;
-import uia.physical.message.EventTouchScreenMessage;
-import uia.physical.message.store.GlobalMessageStore;
-import uia.physical.message.store.MessageStore;
-import uia.physical.theme.Theme;
-import uia.physical.component.utility.ComponentUtility;
-import uia.utility.Geometries;
-import uia.core.basement.Callback;
-import uia.core.ui.View;
-import uia.core.ui.Graphics;
 import uia.core.ui.callbacks.*;
+import uia.utility.Geometries;
+import uia.core.shape.Shape;
+import uia.core.ui.Graphics;
+import uia.core.ui.View;
+import uia.core.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static uia.utility.MathUtility.*;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static uia.utility.MathUtility.*;
 
 /**
  * UIa standard {@link View} implementation.
  */
 
 public final class Component implements View {
-    private final Paint paint;
+    private View parent;
+
+    private final Style style;
     private final Shape shape;
     private java.util.function.Consumer<Geometry> geometryBuilder;
     private final Callable callable;
@@ -55,7 +55,7 @@ public final class Component implements View {
 
         callable = new CallbackStore(4);
 
-        paint = new Paint().setColor(Theme.WHITE);
+        style = new Style();
 
         shape = new Shape();
         Geometries.rect(shape.getGeometry());
@@ -126,8 +126,8 @@ public final class Component implements View {
     }
 
     @Override
-    public Paint getPaint() {
-        return paint;
+    public Style getStyle() {
+        return style;
     }
 
     @Override
@@ -327,8 +327,6 @@ public final class Component implements View {
         }
     }
 
-    private View parent;
-
     @Override
     public void update(View parent) {
         this.parent = parent;
@@ -345,8 +343,11 @@ public final class Component implements View {
     @Override
     public void draw(Graphics graphics) {
         if (visible) {
-            graphics.setPaint(paint);
-            graphics.drawShape(shape);
+            graphics
+                    .setShapeBorderWidth(style.getBorderWidth())
+                    .setShapeBorderColor(style.getBorderColor())
+                    .setShapeColor(style.getBackgroundColor())
+                    .drawShape(shape);
         }
     }
 

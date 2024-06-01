@@ -2,10 +2,10 @@ package uia.physical.component;
 
 import uia.core.basement.Callback;
 import uia.core.basement.Message;
-import uia.core.ui.Graphics;
 import uia.core.shape.Geometry;
-import uia.core.paint.Paint;
+import uia.core.ui.Graphics;
 import uia.core.ui.View;
+import uia.core.Style;
 
 /**
  * WrapperView wraps a specified View implementation
@@ -48,13 +48,13 @@ public abstract class WrapperView implements View {
     }
 
     @Override
-    public Paint getPaint() {
-        return view.getPaint();
+    public Geometry getGeometry() {
+        return view.getGeometry();
     }
 
     @Override
-    public Geometry getGeometry() {
-        return view.getGeometry();
+    public Style getStyle() {
+        return view.getStyle();
     }
 
     @Override
