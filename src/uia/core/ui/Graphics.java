@@ -131,6 +131,8 @@ public interface Graphics {
 
     /**
      * Sets a Color object that will be used to color text after this method is called.
+     * <br>
+     * <i>Every text rendered after this method will be affected.</i>
      *
      * @param color the Color used to paint text
      * @return this Graphics
@@ -141,7 +143,8 @@ public interface Graphics {
     Graphics setTextColor(Color color);
 
     /**
-     * Draws the given character array. The baseline of the first character is at position (<i>x</i>,<i>y</i>).
+     * Draws the given character array. The baseline of the first character
+     * is at position (<i>x</i>,<i>y</i>).
      *
      * @param data     a not null array of characters to draw
      * @param offset   the start offset in the data
