@@ -22,12 +22,12 @@ public class Font {
      * Font style representation.
      */
 
-    public enum Style {PLAIN, BOLD, ITALIC}
+    public enum FontStyle {PLAIN, BOLD, ITALIC}
 
     private Measure measure = NO_MEASURE;
     private Object nativeFont;
 
-    private Style style;
+    private FontStyle fontStyle;
     private String name;
     private float size;
     private float ascent = 1f;
@@ -35,9 +35,9 @@ public class Font {
     private float leading = 1f;
     private float leadingFactor = 1f;
 
-    public Font(String name, Style style, float size) {
+    public Font(String name, FontStyle fontStyle, float size) {
+        this.fontStyle = fontStyle;
         this.name = name;
-        this.style = style;
         this.size = size;
     }
 
@@ -69,19 +69,19 @@ public class Font {
         return Float.compare(size, font.size) == 0
                 && Float.compare(leadingFactor, font.leadingFactor) == 0
                 && Objects.equals(name, font.name)
-                && style == font.style;
+                && fontStyle == font.fontStyle;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, style, size, leadingFactor);
+        return Objects.hash(name, fontStyle, size, leadingFactor);
     }
 
     @Override
     public String toString() {
         return "Font{" +
                 "name='" + name + '\'' +
-                ", style=" + style +
+                ", style=" + fontStyle +
                 ", size=" + size +
                 ", ascent=" + ascent +
                 ", descent=" + descent +
@@ -146,7 +146,7 @@ public class Font {
 
         name = font.name;
         size = font.size;
-        style = font.style;
+        fontStyle = font.fontStyle;
         leadingFactor = font.leadingFactor;
         measure = null;
         invalidate();
@@ -179,24 +179,24 @@ public class Font {
     /**
      * Changes font style.
      *
-     * @param style the new font {@link Style}; if null, nothing is done
+     * @param fontStyle the new font {@link FontStyle}; if null, nothing is done
      * @return this font
      */
 
-    public Font setStyle(Style style) {
-        if (style != null) {
-            this.style = style;
+    public Font setStyle(FontStyle fontStyle) {
+        if (fontStyle != null) {
+            this.fontStyle = fontStyle;
             invalidate();
         }
         return this;
     }
 
     /**
-     * @return the font {@link Style}
+     * @return the font {@link FontStyle}
      */
 
-    public Style getStyle() {
-        return style;
+    public FontStyle getStyle() {
+        return fontStyle;
     }
 
     /**
@@ -315,8 +315,8 @@ public class Font {
      * @throws NullPointerException if {@code style == null}
      */
 
-    public static Font createDesktopFont(Style style) {
-        Objects.requireNonNull(style);
-        return new Font("Arial", style, Font.DESKTOP_SIZE);
+    public static Font createDesktopFont(FontStyle fontStyle) {
+        Objects.requireNonNull(fontStyle);
+        return new Font("Arial", fontStyle, Font.DESKTOP_SIZE);
     }
 }

@@ -30,7 +30,7 @@ public final class Style {
         textHorizontalAlignment = TextHorizontalAlignment.CENTER;
         textVerticalAlignment = TextVerticalAlignment.TOP;
 
-        font = Font.createDesktopFont(Font.Style.PLAIN);
+        font = Font.createDesktopFont(Font.FontStyle.PLAIN);
     }
 
     /**
@@ -170,7 +170,7 @@ public final class Style {
         return this;
     }
 
-    public Style setFontStyle(Font.Style fontStyle) {
+    public Style setFontStyle(Font.FontStyle fontStyle) {
         font.setStyle(fontStyle);
         return this;
     }
