@@ -1,22 +1,23 @@
-package uia.application;
+package uia.application.list;
 
-import uia.core.basement.Callback;
-import uia.core.ui.View;
-import uia.core.ui.ViewGroup;
-import uia.physical.component.Component;
-import uia.physical.group.ComponentGroup;
-import uia.physical.theme.Theme;
+import uia.application.list.positioner.ViewPositionerFactory;
+import uia.application.list.positioner.ViewPositioner;
 import uia.physical.component.WrapperView;
+import uia.physical.group.ComponentGroup;
+import uia.physical.component.Component;
+import uia.application.UIScrollbar;
+import uia.physical.theme.Theme;
+import uia.core.ui.ViewGroup;
+import uia.core.ui.View;
 
 import java.util.Iterator;
-import java.util.Objects;
 
 /**
  * Standard UIa component.
  * <br>
- * UIListView has been designed to handle a set of views.
+ * UIListView has been designed to handle a list of views.
  * <br>
- * Formally, it is a layout with vertical and horizontal scrollbars.
+ * Specifically, it is a layout with vertical and horizontal scrollbars.
  */
 
 public final class UIListView extends WrapperView implements ViewGroup {
@@ -26,10 +27,13 @@ public final class UIListView extends WrapperView implements ViewGroup {
     private final ViewGroup viewsContainer;
     private ViewPositioner viewPositioner;
 
+    private float barWidth = 0f;
+    private float barHeight = 0f;
+
     public UIListView(View view) {
         super(new ComponentGroup(view));
 
-        viewPositioner = createVerticalPositioner(this, 1.01f);
+        viewPositioner = ViewPositionerFactory.create(this, 1.01f, true);
 
         verticalBar = new UIScrollbar(
                 new Component("LISTVIEW_VERTICAL_BAR_" + getID(), 0.975f, 0.5f, 0.03f, 0.98f)
@@ -58,36 +62,6 @@ public final class UIListView extends WrapperView implements ViewGroup {
         ViewGroup.insert(containerGroup, viewsContainer, horizontalBar, verticalBar);
     }
 
-    /**
-     * ViewPositioner positions a set of views.
-     */
-
-    public interface ViewPositioner {
-
-        /**
-         * Positions the specified View.
-         *
-         * @param view a not null {@link View} to be placed
-         * @param i    the View position (index)
-         */
-
-        void place(View view, int i);
-    }
-
-    /**
-     * Callback invoked when a new View is added to a ListView.
-     */
-
-    public interface OnAdd extends Callback<View> {
-    }
-
-    /**
-     * Callback invoked when a View is removed from a ListView.
-     */
-
-    public interface OnRemove extends Callback<View> {
-    }
-
     @Override
     public void setClip(boolean clipRegion) {
         containerGroup.setClip(clipRegion);
@@ -102,7 +76,7 @@ public final class UIListView extends WrapperView implements ViewGroup {
     public boolean insert(int i, View view) {
         boolean result = viewsContainer.insert(i, view);
         if (result) {
-            notifyCallbacks(OnAdd.class, view);
+            notifyCallbacks(OnViewAdded.class, view);
         }
         return result;
     }
@@ -111,7 +85,7 @@ public final class UIListView extends WrapperView implements ViewGroup {
     public boolean remove(View view) {
         boolean result = viewsContainer.remove(view);
         if (result) {
-            notifyCallbacks(OnRemove.class, view);
+            notifyCallbacks(OnViewRemoved.class, view);
         }
         return result;
     }
@@ -185,15 +159,14 @@ public final class UIListView extends WrapperView implements ViewGroup {
         }
     }
 
-    float barWidth = 0f;
-    float barHeight = 0f;
-
     @Override
     public void update(View parent) {
-        updatePositioner();
-
         horizontalBar.setInternalBarSize(barWidth);
         verticalBar.setInternalBarSize(barHeight);
+        super.update(parent);
+
+        // TODO: quick fix. It needs to be studied further.
+        updatePositioner();
         super.update(parent);
 
         if (isVisible()) {
@@ -214,59 +187,10 @@ public final class UIListView extends WrapperView implements ViewGroup {
             verticalBar.setMaxValue(height);
 
             float vx = verticalBar.isVisible() ? 0.475f : 0.5f;
-
             viewsContainer.setPosition(
                     vx - horizontalBar.getValue() / getBounds()[2],
                     0.475f - verticalBar.getValue() / getBounds()[3]
             );
         }
-    }
-
-    /**
-     * Creates a vertical {@link ViewPositioner}
-     *
-     * @param group the {@link ViewGroup} container
-     * @param gap   a value (>= 1) used to space views
-     * @return a new vertical {@link ViewPositioner}
-     * @throws NullPointerException if {@code group == null}
-     */
-
-    public static ViewPositioner createVerticalPositioner(ViewGroup group, float gap) {
-        Objects.requireNonNull(group);
-        float[] sum = {0f};
-        float[] bounds = group.getBounds();
-        return (v, i) -> {
-            if (bounds[3] != 0) {
-                float h = gap * v.getBounds()[3] / (2 * bounds[3]);
-                if (i == 0) sum[0] = 0f;
-                sum[0] += h;
-                v.setPosition(0.5f, sum[0]);
-                sum[0] += h;
-            }
-        };
-    }
-
-    /**
-     * Creates a horizontal {@link ViewPositioner}
-     *
-     * @param group the {@link ViewGroup} container
-     * @param gap   a value (>= 1) used to space views
-     * @return a new horizontal {@link ViewPositioner}
-     * @throws NullPointerException if {@code group == null}
-     */
-
-    public static ViewPositioner createHorizontalPositioner(ViewGroup group, float gap) {
-        Objects.requireNonNull(group);
-        float[] sum = {0f};
-        float[] bounds = group.getBounds();
-        return (v, i) -> {
-            if (bounds[3] != 0) {
-                float w = gap * v.getBounds()[2] / (2 * bounds[2]);
-                if (i == 0) sum[0] = 0f;
-                sum[0] += w;
-                v.setPosition(sum[0], 0.5f);
-                sum[0] += w;
-            }
-        };
     }
 }

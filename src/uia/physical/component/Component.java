@@ -196,13 +196,10 @@ public final class Component implements View {
 
     @Override
     public void setConsumer(Consumer consumer, boolean enableConsumer) {
-        switch (consumer) {
-            case SCREEN_TOUCH:
-                consumeScreenTouch = enableConsumer;
-                break;
-            case KEY:
-                consumeKey = enableConsumer;
-                break;
+        if (consumer == Consumer.SCREEN_TOUCH) {
+            consumeScreenTouch = enableConsumer;
+        } else if (consumer == Consumer.KEY) {
+            consumeKey = enableConsumer;
         }
     }
 

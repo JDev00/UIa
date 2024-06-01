@@ -1,32 +1,41 @@
 package uia.platform.swing;
 
-import uia.core.Key;
-import uia.core.ScreenTouch;
-import uia.core.ui.context.Window;
-import uia.physical.message.Messages;
 import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.store.MessageStore;
+import uia.physical.callbacks.CallbackStore;
+import uia.physical.message.Messages;
+import uia.core.basement.Callable;
+import uia.core.basement.Callback;
+import uia.core.ui.window.Window;
+import uia.core.ScreenTouch;
+import uia.core.ui.window.*;
+import uia.core.Key;
 
+import java.util.function.IntFunction;
+import java.util.Collections;
+import java.util.ArrayList;
+import java.awt.event.*;
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * {@link Window} implementation based on Java Swing.
  */
 
 public class WindowSwing implements Window {
-    private final JFrame jFrame;
     private final MessageStore globalMessageStore = GlobalMessageStore.getInstance();
+    private final Callable callable;
+
+    private final JFrame jFrame;
     private final int[] screenSize = new int[2];
     private boolean focus = false;
 
     public WindowSwing(int x, int y) {
         screenSize[0] = x;
         screenSize[1] = y;
+
+        callable = new CallbackStore(10);
 
         jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -39,119 +48,129 @@ public class WindowSwing implements Window {
                 Container container = jFrame.getContentPane();
                 screenSize[0] = container.getWidth();
                 screenSize[1] = container.getHeight();
+                // notifies clients when window resizes
+                notifyCallbacks(OnWindowResized.class, WindowSwing.this);
+            }
+        });
+        jFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                notifyCallbacks(OnWindowClosed.class, WindowSwing.this);
             }
         });
         jFrame.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                focus = true;
+                updateFocus(true);
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                focus = false;
+                updateFocus(false);
             }
         });
         jFrame.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                addKeyEvent(new Key(Key.Action.TYPED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                Key key = new Key(Key.Action.TYPED, e.getModifiers(), e.getKeyChar(), e.getKeyCode());
+                addKeyEvent(key);
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
-                addKeyEvent(new Key(Key.Action.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                Key key = new Key(Key.Action.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode());
+                addKeyEvent(key);
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                addKeyEvent(new Key(Key.Action.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode()));
+                Key key = new Key(Key.Action.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode());
+                addKeyEvent(key);
             }
         });
         jFrame.addMouseListener(new MouseListener() {
             @Override
-            public void mousePressed(MouseEvent e) {
-                addScreenTouchEvent(getScreenTouches(e, 0, ScreenTouch.Action.PRESSED));
+            public void mousePressed(MouseEvent event) {
+                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.PRESSED);
+                addScreenTouchEvent(screenTouches);
             }
 
             @Override
-            public void mouseReleased(MouseEvent e) {
-                addScreenTouchEvent(getScreenTouches(e, 0, ScreenTouch.Action.RELEASED));
+            public void mouseReleased(MouseEvent event) {
+                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.RELEASED);
+                addScreenTouchEvent(screenTouches);
             }
 
             @Override
-            public void mouseClicked(MouseEvent e) {
-                addScreenTouchEvent(getScreenTouches(e, 0, ScreenTouch.Action.CLICKED));
+            public void mouseClicked(MouseEvent event) {
+                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.CLICKED);
+                addScreenTouchEvent(screenTouches);
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
+                // useless
             }
 
             @Override
-            public void mouseExited(MouseEvent e) {
-                addScreenTouchEvent(getScreenTouches(e, 0, ScreenTouch.Action.EXITED));
+            public void mouseExited(MouseEvent event) {
+                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.EXITED);
+                addScreenTouchEvent(screenTouches);
             }
         });
         jFrame.addMouseMotionListener(new MouseMotionListener() {
             @Override
-            public void mouseDragged(MouseEvent e) {
-                addScreenTouchEvent(getScreenTouches(e, 0, ScreenTouch.Action.DRAGGED));
+            public void mouseDragged(MouseEvent event) {
+                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.DRAGGED);
+                addScreenTouchEvent(screenTouches);
             }
 
             @Override
-            public void mouseMoved(MouseEvent e) {
-                addScreenTouchEvent(getScreenTouches(e, 0, ScreenTouch.Action.MOVED));
+            public void mouseMoved(MouseEvent event) {
+                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.MOVED);
+                addScreenTouchEvent(screenTouches);
             }
         });
-        jFrame.addMouseWheelListener(e -> {
-            addScreenTouchEvent(getScreenTouches(e, e.getWheelRotation(), ScreenTouch.Action.WHEEL));
+        jFrame.addMouseWheelListener(event -> {
+            List<ScreenTouch> screenTouches = createScreenTouches(event, event.getWheelRotation(), ScreenTouch.Action.WHEEL);
+            addScreenTouchEvent(screenTouches);
         });
-    }
-
-    protected void addUIComponent(Component component) {
-        jFrame.add(component);
     }
 
     /**
-     * Destroy this Window
+     * Helper function. Adds a new Key event to the global store.
      */
-
-    protected void destroy() {
-        jFrame.dispatchEvent(new WindowEvent(jFrame, WindowEvent.WINDOW_CLOSING));
-        jFrame.dispose();
-    }
 
     private void addKeyEvent(Key key) {
         globalMessageStore.add(Messages.newKeyEventMessage(key, null));
     }
+
+    /**
+     * Helper function. Adds a new ScreenTouch event to the global store.
+     */
 
     private void addScreenTouchEvent(List<ScreenTouch> screenTouches) {
         globalMessageStore.add(Messages.newScreenEventMessage(screenTouches, null));
     }
 
     /**
-     * @return the corresponding {@link ScreenTouch.Button} or null
+     * Helper function. Returns a new List of {@link ScreenTouch}s.
      */
 
-    private static ScreenTouch.Button mapNativeMouseButton(int button) {
-        switch (button) {
-            case 1:
-                return ScreenTouch.Button.LEFT;
-            case 2:
-                return ScreenTouch.Button.CENTER;
-            case 3:
-                return ScreenTouch.Button.RIGHT;
-            default:
-                return null;
-        }
-    }
+    private List<ScreenTouch> createScreenTouches(MouseEvent mouseEvent, int wheelRotation, ScreenTouch.Action action) {
+        IntFunction<ScreenTouch.Button> mapNativeMouseButton = button -> {
+            switch (button) {
+                case 1:
+                    return ScreenTouch.Button.LEFT;
+                case 2:
+                    return ScreenTouch.Button.CENTER;
+                case 3:
+                    return ScreenTouch.Button.RIGHT;
+                default:
+                    return null;
+            }
+        };
 
-    /**
-     * Helper function. Returns a List of {@link ScreenTouch}s.
-     */
-
-    private List<ScreenTouch> getScreenTouches(MouseEvent mouseEvent, int wheelRotation, ScreenTouch.Action action) {
         int x = mouseEvent.getX();
         int y = mouseEvent.getY();
         int[] insets = getInsets();
@@ -159,11 +178,58 @@ public class WindowSwing implements Window {
 
         ScreenTouch screenTouch = new ScreenTouch(
                 action,
-                mapNativeMouseButton(mouseEvent.getButton()),
+                mapNativeMouseButton.apply(mouseEvent.getButton()),
                 position[0],
                 position[1],
                 wheelRotation);
         return new ArrayList<>(Collections.singletonList(screenTouch));
+    }
+
+    /**
+     * Helper function. Updates the window focus.
+     *
+     * @param focus true to set window on focus
+     */
+
+    private void updateFocus(boolean focus) {
+        this.focus = focus;
+        if (focus) {
+            notifyCallbacks(OnWindowGainedFocus.class, WindowSwing.this);
+        } else {
+            notifyCallbacks(OnWindowLostFocus.class, WindowSwing.this);
+        }
+    }
+
+    /**
+     * Helper function. Adds a new UI component to render.
+     */
+
+    protected void addUIComponent(Component component) {
+        jFrame.add(component);
+    }
+
+    /**
+     * Helper function. Destroys this Window.
+     */
+
+    protected void destroy() {
+        jFrame.dispatchEvent(new WindowEvent(jFrame, WindowEvent.WINDOW_CLOSING));
+        jFrame.dispose();
+    }
+
+    @Override
+    public void registerCallback(Callback<?> callback) {
+        callable.registerCallback(callback);
+    }
+
+    @Override
+    public void unregisterCallback(Callback<?> callback) {
+        callable.unregisterCallback(callback);
+    }
+
+    @Override
+    public void notifyCallbacks(Class<? extends Callback> type, Object data) {
+        callable.notifyCallbacks(type, data);
     }
 
     @Override

@@ -1,39 +1,39 @@
 package uia.platform.swing;
 
-import uia.core.Font;
-import uia.core.shape.Geometry;
-import uia.core.Image;
-import uia.core.paint.Paint;
-import uia.core.shape.Shape;
-import uia.core.ui.Graphics;
 import uia.utility.MathUtility;
+import uia.core.shape.Geometry;
+import uia.core.shape.Shape;
+import uia.core.paint.Paint;
+import uia.core.ui.Graphics;
+import uia.core.Image;
+import uia.core.Font;
 
-import javax.imageio.ImageIO;
-import java.awt.Graphics2D;
-import java.awt.FontMetrics;
-import java.awt.Color;
-import java.awt.BasicStroke;
-import java.awt.Stroke;
-import java.awt.Canvas;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import javax.imageio.ImageIO;
+import java.awt.FontMetrics;
+import java.awt.BasicStroke;
+import java.awt.geom.Path2D;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.io.File;
+import java.util.*;
 
 /**
  * {@link Graphics} implementation based on Java AWT.
  */
 
-public class GraphicAWT implements Graphics {
+public class GraphicsAWT implements Graphics {
     private final Supplier<Graphics2D> graphics2DSupplier;
     private final Path2D shapePath;
 
     private Paint paint;
 
-    public GraphicAWT(Supplier<Graphics2D> graphics2DSupplier) {
+    public GraphicsAWT(Supplier<Graphics2D> graphics2DSupplier) {
         paint = new Paint();
 
         shapePath = new Path2D.Float();
@@ -291,6 +291,7 @@ public class GraphicAWT implements Graphics {
                     java.awt.Image image = ImageIO.read(new File(img.getPath()));
                     img.setNative(image, image.getWidth(null), image.getHeight(null));
                 } catch (Exception ignored) {
+                    //
                 }
             }).start();
         }

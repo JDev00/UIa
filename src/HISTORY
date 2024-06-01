@@ -1,4 +1,22 @@
-UIa current version is 1.5.4
+UIa current version is 1.5.7
+
+################
+Version 1.5.7
+################
+
+* BugFix: positions the added item correctly on the UIListView
+
+################
+Version 1.5.6
+################
+
+* Adds Window callbacks
+
+################
+Version 1.5.5
+################
+
+* Bug fixes and minor improvements
 
 ################
 Version 1.5.4

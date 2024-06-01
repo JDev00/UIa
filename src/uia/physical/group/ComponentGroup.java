@@ -1,14 +1,15 @@
 package uia.physical.group;
 
-import uia.core.shape.Shape;
-import uia.core.basement.Message;
-import uia.core.ui.View;
-import uia.core.ui.ViewGroup;
-import uia.core.ui.Graphics;
-import uia.physical.component.WrapperView;
-import uia.physical.message.EventKeyMessage;
+import uia.physical.group.utility.GroupLayoutUtility;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.group.utility.GroupUtility;
+import uia.physical.message.EventKeyMessage;
+import uia.physical.component.WrapperView;
+import uia.core.basement.Message;
+import uia.core.ui.ViewGroup;
+import uia.core.shape.Shape;
+import uia.core.ui.Graphics;
+import uia.core.ui.View;
 
 import java.util.*;
 
@@ -32,9 +33,9 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     private final Shape clipShape;
 
-    private final float[] contentBounds = {0f, 0f, 0f, 0f};
+    private float[] boundaries = {0f, 0f, 0f, 0f};
 
-    private boolean clip = true;
+    private boolean clipRegion = true;
 
     public ComponentGroup(View view) {
         super(view);
@@ -85,12 +86,12 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     @Override
     public void setClip(boolean clipRegion) {
-        clip = clipRegion;
+        this.clipRegion = clipRegion;
     }
 
     @Override
     public boolean hasClip() {
-        return clip;
+        return clipRegion;
     }
 
     @Override
@@ -116,38 +117,26 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     @Override
     public void removeAll() {
         views.clear();
-        Arrays.fill(contentBounds, 0);
+        Arrays.fill(boundaries, 0);
     }
 
     /**
-     * Helper function. Update group boundaries.
+     * Helper function. Updates views and their boundaries.
      */
 
-    private void updateGroupBounds() {
-        for (int i = 0; i < views.size(); i++) {
-            View view = views.get(i);
-
-            if (isVisible()) view.update(this);
-
-            float[] bounds = view.getBounds();
-            float xi = bounds[0], yi = bounds[1];
-
-            if (i == 0) {
-                contentBounds[0] = contentBounds[2] = xi;
-                contentBounds[1] = contentBounds[3] = yi;
+    private void updateGroup() {
+        if (isVisible()) {
+            for (View view : views) {
+                view.update(this);
             }
-            if (xi < contentBounds[0]) contentBounds[0] = xi;
-            if (yi < contentBounds[1]) contentBounds[1] = yi;
-            if (xi + bounds[2] > contentBounds[2]) contentBounds[2] = xi + bounds[2];
-            if (yi + bounds[3] > contentBounds[3]) contentBounds[3] = yi + bounds[3];
         }
 
-        contentBounds[2] -= contentBounds[0];
-        contentBounds[3] -= contentBounds[1];
+        // updates boundaries
+        boundaries = GroupLayoutUtility.measureBoundaries(views);
     }
 
     /**
-     * Helper function. Update clip shape position, dimension and rotation.
+     * Helper function. Updates clip shape position, dimension and rotation.
      */
 
     private void updateClipShape() {
@@ -160,7 +149,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     @Override
     public void update(View parent) {
         super.update(parent);
-        updateGroupBounds();
+        updateGroup();
         updateClipShape();
     }
 
@@ -169,13 +158,13 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         super.draw(graphics);
 
         if (isVisible()) {
-            if (clip) {
+            if (clipRegion) {
                 graphics.setClip(clipShape);
             }
             for (View i : views) {
                 i.draw(graphics);
             }
-            if (clip) {
+            if (clipRegion) {
                 graphics.restoreClip();
             }
         }
@@ -190,7 +179,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     @Override
     public float[] boundsContent() {
-        System.arraycopy(contentBounds, 0, copyBounds, 0, contentBounds.length);
+        System.arraycopy(boundaries, 0, copyBounds, 0, boundaries.length);
         return copyBounds;
     }
 

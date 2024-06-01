@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * UIa standard {@link Callable} implementation
+ * UIa standard {@link Callable} implementation.
  */
 
 public class CallbackStore implements Callable {
@@ -33,21 +33,23 @@ public class CallbackStore implements Callable {
     @Override
     public void notifyCallbacks(Class<? extends Callback> type, Object data) {
         try {
-            String name = type.getName();
+            String typeName = type.getName();
 
             callbacks.forEach(callback -> {
-                Class<?> current = callback.getClass();
-                while (current != null) {
-                    Class<?>[] interfaces = current.getInterfaces();
-                    for (Class<?> i : interfaces) {
-                        if (name.equals(i.getName())) {
+                Class<?> callbackClass = callback.getClass();
+                while (callbackClass != null) {
+                    Class<?>[] interfaces = callbackClass.getInterfaces();
+                    for (Class<?> superType : interfaces) {
+                        String superTypeName = superType.getName();
+                        if (typeName.equals(superTypeName)) {
                             callback.update(data);
                         }
                     }
-                    current = current.getSuperclass();
+                    callbackClass = callbackClass.getSuperclass();
                 }
             });
-        } catch (Exception ignored) {
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 }
