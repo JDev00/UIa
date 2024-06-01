@@ -1,9 +1,12 @@
 package uia.physical.component.text;
 
-import uia.core.Font;
+import uia.core.ui.style.TextHorizontalAlignment;
+import uia.core.ui.style.TextVerticalAlignment;
+import uia.core.ui.style.Style;
+import uia.core.ui.ViewText;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
-import uia.core.ui.ViewText;
+import uia.core.Font;
 
 import java.util.Objects;
 
@@ -13,15 +16,17 @@ import java.util.Objects;
 
 public class InlineTextRenderer implements TextRenderer {
 
-    // BUG: change text rotation
-
+    // TODO: BUG - change text rotation
     @Override
     public float draw(ViewText viewText, Graphics graphics, String text, float x, float y, float rotation) {
         Objects.requireNonNull(viewText);
         Objects.requireNonNull(graphics);
         Objects.requireNonNull(text);
 
-        Font font = viewText.getFont();
+        Style style = viewText.getStyle();
+        TextHorizontalAlignment horizontalAlignment = style.getHorizontalTextAlignment();
+        TextVerticalAlignment verticalAlignment = style.getVerticalTextAlignment();
+        Font font = style.getFont();
 
         char[] chars = text.toCharArray();
 
@@ -29,8 +34,8 @@ public class InlineTextRenderer implements TextRenderer {
         float lineHeight = font.getLineHeight();
         float longestLine = font.getWidth(0, chars.length, chars);
 
-        float xDist = TextRenderer.map(viewText.getAlignX()) * (lineWidth - longestLine) / 2f;
-        float yDist = TextRenderer.map(viewText.getAlignY()) * (viewText.getHeight() - 0.75f * lineHeight) / 2f + 0.75f * lineHeight;
+        float xDist = TextHorizontalAlignment.map(horizontalAlignment) * (lineWidth - longestLine) / 2f;
+        float yDist = TextVerticalAlignment.map(verticalAlignment) * (viewText.getHeight() - 0.75f * lineHeight) / 2f + 0.75f * lineHeight;
         float rot = viewText.getBounds()[4];
 
         graphics.drawText(chars, 0, chars.length,
