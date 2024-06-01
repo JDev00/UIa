@@ -264,14 +264,4 @@ public final class Style {
     public float getRotation() {
         return 0f;
     }
-
-    /*public static void main(String[] args) {
-        Style style = new Style();
-        style.setBorderColor(Theme.GREEN_YELLOW)
-                .setFontName("ciao!")
-                .setFontSize(10f)
-                .setMaxWidth(10f)
-                .setPosition(10f, 10f)
-                .translate(20f, 0f);
-    }*/
 }
