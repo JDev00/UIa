@@ -3,10 +3,9 @@ package uia.core.paint;
 import uia.utility.MathUtility;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 /**
- * The Color Object stores an RGBA-based color and its native system representation.
+ * The Color Object stores an RGBA-based color.
  */
 
 public final class Color {
@@ -99,7 +98,7 @@ public final class Color {
     }
 
     /**
-     * Creates a new Color
+     * Creates a new Color.
      *
      * @param red   the red color channel value between [0, 255]
      * @param green the green color channel value between [0, 255]
@@ -118,7 +117,7 @@ public final class Color {
     }
 
     /**
-     * Creates a new Color
+     * Creates a new Color.
      *
      * @param red   the red color channel value between [0, 255]
      * @param green the green color channel value between [0, 255]
@@ -131,7 +130,7 @@ public final class Color {
     }
 
     /**
-     * Creates a new Color
+     * Creates a new Color.
      *
      * @param grey the grey color channel value between [0, 255]
      * @return a new {@link Color}
@@ -158,10 +157,10 @@ public final class Color {
     }
 
     /**
-     * Creates a new Color based on the specified hex value
+     * Creates a new Color based on the specified hex value.
      *
      * @param hex a not null hex value
-     * @return a new {@link Color} or null if the specified hex is malformed
+     * @return a new {@link Color} or null if the specified hex is not valid
      */
 
     public static Color createColor(String hex) {
@@ -188,12 +187,13 @@ public final class Color {
                 );
             }
         } catch (Exception ignored) {
+            //
         }
         return result;
     }
 
     /**
-     * Copies the specified color
+     * Copies the given color.
      *
      * @param color a {@link Color} to copy
      * @return a new copy of the specified color
@@ -206,25 +206,5 @@ public final class Color {
                 color.getBlue(),
                 color.getAlpha()
         );
-    }
-
-    /**
-     * Checks whether the specified colour channels are the same as the specified channels.
-     *
-     * @param color a not null color to control
-     * @param red   the color channel red value
-     * @param green the green color channel value
-     * @param blue  the blue color channel value
-     * @param alpha the alpha color channel value
-     * @return true if the color channels are equal to the given ones
-     * @throws NullPointerException if {@code color == null}
-     */
-
-    public static boolean equals(Color color, int red, int green, int blue, int alpha) {
-        Objects.requireNonNull(color);
-        return color.getRed() == red
-                && color.getGreen() == green
-                && color.getBlue() == blue
-                && color.getAlpha() == alpha;
     }
 }
