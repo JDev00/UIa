@@ -1,15 +1,15 @@
-package uia.physical.group.utility;
+package uia.physical;
 
 import uia.core.ui.View;
 
 import java.util.Objects;
 
 /**
- * GroupLayoutUtility collects utility functions for measuring group layout.
+ * LayoutUtility collects utility functions for measuring layout.
  */
-public class GroupLayoutUtility {
+public class LayoutUtility {
 
-    private GroupLayoutUtility() {
+    private LayoutUtility() {
     }
 
     /**

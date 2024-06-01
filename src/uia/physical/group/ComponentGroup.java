@@ -1,10 +1,10 @@
 package uia.physical.group;
 
-import uia.physical.group.utility.GroupLayoutUtility;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.group.utility.GroupUtility;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.component.WrapperView;
+import uia.physical.LayoutUtility;
 import uia.core.basement.Message;
 import uia.core.ui.ViewGroup;
 import uia.core.shape.Shape;
@@ -132,7 +132,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         }
 
         // updates boundaries
-        boundaries = GroupLayoutUtility.measureBoundaries(views);
+        boundaries = LayoutUtility.measureBoundaries(views);
     }
 
     /**
