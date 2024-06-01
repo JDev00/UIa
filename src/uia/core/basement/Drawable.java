@@ -1,9 +1,9 @@
 package uia.core.basement;
 
 import uia.core.shape.Geometry;
-import uia.core.paint.Paint;
-import uia.core.ui.Graphics;
 import uia.utility.Geometries;
+import uia.core.ui.Graphics;
+import uia.core.Style;
 
 import java.util.function.Consumer;
 
@@ -30,10 +30,10 @@ public interface Drawable {
     Geometry getGeometry();
 
     /**
-     * @return the {@link Paint} object
+     * @return the Drawable style
      */
 
-    Paint getPaint();
+    Style getStyle();
 
     /**
      * Set the Drawable position
