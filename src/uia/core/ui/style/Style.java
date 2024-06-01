@@ -129,7 +129,7 @@ public final class Style {
      * @throws NullPointerException if {@code textAlignment == null}
      */
 
-    Style setTextAlignment(TextHorizontalAlignment textAlignment) {
+    public Style setTextAlignment(TextHorizontalAlignment textAlignment) {
         Objects.requireNonNull(textAlignment);
         textHorizontalAlignment = textAlignment;
         return this;
@@ -139,7 +139,7 @@ public final class Style {
      * @return the horizontal text alignment
      */
 
-    TextHorizontalAlignment getHorizontalTextAlignment() {
+    public TextHorizontalAlignment getHorizontalTextAlignment() {
         return textHorizontalAlignment;
     }
 
@@ -151,7 +151,7 @@ public final class Style {
      * @throws NullPointerException if {@code textAlignment == null}
      */
 
-    Style setTextAlignment(TextVerticalAlignment textAlignment) {
+    public Style setTextAlignment(TextVerticalAlignment textAlignment) {
         Objects.requireNonNull(textAlignment);
         textVerticalAlignment = textAlignment;
         return this;
@@ -161,7 +161,7 @@ public final class Style {
      * @return the vertical text alignment
      */
 
-    TextVerticalAlignment getVerticalTextAlignment() {
+    public TextVerticalAlignment getVerticalTextAlignment() {
         return textVerticalAlignment;
     }
 
