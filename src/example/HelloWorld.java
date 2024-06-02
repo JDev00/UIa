@@ -1,21 +1,22 @@
 package example;
 
-import uia.application.UIButton;
-import uia.platform.swing.ContextSwing;
-import uia.core.Font;
-import uia.core.paint.Color;
-import uia.core.ui.ViewGroup;
-import uia.core.ui.context.Context;
-import uia.core.ui.View;
-import uia.core.ui.ViewText;
-import uia.core.ui.callbacks.OnClick;
+import uia.core.ui.style.TextVerticalAlignment;
 import uia.core.ui.callbacks.OnMessageReceived;
-import uia.physical.component.Component;
-import uia.physical.group.ComponentGroup;
 import uia.physical.component.ComponentText;
-import uia.physical.message.Messages;
-import uia.physical.theme.Theme;
 import uia.physical.component.WrapperView;
+import uia.physical.group.ComponentGroup;
+import uia.physical.component.Component;
+import uia.platform.swing.ContextSwing;
+import uia.physical.message.Messages;
+import uia.core.ui.callbacks.OnClick;
+import uia.core.ui.context.Context;
+import uia.physical.theme.Theme;
+import uia.application.UIButton;
+import uia.core.ui.ViewGroup;
+import uia.core.paint.Color;
+import uia.core.ui.ViewText;
+import uia.core.font.Font;
+import uia.core.ui.View;
 
 /**
  * Demonstrative example. Display a simple button that allows to show and hide a popup.
@@ -30,7 +31,7 @@ public class HelloWorld extends WrapperView {
         super(new ComponentGroup(
                 new Component("HELLO_WORLD", 0.5f, 0.5f, 1f, 1f))
         );
-        getPaint().setColor(Theme.DARK_GRAY);
+        getStyle().setBackgroundColor(Theme.DARK_GRAY);
 
         // let us create a new specialised View: a Button
         UIButton button = createCustomButton();
@@ -72,28 +73,27 @@ public class HelloWorld extends WrapperView {
         ViewText text = new ComponentText(
                 new Component("BUTTON", 0.25f, 0.5f, 0.1f, 0.1f).setExpanseLimit(1.2f, 1.2f)
         );
-        // set the text alignment along y-axis
-        text.setAlign(ViewText.AlignY.CENTER);
         // set some text
         text.setText("Show\npopup!");
-        // get the ViewText's Font and set a new size and a new style
-        text.getFont()
-                .setStyle(Font.Style.BOLD)
-                .setSize(18);
+        // set the style for text
+        text.getStyle()
+                .setTextAlignment(TextVerticalAlignment.CENTER)
+                .setFontStyle(Font.FontStyle.BOLD)
+                .setFontSize(18f);
 
         UIButton result = new UIButton(text);
-        // get the Paint used when the button is activated and set: a color, stroke color and stroke width
-        result.getPaint(UIButton.STATE.OFF)
-                .setColor(Color.createColor(100, 200, 100, 50))
-                .setStrokeColor(Theme.LIME)
+        result.setStateStyleFunction(UIButton.State.OFF, style -> style
+                .setBackgroundColor(Color.createColor(100, 200, 100, 50))
+                .setBorderColor(Theme.LIME)
                 .setTextColor(Theme.LIME)
-                .setStrokeWidth(6);
-        // get the Paint used when the button isn't activated and set: a new color, stroke color and stroke width
-        result.getPaint(UIButton.STATE.ON)
-                .setColor(Color.createColor(200, 100, 0, 50))
-                .setStrokeColor(Theme.RED)
+                .setBorderWidth(6)
+        );
+        result.setStateStyleFunction(UIButton.State.ON, style -> style
+                .setBackgroundColor(Color.createColor(200, 100, 0, 50))
+                .setBorderColor(Theme.RED)
                 .setTextColor(Theme.RED)
-                .setStrokeWidth(2);
+                .setBorderWidth(2)
+        );
 
         return result;
     }
@@ -103,7 +103,7 @@ public class HelloWorld extends WrapperView {
      */
 
     private static View createSimplePopup() {
-        // now, let us create a viewText. We will use it to emulate a simple popup.
+        // create a viewText. It will be used to emulate a simple popup.
         ViewText result = new ComponentText(
                 new Component("POPUP", 0.66f, 0.5f, 0.33f, 0.5f)
         );
@@ -111,14 +111,12 @@ public class HelloWorld extends WrapperView {
         result.setVisible(false);
         // set some text to this popup
         result.setText("Hello!\nI'm a simple popup.");
-        // set text properties
-        result.setAlign(ViewText.AlignY.CENTER);
-        result.getFont()
-                .setStyle(Font.Style.ITALIC)
-                .setLeadingFactor(1.2f)
-                .setSize(25);
-        // set text color
-        result.getPaint().setTextColor(Theme.DARK_GRAY);
+        // set text style
+        result.getStyle()
+                .setTextAlignment(TextVerticalAlignment.CENTER)
+                .setFontStyle(Font.FontStyle.ITALIC)
+                .setTextColor(Theme.DARK_GRAY)
+                .setFontSize(25);
         return result;
     }
 
