@@ -16,6 +16,8 @@ import java.awt.geom.Path2D;
 import java.awt.Graphics2D;
 import java.util.*;
 
+// TODO: to improve performance
+
 /**
  * {@link Graphics} implementation based on Java AWT.
  */
