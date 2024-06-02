@@ -40,7 +40,7 @@ public final class UIListView extends WrapperView implements ViewGroup {
                         .setMaxWidth(10),
                 true
         );
-        verticalBar.getPaint().setColor(Theme.BLACK);
+        verticalBar.getStyle().setBackgroundColor(Theme.BLACK);
         verticalBar.setVisible(false);
 
         horizontalBar = new UIScrollbar(
@@ -48,15 +48,15 @@ public final class UIListView extends WrapperView implements ViewGroup {
                         .setMaxHeight(10f),
                 false
         );
-        horizontalBar.getPaint().setColor(Theme.BLACK);
+        horizontalBar.getStyle().setBackgroundColor(Theme.BLACK);
         horizontalBar.setVisible(false);
 
         viewsContainer = new ComponentGroup(
                 new Component("LISTVIEW_SKELETON_" + getID(), 0.475f, 0.475f, 0.95f, 0.95f)
         );
-        viewsContainer.setClip(false);
         viewsContainer.setConsumer(Consumer.SCREEN_TOUCH, false);
-        viewsContainer.getPaint().setColor(Theme.TRANSPARENT);
+        viewsContainer.getStyle().setBackgroundColor(Theme.TRANSPARENT);
+        viewsContainer.setClip(false);
 
         containerGroup = getView();
         ViewGroup.insert(containerGroup, viewsContainer, horizontalBar, verticalBar);
