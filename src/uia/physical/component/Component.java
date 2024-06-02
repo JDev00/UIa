@@ -1,6 +1,5 @@
 package uia.physical.component;
 
-import uia.core.ui.style.Style;
 import uia.physical.component.utility.ComponentUtility;
 import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.EventTouchScreenMessage;
@@ -12,6 +11,7 @@ import uia.core.basement.Callable;
 import uia.core.basement.Message;
 import uia.core.shape.Geometry;
 import uia.core.ui.callbacks.*;
+import uia.core.ui.style.Style;
 import uia.utility.Geometries;
 import uia.core.shape.Shape;
 import uia.core.ui.Graphics;
@@ -345,9 +345,8 @@ public final class Component implements View {
     public void draw(Graphics graphics) {
         if (visible) {
             graphics
+                    .setShapeColor(style.getBackgroundColor(), style.getBorderColor())
                     .setShapeBorderWidth(style.getBorderWidth())
-                    .setShapeBorderColor(style.getBorderColor())
-                    .setShapeColor(style.getBackgroundColor())
                     .drawShape(shape);
         }
     }

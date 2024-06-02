@@ -49,18 +49,6 @@ public interface Graphics {
     Graphics setShapeBorderWidth(float lineWidth);
 
     /**
-     * Sets the shape border color.
-     * <br>
-     * <i>Every Shape rendered after this method will be affected.</i>
-     *
-     * @param color the shape border color; a null color is ignored
-     * @return this Graphics
-     * @since 1.6.0
-     */
-
-    Graphics setShapeBorderColor(Color color);
-
-    /**
      * Sets a Color object that will be used to paint the shapes rendered after this method is called.
      * <br>
      * <i>Every Shape rendered after this method will be affected.</i>
@@ -71,6 +59,19 @@ public interface Graphics {
      */
 
     Graphics setShapeColor(Color color);
+
+    /**
+     * Sets a Color object that will be used to paint the shapes rendered after this method is called.
+     * <br>
+     * <i>Every Shape rendered after this method will be affected.</i>
+     *
+     * @param color       the Color used to paint shapes; a null color is ignored
+     * @param borderColor the Color used to paint the shape border; a null color is ignored
+     * @return this Graphics
+     * @since 1.6.0
+     */
+
+    Graphics setShapeColor(Color color, Color borderColor);
 
     /**
      * Draws an on-the-fly shape on this Graphics.

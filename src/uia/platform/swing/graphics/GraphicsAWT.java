@@ -75,23 +75,25 @@ public class GraphicsAWT implements Graphics {
     }
 
     @Override
-    public Graphics setShapeBorderColor(Color color) {
-        if (color != null) {
-            this.shapeBorderColor = color;
-        }
-        return this;
-    }
-
-    @Override
     public Graphics setShapeColor(Color color) {
         if (color != null) {
             this.shapeColor = color;
+            this.shapeBorderColor = color;
 
             // spike - to improve performance
             Graphics2D graphics = getGraphics();
             java.awt.Color awtColor = GraphicsAWTUtility.createColor(color);
             graphics.setColor(awtColor);
             //
+        }
+        return this;
+    }
+
+    @Override
+    public Graphics setShapeColor(Color color, Color borderColor) {
+        if (color != null) {
+            this.setShapeColor(color);
+            this.shapeBorderColor = borderColor == null ? color : borderColor;
         }
         return this;
     }
