@@ -1,12 +1,15 @@
 package uia.platform.swing.graphics;
 
+import uia.core.Image;
 import uia.core.shape.Geometry;
 import uia.core.shape.Shape;
 import uia.core.paint.Color;
 import uia.core.font.Font;
 
+import javax.imageio.ImageIO;
 import java.awt.geom.Path2D;
 import java.util.Objects;
+import java.io.File;
 import java.awt.*;
 
 /**
@@ -17,6 +20,8 @@ public final class GraphicsAWTUtility {
 
     private GraphicsAWTUtility() {
     }
+
+    // Color
 
     /**
      * Creates the AWT corresponding color.
@@ -36,6 +41,8 @@ public final class GraphicsAWTUtility {
         }
         return result;
     }
+
+    // Font
 
     /**
      * Creates the AWT corresponding Font object.
@@ -69,6 +76,34 @@ public final class GraphicsAWTUtility {
 
         return result;
     }
+
+    // Image
+
+    /**
+     * Creates the AWT corresponding Image object.
+     *
+     * @param image the image used to create the AWT one
+     */
+
+    public static void createAWTImage(Image image, java.awt.Image fakeImage) {
+        // sets a fake image while the specified one is loading
+        image.setNative(fakeImage, 1, 1);
+
+        new Thread(() -> {
+            try {
+                java.awt.Image awtImage = ImageIO.read(new File(image.getPath()));
+                image.setNative(
+                        awtImage,
+                        awtImage.getWidth(null),
+                        awtImage.getHeight(null)
+                );
+            } catch (Exception ignored) {
+                //
+            }
+        }).start();
+    }
+
+    // Shape
 
     /**
      * Builds a Path object suitable for AWT.

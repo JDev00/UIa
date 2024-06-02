@@ -11,11 +11,9 @@ import uia.core.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.function.Supplier;
-import javax.imageio.ImageIO;
 import java.awt.BasicStroke;
 import java.awt.geom.Path2D;
 import java.awt.Graphics2D;
-import java.io.File;
 import java.util.*;
 
 /**
@@ -207,29 +205,13 @@ public class GraphicsAWT implements Graphics {
 
     private final java.awt.Image fakeImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
 
-    /**
-     * Helper function. Builds the given Image.
-     */
-
-    private void buildImage(Image img) {
-        if (!img.isValid() || !(img.getNative() instanceof java.awt.Image)) {
-            img.setNative(fakeImage, 1, 1);
-
-            new Thread(() -> {
-                try {
-                    java.awt.Image image = ImageIO.read(new File(img.getPath()));
-                    img.setNative(image, image.getWidth(null), image.getHeight(null));
-                } catch (Exception ignored) {
-                    //
-                }
-            }).start();
-        }
-    }
-
     @Override
-    public Graphics drawImage(Image img, float x, float y, float width, float height, float rotation) {
+    public Graphics drawImage(Image image, float x, float y, float width, float height, float rotation) {
         Graphics2D graphics = getGraphics();
-        buildImage(img);
+
+        if (!image.isValid()) {
+            GraphicsAWTUtility.createAWTImage(image, fakeImage);
+        }
 
         boolean rotated = Float.compare(rotation % MathUtility.TWO_PI, 0f) != 0;
         AffineTransform previousMatrix = null;
@@ -240,7 +222,7 @@ public class GraphicsAWT implements Graphics {
         }
 
         float offset = 0.5f;
-        graphics.drawImage((java.awt.Image) img.getNative(),
+        graphics.drawImage((java.awt.Image) image.getNative(),
                 (int) (x - offset * width),
                 (int) (y - offset * height),
                 (int) width,
