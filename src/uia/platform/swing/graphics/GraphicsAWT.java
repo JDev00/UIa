@@ -76,21 +76,23 @@ public class GraphicsAWT implements Graphics {
 
     @Override
     public Graphics setShapeBorderColor(Color color) {
-        Objects.requireNonNull(color);
-        this.shapeBorderColor = color;
+        if (color != null) {
+            this.shapeBorderColor = color;
+        }
         return this;
     }
 
     @Override
     public Graphics setShapeColor(Color color) {
-        Objects.requireNonNull(color);
-        this.shapeColor = color;
+        if (color != null) {
+            this.shapeColor = color;
 
-        // spike - to improve performance
-        Graphics2D graphics = getGraphics();
-        java.awt.Color awtColor = GraphicsAWTUtility.createColor(color);
-        graphics.setColor(awtColor);
-        //
+            // spike - to improve performance
+            Graphics2D graphics = getGraphics();
+            java.awt.Color awtColor = GraphicsAWTUtility.createColor(color);
+            graphics.setColor(awtColor);
+            //
+        }
         return this;
     }
 
@@ -173,8 +175,9 @@ public class GraphicsAWT implements Graphics {
 
     @Override
     public Graphics setTextColor(Color color) {
-        Objects.requireNonNull(color);
-        textColor = color;
+        if (color != null) {
+            textColor = color;
+        }
         return this;
     }
 

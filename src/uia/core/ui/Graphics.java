@@ -53,9 +53,8 @@ public interface Graphics {
      * <br>
      * <i>Every Shape rendered after this method will be affected.</i>
      *
-     * @param color the shape border color
+     * @param color the shape border color; a null color is ignored
      * @return this Graphics
-     * @throws NullPointerException if {@code == null}
      * @since 1.6.0
      */
 
@@ -66,9 +65,8 @@ public interface Graphics {
      * <br>
      * <i>Every Shape rendered after this method will be affected.</i>
      *
-     * @param color the Color used to paint shapes
+     * @param color the Color used to paint shapes; a null color is ignored
      * @return this Graphics
-     * @throws NullPointerException if {@code color == null}
      * @since 1.6.0
      */
 
@@ -136,9 +134,8 @@ public interface Graphics {
      * <br>
      * <i>Every text rendered after this method will be affected.</i>
      *
-     * @param color the Color used to paint text
+     * @param color the Color used to paint text; a null color is ignored
      * @return this Graphics
-     * @throws NullPointerException if {@code color == null}
      * @since 1.6.0
      */
 
