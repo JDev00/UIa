@@ -7,6 +7,7 @@ import uia.physical.component.text.TextRenderer;
 import uia.physical.scroller.WheelScroller;
 import uia.core.ui.callbacks.OnMouseHover;
 import uia.physical.scroller.Scroller;
+import uia.core.ui.style.Style;
 import uia.core.ui.ViewText;
 import uia.core.ui.Graphics;
 import uia.core.shape.Shape;
@@ -178,8 +179,11 @@ public final class ComponentText extends WrapperView implements ViewText {
         super.draw(graphics);
 
         if (isVisible()) {
-            graphics.setFont(getFont());
-            graphics.setClip(clipShape);
+            Style style = getStyle();
+            graphics
+                    .setTextColor(style.getTextColor())
+                    .setFont(style.getFont())
+                    .setClip(clipShape);
 
             String textToDisplay = !text.isEmpty() ? text : description;
             int renderer = singleLine ? 0 : 1;
