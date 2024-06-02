@@ -33,6 +33,18 @@ public final class Style {
         font = Font.createDesktopFont(Font.FontStyle.PLAIN);
     }
 
+    @Override
+    public String toString() {
+        return "Style {\nbackgroundColor=" + backgroundColor +
+                ",\nborderColor=" + borderColor +
+                ",\ntextColor=" + textColor +
+                ",\ntextHorizontalAlignment=" + textHorizontalAlignment +
+                ",\ntextVerticalAlignment=" + textVerticalAlignment +
+                ",\nfont=" + font +
+                ",\nborderWidth=" + borderWidth +
+                "\n}";
+    }
+
     /**
      * Changes this Style by applying the given style function.
      *
@@ -49,6 +61,8 @@ public final class Style {
 
     /**
      * Sets the component background color.
+     * <br>
+     * Note: the specified color is not copied. As a result, side effects are allowed.
      *
      * @param color the background color
      * @return this Style
@@ -56,7 +70,8 @@ public final class Style {
      */
 
     public Style setBackgroundColor(Color color) {
-        backgroundColor = color.clone();
+        Objects.requireNonNull(color);
+        backgroundColor = color;
         return this;
     }
 
@@ -70,14 +85,15 @@ public final class Style {
 
     /**
      * Sets the component border color.
+     * <br>
+     * Note: the specified color is not copied. As a result, side effects are allowed.
      *
-     * @param color the component border color
+     * @param color the component border color; it could be null
      * @return this Style
-     * @throws NullPointerException if {@code color == null}
      */
 
     public Style setBorderColor(Color color) {
-        borderColor = color.clone();
+        borderColor = color;
         return this;
     }
 
@@ -91,10 +107,11 @@ public final class Style {
 
     /**
      * Sets the component text color.
+     * <br>
+     * Note: the specified color is not copied. As a result, side effects are allowed.
      *
-     * @param color the component text color
+     * @param color the component text color; it could be null
      * @return this Style
-     * @throws NullPointerException if {@code color == null}
      */
 
     public Style setTextColor(Color color) {
