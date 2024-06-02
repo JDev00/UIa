@@ -35,7 +35,8 @@ public final class widgets {
                 .setBackgroundColor(Theme.TRANSPARENT)
                 .setTextColor(Theme.LIGHT_CORAL)
                 .setBorderColor(Theme.ROYAL_BLUE)
-                .setBorderWidth(4);
+                .setBorderWidth(4)
+                .setFontSize(40);
 
         UIToggleButton toggleButton = new UIToggleButton(
                 new Component("BUTTON_1", 0.85f, 0.5f, 0.15f, 0.1f)

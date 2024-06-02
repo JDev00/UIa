@@ -1,15 +1,15 @@
 package uia.application;
 
-import uia.core.shape.Geometry;
-import uia.core.paint.Paint;
-import uia.core.basement.Drawable;
-import uia.core.ui.View;
-import uia.core.ui.ViewGroup;
-import uia.physical.theme.Theme;
-import uia.physical.group.ComponentGroup;
 import uia.physical.component.WrapperView;
+import uia.physical.group.ComponentGroup;
 import uia.physical.component.Component;
+import uia.core.basement.Drawable;
+import uia.physical.theme.Theme;
 import uia.utility.MathUtility;
+import uia.core.shape.Geometry;
+import uia.core.ui.style.Style;
+import uia.core.ui.ViewGroup;
+import uia.core.ui.View;
 
 import java.util.Objects;
 
@@ -39,10 +39,10 @@ public final class UIProgressbar extends WrapperView {
         super(new ComponentGroup(view));
 
         setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
-        getPaint().setColor(Theme.DARK_GRAY);
+        getStyle().setBackgroundColor(Theme.DARK_GRAY);
 
         internalBar = new Component("PROGRESSBAR_INTERNAL_BAR_" + getID(), 0.5f, 0.5f, 1f, 1f);
-        internalBar.getPaint().setColor(Theme.LIME);
+        internalBar.getStyle().setBackgroundColor(Theme.LIME);
 
         ViewGroup.insert(getView(), internalBar);
 
@@ -51,11 +51,11 @@ public final class UIProgressbar extends WrapperView {
     }
 
     /**
-     * @return the internal bar {@link Paint}
+     * @return the internal bar {@link Style}
      */
 
-    public Paint getInternalBarPaint() {
-        return internalBar.getPaint();
+    public Style getInternalBarStyle() {
+        return internalBar.getStyle();
     }
 
     /**

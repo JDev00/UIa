@@ -1,19 +1,19 @@
 package uia.application;
 
-import uia.core.paint.Paint;
-import uia.core.ScreenTouch;
-import uia.core.basement.Drawable;
-import uia.core.ui.View;
-import uia.core.ui.ViewGroup;
-import uia.core.ui.callbacks.OnClick;
-import uia.core.ui.callbacks.OnMouseExit;
-import uia.core.ui.callbacks.OnMouseHover;
-import uia.physical.component.Component;
-import uia.physical.group.ComponentGroup;
 import uia.physical.message.EventTouchScreenMessage;
-import uia.physical.theme.Theme;
+import uia.core.ui.callbacks.OnMouseHover;
 import uia.physical.component.WrapperView;
+import uia.core.ui.callbacks.OnMouseExit;
+import uia.physical.group.ComponentGroup;
+import uia.physical.component.Component;
+import uia.core.ui.callbacks.OnClick;
+import uia.core.basement.Drawable;
+import uia.physical.theme.Theme;
 import uia.utility.MathUtility;
+import uia.core.ui.style.Style;
+import uia.core.ui.ViewGroup;
+import uia.core.ScreenTouch;
+import uia.core.ui.View;
 
 /**
  * Standard UIa component.
@@ -26,7 +26,7 @@ import uia.utility.MathUtility;
  * </ul>
  * The internal bar can't be accessed directly.
  * <br>
- * By design, UIScrollbar supports dragging and moving the internal bar. The only operation that you have to
+ * By design, UIScrollbar supports dragging and moving the internal bar. The operation you have to
  * implement on your own is the scrolling caused by a mouse wheeling event.
  * <br>
  * The scroll value (accessed with {@link #getValue()}) is bounded between [0, max]. The maximum scroll value is set
@@ -50,7 +50,7 @@ public final class UIScrollbar extends WrapperView {
         this.vertical = vertical;
 
         setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
-        getPaint().setColor(Theme.DARK_GRAY);
+        getStyle().setBackgroundColor(Theme.DARK_GRAY);
         registerCallback((OnClick) touches -> {
             ScreenTouch touch = touches.get(0);
             updateScroll(touch.getX(), touch.getY());
@@ -79,7 +79,7 @@ public final class UIScrollbar extends WrapperView {
                 true
         );
         internalBar.setConsumer(Consumer.SCREEN_TOUCH, false);
-        internalBar.getPaint().setColor(Theme.LIGHT_GRAY);
+        internalBar.getStyle().setBackgroundColor(Theme.LIGHT_GRAY);
 
         ViewGroup group = getView();
         group.setClip(false);
@@ -206,11 +206,11 @@ public final class UIScrollbar extends WrapperView {
     }
 
     /**
-     * @return the internal bar {@link Paint} object
+     * @return the internal bar {@link Style} object
      */
 
-    public Paint getInternalBarPaint() {
-        return internalBar.getPaint();
+    public Style getInternalBarStyle() {
+        return internalBar.getStyle();
     }
 
     /**

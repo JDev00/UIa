@@ -1,17 +1,19 @@
 package uia.application;
 
-import uia.core.Font;
-import uia.core.basement.Drawable;
-import uia.core.ui.View;
-import uia.core.ui.ViewGroup;
-import uia.physical.theme.Theme;
-import uia.physical.component.WrapperView;
-import uia.core.ui.ViewText;
-import uia.utility.Geometries;
-import uia.physical.component.Component;
-import uia.physical.group.ComponentGroup;
+import uia.core.ui.style.TextHorizontalAlignment;
+import uia.core.ui.style.TextVerticalAlignment;
 import uia.physical.component.ComponentText;
+import uia.physical.component.WrapperView;
+import uia.physical.group.ComponentGroup;
+import uia.physical.component.Component;
+import uia.core.basement.Drawable;
+import uia.physical.theme.Theme;
+import uia.core.ui.style.Style;
 import uia.utility.MathUtility;
+import uia.utility.Geometries;
+import uia.core.ui.ViewGroup;
+import uia.core.ui.ViewText;
+import uia.core.ui.View;
 
 /**
  * Standard UIa component.
@@ -32,19 +34,18 @@ public final class UIButtonFilled extends WrapperView {
                         0.5f, 1f)
         );
         viewText.setConsumer(Consumer.SCREEN_TOUCH, false);
-        viewText.setAlign(right ? ComponentText.AlignX.LEFT : ComponentText.AlignX.RIGHT);
-        viewText.setAlign(ComponentText.AlignY.CENTER);
-        viewText.getPaint()
-                .setColor(Theme.TRANSPARENT)
-                .setTextColor(null);
+        viewText.getStyle()
+                .setTextAlignment(right ? TextHorizontalAlignment.LEFT : TextHorizontalAlignment.RIGHT)
+                .setTextAlignment(TextVerticalAlignment.CENTER)
+                .setBackgroundColor(Theme.TRANSPARENT);
 
         icon = new Component("BUTTON_FILLED_ICON_" + getID(), right ? 0.875f : 0.125f, 0.5f, 0.125f, 0.4f)
                 .setExpanseLimit(1.15f, 1.15f);
         icon.setColliderPolicy(ColliderPolicy.AABB);
         icon.setConsumer(Consumer.SCREEN_TOUCH, false);
         icon.setGeometry(Geometries::arrow, false);
+        icon.getStyle().setBackgroundColor(Theme.BLACK);
         icon.setRotation(right ? 0f : MathUtility.PI);
-        icon.getPaint().setColor(Theme.BLACK);
 
         ViewGroup.insert(getView(), viewText, icon);
     }
@@ -59,12 +60,15 @@ public final class UIButtonFilled extends WrapperView {
         viewText.setText(text);
     }
 
-    /**
-     * @return the text {@link Font} object
-     */
+    @Override
+    public void update(View parent) {
+        super.update(parent);
 
-    public Font getFont() {
-        return viewText.getFont();
+        Style containerStyle = getStyle();
+        Style viewTextStyle = viewText.getStyle();
+        viewTextStyle
+                .setTextColor(containerStyle.getTextColor())
+                .setFont(containerStyle.getFont());
     }
 
     /**
