@@ -20,7 +20,7 @@ public final class Style {
     private TextVerticalAlignment textVerticalAlignment;
     private Font font;
 
-    private float borderWidth = 1;
+    private float borderWidth = 0;
 
     public Style() {
         backgroundColor = Theme.WHITE;
