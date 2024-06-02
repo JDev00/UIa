@@ -1,25 +1,21 @@
 package uia.platform.swing;
 
+import uia.platform.swing.graphics.GraphicsAWTUtility;
+import uia.physical.theme.Theme;
 import uia.utility.MathUtility;
-import uia.core.shape.Geometry;
+import uia.core.paint.Color;
 import uia.core.shape.Shape;
-import uia.core.paint.Paint;
 import uia.core.ui.Graphics;
+import uia.core.font.Font;
 import uia.core.Image;
-import uia.core.Font;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import javax.imageio.ImageIO;
-import java.awt.FontMetrics;
 import java.awt.BasicStroke;
 import java.awt.geom.Path2D;
 import java.awt.Graphics2D;
-import java.awt.Stroke;
-import java.awt.Canvas;
-import java.awt.Color;
 import java.io.File;
 import java.util.*;
 
@@ -29,19 +25,28 @@ import java.util.*;
 
 public class GraphicsAWT implements Graphics {
     private final Supplier<Graphics2D> graphics2DSupplier;
+
+    private final Deque<java.awt.Shape> clipPaths;
+    private final Path2D clipPath;
     private final Path2D shapePath;
 
-    private Paint paint;
+    private float shapeBorderWidth = 0;
+    private Color shapeBorderColor = null;
+    private Color shapeColor = Theme.WHITE;
+    private Color textColor = Theme.BLACK;
 
     public GraphicsAWT(Supplier<Graphics2D> graphics2DSupplier) {
-        paint = new Paint();
+        clipPaths = new ArrayDeque<>();
+
+        clipPath = new Path2D.Float();
 
         shapePath = new Path2D.Float();
+
         this.graphics2DSupplier = graphics2DSupplier;
     }
 
     /**
-     * Helper function. Returns the native platform graphics.
+     * Helper function. Returns the platform graphics.
      */
 
     private Graphics2D getGraphics() {
@@ -53,209 +58,129 @@ public class GraphicsAWT implements Graphics {
         getGraphics().dispose();
     }
 
-    private final Stack<java.awt.Shape> clipStack = new Stack<>();
-    private final Path2D clipPath = new Path2D.Float();
+    // shape
+
+    @Override
+    public Graphics setShapeBorderWidth(float lineWidth) {
+        if (lineWidth < 0) {
+            throw new IllegalArgumentException("lineWidth can not be < 0");
+        }
+        this.shapeBorderWidth = lineWidth;
+
+        // spike - to improve performance
+        Graphics2D graphics = getGraphics();
+        BasicStroke awtStroke = new BasicStroke(lineWidth);
+        graphics.setStroke(awtStroke);
+        //
+        return this;
+    }
+
+    @Override
+    public Graphics setShapeBorderColor(Color color) {
+        Objects.requireNonNull(color);
+        this.shapeBorderColor = color;
+        return this;
+    }
+
+    @Override
+    public Graphics setShapeColor(Color color) {
+        Objects.requireNonNull(color);
+        this.shapeColor = color;
+
+        // spike - to improve performance
+        Graphics2D graphics = getGraphics();
+        java.awt.Color awtColor = GraphicsAWTUtility.createAWTColor(color);
+        graphics.setColor(awtColor);
+        //
+        return this;
+    }
+
+    /**
+     * Helper function. Draws the given Path on this Graphics.
+     */
+
+    private void drawPath(Path2D path) {
+        Graphics2D graphics = getGraphics();
+        graphics.fill(path);
+
+        if (shapeBorderWidth > 0) {
+            java.awt.Paint previousPaint = graphics.getPaint();
+            // spike - to improve performance
+            java.awt.Paint awtStrokeColor = GraphicsAWTUtility.createAWTColor(shapeBorderColor);
+            if (awtStrokeColor == null) {
+                awtStrokeColor = GraphicsAWTUtility.createAWTColor(shapeColor);
+            }
+            //
+
+            graphics.setPaint(awtStrokeColor);
+            graphics.draw(path);
+            graphics.setPaint(previousPaint);
+        }
+    }
+
+    @Override
+    public Graphics drawShape(float... vertices) {
+        Objects.requireNonNull(vertices);
+        if (vertices.length % 2 != 0) {
+            throw new IllegalArgumentException("The array shape must be [x1,y1, x2,y2, x3,y3, ...]");
+        }
+
+        GraphicsAWTUtility.buildPath(vertices, shapePath);
+        drawPath(shapePath);
+        return this;
+    }
+
+    @Override
+    public Graphics drawShape(Shape shape) {
+        GraphicsAWTUtility.buildPath(shape, shapePath);
+        drawPath(shapePath);
+        return this;
+    }
 
     @Override
     public void setClip(Shape shape) {
         Graphics2D graphics = getGraphics();
         if (shape != null) {
-            buildPathAndStoreInto(shape, clipPath);
+            GraphicsAWTUtility.buildPath(shape, clipPath);
             graphics.clip(clipPath);
         } else {
             graphics.setClip(null);
         }
-        clipStack.push(graphics.getClip());
+        clipPaths.addLast(graphics.getClip());
     }
 
     @Override
     public void restoreClip() {
         Graphics2D graphics = getGraphics();
         try {
-            clipStack.pop();
-            graphics.setClip(clipStack.peek());
+            clipPaths.removeLast();
+            graphics.setClip(clipPaths.peekLast());
         } catch (Exception error) {
             graphics.setClip(null);
         }
     }
 
-    /**
-     * Helper function. Builds the given Font.
-     */
-
-    private void buildFont(Font font) {
-        if (!font.isValid() || !(font.getNative() instanceof java.awt.Font)) {
-            java.awt.Font fontNative = null;
-
-            switch (font.getStyle()) {
-                case ITALIC:
-                    fontNative = new java.awt.Font(font.getName(), java.awt.Font.ITALIC, (int) font.getSize());
-                    break;
-                case BOLD:
-                    fontNative = new java.awt.Font(font.getName(), java.awt.Font.BOLD, (int) font.getSize());
-                    break;
-                case PLAIN:
-                    fontNative = new java.awt.Font(font.getName(), java.awt.Font.PLAIN, (int) font.getSize());
-                    break;
-            }
-
-            FontMetrics metrics = new Canvas().getFontMetrics(fontNative);
-            font.setNative(fontNative, metrics.getAscent(), metrics.getDescent(), metrics.getLeading(),
-                    (off, len, in) -> metrics.charsWidth(in, off, len)
-            );
-        }
-    }
+    // text
 
     @Override
-    public void setFont(Font font) {
-        buildFont(font);
+    public Graphics setFont(Font font) {
+        // spike - to improve performance
+        java.awt.Font awtFont = GraphicsAWTUtility.createAWTFont(font);
+        //
         Graphics2D graphics = getGraphics();
-        graphics.setFont((java.awt.Font) font.getNative());
-    }
-
-    java.awt.Paint lastSeenTextPaint = null;
-
-    /**
-     * Helper function. Builds the given Paint.
-     */
-
-    private void buildPaint(Paint paint) {
-        if (!paint.isValid() || !(paint.getNativeColor() instanceof java.awt.Paint)) {
-
-            Function<uia.core.paint.Color, Color> createNativeColor = color -> {
-                Color result = null;
-                if (color != null) {
-                    result = new Color(
-                            color.getRed(),
-                            color.getGreen(),
-                            color.getBlue(),
-                            color.getAlpha());
-                }
-                return result;
-            };
-
-            Color nativeColor = createNativeColor.apply(paint.getColor());
-            Color nativeTextColor = createNativeColor.apply(paint.getTextColor());
-            Color nativeStrokeColor = createNativeColor.apply(paint.getStrokeColor());
-            paint.setNative(
-                    nativeColor,
-                    nativeTextColor,
-                    nativeStrokeColor,
-                    new BasicStroke(paint.getStrokeWidth())
-            );
-        }
-
-        // spike
-        if (paint.getNativeTextColor() != null) {
-            lastSeenTextPaint = (java.awt.Paint) paint.getNativeTextColor();
-        }
+        graphics.setFont(awtFont);
+        return this;
     }
 
     @Override
-    public void setPaint(Paint paint) {
-        this.paint = paint;
-
-        buildPaint(paint);
-
-        Graphics2D graphics = getGraphics();
-        graphics.setPaint((java.awt.Paint) paint.getNativeColor());
-        graphics.setStroke((Stroke) paint.getNativeStrokeWidth());
-    }
-
-    /**
-     * Helper function. Draws the specified Path on screen.
-     */
-
-    private void drawShapeOnScreen(Path2D path) {
-        Graphics2D graphics = getGraphics();
-        graphics.fill(path);
-
-        if (paint.getStrokeWidth() > 0) {
-            java.awt.Paint previousPaint = graphics.getPaint();
-            java.awt.Paint nativeStrokePaint = (java.awt.Paint) paint.getNativeStrokeColor();
-            if (nativeStrokePaint == null) {
-                nativeStrokePaint = (java.awt.Paint) paint.getNativeColor();
-            }
-
-            graphics.setPaint(nativeStrokePaint);
-            graphics.draw(path);
-            graphics.setPaint(previousPaint);
-        }
-    }
-
-    /**
-     * Helper function. Builds a Shape suitable for AWT.
-     * <br>
-     * Time required: T(n)
-     * <br>
-     * Space required: O(1).
-     */
-
-    private void buildPathAndStoreInto(Shape shape, Path2D targetPath) {
-        targetPath.reset();
-
-        Geometry geometry = shape.getGeometry();
-        Shape.TransformedVertex target = new Shape.TransformedVertex();
-
-        if (geometry.vertices() > 0) {
-            for (int i = 0; i < geometry.vertices(); i++) {
-                Shape.transform(shape, geometry.get(i), target);
-                float x = target.x;
-                float y = target.y;
-
-                if (target.primer) {
-                    targetPath.moveTo(x, y);
-                } else {
-                    targetPath.lineTo(x, y);
-                }
-            }
-
-            targetPath.closePath();
-        }
-    }
-
-    /**
-     * Helper function. Builds a Shape suitable for AWT.
-     * <br>
-     * Time required: T(n)
-     * <br>
-     * Space required: O(1).
-     */
-
-    private void buildPathAndStoreInto(float[] vertices, Path2D targetPath) {
-        targetPath.reset();
-        for (int i = 0; i < vertices.length; i += 2) {
-            float x = vertices[i];
-            float y = vertices[i + 1];
-            if (targetPath.getCurrentPoint() == null) {
-                targetPath.moveTo(x, y);
-            } else {
-                targetPath.lineTo(x, y);
-            }
-        }
-        if (vertices.length > 0) {
-            targetPath.closePath();
-        }
+    public Graphics setTextColor(Color color) {
+        Objects.requireNonNull(color);
+        textColor = color;
+        return this;
     }
 
     @Override
-    public void drawShape(float... vertices) {
-        Objects.requireNonNull(vertices);
-        if (vertices.length % 2 != 0) {
-            throw new IllegalArgumentException("The array shape must be [x1,y1, x2,y2, x3,y3, ...]");
-        }
-        buildPathAndStoreInto(vertices, shapePath);
-        drawShapeOnScreen(shapePath);
-    }
-
-    @Override
-    public void drawShape(Shape shape) {
-        buildPathAndStoreInto(shape, shapePath);
-        drawShapeOnScreen(shapePath);
-    }
-
-    @Override
-    public void drawText(char[] data, int offset, int length, float x, float y, float rotation) {
+    public Graphics drawText(char[] data, int offset, int length, float x, float y, float rotation) {
         boolean rotated = Float.compare(rotation % MathUtility.TWO_PI, 0f) != 0;
         AffineTransform previousMatrix = null;
         Graphics2D graphics = getGraphics();
@@ -267,13 +192,18 @@ public class GraphicsAWT implements Graphics {
 
         java.awt.Paint previousPaint = graphics.getPaint();
 
-        graphics.setPaint(lastSeenTextPaint);
+        // spike - to improve performance
+        java.awt.Color awtTextColor = GraphicsAWTUtility.createAWTColor(textColor);
+        graphics.setColor(awtTextColor);
+        //
+
         graphics.drawChars(data, offset, length, (int) x, (int) y);
         graphics.setPaint(previousPaint);
 
         if (rotated) {
             graphics.setTransform(previousMatrix);
         }
+        return this;
     }
 
     private final java.awt.Image fakeImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
@@ -298,7 +228,7 @@ public class GraphicsAWT implements Graphics {
     }
 
     @Override
-    public void drawImage(Image img, float x, float y, float width, float height, float rotation) {
+    public Graphics drawImage(Image img, float x, float y, float width, float height, float rotation) {
         Graphics2D graphics = getGraphics();
         buildImage(img);
 
@@ -320,5 +250,6 @@ public class GraphicsAWT implements Graphics {
         if (rotated) {
             graphics.setTransform(previousMatrix);
         }
+        return this;
     }
 }
