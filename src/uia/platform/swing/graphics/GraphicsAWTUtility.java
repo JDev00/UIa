@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.awt.*;
 
 /**
- * GraphicsAWTUtility collects utilities for {@link uia.platform.swing.GraphicsAWT}.
+ * GraphicsAWTUtility collects utilities for GraphicsAWT.
  */
 
 public final class GraphicsAWTUtility {

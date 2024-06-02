@@ -1,17 +1,19 @@
 package uia.platform.swing;
 
-import uia.core.ui.Graphics;
-import uia.core.ui.View;
-import uia.core.ui.context.Context;
 import uia.physical.component.ComponentHiddenRoot;
+import uia.platform.swing.graphics.GraphicsAWT;
 import uia.physical.message.MessagingSystem;
+import uia.core.ui.context.Context;
+import uia.core.ui.Graphics;
 import uia.utility.Timer;
+import uia.core.ui.View;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.awt.*;
+
+import javax.swing.*;
 
 /**
  * RendererEngine is responsible to render on the native Graphic a specified View.

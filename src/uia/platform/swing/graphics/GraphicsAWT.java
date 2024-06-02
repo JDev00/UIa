@@ -1,6 +1,5 @@
-package uia.platform.swing;
+package uia.platform.swing.graphics;
 
-import uia.platform.swing.graphics.GraphicsAWTUtility;
 import uia.physical.theme.Theme;
 import uia.utility.MathUtility;
 import uia.core.paint.Color;
