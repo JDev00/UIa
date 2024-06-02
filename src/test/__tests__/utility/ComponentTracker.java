@@ -1,14 +1,15 @@
 package test.__tests__.utility;
 
-import uia.core.Font;
-import uia.core.ui.View;
-import uia.core.ui.ViewText;
-import uia.physical.component.Component;
+import uia.core.ui.style.TextHorizontalAlignment;
 import uia.physical.component.ComponentText;
 import uia.physical.component.WrapperView;
+import uia.physical.component.Component;
+import uia.core.ui.ViewText;
+import uia.core.font.Font;
+import uia.core.ui.View;
 
 /**
- * Component designed to display the UIa used resources
+ * Component designed to display the UIa used resources.
  */
 
 public class ComponentTracker extends WrapperView {
@@ -20,13 +21,15 @@ public class ComponentTracker extends WrapperView {
         );
 
         viewText = this.getView();
-        viewText.setAlign(ViewText.AlignY.CENTER);
-        viewText.getFont().setStyle(Font.Style.ITALIC);
+        viewText.getStyle()
+                .setTextAlignment(TextHorizontalAlignment.CENTER)
+                .setFontStyle(Font.FontStyle.ITALIC);
     }
 
     @Override
     public void update(View parent) {
         super.update(parent);
+
         long usedMemory = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
         viewText.setText("FPS: untracked" + "\nMem: " + usedMemory + " MB");
     }

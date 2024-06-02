@@ -1,20 +1,23 @@
 package test.__tests__.utility;
 
+import uia.physical.component.ComponentText;
+import uia.physical.group.ComponentGroup;
+import uia.physical.component.Component;
 import uia.platform.swing.ContextSwing;
-import uia.core.ui.View;
+import uia.core.ui.context.Context;
+import uia.physical.theme.Theme;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
-import uia.core.ui.context.Context;
-import uia.physical.component.Component;
-import uia.physical.group.ComponentGroup;
-import uia.physical.component.ComponentText;
-import uia.physical.theme.Theme;
+import uia.core.ui.View;
 
 /**
- * Collections of test utilities
+ * Collections of utilities for tests.
  */
 
-public class TestUtility {
+public final class TestUtility {
+
+    private TestUtility() {
+    }
 
     /**
      * Creates a new View.
@@ -54,7 +57,7 @@ public class TestUtility {
 
     public static ViewGroup createRoot() {
         ViewGroup result = createViewGroup("ROOT_GROUP", 0.5f, 0.5f, 1f, 1f);
-        result.getPaint().setColor(Theme.DARK_GRAY);
+        result.getStyle().setBackgroundColor(Theme.DARK_GRAY);
         return result;
     }
 

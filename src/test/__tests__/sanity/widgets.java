@@ -1,15 +1,15 @@
 package test.__tests__.sanity;
 
-import uia.application.UIButtonFilled;
-import uia.application.UIButtonList;
-import uia.application.UIToggleButton;
+import uia.application.calendar.SingleDaySelectionCalendar;
 import uia.application.calendar.CalendarView;
 import uia.application.calendar.Calendars;
-import uia.application.calendar.SingleDaySelectionCalendar;
-import uia.core.ui.context.Context;
-import uia.core.ui.ViewGroup;
 import uia.physical.component.Component;
+import uia.application.UIToggleButton;
+import uia.application.UIButtonFilled;
+import uia.application.UIButtonList;
+import uia.core.ui.context.Context;
 import uia.physical.theme.Theme;
+import uia.core.ui.ViewGroup;
 
 import static test.__tests__.utility.TestUtility.*;
 
@@ -17,7 +17,10 @@ import static test.__tests__.utility.TestUtility.*;
  * Sanity test.
  */
 
-public class widgets {
+public final class widgets {
+
+    private widgets() {
+    }
 
     /**
      * Builds some widgets component.
@@ -28,30 +31,30 @@ public class widgets {
                 new Component("BUTTON_0", 0.85f, 0.25f, 0.15f, 0.1f), true
         );
         buttonFilled.setText("Hello");
-        buttonFilled.getPaint()
+        buttonFilled.getStyle()
+                .setBackgroundColor(Theme.TRANSPARENT)
                 .setTextColor(Theme.LIGHT_CORAL)
-                .setColor(Theme.TRANSPARENT)
-                .setStrokeColor(Theme.WHITE)
-                .setStrokeWidth(4);
+                .setBorderColor(Theme.ROYAL_BLUE)
+                .setBorderWidth(4);
 
         UIToggleButton toggleButton = new UIToggleButton(
                 new Component("BUTTON_1", 0.85f, 0.5f, 0.15f, 0.1f)
         );
-        toggleButton.getActivePaint().setColor(Theme.WHITE);
-        toggleButton.getPaint().setColor(Theme.LIME);
+        //toggleButton.getActiveStateStyleFunction().setColor(Theme.WHITE);
+        toggleButton.getStyle().setBackgroundColor(Theme.LIME);
 
         UIButtonList buttonList = new UIButtonList(
                 new Component("BUTTON_2", 0.85f, 0.75f, 0.15f, 0.1f)
         );
         buttonList.setText("1\n1", "2", "3", "4", "5");
-        buttonList.getPaint().setTextColor(Theme.BLUE);
+        buttonList.getStyle().setTextColor(Theme.BLUE);
 
         CalendarView calendar = Calendars.create(
                 SingleDaySelectionCalendar.class,
                 new Component("CALENDAR", 0.25f, 0.5f, 0.25f, 0.5f)
         );
-        calendar.setRotation(0.05f);
         calendar.setDate(31, 3, 2024);
+        calendar.setRotation(0.05f);
 
         ViewGroup result = createRoot();
         ViewGroup.insert(result, buttonFilled, toggleButton, buttonList, calendar);
