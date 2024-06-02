@@ -42,6 +42,7 @@ public interface Graphics {
      *
      * @param lineWidth the line width greater than or equal to zero
      * @return this Graphics
+     * @throws IllegalArgumentException if {@code lineWidth < 0}
      * @since 1.6.0
      */
 
