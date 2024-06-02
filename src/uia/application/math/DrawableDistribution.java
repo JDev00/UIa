@@ -1,14 +1,14 @@
 package uia.application.math;
 
-import uia.core.shape.Geometry;
-import uia.core.paint.Paint;
-import uia.core.shape.Shape;
 import uia.core.shape.NormalizedVertex;
+import uia.physical.theme.Theme;
+import uia.utility.MathUtility;
+import uia.core.shape.Geometry;
+import uia.utility.Geometries;
+import uia.core.paint.Color;
+import uia.core.shape.Shape;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
-import uia.physical.theme.Theme;
-import uia.utility.Geometries;
-import uia.utility.MathUtility;
 
 import java.util.Objects;
 
@@ -17,50 +17,99 @@ import java.util.Objects;
  */
 
 public class DrawableDistribution extends PointDistribution {
-    private final Paint paintLine;
-    private final Paint paintPoint;
     private final Shape shapeMarker;
+    private Color lineColor;
+    private Color pointColor;
+    private float lineWidth = 2;
+    private float pointSize = 4;
 
-    private float pointDimension = 4;
     private boolean enableLine = true;
     private boolean enablePoint = true;
 
     public DrawableDistribution() {
-        paintLine = new Paint()
-                .setColor(Theme.BLACK)
-                .setStrokeWidth(2);
-
-        paintPoint = new Paint().setColor(Theme.RED);
-
         shapeMarker = new Shape();
         shapeMarker.setGeometry(Geometries.rect(shapeMarker.getGeometry()));
+
+        lineColor = Theme.BLACK;
+        pointColor = Theme.RED;
     }
 
+    // point
+
     /**
-     * Sets the point dimension.
+     * Enables or disables the drawing of points.
      *
-     * @param pointDim a value {@code >= 0}
+     * @param enablePoint true to draw points
      */
 
-    public DrawableDistribution setPointDimension(int pointDim) {
-        this.pointDimension = Math.max(pointDim, 0);
+    public DrawableDistribution enablePoint(boolean enablePoint) {
+        this.enablePoint = enablePoint;
         return this;
     }
 
     /**
-     * @return the {@link Paint} used to customize the line (between points) appearance
+     * Sets the point size.
+     *
+     * @param pointSize the point size greater than or equal to zero
      */
 
-    public Paint getLinePaint() {
-        return paintLine;
+    public DrawableDistribution setPointSize(float pointSize) {
+        this.pointSize = Math.max(pointSize, 0);
+        return this;
     }
 
     /**
-     * @return the {@link Paint} used to customize the point markers appearance
+     * Sets the point color.
+     *
+     * @param color the point color
+     * @throws NullPointerException if {@code color == null}
      */
 
-    public Paint getPointPaint() {
-        return paintPoint;
+    public DrawableDistribution setPointColor(Color color) {
+        Objects.requireNonNull(color);
+        this.pointColor = color;
+        return this;
+    }
+
+    // line
+
+    /**
+     * Enables or disables the line that connects each point.
+     *
+     * @param enableLine true to enable the line
+     */
+
+    public DrawableDistribution enableLine(boolean enableLine) {
+        this.enableLine = enableLine;
+        return this;
+    }
+
+    /**
+     * Sets the color of the line connecting two points.
+     *
+     * @param color the line color
+     * @throws NullPointerException if {@code color == null}
+     */
+
+    public DrawableDistribution setLineColor(Color color) {
+        Objects.requireNonNull(color);
+        this.lineColor = color;
+        return this;
+    }
+
+    /**
+     * Sets the width of the line connecting two points.
+     *
+     * @param lineWidth the line width greater than or equal to zero
+     * @throws IllegalArgumentException if {@code lineWidth < 0}
+     */
+
+    public DrawableDistribution setLineWidth(float lineWidth) {
+        if (lineWidth < 0) {
+            throw new IllegalArgumentException("lineWidth can not be < 0");
+        }
+        this.lineWidth = lineWidth;
+        return this;
     }
 
     /**
@@ -76,28 +125,6 @@ public class DrawableDistribution extends PointDistribution {
             NormalizedVertex vertex = markerGeometry.get(i);
             internalGeometry.addVertex(vertex.getX(), vertex.getY());
         }
-        return this;
-    }
-
-    /**
-     * Enables or disables the line that connects each point.
-     *
-     * @param enableLine true to enable the line
-     */
-
-    public DrawableDistribution enableLine(boolean enableLine) {
-        this.enableLine = enableLine;
-        return this;
-    }
-
-    /**
-     * Enables or disables the drawing of points.
-     *
-     * @param enablePoint true to draw points
-     */
-
-    public DrawableDistribution enablePoint(boolean enablePoint) {
-        this.enablePoint = enablePoint;
         return this;
     }
 
@@ -136,7 +163,9 @@ public class DrawableDistribution extends PointDistribution {
         float yMax = getMax(PointDistribution.AXIS.Y);
 
         if (enableLine) {
-            graphics.setPaint(paintLine);
+            graphics
+                    .setShapeBorderWidth(lineWidth)
+                    .setShapeColor(lineColor);
 
             for (int i = 0; i < size() - 1; i++) {
                 float pointX = get(i, PointDistribution.AXIS.X);
@@ -162,7 +191,9 @@ public class DrawableDistribution extends PointDistribution {
         }
 
         if (enablePoint) {
-            graphics.setPaint(paintPoint);
+            graphics
+                    .setShapeColor(pointColor)
+                    .setShapeBorderWidth(0);
 
             for (int i = 0; i < size(); i++) {
                 float pointX = get(i, PointDistribution.AXIS.X);
@@ -174,7 +205,7 @@ public class DrawableDistribution extends PointDistribution {
                         xMin, xMax, yMin, yMax);
 
                 shapeMarker.setPosition(markerPosition[0], markerPosition[1]);
-                shapeMarker.setDimension(pointDimension, pointDimension);
+                shapeMarker.setDimension(pointSize, pointSize);
                 graphics.drawShape(shapeMarker);
             }
         }

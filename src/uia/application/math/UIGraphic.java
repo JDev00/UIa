@@ -1,16 +1,18 @@
 package uia.application.math;
 
+import uia.physical.component.utility.ComponentUtility;
+import uia.physical.component.WrapperView;
+import uia.physical.theme.Theme;
+import uia.utility.MathUtility;
+import uia.utility.Geometries;
+import uia.core.paint.Color;
 import uia.core.shape.Shape;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
-import uia.core.paint.Paint;
-import uia.physical.component.WrapperView;
-import uia.physical.component.utility.ComponentUtility;
-import uia.physical.theme.Theme;
-import uia.utility.Geometries;
-import uia.utility.MathUtility;
+
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.List;
 
 /**
@@ -36,10 +38,12 @@ public class UIGraphic extends WrapperView {
 
     private final Shape clipShape;
     private final Shape axis;
-    private final Paint paintAxis;
+    private Color axisColor;
 
-    private float xMax, yMax;
-    private float xMin, yMin;
+    private float xMax;
+    private float yMax;
+    private float xMin;
+    private float yMin;
 
     public UIGraphic(View view) {
         super(view);
@@ -51,9 +55,7 @@ public class UIGraphic extends WrapperView {
         axis = new Shape();
         axis.setGeometry(Geometries.rect(axis.getGeometry()));
 
-        paintAxis = new Paint()
-                .setColor(Theme.BLACK)
-                .setStrokeWidth(1);
+        axisColor = Theme.BLACK;
 
         reset();
     }
@@ -102,14 +104,6 @@ public class UIGraphic extends WrapperView {
     }*/
 
     /**
-     * @return the {@link Paint} used to paint axis
-     */
-
-    public Paint getPaintAxis() {
-        return paintAxis;
-    }
-
-    /**
      * Update the attributes of this graphic
      *
      * @param x the last x point
@@ -141,6 +135,18 @@ public class UIGraphic extends WrapperView {
         drawableDistributions.clear();
     }
 
+    /**
+     * Sets the axis color.
+     *
+     * @param color the axis color
+     * @throws NullPointerException if {@code color == null}
+     */
+
+    public void setAxisColor(Color color) {
+        Objects.requireNonNull(color);
+        this.axisColor = color;
+    }
+
     private void drawAxis(Graphics graphics, float width, float height, float rotation) {
         float[] bounds = getBounds();
         float xDist = width * (MathUtility.normalize(0f, xMin, xMax) - 0.5f);
@@ -155,13 +161,14 @@ public class UIGraphic extends WrapperView {
         axis.setRotation(rotation);
         axis.setPosition(lineX, lineY);
         axis.setDimension(1, 2 * height);
-        graphics.setPaint(paintAxis);
-        graphics.drawShape(axis);
+        graphics
+                .setShapeColor(axisColor)
+                .setShapeBorderWidth(1)
+                .drawShape(axis);
 
         // draw abscissa
         axis.setPosition(lineX, lineY);
         axis.setDimension(2 * width, 1);
-        graphics.setPaint(paintAxis);
         graphics.drawShape(axis);
 
         graphics.restoreClip();

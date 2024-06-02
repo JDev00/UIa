@@ -134,7 +134,7 @@ public final class Style {
      * @throws IllegalArgumentException if {@code borderWidth < 0}
      */
 
-    public Style setBorderWidth(int borderWidth) {
+    public Style setBorderWidth(float borderWidth) {
         if (borderWidth < 0) {
             throw new IllegalArgumentException("borderWidth can't be < 0");
         }
