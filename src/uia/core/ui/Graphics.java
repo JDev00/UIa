@@ -121,7 +121,7 @@ public interface Graphics {
     /**
      * Sets the Font used to display text.
      * <br>
-     * Every text rendered after {@code setFont(Font)} will be affected.
+     * <i>Every text rendered after {@code setFont(Font)} will be affected.</i>
      *
      * @param font a not null {@link Font}
      * @return this Graphics
