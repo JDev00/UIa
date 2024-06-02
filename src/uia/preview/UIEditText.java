@@ -2,18 +2,20 @@ package uia.preview;
 
 import uia.core.*;
 import uia.core.paint.Color;
-import uia.core.paint.Paint;
 import uia.core.shape.Shape;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnKeyPressed;
 import uia.core.ui.callbacks.OnMouseExit;
 import uia.core.ui.callbacks.OnMouseHover;
+import uia.core.font.Font;
+import uia.core.ui.style.Style;
+import uia.core.ui.style.TextHorizontalAlignment;
+import uia.core.ui.style.TextVerticalAlignment;
 import uia.physical.component.Component;
 import uia.physical.component.ComponentText;
 import uia.physical.component.WrapperView;
 import uia.physical.component.WrapperViewText;
-import uia.physical.component.text.TextRenderer;
 import uia.physical.theme.Theme;
 import uia.physical.component.utility.ComponentUtility;
 import uia.utility.Geometries;
@@ -27,19 +29,19 @@ import java.util.List;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
+// TODO: to refactor
+
 /**
  * Standard UIa component.
  * <br>
  * Component designed to edit text.
  */
 
-// TODO: to refactor
-
 public class UIEditText extends WrapperViewText {
     private final CharList charList = new CharList(10);
     private final List<Integer> illegalCodes = new ArrayList<>();
 
-    private final Paint paintHighlight;
+    private final Color hightlightColor;
     private final Shape highlight;
     private final Shape clipShape = new Shape();
     private Cursor cursor;
@@ -100,7 +102,7 @@ public class UIEditText extends WrapperViewText {
         highlight = new Shape();
         Geometries.rect(highlight.getGeometry());
 
-        paintHighlight = new Paint().setColor(Color.createColor(65, 105, 225, 126));
+        hightlightColor = Color.createColor(65, 105, 225, 126);
 
         cursor = new Cursor(view.getID());
     }
@@ -353,14 +355,15 @@ public class UIEditText extends WrapperViewText {
      *
      */
     private float[] calculateInlineBoxDimension() {
-        Font font = getFont();
+        Style style = getStyle();
+        Font font = style.getFont();
         int iMin = getMinIndex();
 
         char[] chars = charList.toArray();
         float[] bounds = getBounds();
 
-        int ax = TextRenderer.map(getAlignX());
-        int ay = TextRenderer.map(getAlignY());
+        int ax = TextHorizontalAlignment.map(style.getHorizontalTextAlignment());
+        int ay = TextVerticalAlignment.map(style.getVerticalTextAlignment());
         float deltaTextX = ax * (bounds[2] - font.getWidth(0, chars(), chars)) / 2f;
         float deltaTextY = ay * (bounds[3] - getTextBounds()[3]) / 2f;
         return new float[]{
@@ -378,7 +381,7 @@ public class UIEditText extends WrapperViewText {
 
     private void drawInlineBox(Graphics graphics, float[] boxPosition) {
         char[] chars = charList.toArray();
-        Font font = getFont();
+        Font font = getStyle().getFont();
 
         int iMin = getMinIndex();
         int iMax = getMaxIndex();
@@ -402,10 +405,11 @@ public class UIEditText extends WrapperViewText {
     private void drawMultilineBox(Graphics graphics) {
         // TODO: handle the centered text
 
-        Font font = getFont();
+        Style style = getStyle();
+        Font font = style.getFont();
         char[] chars = charList.toArray();
         int length = chars();
-        int ax = TextRenderer.map(getAlignX());
+        int ax = TextHorizontalAlignment.map(style.getHorizontalTextAlignment());
 
         float[] bounds = getBounds();
         float[] textBounds = getTextBounds();
@@ -472,11 +476,12 @@ public class UIEditText extends WrapperViewText {
         char[] chars = charList.toArray();
         float[] bounds = getBounds();
 
-        Font font = getFont();
+        Style style = getStyle();
+        Font font = style.getFont();
         float lineHeight = font.getLineHeight();
 
-        int ax = TextRenderer.map(getAlignX());
-        int ay = TextRenderer.map(getAlignY());
+        int ax = TextHorizontalAlignment.map(style.getHorizontalTextAlignment());
+        int ay = TextVerticalAlignment.map(style.getVerticalTextAlignment());
         float deltaTextX = ax * (bounds[2] - font.getWidth(0, chars(), chars)) / 2f;
         float deltaTextY = ay * (bounds[3] - getTextBounds()[3]) / 2f;
         return new float[]{
@@ -497,8 +502,9 @@ public class UIEditText extends WrapperViewText {
 
     private void updateCursor(float[] cursorPosition) {
         if (isOnFocus()) {
+            Style style = getStyle();
             float[] bounds = getBounds();
-            float lineHeight = getFont().getLineHeight();
+            float lineHeight = style.getFont().getLineHeight();
             cursor.setPosition(
                     cursorPosition[0],
                     cursorPosition[1]
@@ -559,7 +565,7 @@ public class UIEditText extends WrapperViewText {
 
     private void drawBox(Graphics graphics) {
         if (getSelectionCount() > 0) {
-            graphics.setPaint(paintHighlight);
+            graphics.setShapeColor(hightlightColor);
 
             if (isSingleLine()) {
                 float[] boxPosition = calculateInlineBoxDimension();
@@ -617,13 +623,15 @@ public class UIEditText extends WrapperViewText {
      */
 
     private int getIndexForInlineText(char[] chars, int length, float mx, float my) {
-        Font font = getFont();
+        Style style = getStyle();
+        Font font = style.getFont();
 
         float[] bounds = getBounds();
         float heightLine = font.getLineHeight();
 
-        int ax = TextRenderer.map(getAlignX());
-        float y = TextRenderer.map(getAlignY()) * (bounds[3] - heightLine) / 2f;
+        int ax = TextHorizontalAlignment.map(style.getHorizontalTextAlignment());
+        float y = TextVerticalAlignment.map(style.getVerticalTextAlignment())
+                * (bounds[3] - heightLine) / 2f;
 
         if (my > y && my < y + heightLine) {
             float x = ax * (bounds[2] - font.getWidth(0, length, chars)) / 2f;
@@ -658,11 +666,12 @@ public class UIEditText extends WrapperViewText {
      */
 
     private int getIndexForMultilineText(char[] chars, int length, float mx, float my) {
-        Font font = getFont();
+        Style style = getStyle();
+        Font font = style.getFont();
         float[] bounds = getBounds();
         float heightLine = font.getLineHeight();
 
-        int ax = TextRenderer.map(getAlignX());
+        int ax = TextHorizontalAlignment.map(style.getHorizontalTextAlignment());
         float y = -getScrollValue()[1];
 
         int sol;      // start of line
@@ -732,7 +741,7 @@ public class UIEditText extends WrapperViewText {
 
         public Cursor(String id) {
             super(new Component("EDIT_TEXT_CURSOR_" + id, 0f, 0f, 1f, 1f));
-            getPaint().setColor(Theme.BLACK);
+            getStyle().setBackgroundColor(Theme.BLACK);
 
             timer = new Timer();
         }

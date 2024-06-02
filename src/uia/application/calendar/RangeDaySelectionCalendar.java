@@ -1,9 +1,10 @@
 package uia.application.calendar;
 
-import uia.core.paint.Paint;
-import uia.core.ui.View;
+import uia.core.ui.style.StyleFunction;
 import uia.physical.theme.Theme;
+import uia.core.ui.style.Style;
 import uia.utility.Geometries;
+import uia.core.ui.View;
 
 /**
  * Standard UIa component.
@@ -12,11 +13,11 @@ import uia.utility.Geometries;
  */
 
 public class RangeDaySelectionCalendar extends AbstractCalendarView {
-    private final Paint deselectedCellPaint = new Paint()
-            .setColor(Theme.TRANSPARENT)
+    private final StyleFunction deselectedCellPaint = style -> style
+            .setBackgroundColor(Theme.TRANSPARENT)
             .setTextColor(Theme.WHITE);
-    private final Paint selectedCellPaint = new Paint()
-            .setColor(Theme.ROYAL_BLUE)
+    private final StyleFunction selectedCellPaint = style -> style
+            .setBackgroundColor(Theme.ROYAL_BLUE)
             .setTextColor(Theme.WHITE);
 
     private final int[] range = {-1, -1};
@@ -57,11 +58,11 @@ public class RangeDaySelectionCalendar extends AbstractCalendarView {
 
     private void updateDayStyle() {
         for (int i = 1; i <= 31; i++) {
-            Paint cellPaint = getDayCellPaint(i);
+            Style cellStyle = getDayCellStyle(i);
             if (isDayMarkedAsSelected(i)) {
-                cellPaint.set(selectedCellPaint);
+                cellStyle.applyStyleFunction(selectedCellPaint);
             } else {
-                cellPaint.set(deselectedCellPaint);
+                cellStyle.applyStyleFunction(deselectedCellPaint);
             }
         }
     }

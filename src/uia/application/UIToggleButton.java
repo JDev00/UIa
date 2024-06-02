@@ -1,19 +1,22 @@
 package uia.application;
 
-import uia.core.Font;
-import uia.core.shape.Geometry;
-import uia.core.basement.Drawable;
-import uia.core.ui.ViewGroup;
-import uia.physical.theme.Theme;
-import uia.physical.theme.ThemeDarcula;
-import uia.core.paint.Paint;
-import uia.core.ui.ViewText;
+import uia.core.ui.style.TextVerticalAlignment;
 import uia.physical.component.ComponentText;
 import uia.physical.component.WrapperView;
-import uia.core.ui.View;
-import uia.core.ui.callbacks.OnClick;
-import uia.physical.component.Component;
 import uia.physical.group.ComponentGroup;
+import uia.physical.component.Component;
+import uia.core.ui.style.StyleFunction;
+import uia.physical.theme.ThemeDarcula;
+import uia.core.ui.callbacks.OnClick;
+import uia.core.basement.Drawable;
+import uia.physical.theme.Theme;
+import uia.core.shape.Geometry;
+import uia.core.ui.style.Style;
+import uia.core.ui.ViewGroup;
+import uia.core.ui.ViewText;
+import uia.core.ui.View;
+
+import java.util.Objects;
 
 /**
  * Standard UIa component.
@@ -30,8 +33,8 @@ public final class UIToggleButton extends WrapperView {
 
     private final ViewText[] states;
 
-    private final Paint activePaint;
-    private final Paint defaultPaint;
+    private StyleFunction enabledStateStyleFunction;
+    private StyleFunction disabledStateStyleFunction;
 
     private boolean firstState = true;
 
@@ -40,15 +43,24 @@ public final class UIToggleButton extends WrapperView {
         setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
         registerCallback((OnClick) touches -> setState(isFirstState() ? State.SECOND : State.FIRST));
 
-        activePaint = new Paint().setColor(ThemeDarcula.BLUE);
-        defaultPaint = new Paint().setColor(Theme.TRANSPARENT);
-
         states = new ViewText[]{
                 createView("BUTTON_TOGGLE_LEFT_" + getID(), 0.25f, "Left"),
                 createView("BUTTON_TOGGLE_RIGHT_" + getID(), 0.75f, "Right")
         };
 
         ViewGroup.insert(getView(), states);
+
+        enabledStateStyleFunction = style -> {
+            Style containerStyle = getStyle();
+            style.setTextColor(containerStyle.getBackgroundColor())
+                    .setBackgroundColor(ThemeDarcula.BLUE);
+        };
+
+        disabledStateStyleFunction = style -> {
+            Style enabledStateStyle = getEnabledStateStyle();
+            style.setTextColor(enabledStateStyle.getBackgroundColor())
+                    .setBackgroundColor(Theme.TRANSPARENT);
+        };
 
         setState(State.FIRST);
     }
@@ -63,8 +75,8 @@ public final class UIToggleButton extends WrapperView {
         ViewText result = new ComponentText(
                 new Component(id, x, 0.5f, 0.5f, 1f)
         );
+        result.getStyle().setTextAlignment(TextVerticalAlignment.CENTER);
         result.setConsumer(Consumer.SCREEN_TOUCH, false);
-        result.setAlign(ViewText.AlignY.CENTER);
         result.setText(text);
         result.setGeometry(
                 g -> Drawable.buildRect(g, result.getWidth(), result.getHeight(), 1f),
@@ -73,11 +85,40 @@ public final class UIToggleButton extends WrapperView {
     }
 
     /**
-     * @return the {@link Paint} used to color che active state
+     * @return the style of the enabled state
      */
 
-    public Paint getActivePaint() {
-        return activePaint;
+    private Style getEnabledStateStyle() {
+        int index = firstState ? 0 : 1;
+        return states[index].getStyle();
+    }
+
+    /**
+     * Sets the styleFunction to use to set the style of the enabled state.
+     *
+     * @param styleFunction a styleFunction
+     * @throws NullPointerException if {@code styleFunction == null}
+     */
+
+    public void setEnabledStateStyleFunction(StyleFunction styleFunction) {
+        Objects.requireNonNull(styleFunction);
+
+        this.enabledStateStyleFunction = styleFunction;
+        updateStateStyle();
+    }
+
+    /**
+     * Sets the styleFunction to use to set the style of the disabled state.
+     *
+     * @param styleFunction a styleFunction
+     * @throws NullPointerException if {@code styleFunction == null}
+     */
+
+    public void setDisabledStateStyleFunction(StyleFunction styleFunction) {
+        Objects.requireNonNull(styleFunction);
+
+        this.disabledStateStyleFunction = styleFunction;
+        updateStateStyle();
     }
 
     /**
@@ -95,22 +136,16 @@ public final class UIToggleButton extends WrapperView {
     /**
      * Switches this button to the first or second state.
      *
-     * @param state true to set this button on the first state
+     * @param state one of {@link State}
+     * @throws NullPointerException if {@code state == null}
      */
 
     public void setState(State state) {
-        // sets the text color for the two states
-        activePaint.setTextColor(getPaint().getColor());
-        defaultPaint.setTextColor(activePaint.getColor());
+        Objects.requireNonNull(state);
 
+        // sets the text color for the two states
         this.firstState = State.FIRST.equals(state);
-        if (firstState) {
-            states[0].getPaint().set(activePaint);
-            states[1].getPaint().set(defaultPaint);
-        } else {
-            states[0].getPaint().set(defaultPaint);
-            states[1].getPaint().set(activePaint);
-        }
+        updateStateStyle();
     }
 
     /**
@@ -142,31 +177,31 @@ public final class UIToggleButton extends WrapperView {
      * Helper function. Refreshes the state color when necessary.
      */
 
-    private void refreshStateColor() {
+    private void updateStateStyle() {
+        Style leftStateStyle = states[0].getStyle();
+        Style rightStateStyle = states[1].getStyle();
         if (firstState) {
-            if (!states[0].getPaint().getTextColor().equals(getPaint().getColor())
-                    || !states[1].getPaint().getTextColor().equals(activePaint.getColor())) {
-                setState(State.FIRST);
-            }
-        } else if (!states[0].getPaint().getTextColor().equals(activePaint.getColor())
-                || !states[1].getPaint().getTextColor().equals(getPaint().getColor())) {
-            setState(State.SECOND);
+            leftStateStyle.applyStyleFunction(enabledStateStyleFunction);
+            rightStateStyle.applyStyleFunction(disabledStateStyleFunction);
+        } else {
+            rightStateStyle.applyStyleFunction(enabledStateStyleFunction);
+            leftStateStyle.applyStyleFunction(disabledStateStyleFunction);
         }
     }
 
     @Override
     public void update(View parent) {
         super.update(parent);
-        refreshStateColor();
+        updateStateStyle();
     }
 
     /**
-     * @return the {@link Font} associated with the specified state
+     * @return the {@link Style} of the specified state
      */
 
-    public Font getFont(State state) {
+    public Style getStateStyle(State state) {
         return State.FIRST.equals(state)
-                ? states[0].getFont()
-                : states[1].getFont();
+                ? states[0].getStyle()
+                : states[1].getStyle();
     }
 }
