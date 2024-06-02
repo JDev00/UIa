@@ -18,7 +18,7 @@ public final class Style {
     // text
     private TextHorizontalAlignment textHorizontalAlignment;
     private TextVerticalAlignment textVerticalAlignment;
-    private final Font font;
+    private Font font;
 
     private float borderWidth = 1;
 
@@ -31,6 +31,20 @@ public final class Style {
         textVerticalAlignment = TextVerticalAlignment.TOP;
 
         font = Font.createDesktopFont(Font.FontStyle.PLAIN);
+    }
+
+    /**
+     * Changes this Style by applying the given style function.
+     *
+     * @param styleFunction a StyleFunction used to change this style
+     * @return this Style
+     * @throws NullPointerException if {@code styleFunction == null}
+     */
+
+    public Style applyStyleFunction(StyleFunction styleFunction) {
+        Objects.requireNonNull(styleFunction);
+        styleFunction.apply(this);
+        return this;
     }
 
     /**
@@ -163,6 +177,13 @@ public final class Style {
 
     public TextVerticalAlignment getVerticalTextAlignment() {
         return textVerticalAlignment;
+    }
+
+    // TODO: to be removed - it has side effects
+    public Style setFont(Font font) {
+        Objects.requireNonNull(font);
+        this.font = font;
+        return this;
     }
 
     public Style setFontName(String name) {
