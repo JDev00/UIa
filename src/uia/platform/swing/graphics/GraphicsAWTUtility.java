@@ -30,7 +30,7 @@ public final class GraphicsAWTUtility {
      * @return a new corresponding {@link java.awt.Color}
      */
 
-    public static java.awt.Color createAWTColor(Color color) {
+    public static java.awt.Color createColor(Color color) {
         java.awt.Color result = null;
         if (color != null) {
             result = new java.awt.Color(
@@ -51,7 +51,7 @@ public final class GraphicsAWTUtility {
      * @return a new corresponding {@link java.awt.Font}
      */
 
-    public static java.awt.Font createAWTFont(Font font) {
+    public static java.awt.Font createFont(Font font) {
         java.awt.Font result = null;
 
         switch (font.getStyle()) {
@@ -85,7 +85,7 @@ public final class GraphicsAWTUtility {
      * @param image the image used to create the AWT one
      */
 
-    public static void createAWTImage(Image image, java.awt.Image fakeImage) {
+    public static void createImage(Image image, java.awt.Image fakeImage) {
         // sets a fake image while the specified one is loading
         image.setNative(fakeImage, 1, 1);
 
@@ -106,7 +106,7 @@ public final class GraphicsAWTUtility {
     // Shape
 
     /**
-     * Builds a Path object suitable for AWT.
+     * Creates a Path object suitable for AWT.
      * <br>
      * Time required: T(n)
      * <br>
@@ -117,7 +117,7 @@ public final class GraphicsAWTUtility {
      * @throws NullPointerException if {@code vertices == null || targetPath == null}
      */
 
-    public static void buildPath(float[] vertices, Path2D targetPath) {
+    public static void createPath(float[] vertices, Path2D targetPath) {
         Objects.requireNonNull(vertices);
         Objects.requireNonNull(targetPath);
 
@@ -139,7 +139,7 @@ public final class GraphicsAWTUtility {
     }
 
     /**
-     * Builds a Path object suitable for AWT.
+     * Creates a Path object suitable for AWT.
      * <br>
      * Time required: T(n)
      * <br>
@@ -150,7 +150,7 @@ public final class GraphicsAWTUtility {
      * @throws NullPointerException if {@code shape == null || targetPath == null}
      */
 
-    public static void buildPath(Shape shape, Path2D targetPath) {
+    public static void createPath(Shape shape, Path2D targetPath) {
         Objects.requireNonNull(shape);
         Objects.requireNonNull(targetPath);
 

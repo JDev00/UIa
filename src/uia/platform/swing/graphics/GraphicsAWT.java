@@ -86,7 +86,7 @@ public class GraphicsAWT implements Graphics {
 
         // spike - to improve performance
         Graphics2D graphics = getGraphics();
-        java.awt.Color awtColor = GraphicsAWTUtility.createAWTColor(color);
+        java.awt.Color awtColor = GraphicsAWTUtility.createColor(color);
         graphics.setColor(awtColor);
         //
         return this;
@@ -103,9 +103,9 @@ public class GraphicsAWT implements Graphics {
         if (shapeBorderWidth > 0) {
             java.awt.Paint previousPaint = graphics.getPaint();
             // spike - to improve performance
-            java.awt.Paint awtStrokeColor = GraphicsAWTUtility.createAWTColor(shapeBorderColor);
+            java.awt.Paint awtStrokeColor = GraphicsAWTUtility.createColor(shapeBorderColor);
             if (awtStrokeColor == null) {
-                awtStrokeColor = GraphicsAWTUtility.createAWTColor(shapeColor);
+                awtStrokeColor = GraphicsAWTUtility.createColor(shapeColor);
             }
             //
 
@@ -122,14 +122,14 @@ public class GraphicsAWT implements Graphics {
             throw new IllegalArgumentException("The array shape must be [x1,y1, x2,y2, x3,y3, ...]");
         }
 
-        GraphicsAWTUtility.buildPath(vertices, shapePath);
+        GraphicsAWTUtility.createPath(vertices, shapePath);
         drawPath(shapePath);
         return this;
     }
 
     @Override
     public Graphics drawShape(Shape shape) {
-        GraphicsAWTUtility.buildPath(shape, shapePath);
+        GraphicsAWTUtility.createPath(shape, shapePath);
         drawPath(shapePath);
         return this;
     }
@@ -138,7 +138,7 @@ public class GraphicsAWT implements Graphics {
     public void setClip(Shape shape) {
         Graphics2D graphics = getGraphics();
         if (shape != null) {
-            GraphicsAWTUtility.buildPath(shape, clipPath);
+            GraphicsAWTUtility.createPath(shape, clipPath);
             graphics.clip(clipPath);
         } else {
             graphics.setClip(null);
@@ -162,7 +162,7 @@ public class GraphicsAWT implements Graphics {
     @Override
     public Graphics setFont(Font font) {
         // spike - to improve performance
-        java.awt.Font awtFont = GraphicsAWTUtility.createAWTFont(font);
+        java.awt.Font awtFont = GraphicsAWTUtility.createFont(font);
         //
         Graphics2D graphics = getGraphics();
         graphics.setFont(awtFont);
@@ -190,7 +190,7 @@ public class GraphicsAWT implements Graphics {
         java.awt.Paint previousPaint = graphics.getPaint();
 
         // spike - to improve performance
-        java.awt.Color awtTextColor = GraphicsAWTUtility.createAWTColor(textColor);
+        java.awt.Color awtTextColor = GraphicsAWTUtility.createColor(textColor);
         graphics.setColor(awtTextColor);
         //
 
@@ -210,7 +210,7 @@ public class GraphicsAWT implements Graphics {
         Graphics2D graphics = getGraphics();
 
         if (!image.isValid()) {
-            GraphicsAWTUtility.createAWTImage(image, fakeImage);
+            GraphicsAWTUtility.createImage(image, fakeImage);
         }
 
         boolean rotated = Float.compare(rotation % MathUtility.TWO_PI, 0f) != 0;
