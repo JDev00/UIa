@@ -47,7 +47,7 @@ public final class widgets {
         UIButtonList buttonList = new UIButtonList(
                 new Component("BUTTON_2", 0.85f, 0.75f, 0.15f, 0.1f)
         );
-        buttonList.setText("1\n1", "2", "3", "4", "5");
+        buttonList.setValues("1\n1", "2", "3", "4", "5");
         buttonList.getStyle().setTextColor(Theme.BLUE);
 
         CalendarView calendar = Calendars.create(
