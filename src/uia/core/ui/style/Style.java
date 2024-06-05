@@ -196,27 +196,61 @@ public final class Style {
         return textVerticalAlignment;
     }
 
-    // TODO: to be removed - it has side effects
+    /**
+     * Sets an external Font object as the font style.
+     * <br>
+     * <i>To be used with caution due to side effects.</i>
+     *
+     * @param font the font to be set
+     * @return this Style
+     * @throws NullPointerException if {@code font == null}
+     */
+
     public Style setFont(Font font) {
         Objects.requireNonNull(font);
         this.font = font;
         return this;
     }
 
+    /**
+     * Sets the font name.
+     *
+     * @param name the font name
+     * @return this Style
+     */
+
     public Style setFontName(String name) {
         font.setName(name);
         return this;
     }
+
+    /**
+     * Sets the font style.
+     *
+     * @param fontStyle the font style
+     * @return this Style
+     */
 
     public Style setFontStyle(Font.FontStyle fontStyle) {
         font.setStyle(fontStyle);
         return this;
     }
 
+    /**
+     * Sets the font size.
+     *
+     * @param size the font size
+     * @return this Style
+     */
+
     public Style setFontSize(float size) {
         font.setSize(size);
         return this;
     }
+
+    /**
+     * @return the Font used by this style
+     */
 
     public Font getFont() {
         return font;
