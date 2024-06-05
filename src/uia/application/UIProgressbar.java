@@ -95,26 +95,6 @@ public final class UIProgressbar extends WrapperView {
         this.value = MathUtility.constrain(value, min, max);
     }
 
-    /*
-     * Helper function. Updates the internal bar geometry.
-     *
-
-    private void updateInternalBarGeometry() {
-        float xVertex = value - 0.5f;
-        Geometry internalBarGeometry = internalBar.getGeometry().removeAllVertices();
-        internalBarGeometry.addVertices(
-                -0.5f, -0.5f,
-                xVertex, -0.5f,
-                xVertex, 0.5f,
-                -0.5f, 0.5f);
-    }*/
-
-    @Override
-    public void update(View parent) {
-        //updateInternalBarGeometry();
-        super.update(parent);
-    }
-
     /**
      * @return the minimum value
      */

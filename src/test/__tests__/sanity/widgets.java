@@ -1,5 +1,6 @@
 package test.__tests__.sanity;
 
+import uia.application.UIProgressbar;
 import uia.application.calendar.SingleDaySelectionCalendar;
 import uia.application.calendar.CalendarView;
 import uia.application.calendar.Calendars;
@@ -10,6 +11,7 @@ import uia.application.UIButtonList;
 import uia.core.ui.context.Context;
 import uia.physical.theme.Theme;
 import uia.core.ui.ViewGroup;
+import uia.utility.MathUtility;
 
 import static test.__tests__.utility.TestUtility.*;
 
@@ -41,8 +43,11 @@ public final class widgets {
         UIToggleButton toggleButton = new UIToggleButton(
                 new Component("BUTTON_1", 0.85f, 0.5f, 0.15f, 0.1f)
         );
-        //toggleButton.getActiveStateStyleFunction().setColor(Theme.WHITE);
         toggleButton.getStyle().setBackgroundColor(Theme.LIME);
+        toggleButton.setEnabledStateStyleFunction(style -> style
+                .setBackgroundColor(Theme.WHITE)
+                .setTextColor(Theme.PINK)
+        );
 
         UIButtonList buttonList = new UIButtonList(
                 new Component("BUTTON_2", 0.85f, 0.75f, 0.15f, 0.1f)
@@ -57,8 +62,14 @@ public final class widgets {
         calendar.setDate(31, 3, 2024);
         calendar.setRotation(0.05f);
 
+        UIProgressbar progressbar = new UIProgressbar(
+                new Component("PROGRESS_BAR", 0.5f, 0.5f, 0.25f, 0.1f)
+        );
+        progressbar.getStyle().setBackgroundColor(Theme.LIGHT_CORAL);
+        progressbar.setValue(0.25f);
+
         ViewGroup result = createRoot();
-        ViewGroup.insert(result, buttonFilled, toggleButton, buttonList, calendar);
+        ViewGroup.insert(result, buttonFilled, toggleButton, buttonList, calendar, progressbar);
         return result;
     }
 
