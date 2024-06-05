@@ -49,8 +49,9 @@ public final class UIScrollbar extends WrapperView {
 
         this.vertical = vertical;
 
-        setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
-        getStyle().setBackgroundColor(Theme.DARK_GRAY);
+        getStyle()
+                .setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true)
+                .setBackgroundColor(Theme.DARK_GRAY);
         registerCallback((OnClick) touches -> {
             ScreenTouch touch = touches.get(0);
             updateScroll(touch.getX(), touch.getY());
@@ -74,12 +75,13 @@ public final class UIScrollbar extends WrapperView {
         });
 
         internalBar = vertical ? createVerticalBar() : createHorizontalBar();
-        internalBar.setGeometry(
-                g -> Drawable.buildRect(g, internalBar.getWidth(), internalBar.getHeight(), 1f),
-                true
-        );
         internalBar.setConsumer(Consumer.SCREEN_TOUCH, false);
-        internalBar.getStyle().setBackgroundColor(Theme.LIGHT_GRAY);
+        internalBar.getStyle()
+                .setBackgroundColor(Theme.LIGHT_GRAY)
+                .setGeometry(
+                        geometry -> Drawable.buildRect(geometry, internalBar.getWidth(), internalBar.getHeight(), 1f),
+                        true
+                );
 
         ViewGroup group = getView();
         group.setClip(false);

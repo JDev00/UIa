@@ -74,13 +74,12 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         overlayCell = new Component("CALENDAR_OVERLAY_" + getID(), 0f, 0f, 0f, 0f);
         overlayCell.setConsumer(Consumer.SCREEN_TOUCH, false);
         overlayCell.setVisible(false);
-        overlayCell.setGeometry(
-                g -> Drawable.buildRect(g, overlayCell.getWidth(), overlayCell.getHeight(), 1f),
-                true
-        );
-        overlayCell.getStyle().setBackgroundColor(
-                Color.createColor(150, 150, 150, 100)
-        );
+        overlayCell.getStyle()
+                .setBackgroundColor(Color.createColor(150, 150, 150, 100))
+                .setGeometry(
+                        geometry -> Drawable.buildRect(geometry, overlayCell.getWidth(), overlayCell.getHeight(), 1f),
+                        true
+                );
 
         for (int i = 0; i < 7; i++) {
             cells[i] = CalendarCell.createWeekDay(weekdays[i]);
@@ -121,8 +120,8 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
                 new Component(id, 0.5f, 0.15f, 0.75f, 0.2f)
         );
         result.setConsumer(Consumer.SCREEN_TOUCH, false);
-        result.setGeometry(Geometries::rect, false);
         result.getStyle()
+                .setGeometry(Geometries::rect, false)
                 .setTextAlignment(TextHorizontalAlignment.LEFT)
                 .setBackgroundColor(Theme.TRANSPARENT)
                 .setTextColor(Theme.WHITE)
@@ -183,7 +182,7 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
 
     protected void setDayCellGeometry(int day,
                                       java.util.function.Consumer<Geometry> builder, boolean inTimeBuilding) {
-        cells[7 + day - 1].setGeometry(builder, inTimeBuilding);
+        cells[7 + day - 1].getStyle().setGeometry(builder, inTimeBuilding);
     }
 
     /**

@@ -21,11 +21,11 @@ public final class UILoadingWheel extends WrapperView {
     public UILoadingWheel(View view, float velocity, float thickness) {
         super(view);
         setColliderPolicy(ColliderPolicy.AABB);
-        setGeometry(g -> {
+        getStyle().setGeometry(geometry -> {
             if (Math.abs(rotation) >= MathUtility.TWO_PI) {
                 rotation = 0f;
             }
-            Geometry arc = Geometries.arc(g, 50, rotation, thickness);
+            Geometry arc = Geometries.arc(geometry, 50, rotation, thickness);
             Geometry.rotate(arc, rotation);
             rotation += velocity;
         }, true);

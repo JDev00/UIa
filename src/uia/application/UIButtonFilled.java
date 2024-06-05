@@ -27,7 +27,10 @@ public final class UIButtonFilled extends WrapperView {
 
     public UIButtonFilled(View view, boolean right) {
         super(new ComponentGroup(view));
-        setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
+        getStyle().setGeometry(
+                geometry -> Drawable.buildRect(geometry, getWidth(), getHeight(), 1f),
+                true
+        );
 
         viewText = new ComponentText(
                 new Component("BUTTON_FILLED_TEXT_" + getID(), 0.5f + (right ? -0.05f : 0.05f), 0.5f,
@@ -43,9 +46,10 @@ public final class UIButtonFilled extends WrapperView {
                 .setExpanseLimit(1.15f, 1.15f);
         icon.setColliderPolicy(ColliderPolicy.AABB);
         icon.setConsumer(Consumer.SCREEN_TOUCH, false);
-        icon.setGeometry(Geometries::arrow, false);
-        icon.getStyle().setBackgroundColor(Theme.BLACK);
         icon.setRotation(right ? 0f : MathUtility.PI);
+        icon.getStyle()
+                .setGeometry(Geometries::arrow, false)
+                .setBackgroundColor(Theme.BLACK);
 
         ViewGroup.insert(getView(), viewText, icon);
     }

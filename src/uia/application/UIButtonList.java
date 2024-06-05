@@ -60,8 +60,8 @@ public final class UIButtonList extends WrapperView {
 
     public UIButtonList(View view) {
         super(new ComponentGroup(view));
-        setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
         getStyle()
+                .setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true)
                 .setTextAlignment(TextHorizontalAlignment.CENTER)
                 .setTextAlignment(TextVerticalAlignment.CENTER);
 
@@ -77,18 +77,20 @@ public final class UIButtonList extends WrapperView {
                 .setExpanseLimit(1.2f, 1.2f);
         leftArrow.registerCallback((OnClick) touches -> showValue(currentValueIndex - 1));
         leftArrow.setConsumer(Consumer.SCREEN_TOUCH, false);
-        leftArrow.setGeometry(Geometries::arrow, false);
-        leftArrow.getStyle().setBackgroundColor(Theme.BLACK);
         leftArrow.setColliderPolicy(ColliderPolicy.AABB);
         leftArrow.setRotation(MathUtility.PI);
+        leftArrow.getStyle()
+                .setGeometry(Geometries::arrow, false)
+                .setBackgroundColor(Theme.BLACK);
 
         View rightArrow = new Component("BUTTON_LIST_RIGHT_" + getID(), 0.9f, 0.5f, 0.1f, 0.5f)
                 .setExpanseLimit(1.2f, 1.2f);
         rightArrow.registerCallback((OnClick) touches -> showValue(currentValueIndex + 1));
         rightArrow.setConsumer(Consumer.SCREEN_TOUCH, false);
-        rightArrow.setGeometry(Geometries::arrow, false);
-        rightArrow.getStyle().setBackgroundColor(Theme.BLACK);
         rightArrow.setColliderPolicy(ColliderPolicy.AABB);
+        rightArrow.getStyle()
+                .setGeometry(Geometries::arrow, false)
+                .setBackgroundColor(Theme.BLACK);
 
         ViewGroup.insert(getView(), viewText, leftArrow, rightArrow);
     }

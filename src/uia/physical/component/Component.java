@@ -34,7 +34,6 @@ public final class Component implements View {
 
     private final Style style;
     private final Shape shape;
-    private java.util.function.Consumer<Geometry> geometryBuilder;
     private final Callable callable;
 
     private final String id;
@@ -42,6 +41,8 @@ public final class Component implements View {
     private final float[] container;
     private final float[] dimension = new float[2];
     private final float[] maxDimension = {0, 0};
+
+    private int previousGeometryBuilderHashcode = -1;
 
     private boolean over = false;
     private boolean focus = false;
@@ -116,14 +117,6 @@ public final class Component implements View {
     @Override
     public void notifyCallbacks(Class<? extends Callback> type, Object data) {
         callable.notifyCallbacks(type, data);
-    }
-
-    @Override
-    public void setGeometry(java.util.function.Consumer<Geometry> builder, boolean inTimeBuilding) {
-        if (builder != null) {
-            builder.accept(shape.getGeometry());
-            geometryBuilder = inTimeBuilding ? builder : null;
-        }
     }
 
     @Override
@@ -328,6 +321,17 @@ public final class Component implements View {
         }
     }
 
+    private void updateGeometry() {
+        java.util.function.Consumer<Geometry> geometryBuilder = style.getGeometryBuilder();
+        int currentGeometryBuilderHashcode = geometryBuilder.hashCode();
+
+        boolean isGeometryToBeBuilt = style.isGeometryToBeBuiltDynamically();
+        boolean isBuilderDifferent = previousGeometryBuilderHashcode != currentGeometryBuilderHashcode;
+        if (isGeometryToBeBuilt || isBuilderDifferent) {
+            geometryBuilder.accept(shape.getGeometry());
+        }
+    }
+
     @Override
     public void update(View parent) {
         this.parent = parent;
@@ -335,9 +339,7 @@ public final class Component implements View {
         if (visible) {
             updateAnimation();
             updateShape(parent);
-            if (geometryBuilder != null) {
-                geometryBuilder.accept(shape.getGeometry());
-            }
+            updateGeometry();
         }
     }
 

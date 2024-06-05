@@ -17,7 +17,10 @@ import java.util.Objects;
 /**
  * Collection of utilities for View implementations.
  */
-public class ComponentUtility {
+public final class ComponentUtility {
+
+    private ComponentUtility() {
+    }
 
     /**
      * Returns the screen touches (not consumed) that are within the specified view area.

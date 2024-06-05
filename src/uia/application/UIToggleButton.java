@@ -40,8 +40,12 @@ public final class UIToggleButton extends WrapperView {
 
     public UIToggleButton(View view) {
         super(new ComponentGroup(view));
-        setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
+
         registerCallback((OnClick) touches -> setState(isFirstState() ? State.SECOND : State.FIRST));
+        getStyle().setGeometry(
+                geometry -> Drawable.buildRect(geometry, getWidth(), getHeight(), 1f),
+                true
+        );
 
         states = new ViewText[]{
                 createView("BUTTON_TOGGLE_LEFT_" + getID(), 0.25f, "Left"),
@@ -75,12 +79,14 @@ public final class UIToggleButton extends WrapperView {
         ViewText result = new ComponentText(
                 new Component(id, x, 0.5f, 0.5f, 1f)
         );
-        result.getStyle().setTextAlignment(TextVerticalAlignment.CENTER);
         result.setConsumer(Consumer.SCREEN_TOUCH, false);
         result.setText(text);
-        result.setGeometry(
-                g -> Drawable.buildRect(g, result.getWidth(), result.getHeight(), 1f),
-                true);
+        result.getStyle()
+                .setTextAlignment(TextVerticalAlignment.CENTER)
+                .setGeometry(
+                        geometry -> Drawable.buildRect(geometry, result.getWidth(), result.getHeight(), 1f),
+                        true
+                );
         return result;
     }
 
@@ -170,7 +176,7 @@ public final class UIToggleButton extends WrapperView {
         if (State.SECOND.equals(state)) {
             index = 1;
         }
-        states[index].setGeometry(builder, inTimeBuilding);
+        states[index].getStyle().setGeometry(builder, inTimeBuilding);
     }
 
     /**

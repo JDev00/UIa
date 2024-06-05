@@ -6,7 +6,6 @@ import uia.physical.component.Component;
 import uia.core.basement.Drawable;
 import uia.physical.theme.Theme;
 import uia.utility.MathUtility;
-import uia.core.shape.Geometry;
 import uia.core.ui.style.Style;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.View;
@@ -37,12 +36,25 @@ public final class UIProgressbar extends WrapperView {
 
     public UIProgressbar(View view) {
         super(new ComponentGroup(view));
-
-        setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true);
-        getStyle().setBackgroundColor(Theme.DARK_GRAY);
+        getStyle()
+                .setBackgroundColor(Theme.DARK_GRAY)
+                .setGeometry(
+                        geometry -> Drawable.buildRect(geometry, getWidth(), getHeight(), 1f),
+                        true
+                );
 
         internalBar = new Component("PROGRESSBAR_INTERNAL_BAR_" + getID(), 0.5f, 0.5f, 1f, 1f);
-        internalBar.getStyle().setBackgroundColor(Theme.LIME);
+        internalBar.getStyle()
+                .setBackgroundColor(Theme.LIME)
+                .setGeometry(geometry -> {
+                    float xVertex = value - 0.5f;
+                    geometry.removeAllVertices().addVertices(
+                            -0.5f, -0.5f,
+                            xVertex, -0.5f,
+                            xVertex, 0.5f,
+                            -0.5f, 0.5f
+                    );
+                }, true);
 
         ViewGroup.insert(getView(), internalBar);
 
@@ -83,9 +95,9 @@ public final class UIProgressbar extends WrapperView {
         this.value = MathUtility.constrain(value, min, max);
     }
 
-    /**
+    /*
      * Helper function. Updates the internal bar geometry.
-     */
+     *
 
     private void updateInternalBarGeometry() {
         float xVertex = value - 0.5f;
@@ -95,11 +107,11 @@ public final class UIProgressbar extends WrapperView {
                 xVertex, -0.5f,
                 xVertex, 0.5f,
                 -0.5f, 0.5f);
-    }
+    }*/
 
     @Override
     public void update(View parent) {
-        updateInternalBarGeometry();
+        //updateInternalBarGeometry();
         super.update(parent);
     }
 

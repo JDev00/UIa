@@ -5,8 +5,6 @@ import uia.core.ui.style.Style;
 import uia.utility.Geometries;
 import uia.core.ui.Graphics;
 
-import java.util.function.Consumer;
-
 /**
  * Drawable is designed to group together all the aspects that characterise a complex graphical object
  * that can be rendered on a {@link Graphics}.
@@ -15,25 +13,16 @@ import java.util.function.Consumer;
 public interface Drawable {
 
     /**
-     * Set the Geometry
-     *
-     * @param builder        a not null {@link Consumer} used to build the geometry
-     * @param inTimeBuilding true to build geometry at rendering time (for every frame)
-     */
-
-    void setGeometry(Consumer<Geometry> builder, boolean inTimeBuilding);
-
-    /**
-     * @return the Drawable {@link Geometry}
-     */
-
-    Geometry getGeometry();
-
-    /**
      * @return the Drawable style
      */
 
     Style getStyle();
+
+    /**
+     * @return the Drawable geometry
+     */
+
+    Geometry getGeometry();
 
     /**
      * Set the Drawable position

@@ -43,18 +43,13 @@ public abstract class WrapperView implements View {
     }
 
     @Override
-    public void setGeometry(java.util.function.Consumer<Geometry> builder, boolean inTimeBuilding) {
-        view.setGeometry(builder, inTimeBuilding);
+    public Style getStyle() {
+        return view.getStyle();
     }
 
     @Override
     public Geometry getGeometry() {
         return view.getGeometry();
-    }
-
-    @Override
-    public Style getStyle() {
-        return view.getStyle();
     }
 
     @Override

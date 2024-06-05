@@ -1,9 +1,12 @@
 package uia.core.ui.style;
 
 import uia.physical.theme.Theme;
+import uia.core.shape.Geometry;
+import uia.utility.Geometries;
 import uia.core.paint.Color;
 import uia.core.font.Font;
 
+import java.util.function.Consumer;
 import java.util.Objects;
 
 /**
@@ -20,6 +23,10 @@ public final class Style {
     private TextVerticalAlignment textVerticalAlignment;
     private Font font;
 
+    // geometry
+    private Consumer<Geometry> geometryBuilder;
+    private boolean buildGeometryDynamically = false;
+
     private float borderWidth = 0;
 
     public Style() {
@@ -31,6 +38,8 @@ public final class Style {
         textVerticalAlignment = TextVerticalAlignment.TOP;
 
         font = Font.createDesktopFont(Font.FontStyle.PLAIN);
+
+        geometryBuilder = Geometries::rect;
     }
 
     @Override
@@ -254,6 +263,40 @@ public final class Style {
 
     public Font getFont() {
         return font;
+    }
+
+    // geometry
+
+    /**
+     * Sets the component geometry builder.
+     *
+     * @param geometryBuilder a function used to create the geometry
+     * @param dynamicBuilding true to force the rebuilding of the geometry on each element refresh
+     * @return this Style
+     * @throws NullPointerException if {@code geometryBuilder == null}
+     */
+
+    public Style setGeometry(Consumer<Geometry> geometryBuilder, boolean dynamicBuilding) {
+        Objects.requireNonNull(geometryBuilder);
+        this.buildGeometryDynamically = dynamicBuilding;
+        this.geometryBuilder = geometryBuilder;
+        return this;
+    }
+
+    /**
+     * @return the component geometry builder
+     */
+
+    public Consumer<Geometry> getGeometryBuilder() {
+        return geometryBuilder;
+    }
+
+    /**
+     * @return true if geometry must be rebuilt on each element refresh
+     */
+
+    public boolean isGeometryToBeBuiltDynamically() {
+        return this.buildGeometryDynamically;
     }
 
     // positioning
