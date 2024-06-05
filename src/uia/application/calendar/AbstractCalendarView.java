@@ -1,5 +1,6 @@
 package uia.application.calendar;
 
+import uia.core.ui.style.TextHorizontalAlignment;
 import uia.physical.component.WrapperView;
 import uia.physical.group.ComponentGroup;
 import uia.physical.component.Component;
@@ -8,17 +9,18 @@ import uia.core.ui.callbacks.OnClick;
 import uia.application.UIButtonList;
 import uia.core.basement.Drawable;
 import uia.physical.theme.Theme;
+import uia.core.ui.style.Style;
 import uia.core.shape.Geometry;
 import uia.utility.Geometries;
 import uia.core.ui.ViewGroup;
-import uia.core.ui.ViewText;
 import uia.core.paint.Color;
-import uia.core.paint.Paint;
+import uia.core.font.Font;
 import uia.core.ui.View;
-import uia.core.Font;
 
 import java.util.stream.IntStream;
 import java.util.*;
+
+// TODO: to complete the restructuring
 
 /**
  * Abstract representation of the Gregorian calendar.
@@ -42,11 +44,11 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
 
     protected AbstractCalendarView(View view, String[] weekdays, String[] months) {
         super(new ComponentGroup(view));
-        getPaint().setColor(ThemeDarcula.DARK_GRAY);
+        getStyle().setBackgroundColor(ThemeDarcula.DARK_GRAY);
 
         this.months = months;
 
-        font = Font.createDesktopFont(Font.Style.ITALIC);
+        font = Font.createDesktopFont(Font.FontStyle.ITALIC);
 
         currentDayColor = Theme.PINK;
 
@@ -66,8 +68,8 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         };
 
         header = createHeader("CALENDAR_HEADER_" + getID(), font);
-        header.getViewRight().registerCallback((OnClick) touches -> shiftDate.accept(true));
-        header.getViewLeft().registerCallback((OnClick) touches -> shiftDate.accept(false));
+        header.registerCallback((UIButtonList.OnPreviousValue) value -> shiftDate.accept(false));
+        header.registerCallback((UIButtonList.OnNextValue) value -> shiftDate.accept(true));
 
         overlayCell = new Component("CALENDAR_OVERLAY_" + getID(), 0f, 0f, 0f, 0f);
         overlayCell.setConsumer(Consumer.SCREEN_TOUCH, false);
@@ -76,18 +78,18 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
                 g -> Drawable.buildRect(g, overlayCell.getWidth(), overlayCell.getHeight(), 1f),
                 true
         );
-        overlayCell.getPaint().setColor(
+        overlayCell.getStyle().setBackgroundColor(
                 Color.createColor(150, 150, 150, 100)
         );
 
         for (int i = 0; i < 7; i++) {
             cells[i] = CalendarCell.createWeekDay(weekdays[i]);
-            cells[i].getPaint().setTextColor(Theme.SILVER);
+            cells[i].getStyle().setTextColor(Theme.SILVER);
         }
 
         for (int i = 0; i < 31; i++) {
             CalendarCell cell = CalendarCell.createDay(String.valueOf(i + 1));
-            cell.getPaint().setTextColor(Theme.WHITE);
+            cell.getStyle().setTextColor(Theme.WHITE);
             cell.registerCallback((OnClick) touches -> {
                 int day = Integer.parseInt(cell.getText());
                 notifyCallbacks(OnDaySelect.class, day);
@@ -96,8 +98,9 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         }
 
         for (CalendarCell cell : cells) {
-            cell.getPaint().setColor(Theme.TRANSPARENT);
-            cell.setFont(font);
+            cell.getStyle()
+                    .setBackgroundColor(Theme.TRANSPARENT)
+                    .setFont(font);
         }
 
         ViewGroup group = getView();
@@ -119,23 +122,28 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         );
         result.setConsumer(Consumer.SCREEN_TOUCH, false);
         result.setGeometry(Geometries::rect, false);
-        result.getPaint().setColor(Theme.TRANSPARENT);
+        result.getStyle()
+                .setTextAlignment(TextHorizontalAlignment.LEFT)
+                .setBackgroundColor(Theme.TRANSPARENT)
+                .setTextColor(Theme.WHITE)
+                .setFont(font);
+        result.setStyleFunction(UIButtonList.Element.RIGHT_ARROW, false, style -> style
+                .setBackgroundColor(Theme.WHITE)
+        );
+        result.setStyleFunction(UIButtonList.Element.LEFT_ARROW, false, style -> style
+                .setBackgroundColor(Theme.WHITE)
+        );
 
-        ViewText text = result.getViewText();
-        text.getPaint().setTextColor(Theme.WHITE);
-        text.setAlign(ViewText.AlignX.LEFT);
-        text.setPosition(0.35f, 0.5f);
-        text.setFont(font);
+        /*ViewText text = result.getViewText();
+        text.setPosition(0.35f, 0.5f);*/
 
-        View right = result.getViewRight();
+        /*View right = result.getViewRight();
         right.setDimension(0.05f, 0.4f);
         right.setPosition(0.965f, 0.5f);
-        right.getPaint().setColor(Theme.WHITE);
 
         View left = result.getViewLeft();
         left.setDimension(0.05f, 0.4f);
-        left.setPosition(0.75f, 0.5f);
-        left.getPaint().setColor(Theme.WHITE);
+        left.setPosition(0.75f, 0.5f);*/
 
         return result;
     }
@@ -179,11 +187,11 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
     }
 
     /**
-     * @return the Paint associated to the specified day
+     * @return the Style associated to the specified day
      */
 
-    protected Paint getDayCellPaint(int day) {
-        return cells[7 + day - 1].getPaint();
+    protected Style getDayCellStyle(int day) {
+        return cells[7 + day - 1].getStyle();
     }
 
     protected float getDayCelWidth() {
@@ -268,7 +276,7 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         if (isVisible()) {
             // highlights the current day
             if (currentDate[0] > 0) {
-                cells[7 + currentDate[0] - 1].getPaint().setTextColor(currentDayColor);
+                cells[7 + currentDate[0] - 1].getStyle().setTextColor(currentDayColor);
             }
 
             float[] cellDim = {0.7f / 6f, 0.08f};
@@ -321,8 +329,8 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
 
         // deselects the previous current day
         if (currentDate[0] > 0) {
-            Color dayTextColor = cells[7 + currentDate[0] % 31].getPaint().getTextColor();
-            cells[7 + currentDate[0] - 1].getPaint().setTextColor(dayTextColor);
+            Color dayTextColor = cells[7 + currentDate[0] % 31].getStyle().getTextColor();
+            cells[7 + currentDate[0] - 1].getStyle().setTextColor(dayTextColor);
 
             // makes all the cells non-current
             for (int i = 0; i < 31; i++) {
@@ -341,7 +349,7 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         }
 
         // update month
-        header.setText(months[month - 1] + " " + year);
+        header.setValues(months[month - 1] + " " + year, "");
     }
 
     private final int[] setDate = {1, 1, 2024};
