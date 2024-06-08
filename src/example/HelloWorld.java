@@ -15,7 +15,7 @@ import uia.application.UIButton;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.primitives.color.Color;
 import uia.core.ui.ViewText;
-import uia.core.font.Font;
+import uia.core.ui.primitives.font.Font;
 import uia.core.ui.View;
 
 /**

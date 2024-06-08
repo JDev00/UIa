@@ -1,4 +1,4 @@
-package uia.core.font;
+package uia.core.ui.primitives.font;
 
 /**
  * FontMeasure ADT.

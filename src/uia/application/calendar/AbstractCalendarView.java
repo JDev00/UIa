@@ -14,7 +14,7 @@ import uia.core.shape.Geometry;
 import uia.utility.Geometries;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.primitives.color.Color;
-import uia.core.font.Font;
+import uia.core.ui.primitives.font.Font;
 import uia.core.ui.View;
 
 import java.util.stream.IntStream;

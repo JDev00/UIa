@@ -5,7 +5,7 @@ import uia.physical.component.ComponentText;
 import uia.physical.component.WrapperView;
 import uia.physical.component.Component;
 import uia.core.ui.ViewText;
-import uia.core.font.Font;
+import uia.core.ui.primitives.font.Font;
 import uia.core.ui.View;
 
 /**

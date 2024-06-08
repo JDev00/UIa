@@ -8,7 +8,7 @@ import uia.core.ui.View;
 import uia.core.ui.callbacks.OnKeyPressed;
 import uia.core.ui.callbacks.OnMouseExit;
 import uia.core.ui.callbacks.OnMouseHover;
-import uia.core.font.Font;
+import uia.core.ui.primitives.font.Font;
 import uia.core.ui.style.Style;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.core.ui.style.TextVerticalAlignment;

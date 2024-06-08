@@ -1,4 +1,4 @@
-package uia.core.font;
+package uia.core.ui.primitives.font;
 
 import java.util.Objects;
 
