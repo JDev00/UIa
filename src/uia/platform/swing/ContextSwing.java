@@ -7,7 +7,7 @@ import uia.physical.input.ArtificialInput;
 import uia.core.context.InputEmulator;
 import uia.physical.message.Messages;
 import uia.core.context.Context;
-import uia.core.ui.window.Window;
+import uia.core.window.Window;
 import uia.core.ui.primitives.ScreenTouch;
 import uia.core.ui.View;
 

@@ -1,4 +1,4 @@
-package uia.core.ui.window;
+package uia.core.window;
 
 import uia.core.basement.Callable;
 
