@@ -1,4 +1,4 @@
-package uia.core.shape;
+package uia.core.ui.primitives.shape;
 
 import java.util.ArrayList;
 import java.util.Iterator;

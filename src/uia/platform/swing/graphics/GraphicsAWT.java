@@ -3,7 +3,7 @@ package uia.platform.swing.graphics;
 import uia.physical.theme.Theme;
 import uia.utility.MathUtility;
 import uia.core.ui.primitives.color.Color;
-import uia.core.shape.Shape;
+import uia.core.ui.primitives.shape.Shape;
 import uia.core.ui.Graphics;
 import uia.core.ui.primitives.font.Font;
 import uia.core.Image;

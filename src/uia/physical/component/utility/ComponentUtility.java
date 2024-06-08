@@ -3,7 +3,7 @@ package uia.physical.component.utility;
 import uia.core.Key;
 import uia.core.ScreenTouch;
 import uia.core.basement.Message;
-import uia.core.shape.Shape;
+import uia.core.ui.primitives.shape.Shape;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnKeyPressed;
 import uia.core.ui.callbacks.OnKeyReleased;

@@ -2,7 +2,7 @@ package uia.preview;
 
 import uia.core.*;
 import uia.core.ui.primitives.color.Color;
-import uia.core.shape.Shape;
+import uia.core.ui.primitives.shape.Shape;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnKeyPressed;

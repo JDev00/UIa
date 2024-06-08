@@ -10,7 +10,7 @@ import uia.physical.theme.ThemeDarcula;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.basement.Drawable;
 import uia.physical.theme.Theme;
-import uia.core.shape.Geometry;
+import uia.core.ui.primitives.shape.Geometry;
 import uia.core.ui.style.Style;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;

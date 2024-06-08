@@ -1,13 +1,13 @@
 package uia.application.math;
 
 import uia.physical.component.utility.ComponentUtility;
-import uia.core.shape.NormalizedVertex;
+import uia.core.ui.primitives.shape.NormalizedVertex;
 import uia.physical.theme.Theme;
 import uia.utility.MathUtility;
-import uia.core.shape.Geometry;
+import uia.core.ui.primitives.shape.Geometry;
 import uia.utility.Geometries;
 import uia.core.ui.primitives.color.Color;
-import uia.core.shape.Shape;
+import uia.core.ui.primitives.shape.Shape;
 import uia.core.ui.Graphics;
 
 import java.util.Objects;

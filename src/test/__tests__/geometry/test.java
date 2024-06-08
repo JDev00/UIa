@@ -1,7 +1,7 @@
 package test.__tests__.geometry;
 
 import test.core.*;
-import uia.core.shape.Geometry;
+import uia.core.ui.primitives.shape.Geometry;
 
 /**
  * Unit tests

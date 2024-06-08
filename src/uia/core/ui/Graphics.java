@@ -1,7 +1,7 @@
 package uia.core.ui;
 
 import uia.core.ui.primitives.color.Color;
-import uia.core.shape.Shape;
+import uia.core.ui.primitives.shape.Shape;
 import uia.core.ui.primitives.font.Font;
 import uia.core.*;
 
