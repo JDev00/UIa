@@ -1,7 +1,7 @@
 package uia.physical.component.utility;
 
-import uia.core.Key;
-import uia.core.ScreenTouch;
+import uia.core.ui.primitives.Key;
+import uia.core.ui.primitives.ScreenTouch;
 import uia.core.basement.Message;
 import uia.core.ui.primitives.shape.Shape;
 import uia.core.ui.View;

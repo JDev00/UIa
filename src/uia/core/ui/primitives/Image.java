@@ -1,4 +1,4 @@
-package uia.core;
+package uia.core.ui.primitives;
 
 /**
  * Platform image abstraction.

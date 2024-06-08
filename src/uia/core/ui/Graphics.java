@@ -3,7 +3,7 @@ package uia.core.ui;
 import uia.core.ui.primitives.color.Color;
 import uia.core.ui.primitives.shape.Shape;
 import uia.core.ui.primitives.font.Font;
-import uia.core.*;
+import uia.core.ui.primitives.Image;
 
 /**
  * Graphics ADT.

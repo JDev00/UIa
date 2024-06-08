@@ -1,6 +1,6 @@
 package uia.physical.message;
 
-import uia.core.Key;
+import uia.core.ui.primitives.Key;
 import uia.core.basement.Message;
 
 /**

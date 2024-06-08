@@ -1,5 +1,6 @@
 package uia.physical.component;
 
+import uia.core.ui.primitives.ScreenTouch;
 import uia.physical.component.utility.ComponentUtility;
 import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.EventTouchScreenMessage;
@@ -16,7 +17,6 @@ import uia.utility.Geometries;
 import uia.core.ui.primitives.shape.Shape;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
-import uia.core.*;
 
 import java.util.function.Consumer;
 import java.util.ArrayList;

@@ -1,6 +1,7 @@
 package uia.preview;
 
-import uia.core.*;
+import uia.core.ui.primitives.Key;
+import uia.core.ui.primitives.ScreenTouch;
 import uia.core.ui.primitives.color.Color;
 import uia.core.ui.primitives.shape.Shape;
 import uia.core.ui.Graphics;

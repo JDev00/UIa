@@ -1,7 +1,7 @@
 package uia.core.ui.callbacks;
 
 import uia.core.basement.Callback;
-import uia.core.ScreenTouch;
+import uia.core.ui.primitives.ScreenTouch;
 
 import java.util.List;
 

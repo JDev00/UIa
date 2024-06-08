@@ -12,7 +12,7 @@ import uia.physical.theme.Theme;
 import uia.utility.MathUtility;
 import uia.core.ui.style.Style;
 import uia.core.ui.ViewGroup;
-import uia.core.ScreenTouch;
+import uia.core.ui.primitives.ScreenTouch;
 import uia.core.ui.View;
 
 /**

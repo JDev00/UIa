@@ -2,8 +2,8 @@ package uia.core.ui.primitives.shape;
 
 import uia.core.basement.Collidable;
 
-import java.util.Arrays;
 import java.util.Objects;
+import java.util.Arrays;
 
 import static uia.utility.MathUtility.*;
 

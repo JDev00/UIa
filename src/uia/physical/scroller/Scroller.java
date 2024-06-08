@@ -1,6 +1,6 @@
 package uia.physical.scroller;
 
-import uia.core.ScreenTouch;
+import uia.core.ui.primitives.ScreenTouch;
 
 import java.util.List;
 

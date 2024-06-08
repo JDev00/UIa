@@ -7,9 +7,9 @@ import uia.physical.message.Messages;
 import uia.core.basement.Callable;
 import uia.core.basement.Callback;
 import uia.core.ui.window.Window;
-import uia.core.ScreenTouch;
+import uia.core.ui.primitives.ScreenTouch;
 import uia.core.ui.window.*;
-import uia.core.Key;
+import uia.core.ui.primitives.Key;
 
 import java.util.function.IntFunction;
 import java.util.Collections;

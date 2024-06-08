@@ -3,7 +3,7 @@ package uia.physical.component;
 import uia.physical.component.utility.ComponentUtility;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
-import uia.core.Image;
+import uia.core.ui.primitives.Image;
 
 /**
  * ComponentImage is designed to display an Image on a View.

@@ -1,7 +1,7 @@
 package uia.core.ui.callbacks;
 
 import uia.core.basement.Callback;
-import uia.core.Key;
+import uia.core.ui.primitives.Key;
 
 /**
  * Callback called when a key is typed.

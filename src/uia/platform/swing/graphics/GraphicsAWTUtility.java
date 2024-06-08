@@ -4,7 +4,7 @@ import uia.core.ui.primitives.shape.Geometry;
 import uia.core.ui.primitives.shape.Shape;
 import uia.core.ui.primitives.color.Color;
 import uia.core.ui.primitives.font.Font;
-import uia.core.Image;
+import uia.core.ui.primitives.Image;
 
 import javax.imageio.ImageIO;
 import java.awt.geom.Path2D;

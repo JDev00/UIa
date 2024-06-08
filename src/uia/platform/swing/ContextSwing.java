@@ -8,7 +8,7 @@ import uia.core.ui.context.InputEmulator;
 import uia.physical.message.Messages;
 import uia.core.ui.context.Context;
 import uia.core.ui.window.Window;
-import uia.core.ScreenTouch;
+import uia.core.ui.primitives.ScreenTouch;
 import uia.core.ui.View;
 
 import java.util.concurrent.ScheduledExecutorService;
