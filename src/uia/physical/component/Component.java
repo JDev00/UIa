@@ -18,6 +18,7 @@ import uia.core.ui.Graphics;
 import uia.core.ui.View;
 import uia.core.*;
 
+import java.util.function.Consumer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -189,11 +190,11 @@ public final class Component implements View {
     }
 
     @Override
-    public void setConsumer(Consumer consumer, boolean enableConsumer) {
-        if (consumer == Consumer.SCREEN_TOUCH) {
-            consumeScreenTouch = enableConsumer;
-        } else if (consumer == Consumer.KEY) {
-            consumeKey = enableConsumer;
+    public void setInputConsumer(InputConsumer inputConsumer, boolean enableInputConsumer) {
+        if (inputConsumer == InputConsumer.SCREEN_TOUCH) {
+            consumeScreenTouch = enableInputConsumer;
+        } else if (inputConsumer == InputConsumer.KEY) {
+            consumeKey = enableInputConsumer;
         }
     }
 
@@ -275,7 +276,23 @@ public final class Component implements View {
     }
 
     /**
-     * Helper function. Updates shape.
+     * Helper function. Updates View geometry.
+     */
+
+    private void updateGeometry() {
+        Consumer<Geometry> geometryBuilder = style.getGeometryBuilder();
+        int currentGeometryBuilderHashcode = geometryBuilder.hashCode();
+
+        boolean isGeometryToBeBuilt = style.isGeometryToBeBuiltDynamically();
+        boolean isBuilderDifferent = previousGeometryBuilderHashcode != currentGeometryBuilderHashcode;
+        if (isGeometryToBeBuilt || isBuilderDifferent) {
+            previousGeometryBuilderHashcode = currentGeometryBuilderHashcode;
+            geometryBuilder.accept(shape.getGeometry());
+        }
+    }
+
+    /**
+     * Helper function. Updates View shape.
      *
      * @param parent the view parent
      */
@@ -291,8 +308,12 @@ public final class Component implements View {
         // TODO: adjust auto-resize when component rotates
         float componentWidth = container[2] * width;
         float componentHeight = container[3] * height;
-        if (maxDimension[0] > 0) componentWidth = Math.min(maxDimension[0], componentWidth);
-        if (maxDimension[1] > 0) componentHeight = Math.min(maxDimension[1], componentHeight);
+        if (maxDimension[0] > 0) {
+            componentWidth = Math.min(maxDimension[0], componentWidth);
+        }
+        if (maxDimension[1] > 0) {
+            componentHeight = Math.min(maxDimension[1], componentHeight);
+        }
         dimension[0] = expanse[0] * componentWidth;
         dimension[1] = expanse[1] * componentHeight;
 
@@ -305,7 +326,7 @@ public final class Component implements View {
     }
 
     /**
-     * Updates the expansion animation.
+     * Helper function. Updates the expansion animation.
      */
 
     private void updateAnimation() {
@@ -321,25 +342,14 @@ public final class Component implements View {
         }
     }
 
-    private void updateGeometry() {
-        java.util.function.Consumer<Geometry> geometryBuilder = style.getGeometryBuilder();
-        int currentGeometryBuilderHashcode = geometryBuilder.hashCode();
-
-        boolean isGeometryToBeBuilt = style.isGeometryToBeBuiltDynamically();
-        boolean isBuilderDifferent = previousGeometryBuilderHashcode != currentGeometryBuilderHashcode;
-        if (isGeometryToBeBuilt || isBuilderDifferent) {
-            geometryBuilder.accept(shape.getGeometry());
-        }
-    }
-
     @Override
     public void update(View parent) {
         this.parent = parent;
 
         if (visible) {
             updateAnimation();
-            updateShape(parent);
             updateGeometry();
+            updateShape(parent);
         }
     }
 

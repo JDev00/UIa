@@ -16,7 +16,7 @@ import uia.core.basement.*;
 
 public interface View extends Callable, Drawable, Collidable {
 
-    enum Consumer {SCREEN_TOUCH, KEY}
+    enum InputConsumer {SCREEN_TOUCH, KEY}
 
     /**
      * Requests or removes the View focus.
@@ -53,13 +53,14 @@ public interface View extends Callable, Drawable, Collidable {
     boolean isVisible();
 
     /**
-     * Consumer functionality consumes screen touches or keys that are dispatched to this View.
+     * Input consumer functionality consumes screen touches or keys that are dispatched to this View.
      *
-     * @param consumer       the consumer type: see {@link Consumer}.
-     * @param enableConsumer true to consume screen touches/keys managed by this View; false to disable the specified consumer.
+     * @param inputConsumer       the input consumer type: see {@link InputConsumer}
+     * @param enableInputConsumer true to consume screen touches/keys managed by this View;
+     *                            false to disable the specified consumer
      */
 
-    void setConsumer(Consumer consumer, boolean enableConsumer);
+    void setInputConsumer(InputConsumer inputConsumer, boolean enableInputConsumer);
 
     /**
      * Sends a message to another View.

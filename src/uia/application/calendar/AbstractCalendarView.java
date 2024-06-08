@@ -72,7 +72,7 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         header.registerCallback((UIButtonList.OnNextValue) value -> shiftDate.accept(true));
 
         overlayCell = new Component("CALENDAR_OVERLAY_" + getID(), 0f, 0f, 0f, 0f);
-        overlayCell.setConsumer(Consumer.SCREEN_TOUCH, false);
+        overlayCell.setInputConsumer(InputConsumer.SCREEN_TOUCH, false);
         overlayCell.setVisible(false);
         overlayCell.getStyle()
                 .setBackgroundColor(Color.createColor(150, 150, 150, 100))
@@ -119,7 +119,7 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         UIButtonList result = new UIButtonList(
                 new Component(id, 0.5f, 0.15f, 0.75f, 0.2f)
         );
-        result.setConsumer(Consumer.SCREEN_TOUCH, false);
+        result.setInputConsumer(InputConsumer.SCREEN_TOUCH, false);
         result.getStyle()
                 .setGeometry(Geometries::rect, false)
                 .setTextAlignment(TextHorizontalAlignment.LEFT)

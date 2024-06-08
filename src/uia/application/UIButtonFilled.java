@@ -36,7 +36,7 @@ public final class UIButtonFilled extends WrapperView {
                 new Component("BUTTON_FILLED_TEXT_" + getID(), 0.5f + (right ? -0.05f : 0.05f), 0.5f,
                         0.5f, 1f)
         );
-        viewText.setConsumer(Consumer.SCREEN_TOUCH, false);
+        viewText.setInputConsumer(InputConsumer.SCREEN_TOUCH, false);
         viewText.getStyle()
                 .setTextAlignment(right ? TextHorizontalAlignment.LEFT : TextHorizontalAlignment.RIGHT)
                 .setTextAlignment(TextVerticalAlignment.CENTER)
@@ -45,7 +45,7 @@ public final class UIButtonFilled extends WrapperView {
         icon = new Component("BUTTON_FILLED_ICON_" + getID(), right ? 0.875f : 0.125f, 0.5f, 0.125f, 0.4f)
                 .setExpanseLimit(1.15f, 1.15f);
         icon.setColliderPolicy(ColliderPolicy.AABB);
-        icon.setConsumer(Consumer.SCREEN_TOUCH, false);
+        icon.setInputConsumer(InputConsumer.SCREEN_TOUCH, false);
         icon.setRotation(right ? 0f : MathUtility.PI);
         icon.getStyle()
                 .setGeometry(Geometries::arrow, false)

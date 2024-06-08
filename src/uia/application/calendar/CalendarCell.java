@@ -22,7 +22,7 @@ public class CalendarCell extends WrapperViewText {
         );
         registerCallback((OnMouseEnter) touches -> active = true);
         registerCallback((OnMouseExit) touches -> active = false);
-        setConsumer(Consumer.SCREEN_TOUCH, false);
+        setInputConsumer(InputConsumer.SCREEN_TOUCH, false);
         getStyle().setTextAlignment(TextVerticalAlignment.CENTER);
     }
 

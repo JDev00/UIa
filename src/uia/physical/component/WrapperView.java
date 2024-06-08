@@ -93,8 +93,8 @@ public abstract class WrapperView implements View {
     }
 
     @Override
-    public void setConsumer(Consumer consumer, boolean enableConsumer) {
-        view.setConsumer(consumer, enableConsumer);
+    public void setInputConsumer(InputConsumer inputConsumer, boolean enableInputConsumer) {
+        view.setInputConsumer(inputConsumer, enableInputConsumer);
     }
 
     @Override

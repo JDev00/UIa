@@ -75,7 +75,7 @@ public final class UIScrollbar extends WrapperView {
         });
 
         internalBar = vertical ? createVerticalBar() : createHorizontalBar();
-        internalBar.setConsumer(Consumer.SCREEN_TOUCH, false);
+        internalBar.setInputConsumer(InputConsumer.SCREEN_TOUCH, false);
         internalBar.getStyle()
                 .setBackgroundColor(Theme.LIGHT_GRAY)
                 .setGeometry(

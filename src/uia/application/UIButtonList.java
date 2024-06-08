@@ -68,7 +68,7 @@ public final class UIButtonList extends WrapperView {
         viewText = new ComponentText(
                 new Component("BUTTON_LIST_TEXT_" + getID(), 0.5f, 0.5f, 0.7f, 1f)
         );
-        viewText.setConsumer(Consumer.SCREEN_TOUCH, false);
+        viewText.setInputConsumer(InputConsumer.SCREEN_TOUCH, false);
         viewText.getStyle()
                 .setTextAlignment(TextVerticalAlignment.CENTER)
                 .setBackgroundColor(Theme.TRANSPARENT);
@@ -76,7 +76,7 @@ public final class UIButtonList extends WrapperView {
         View leftArrow = new Component("BUTTON_LIST_LEFT_" + getID(), 0.1f, 0.5f, 0.1f, 0.5f)
                 .setExpanseLimit(1.2f, 1.2f);
         leftArrow.registerCallback((OnClick) touches -> showValue(currentValueIndex - 1));
-        leftArrow.setConsumer(Consumer.SCREEN_TOUCH, false);
+        leftArrow.setInputConsumer(InputConsumer.SCREEN_TOUCH, false);
         leftArrow.setColliderPolicy(ColliderPolicy.AABB);
         leftArrow.setRotation(MathUtility.PI);
         leftArrow.getStyle()
@@ -86,7 +86,7 @@ public final class UIButtonList extends WrapperView {
         View rightArrow = new Component("BUTTON_LIST_RIGHT_" + getID(), 0.9f, 0.5f, 0.1f, 0.5f)
                 .setExpanseLimit(1.2f, 1.2f);
         rightArrow.registerCallback((OnClick) touches -> showValue(currentValueIndex + 1));
-        rightArrow.setConsumer(Consumer.SCREEN_TOUCH, false);
+        rightArrow.setInputConsumer(InputConsumer.SCREEN_TOUCH, false);
         rightArrow.setColliderPolicy(ColliderPolicy.AABB);
         rightArrow.getStyle()
                 .setGeometry(Geometries::arrow, false)

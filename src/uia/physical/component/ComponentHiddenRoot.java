@@ -56,7 +56,7 @@ public final class ComponentHiddenRoot implements View {
     }
 
     @Override
-    public void setConsumer(Consumer consumer, boolean enableConsumer) {
+    public void setInputConsumer(InputConsumer inputConsumer, boolean enableInputConsumer) {
         throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
     }
 

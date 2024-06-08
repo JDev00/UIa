@@ -79,7 +79,7 @@ public final class UIToggleButton extends WrapperView {
         ViewText result = new ComponentText(
                 new Component(id, x, 0.5f, 0.5f, 1f)
         );
-        result.setConsumer(Consumer.SCREEN_TOUCH, false);
+        result.setInputConsumer(InputConsumer.SCREEN_TOUCH, false);
         result.setText(text);
         result.getStyle()
                 .setTextAlignment(TextVerticalAlignment.CENTER)

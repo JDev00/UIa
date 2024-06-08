@@ -54,7 +54,7 @@ public final class UIListView extends WrapperView implements ViewGroup {
         viewsContainer = new ComponentGroup(
                 new Component("LISTVIEW_SKELETON_" + getID(), 0.475f, 0.475f, 0.95f, 0.95f)
         );
-        viewsContainer.setConsumer(Consumer.SCREEN_TOUCH, false);
+        viewsContainer.setInputConsumer(InputConsumer.SCREEN_TOUCH, false);
         viewsContainer.getStyle().setBackgroundColor(Theme.TRANSPARENT);
         viewsContainer.setClip(false);
 
