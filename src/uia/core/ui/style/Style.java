@@ -17,6 +17,7 @@ public final class Style {
     private Color backgroundColor;
     private Color borderColor;
     private Color textColor;
+    private float borderWidth = 0;
 
     // text
     private TextHorizontalAlignment textHorizontalAlignment;
@@ -27,7 +28,9 @@ public final class Style {
     private Consumer<Geometry> geometryBuilder;
     private boolean buildGeometryDynamically = false;
 
-    private float borderWidth = 0;
+    // positioning
+    private final float[] minDimension = {0f, 0f};
+    private final float[] maxDimension = {0f, 0f};
 
     public Style() {
         backgroundColor = Theme.WHITE;
@@ -315,20 +318,84 @@ public final class Style {
 
     // dimensioning
 
+    /**
+     * Sets the minimum component width in pixels.
+     *
+     * @param width the minimum component width
+     * @return this Style
+     */
+
     public Style setMinWidth(float width) {
+        minDimension[0] = Math.max(0, width);
         return this;
     }
+
+    /**
+     * @return the minimum component width in pixels
+     */
+
+    public float getMinWidth() {
+        return minDimension[0];
+    }
+
+    /**
+     * Sets the minimum component height in pixels.
+     *
+     * @param height the minimum component height
+     * @return this Style
+     */
 
     public Style setMinHeight(float height) {
+        minDimension[1] = Math.max(0, height);
         return this;
     }
+
+    /**
+     * @return the minimum component height in pixels
+     */
+
+    public float getMiHeight() {
+        return minDimension[1];
+    }
+
+    /**
+     * Sets the maximum component width in pixels.
+     *
+     * @param width the maximum component width
+     * @return this Style
+     */
 
     public Style setMaxWidth(float width) {
+        maxDimension[0] = Math.max(0f, width);
         return this;
     }
 
+    /**
+     * @return the maximum component width in pixels
+     */
+
+    public float getMaxWidth() {
+        return maxDimension[0];
+    }
+
+    /**
+     * Sets the maximum component height in pixels.
+     *
+     * @param height the maximum component height
+     * @return this Style
+     */
+
     public Style setMaxHeight(float height) {
+        maxDimension[1] = Math.max(0f, height);
         return this;
+    }
+
+    /**
+     * @return the maximum component height in pixels
+     */
+
+    public float getMaxHeight() {
+        return maxDimension[1];
     }
 
     public Style setDimension(float x, float y) {

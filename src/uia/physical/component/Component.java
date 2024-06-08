@@ -38,10 +38,9 @@ public final class Component implements View {
     private final Callable callable;
 
     private final String id;
-    private final float[] expanse = {1f, 1f, 1f, 1f, 0.125f};
+    private final float[] expanse = {1f, 1f, 1f, 1f, 0.185f};
     private final float[] container;
     private final float[] dimension = new float[2];
-    private final float[] maxDimension = {0, 0};
 
     private int previousGeometryBuilderHashcode = -1;
 
@@ -78,30 +77,6 @@ public final class Component implements View {
     public Component setExpanseLimit(float x, float y) {
         expanse[2] = x;
         expanse[3] = y;
-        return this;
-    }
-
-    /**
-     * Sets the Component maximum width.
-     *
-     * @param maxWidth the component maximum width in pixels
-     * @return this Component
-     */
-
-    public Component setMaxWidth(float maxWidth) {
-        maxDimension[0] = Math.max(0, maxWidth);
-        return this;
-    }
-
-    /**
-     * Sets the Component maximum height.
-     *
-     * @param maxHeight the component maximum height in pixels
-     * @return this Component
-     */
-
-    public Component setMaxHeight(float maxHeight) {
-        maxDimension[1] = Math.max(0, maxHeight);
         return this;
     }
 
@@ -305,18 +280,28 @@ public final class Component implements View {
         float yDist = height * (container[1] - 0.5f);
         float rot = bounds[4];
 
-        // TODO: adjust auto-resize when component rotates
         float componentWidth = container[2] * width;
         float componentHeight = container[3] * height;
-        if (maxDimension[0] > 0) {
-            componentWidth = Math.min(maxDimension[0], componentWidth);
+        float maxWidth = style.getMaxWidth();
+        float minWidth = style.getMinWidth();
+        float maxHeight = style.getMaxHeight();
+        float minHeight = style.getMiHeight();
+        if (minWidth > 0f) {
+            componentWidth = Math.max(minWidth, componentWidth);
         }
-        if (maxDimension[1] > 0) {
-            componentHeight = Math.min(maxDimension[1], componentHeight);
+        if (maxWidth > 0f) {
+            componentWidth = Math.min(maxWidth, componentWidth);
+        }
+        if (minHeight > 0f) {
+            componentHeight = Math.max(minHeight, componentHeight);
+        }
+        if (maxHeight > 0f) {
+            componentHeight = Math.min(maxHeight, componentHeight);
         }
         dimension[0] = expanse[0] * componentWidth;
         dimension[1] = expanse[1] * componentHeight;
 
+        // updates shape
         shape.setPosition(
                 ComponentUtility.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rot),
                 ComponentUtility.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rot)
@@ -348,8 +333,8 @@ public final class Component implements View {
 
         if (visible) {
             updateAnimation();
-            updateGeometry();
             updateShape(parent);
+            updateGeometry();
         }
     }
 

@@ -21,6 +21,8 @@ import java.util.Iterator;
  */
 
 public final class UIListView extends WrapperView implements ViewGroup {
+    private static final float SCROLLBAR_THICKNESS = 12f;
+
     private final UIScrollbar horizontalBar;
     private final UIScrollbar verticalBar;
     private final ViewGroup containerGroup;
@@ -36,20 +38,24 @@ public final class UIListView extends WrapperView implements ViewGroup {
         viewPositioner = ViewPositionerFactory.create(this, 1.01f, true);
 
         verticalBar = new UIScrollbar(
-                new Component("LISTVIEW_VERTICAL_BAR_" + getID(), 0.975f, 0.5f, 0.03f, 0.98f)
-                        .setMaxWidth(10),
+                new Component("LISTVIEW_VERTICAL_BAR_" + getID(), 0.975f, 0.5f, 0.03f, 0.98f),
                 true
         );
-        verticalBar.getStyle().setBackgroundColor(Theme.BLACK);
         verticalBar.setVisible(false);
+        verticalBar.getStyle()
+                .setBackgroundColor(Theme.BLACK)
+                .setMaxWidth(SCROLLBAR_THICKNESS)
+                .setMinWidth(SCROLLBAR_THICKNESS);
 
         horizontalBar = new UIScrollbar(
-                new Component("LISTVIEW_HORIZONTAL_BAR_" + getID(), 0.5f, 0.975f, 0.9f, 0.05f)
-                        .setMaxHeight(10f),
+                new Component("LISTVIEW_HORIZONTAL_BAR_" + getID(), 0.5f, 0.975f, 0.9f, 0.05f),
                 false
         );
-        horizontalBar.getStyle().setBackgroundColor(Theme.BLACK);
         horizontalBar.setVisible(false);
+        horizontalBar.getStyle()
+                .setBackgroundColor(Theme.BLACK)
+                .setMaxHeight(SCROLLBAR_THICKNESS)
+                .setMinHeight(SCROLLBAR_THICKNESS);
 
         viewsContainer = new ComponentGroup(
                 new Component("LISTVIEW_SKELETON_" + getID(), 0.475f, 0.475f, 0.95f, 0.95f)
