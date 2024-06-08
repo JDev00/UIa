@@ -13,7 +13,7 @@ import uia.core.ui.context.Context;
 import uia.physical.theme.Theme;
 import uia.application.UIButton;
 import uia.core.ui.ViewGroup;
-import uia.core.paint.Color;
+import uia.core.ui.style.color.Color;
 import uia.core.ui.ViewText;
 import uia.core.font.Font;
 import uia.core.ui.View;

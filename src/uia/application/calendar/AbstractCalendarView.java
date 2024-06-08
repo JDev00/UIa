@@ -13,7 +13,7 @@ import uia.core.ui.style.Style;
 import uia.core.shape.Geometry;
 import uia.utility.Geometries;
 import uia.core.ui.ViewGroup;
-import uia.core.paint.Color;
+import uia.core.ui.style.color.Color;
 import uia.core.font.Font;
 import uia.core.ui.View;
 

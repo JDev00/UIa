@@ -1,6 +1,6 @@
 package uia.physical.theme;
 
-import uia.core.paint.Color;
+import uia.core.ui.style.color.Color;
 
 /**
  * Collection of Darcula theme colors
