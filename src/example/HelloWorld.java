@@ -4,7 +4,9 @@ import uia.core.ui.style.TextVerticalAlignment;
 import uia.core.ui.callbacks.OnMessageReceived;
 import uia.physical.component.ComponentText;
 import uia.physical.component.WrapperView;
+import uia.core.ui.primitives.color.Color;
 import uia.physical.group.ComponentGroup;
+import uia.core.ui.primitives.font.Font;
 import uia.physical.component.Component;
 import uia.platform.swing.ContextSwing;
 import uia.physical.message.Messages;
@@ -13,9 +15,7 @@ import uia.core.context.Context;
 import uia.physical.theme.Theme;
 import uia.application.UIButton;
 import uia.core.ui.ViewGroup;
-import uia.core.ui.primitives.color.Color;
 import uia.core.ui.ViewText;
-import uia.core.ui.primitives.font.Font;
 import uia.core.ui.View;
 
 /**
