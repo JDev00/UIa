@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static uia.utility.MathUtility.rotateX;
+import static uia.utility.MathUtility.rotateY;
+
 /**
  * Collection of utilities for View implementations.
  */
@@ -192,5 +195,37 @@ public final class ComponentUtility {
         shape.setPosition(bounds[0] + bounds[2] / 2f, bounds[1] + bounds[3] / 2f);
         shape.setDimension(scaleX * width, scaleY * height);
         shape.setRotation(bounds[4]);
+    }
+
+    /**
+     * Calculates the View position on the x-axis
+     *
+     * @param xContainer     the left top container corner position on the x-axis
+     * @param containerWidth the container width
+     * @param xDist          the View distance from the container center on the x-axis
+     * @param yDist          the View distance from the container center on the y-axis
+     * @param radians        the View rotation in radians
+     * @return the View position on the x-axis
+     */
+
+    public static float getPositionOnX(float xContainer, float containerWidth,
+                                       float xDist, float yDist, float radians) {
+        return xContainer + 0.5f * containerWidth + rotateX(xDist, yDist, radians);
+    }
+
+    /**
+     * Calculates the View position on the y-axis
+     *
+     * @param yContainer      the left top container corner position on the y-axis
+     * @param containerHeight the container height
+     * @param xDist           the View distance from the container center on the x-axis
+     * @param yDist           the View distance from the container center on the y-axis
+     * @param radians         the View rotation in radians
+     * @return the View position on the y-axis
+     */
+
+    public static float getPositionOnY(float yContainer, float containerHeight,
+                                       float xDist, float yDist, float radians) {
+        return yContainer + 0.5f * containerHeight + rotateY(xDist, yDist, radians);
     }
 }

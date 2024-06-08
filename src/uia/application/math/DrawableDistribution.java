@@ -1,5 +1,6 @@
 package uia.application.math;
 
+import uia.physical.component.utility.ComponentUtility;
 import uia.core.shape.NormalizedVertex;
 import uia.physical.theme.Theme;
 import uia.utility.MathUtility;
@@ -8,7 +9,6 @@ import uia.utility.Geometries;
 import uia.core.paint.Color;
 import uia.core.shape.Shape;
 import uia.core.ui.Graphics;
-import uia.core.ui.View;
 
 import java.util.Objects;
 
@@ -140,8 +140,8 @@ public class DrawableDistribution extends PointDistribution {
                                          float minPointY, float maxPointY) {
         float xDist = viewportWidth * (MathUtility.normalize(pointX, minPointX, maxPointX) - 0.5f);
         float yDist = -viewportHeight * (MathUtility.normalize(pointY, minPointY, maxPointY) - 0.5f);
-        target[0] = View.getPositionOnX(componentBounds[0], componentBounds[2], xDist, yDist, rotation);
-        target[1] = View.getPositionOnY(componentBounds[1], componentBounds[3], xDist, yDist, rotation);
+        target[0] = ComponentUtility.getPositionOnX(componentBounds[0], componentBounds[2], xDist, yDist, rotation);
+        target[1] = ComponentUtility.getPositionOnY(componentBounds[1], componentBounds[3], xDist, yDist, rotation);
     }
 
     private final float[] markerPosition = {0f, 0f};

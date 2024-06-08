@@ -151,8 +151,8 @@ public class UIGraphic extends WrapperView {
         float[] bounds = getBounds();
         float xDist = width * (MathUtility.normalize(0f, xMin, xMax) - 0.5f);
         float yDist = -height * (MathUtility.normalize(0f, yMin, yMax) - 0.5f);
-        float lineX = View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rotation);
-        float lineY = View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rotation);
+        float lineX = ComponentUtility.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rotation);
+        float lineY = ComponentUtility.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rotation);
 
         ComponentUtility.makeShapeForClipRegion(this, clipShape, 0.97f, 0.97f);
         graphics.setClip(clipShape);

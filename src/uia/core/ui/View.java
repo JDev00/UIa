@@ -2,8 +2,6 @@ package uia.core.ui;
 
 import uia.core.basement.*;
 
-import static uia.utility.MathUtility.*;
-
 /**
  * View ADT.
  * <br>
@@ -95,36 +93,4 @@ public interface View extends Callable, Drawable, Collidable {
      */
 
     String getID();
-
-    /**
-     * Calculates the View position on the x-axis
-     *
-     * @param xContainer     the left top container corner position on the x-axis
-     * @param containerWidth the container width
-     * @param xDist          the View distance from the container center on the x-axis
-     * @param yDist          the View distance from the container center on the y-axis
-     * @param radians        the View rotation in radians
-     * @return the View position on the x-axis
-     */
-
-    static float getPositionOnX(float xContainer, float containerWidth,
-                                float xDist, float yDist, float radians) {
-        return xContainer + 0.5f * containerWidth + rotateX(xDist, yDist, radians);
-    }
-
-    /**
-     * Calculates the View position on the y-axis
-     *
-     * @param yContainer      the left top container corner position on the y-axis
-     * @param containerHeight the container height
-     * @param xDist           the View distance from the container center on the x-axis
-     * @param yDist           the View distance from the container center on the y-axis
-     * @param radians         the View rotation in radians
-     * @return the View position on the y-axis
-     */
-
-    static float getPositionOnY(float yContainer, float containerHeight,
-                                float xDist, float yDist, float radians) {
-        return yContainer + 0.5f * containerHeight + rotateY(xDist, yDist, radians);
-    }
 }

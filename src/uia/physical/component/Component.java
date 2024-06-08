@@ -297,8 +297,8 @@ public final class Component implements View {
         dimension[1] = expanse[1] * componentHeight;
 
         shape.setPosition(
-                View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rot),
-                View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rot)
+                ComponentUtility.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rot),
+                ComponentUtility.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rot)
         );
         shape.setDimension(dimension[0], dimension[1]);
         shape.setRotation(rot + container[4]);

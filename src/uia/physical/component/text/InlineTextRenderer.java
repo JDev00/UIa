@@ -1,12 +1,12 @@
 package uia.physical.component.text;
 
+import uia.physical.component.utility.ComponentUtility;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.core.ui.style.TextVerticalAlignment;
 import uia.core.ui.style.Style;
 import uia.core.ui.ViewText;
 import uia.core.ui.Graphics;
 import uia.core.font.Font;
-import uia.core.ui.View;
 
 import java.util.Objects;
 
@@ -39,8 +39,8 @@ public class InlineTextRenderer implements TextRenderer {
         float rot = viewText.getBounds()[4];
 
         graphics.drawText(chars, 0, chars.length,
-                View.getPositionOnX(x, 0f, xDist, yDist, rot),
-                View.getPositionOnY(y, 0f, xDist, yDist, rot),
+                ComponentUtility.getPositionOnX(x, 0f, xDist, yDist, rot),
+                ComponentUtility.getPositionOnY(y, 0f, xDist, yDist, rot),
                 rotation);
 
         return longestLine;

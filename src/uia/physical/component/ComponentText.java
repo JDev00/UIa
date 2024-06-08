@@ -1,6 +1,7 @@
 package uia.physical.component;
 
 import uia.physical.component.text.MultilineTextRenderer;
+import uia.physical.component.utility.ComponentUtility;
 import uia.physical.component.text.InlineTextRenderer;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.physical.component.text.TextRenderer;
@@ -143,8 +144,8 @@ public final class ComponentText extends WrapperView implements ViewText {
         float numberOfLines = singleLine ? 1 : lines;
         Font font = getFont();
 
-        textBounds[0] = View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rot);
-        textBounds[1] = View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rot);
+        textBounds[0] = ComponentUtility.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rot);
+        textBounds[1] = ComponentUtility.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rot);
         textBounds[3] = numberOfLines * font.getLineHeight();
         textBounds[4] = rot;
     }

@@ -1,8 +1,9 @@
 package uia.physical.component;
 
+import uia.physical.component.utility.ComponentUtility;
+import uia.core.ui.Graphics;
 import uia.core.ui.View;
 import uia.core.Image;
-import uia.core.ui.Graphics;
 
 /**
  * ComponentImage is designed to display an Image on a View.
@@ -64,8 +65,8 @@ public final class ComponentImage extends WrapperView {
             float rot = imgBounds[4];
 
             graphics.drawImage(image,
-                    View.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rot),
-                    View.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rot),
+                    ComponentUtility.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rot),
+                    ComponentUtility.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rot),
                     imgBounds[2] * getWidth() + 3,
                     imgBounds[3] * getHeight() + 3,
                     rot + bounds[4]);
