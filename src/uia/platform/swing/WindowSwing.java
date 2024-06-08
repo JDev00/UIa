@@ -6,9 +6,9 @@ import uia.physical.callbacks.CallbackStore;
 import uia.physical.message.Messages;
 import uia.core.basement.Callable;
 import uia.core.basement.Callback;
-import uia.core.window.Window;
+import uia.core.context.window.Window;
 import uia.core.ui.primitives.ScreenTouch;
-import uia.core.window.*;
+import uia.core.context.window.*;
 import uia.core.ui.primitives.Key;
 
 import java.util.function.IntFunction;

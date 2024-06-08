@@ -1,6 +1,6 @@
 package uia.core.context;
 
-import uia.core.window.Window;
+import uia.core.context.window.Window;
 import uia.core.ui.View;
 
 /**
