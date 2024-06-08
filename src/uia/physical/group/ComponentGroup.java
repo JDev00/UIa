@@ -5,7 +5,7 @@ import uia.physical.group.utility.GroupUtility;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.component.WrapperView;
 import uia.physical.LayoutUtility;
-import uia.core.basement.Message;
+import uia.core.message.Message;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.primitives.shape.Shape;
 import uia.core.ui.Graphics;

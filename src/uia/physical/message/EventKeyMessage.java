@@ -1,7 +1,7 @@
 package uia.physical.message;
 
 import uia.core.ui.primitives.Key;
-import uia.core.basement.Message;
+import uia.core.message.Message;
 
 /**
  * EventKeyMessage is a UIa framework message that carries a {@link Key} as payload.

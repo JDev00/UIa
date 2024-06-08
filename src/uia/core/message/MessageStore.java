@@ -1,11 +1,11 @@
-package uia.physical.message.store;
-
-import uia.core.basement.Message;
+package uia.core.message;
 
 import java.util.List;
 
 /**
- * MessageStore is responsible for storing the application messages.
+ * MessageStore ADT.
+ * <br>
+ * MessageStore is responsible for storing messages.
  */
 
 public interface MessageStore {

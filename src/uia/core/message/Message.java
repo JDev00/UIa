@@ -1,10 +1,9 @@
-package uia.core.basement;
+package uia.core.message;
 
 /**
  * Message ADT.
  * <br>
- * Message has the responsibility to keep the required information to
- * delivery a message to a recipient.
+ * Message is responsible for maintaining the information needed to deliver data to a recipient.
  */
 
 public interface Message {

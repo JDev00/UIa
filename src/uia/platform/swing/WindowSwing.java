@@ -1,7 +1,7 @@
 package uia.platform.swing;
 
 import uia.physical.message.store.GlobalMessageStore;
-import uia.physical.message.store.MessageStore;
+import uia.core.message.MessageStore;
 import uia.physical.callbacks.CallbackStore;
 import uia.physical.message.Messages;
 import uia.core.basement.Callable;

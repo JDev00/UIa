@@ -1,9 +1,9 @@
 package uia.physical.message;
 
-import uia.core.basement.Message;
+import uia.core.message.Message;
 import uia.core.ui.View;
 import uia.physical.message.store.GlobalMessageStore;
-import uia.physical.message.store.MessageStore;
+import uia.core.message.MessageStore;
 
 import java.util.List;
 import java.util.Objects;

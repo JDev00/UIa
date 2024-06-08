@@ -6,7 +6,7 @@ import test.core.TestAssertion;
 import test.core.TestExecutor;
 import uia.physical.message.store.ConcreteMessageStore;
 import uia.physical.message.store.GlobalMessageStore;
-import uia.physical.message.store.MessageStore;
+import uia.core.message.MessageStore;
 
 /**
  * Unit tests.

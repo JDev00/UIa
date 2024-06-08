@@ -1,7 +1,7 @@
 package uia.physical.group.utility;
 
 import uia.core.ui.primitives.ScreenTouch;
-import uia.core.basement.Message;
+import uia.core.message.Message;
 import uia.core.ui.ViewGroup;
 import uia.physical.message.Messages;
 

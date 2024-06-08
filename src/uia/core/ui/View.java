@@ -1,6 +1,7 @@
 package uia.core.ui;
 
 import uia.core.basement.*;
+import uia.core.message.Message;
 
 /**
  * View ADT.

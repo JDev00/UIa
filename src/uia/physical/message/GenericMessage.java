@@ -1,6 +1,6 @@
 package uia.physical.message;
 
-import uia.core.basement.Message;
+import uia.core.message.Message;
 
 /**
  * UIa standard {@link Message} implementation.

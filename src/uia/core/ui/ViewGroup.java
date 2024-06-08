@@ -1,6 +1,6 @@
 package uia.core.ui;
 
-import uia.core.basement.Message;
+import uia.core.message.Message;
 
 import java.util.Objects;
 
