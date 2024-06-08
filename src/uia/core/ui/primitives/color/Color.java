@@ -1,4 +1,4 @@
-package uia.core.ui.style.color;
+package uia.core.ui.primitives.color;
 
 import uia.utility.MathUtility;
 
