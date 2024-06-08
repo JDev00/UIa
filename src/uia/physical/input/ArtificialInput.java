@@ -3,7 +3,7 @@ package uia.physical.input;
 import uia.core.ui.primitives.Key;
 import uia.core.ui.primitives.ScreenTouch;
 import uia.core.basement.Message;
-import uia.core.ui.context.InputEmulator;
+import uia.core.context.InputEmulator;
 import uia.physical.message.Messages;
 
 import java.util.ArrayList;

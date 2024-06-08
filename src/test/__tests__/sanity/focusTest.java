@@ -4,7 +4,7 @@ import test.__tests__.utility.TestUtility;
 import uia.physical.group.ComponentGroup;
 import uia.physical.component.Component;
 import uia.core.ui.callbacks.OnFocus;
-import uia.core.ui.context.Context;
+import uia.core.context.Context;
 import uia.physical.theme.Theme;
 import uia.core.ui.style.Style;
 import uia.core.ui.ViewGroup;

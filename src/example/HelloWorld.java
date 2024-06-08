@@ -9,7 +9,7 @@ import uia.physical.component.Component;
 import uia.platform.swing.ContextSwing;
 import uia.physical.message.Messages;
 import uia.core.ui.callbacks.OnClick;
-import uia.core.ui.context.Context;
+import uia.core.context.Context;
 import uia.physical.theme.Theme;
 import uia.application.UIButton;
 import uia.core.ui.ViewGroup;

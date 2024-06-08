@@ -1,4 +1,4 @@
-package uia.core.ui.context;
+package uia.core.context;
 
 /**
  * InputEmulator is designed to emulate an input from mouse and from keyboard.

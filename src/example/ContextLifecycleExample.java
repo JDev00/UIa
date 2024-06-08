@@ -3,7 +3,7 @@ package example;
 import uia.platform.swing.ContextSwing;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnClick;
-import uia.core.ui.context.Context;
+import uia.core.context.Context;
 import uia.physical.component.Component;
 
 public class ContextLifecycleExample {

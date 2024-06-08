@@ -1,4 +1,4 @@
-package uia.core.ui.context;
+package uia.core.context;
 
 import uia.core.ui.window.Window;
 import uia.core.ui.View;

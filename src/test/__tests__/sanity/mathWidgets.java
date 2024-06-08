@@ -6,7 +6,7 @@ import uia.physical.component.WrapperView;
 import uia.physical.group.ComponentGroup;
 import uia.physical.component.Component;
 import uia.application.math.UIGraphic;
-import uia.core.ui.context.Context;
+import uia.core.context.Context;
 import uia.physical.theme.Theme;
 import uia.core.ui.ViewGroup;
 

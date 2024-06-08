@@ -2,7 +2,7 @@ package test.__tests__.view;
 
 import test.core.*;
 import uia.core.basement.Collidable;
-import uia.core.ui.context.Context;
+import uia.core.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.*;
 import uia.physical.message.store.ConcreteMessageStore;

@@ -5,7 +5,7 @@ import uia.core.ui.style.TextVerticalAlignment;
 import uia.physical.component.ComponentImage;
 import test.__tests__.utility.TestUtility;
 import uia.physical.component.Component;
-import uia.core.ui.context.Context;
+import uia.core.context.Context;
 import uia.physical.theme.Theme;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;

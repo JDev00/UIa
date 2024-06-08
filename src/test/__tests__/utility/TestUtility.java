@@ -4,7 +4,7 @@ import uia.physical.component.ComponentText;
 import uia.physical.group.ComponentGroup;
 import uia.physical.component.Component;
 import uia.platform.swing.ContextSwing;
-import uia.core.ui.context.Context;
+import uia.core.context.Context;
 import uia.physical.theme.Theme;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
