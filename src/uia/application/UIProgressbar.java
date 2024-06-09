@@ -1,9 +1,9 @@
 package uia.application;
 
+import uia.physical.component.utility.ComponentUtility;
 import uia.physical.component.WrapperView;
 import uia.physical.group.ComponentGroup;
 import uia.physical.component.Component;
-import uia.core.basement.Drawable;
 import uia.physical.theme.Theme;
 import uia.utility.MathUtility;
 import uia.core.ui.style.Style;
@@ -39,7 +39,7 @@ public final class UIProgressbar extends WrapperView {
         getStyle()
                 .setBackgroundColor(Theme.DARK_GRAY)
                 .setGeometry(
-                        geometry -> Drawable.buildRect(geometry, getWidth(), getHeight(), 1f),
+                        geometry -> ComponentUtility.buildRect(geometry, getWidth(), getHeight(), 1f),
                         true
                 );
 

@@ -1,6 +1,8 @@
 package uia.application;
 
+import uia.physical.component.utility.ComponentUtility;
 import uia.core.ui.style.TextVerticalAlignment;
+import uia.core.ui.primitives.shape.Geometry;
 import uia.physical.component.ComponentText;
 import uia.physical.component.WrapperView;
 import uia.physical.group.ComponentGroup;
@@ -8,9 +10,7 @@ import uia.physical.component.Component;
 import uia.core.ui.style.StyleFunction;
 import uia.physical.theme.ThemeDarcula;
 import uia.core.ui.callbacks.OnClick;
-import uia.core.basement.Drawable;
 import uia.physical.theme.Theme;
-import uia.core.ui.primitives.shape.Geometry;
 import uia.core.ui.style.Style;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
@@ -43,7 +43,7 @@ public final class UIToggleButton extends WrapperView {
 
         registerCallback((OnClick) touches -> setState(isFirstState() ? State.SECOND : State.FIRST));
         getStyle().setGeometry(
-                geometry -> Drawable.buildRect(geometry, getWidth(), getHeight(), 1f),
+                geometry -> ComponentUtility.buildRect(geometry, getWidth(), getHeight(), 1f),
                 true
         );
 
@@ -84,7 +84,7 @@ public final class UIToggleButton extends WrapperView {
         result.getStyle()
                 .setTextAlignment(TextVerticalAlignment.CENTER)
                 .setGeometry(
-                        geometry -> Drawable.buildRect(geometry, result.getWidth(), result.getHeight(), 1f),
+                        geometry -> ComponentUtility.buildRect(geometry, result.getWidth(), result.getHeight(), 1f),
                         true
                 );
         return result;

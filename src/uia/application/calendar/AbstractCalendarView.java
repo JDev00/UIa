@@ -1,20 +1,20 @@
 package uia.application.calendar;
 
+import uia.physical.component.utility.ComponentUtility;
 import uia.core.ui.style.TextHorizontalAlignment;
+import uia.core.ui.primitives.shape.Geometry;
 import uia.physical.component.WrapperView;
+import uia.core.ui.primitives.color.Color;
 import uia.physical.group.ComponentGroup;
 import uia.physical.component.Component;
+import uia.core.ui.primitives.font.Font;
 import uia.physical.theme.ThemeDarcula;
 import uia.core.ui.callbacks.OnClick;
 import uia.application.UIButtonList;
-import uia.core.basement.Drawable;
 import uia.physical.theme.Theme;
 import uia.core.ui.style.Style;
-import uia.core.ui.primitives.shape.Geometry;
 import uia.utility.Geometries;
 import uia.core.ui.ViewGroup;
-import uia.core.ui.primitives.color.Color;
-import uia.core.ui.primitives.font.Font;
 import uia.core.ui.View;
 
 import java.util.stream.IntStream;
@@ -77,7 +77,7 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         overlayCell.getStyle()
                 .setBackgroundColor(Color.createColor(150, 150, 150, 100))
                 .setGeometry(
-                        geometry -> Drawable.buildRect(geometry, overlayCell.getWidth(), overlayCell.getHeight(), 1f),
+                        geometry -> ComponentUtility.buildRect(geometry, overlayCell.getWidth(), overlayCell.getHeight(), 1f),
                         true
                 );
 

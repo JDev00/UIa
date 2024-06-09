@@ -1,18 +1,20 @@
 package uia.physical.component.utility;
 
-import uia.core.ui.primitives.Key;
-import uia.core.ui.primitives.ScreenTouch;
-import uia.core.message.Message;
-import uia.core.ui.primitives.shape.Shape;
-import uia.core.ui.View;
-import uia.core.ui.callbacks.OnKeyPressed;
-import uia.core.ui.callbacks.OnKeyReleased;
-import uia.core.ui.callbacks.OnKeyTyped;
 import uia.core.ui.callbacks.OnMessageReceived;
+import uia.core.ui.primitives.shape.Geometry;
+import uia.core.ui.callbacks.OnKeyReleased;
+import uia.core.ui.primitives.ScreenTouch;
+import uia.core.ui.primitives.shape.Shape;
+import uia.core.ui.callbacks.OnKeyPressed;
+import uia.core.ui.callbacks.OnKeyTyped;
+import uia.core.ui.primitives.Key;
+import uia.core.message.Message;
+import uia.utility.Geometries;
+import uia.core.ui.View;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+import java.util.List;
 
 import static uia.utility.MathUtility.rotateX;
 import static uia.utility.MathUtility.rotateY;
@@ -227,5 +229,15 @@ public final class ComponentUtility {
     public static float getPositionOnY(float yContainer, float containerHeight,
                                        float xDist, float yDist, float radians) {
         return yContainer + 0.5f * containerHeight + rotateY(xDist, yDist, radians);
+    }
+
+    /**
+     * Build a rounded rectangle.
+     *
+     * @see Geometries#rect(Geometry, int, float, float, float, float, float)
+     */
+
+    public static void buildRect(Geometry geometry, float width, float height, float radius) {
+        Geometries.rect(geometry, Geometries.STD_VERT, radius, width / height);
     }
 }

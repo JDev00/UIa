@@ -1,12 +1,12 @@
 package uia.application;
 
+import uia.physical.component.utility.ComponentUtility;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.core.ui.style.TextVerticalAlignment;
 import uia.physical.component.ComponentText;
 import uia.physical.component.WrapperView;
 import uia.physical.group.ComponentGroup;
 import uia.physical.component.Component;
-import uia.core.basement.Drawable;
 import uia.physical.theme.Theme;
 import uia.core.ui.style.Style;
 import uia.utility.MathUtility;
@@ -28,7 +28,7 @@ public final class UIButtonFilled extends WrapperView {
     public UIButtonFilled(View view, boolean right) {
         super(new ComponentGroup(view));
         getStyle().setGeometry(
-                geometry -> Drawable.buildRect(geometry, getWidth(), getHeight(), 1f),
+                geometry -> ComponentUtility.buildRect(geometry, getWidth(), getHeight(), 1f),
                 true
         );
 

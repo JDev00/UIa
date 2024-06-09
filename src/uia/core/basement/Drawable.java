@@ -2,7 +2,6 @@ package uia.core.basement;
 
 import uia.core.ui.primitives.shape.Geometry;
 import uia.core.ui.style.Style;
-import uia.utility.Geometries;
 import uia.core.ui.Graphics;
 
 /**
@@ -66,14 +65,4 @@ public interface Drawable {
      */
 
     float getHeight();
-
-    /**
-     * Build a rounded rectangle
-     *
-     * @see Geometries#rect(Geometry, int, float, float, float, float, float)
-     */
-
-    static void buildRect(Geometry geometry, float width, float height, float radius) {
-        Geometries.rect(geometry, Geometries.STD_VERT, radius, width / height);
-    }
 }

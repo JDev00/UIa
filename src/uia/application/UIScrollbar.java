@@ -1,18 +1,18 @@
 package uia.application;
 
+import uia.physical.component.utility.ComponentUtility;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.core.ui.callbacks.OnMouseHover;
 import uia.physical.component.WrapperView;
+import uia.core.ui.primitives.ScreenTouch;
 import uia.core.ui.callbacks.OnMouseExit;
 import uia.physical.group.ComponentGroup;
 import uia.physical.component.Component;
 import uia.core.ui.callbacks.OnClick;
-import uia.core.basement.Drawable;
 import uia.physical.theme.Theme;
 import uia.utility.MathUtility;
 import uia.core.ui.style.Style;
 import uia.core.ui.ViewGroup;
-import uia.core.ui.primitives.ScreenTouch;
 import uia.core.ui.View;
 
 /**
@@ -50,8 +50,11 @@ public final class UIScrollbar extends WrapperView {
         this.vertical = vertical;
 
         getStyle()
-                .setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true)
-                .setBackgroundColor(Theme.DARK_GRAY);
+                .setBackgroundColor(Theme.DARK_GRAY)
+                .setGeometry(
+                        geometry -> ComponentUtility.buildRect(geometry, getWidth(), getHeight(), 1f),
+                        true
+                );
         registerCallback((OnClick) touches -> {
             ScreenTouch touch = touches.get(0);
             updateScroll(touch.getX(), touch.getY());
@@ -79,7 +82,7 @@ public final class UIScrollbar extends WrapperView {
         internalBar.getStyle()
                 .setBackgroundColor(Theme.LIGHT_GRAY)
                 .setGeometry(
-                        geometry -> Drawable.buildRect(geometry, internalBar.getWidth(), internalBar.getHeight(), 1f),
+                        geometry -> ComponentUtility.buildRect(geometry, internalBar.getWidth(), internalBar.getHeight(), 1f),
                         true
                 );
 

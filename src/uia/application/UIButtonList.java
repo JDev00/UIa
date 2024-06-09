@@ -1,5 +1,6 @@
 package uia.application;
 
+import uia.physical.component.utility.ComponentUtility;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.core.ui.style.TextVerticalAlignment;
 import uia.physical.component.ComponentText;
@@ -8,7 +9,6 @@ import uia.physical.group.ComponentGroup;
 import uia.physical.component.Component;
 import uia.core.ui.style.StyleFunction;
 import uia.core.ui.callbacks.OnClick;
-import uia.core.basement.Drawable;
 import uia.core.basement.Callback;
 import uia.physical.theme.Theme;
 import uia.core.ui.style.Style;
@@ -61,9 +61,12 @@ public final class UIButtonList extends WrapperView {
     public UIButtonList(View view) {
         super(new ComponentGroup(view));
         getStyle()
-                .setGeometry(g -> Drawable.buildRect(g, getWidth(), getHeight(), 1f), true)
                 .setTextAlignment(TextHorizontalAlignment.CENTER)
-                .setTextAlignment(TextVerticalAlignment.CENTER);
+                .setTextAlignment(TextVerticalAlignment.CENTER)
+                .setGeometry(
+                        geometry -> ComponentUtility.buildRect(geometry, getWidth(), getHeight(), 1f),
+                        true
+                );
 
         viewText = new ComponentText(
                 new Component("BUTTON_LIST_TEXT_" + getID(), 0.5f, 0.5f, 0.7f, 1f)

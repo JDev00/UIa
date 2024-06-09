@@ -1,7 +1,7 @@
 package uia.application.calendar;
 
+import uia.physical.component.utility.ComponentUtility;
 import uia.core.ui.style.StyleFunction;
-import uia.core.basement.Drawable;
 import uia.physical.theme.Theme;
 import uia.core.ui.style.Style;
 import uia.utility.Geometries;
@@ -53,7 +53,7 @@ public class SingleDaySelectionCalendar extends AbstractCalendarView {
     private void _selectDay(int day) {
         markDayAsSelected(day, true);
         setDayCellGeometry(day,
-                g -> Drawable.buildRect(g, getDayCelWidth(), getDayCelHeight(), 1f),
+                geometry -> ComponentUtility.buildRect(geometry, getDayCelWidth(), getDayCelHeight(), 1f),
                 true);
     }
 
