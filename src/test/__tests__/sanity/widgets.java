@@ -59,7 +59,7 @@ public final class widgets {
                 new Component("CALENDAR", 0.25f, 0.5f, 0.25f, 0.5f)
         );
         calendar.setDate(31, 3, 2024);
-        calendar.setRotation(0.05f);
+        calendar.getStyle().setRotation(0.05f);
 
         UIProgressbar progressbar = new UIProgressbar(
                 new Component("PROGRESS_BAR", 0.5f, 0.5f, 0.25f, 0.1f)

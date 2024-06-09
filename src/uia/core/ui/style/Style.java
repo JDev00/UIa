@@ -9,6 +9,8 @@ import uia.core.ui.primitives.font.Font;
 import java.util.function.Consumer;
 import java.util.Objects;
 
+import static uia.utility.MathUtility.TWO_PI;
+
 /**
  * Style is responsible for storing the UI component graphical settings.
  */
@@ -31,6 +33,7 @@ public final class Style {
     // positioning
     private final float[] minDimension = {0f, 0f};
     private final float[] maxDimension = {0f, 0f};
+    private final float[] container = {0f, 0f, 0f, 0f, 0f};
 
     public Style() {
         backgroundColor = Theme.WHITE;
@@ -408,12 +411,37 @@ public final class Style {
 
     // rotation
 
-    public Style setRotation(float angle) {
+    /**
+     * Set the component rotation.
+     *
+     * @param radians the rotation in radians
+     * @return this Style
+     */
+
+    public Style setRotation(float radians) {
+        container[4] = radians % TWO_PI;
         return this;
     }
 
-    public Style rotate(float angle) {
+    /**
+     * Rotates the component by the given amount.
+     *
+     * @param radians the rotation in radians
+     * @return this Style
+     */
+
+
+    public Style rotate(float radians) {
+        container[4] += (radians % TWO_PI);
         return this;
+    }
+
+    /**
+     * @return the component rotation in radians
+     */
+
+    public float getRotation() {
+        return container[4];
     }
 
     //
@@ -440,10 +468,6 @@ public final class Style {
     }
 
     public float getOffsetHeight() {
-        return 0f;
-    }
-
-    public float getRotation() {
         return 0f;
     }
 }

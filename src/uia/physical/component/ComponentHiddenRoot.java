@@ -93,11 +93,6 @@ public final class ComponentHiddenRoot implements View {
     }
 
     @Override
-    public void setRotation(float radians) {
-        // hidden root can not be rotated as it fits to the window frame
-    }
-
-    @Override
     public void update(View parent) {
         throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
     }
@@ -125,11 +120,6 @@ public final class ComponentHiddenRoot implements View {
     @Override
     public float getHeight() {
         return bounds[3];
-    }
-
-    @Override
-    public float getRotation() {
-        return bounds[4];
     }
 
     @Override

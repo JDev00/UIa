@@ -1,20 +1,20 @@
 package uia.physical.component;
 
-import uia.core.ui.primitives.ScreenTouch;
 import uia.physical.component.utility.ComponentUtility;
 import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.EventTouchScreenMessage;
-import uia.core.message.MessageStore;
-import uia.physical.callbacks.CallbackStore;
+import uia.core.ui.primitives.shape.Geometry;
 import uia.physical.message.EventKeyMessage;
+import uia.physical.callbacks.CallbackStore;
+import uia.core.ui.primitives.ScreenTouch;
+import uia.core.ui.primitives.shape.Shape;
+import uia.core.message.MessageStore;
 import uia.core.basement.Callback;
 import uia.core.basement.Callable;
 import uia.core.message.Message;
-import uia.core.ui.primitives.shape.Geometry;
 import uia.core.ui.callbacks.*;
 import uia.core.ui.style.Style;
 import uia.utility.Geometries;
-import uia.core.ui.primitives.shape.Shape;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
 
@@ -22,7 +22,6 @@ import java.util.function.Consumer;
 import java.util.ArrayList;
 import java.util.List;
 
-import static uia.utility.MathUtility.*;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -120,11 +119,6 @@ public final class Component implements View {
         if (parent != null) {
             updateShape(parent);
         }
-    }
-
-    @Override
-    public void setRotation(float radians) {
-        container[4] = radians % TWO_PI;
     }
 
     @Override
@@ -307,7 +301,7 @@ public final class Component implements View {
                 ComponentUtility.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rot)
         );
         shape.setDimension(dimension[0], dimension[1]);
-        shape.setRotation(rot + container[4]);
+        shape.setRotation(rot + style.getRotation());
     }
 
     /**
@@ -356,11 +350,6 @@ public final class Component implements View {
     @Override
     public float getHeight() {
         return dimension[1];
-    }
-
-    @Override
-    public float getRotation() {
-        return container[4];
     }
 
     @Override

@@ -43,14 +43,6 @@ public interface Drawable {
     void setDimension(float width, float height);
 
     /**
-     * Set the Drawable rotation
-     *
-     * @param radians the rotation in radians
-     */
-
-    void setRotation(float radians);
-
-    /**
      * Draws this Drawable on the specified Graphic
      *
      * @param graphics a not null {@link Graphics}
@@ -74,12 +66,6 @@ public interface Drawable {
      */
 
     float getHeight();
-
-    /**
-     * @return the Drawable rotation in radians
-     */
-
-    float getRotation();
 
     /**
      * Build a rounded rectangle

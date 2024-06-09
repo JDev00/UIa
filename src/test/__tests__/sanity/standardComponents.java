@@ -28,11 +28,11 @@ public final class standardComponents {
     public static ViewGroup buildBasementsComponents() {
         ViewText text = createViewText("TEXT", 0.33f, 0.45f, 0.5f, 0.75f);
         text.setText("Hello world!");
-        text.setRotation(0.3f);
         text.getStyle()
                 .setTextAlignment(TextHorizontalAlignment.RIGHT)
                 .setTextAlignment(TextVerticalAlignment.CENTER)
-                .setTextColor(Theme.PINK);
+                .setTextColor(Theme.PINK)
+                .setRotation(0.3f);
 
         ComponentImage image = new ComponentImage(
                 new Component("IMAGE", 0.7f, 0.5f, 0.33f, 0.5f)
@@ -40,8 +40,9 @@ public final class standardComponents {
         image.getImage().load("sample\\img0.png");
 
         ViewGroup group = createViewGroup("GROUP", 0.4f, 0.5f, 0.5f, 0.5f);
-        group.getStyle().setBackgroundColor(Theme.LIGHT_GRAY);
-        group.setRotation(0.1f);
+        group.getStyle()
+                .setBackgroundColor(Theme.LIGHT_GRAY)
+                .setRotation(0.1f);
 
         ViewGroup.insert(group, image, text);
 

@@ -141,7 +141,7 @@ public final class UIProgressbar extends WrapperView {
     public static UIProgressbar createVertical(View view) {
         Objects.requireNonNull(view);
         UIProgressbar result = new UIProgressbar(view);
-        result.setRotation(-MathUtility.HALF_PI);
+        result.getStyle().setRotation(-MathUtility.HALF_PI);
         return result;
     }
 }

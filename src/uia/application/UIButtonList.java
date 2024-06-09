@@ -78,10 +78,10 @@ public final class UIButtonList extends WrapperView {
         leftArrow.registerCallback((OnClick) touches -> showValue(currentValueIndex - 1));
         leftArrow.setInputConsumer(InputConsumer.SCREEN_TOUCH, false);
         leftArrow.setColliderPolicy(ColliderPolicy.AABB);
-        leftArrow.setRotation(MathUtility.PI);
         leftArrow.getStyle()
                 .setGeometry(Geometries::arrow, false)
-                .setBackgroundColor(Theme.BLACK);
+                .setBackgroundColor(Theme.BLACK)
+                .setRotation(MathUtility.PI);
 
         View rightArrow = new Component("BUTTON_LIST_RIGHT_" + getID(), 0.9f, 0.5f, 0.1f, 0.5f)
                 .setExpanseLimit(1.2f, 1.2f);

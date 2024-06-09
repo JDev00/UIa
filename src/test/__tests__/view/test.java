@@ -41,7 +41,7 @@ public class test {
 
         // setup
         float ROTATION = 2.145f;
-        rootView.setRotation(ROTATION);
+        rootView.getStyle().setRotation(ROTATION);
 
         TestUtils.wait(100);
 
@@ -68,7 +68,7 @@ public class test {
         float heightPreRotation = 540;
 
         // setup
-        rootView.setRotation(ROTATION);
+        rootView.getStyle().setRotation(ROTATION);
 
         TestUtils.wait(100);
 

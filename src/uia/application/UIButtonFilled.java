@@ -46,9 +46,9 @@ public final class UIButtonFilled extends WrapperView {
                 .setExpanseLimit(1.15f, 1.15f);
         icon.setColliderPolicy(ColliderPolicy.AABB);
         icon.setInputConsumer(InputConsumer.SCREEN_TOUCH, false);
-        icon.setRotation(right ? 0f : MathUtility.PI);
         icon.getStyle()
                 .setGeometry(Geometries::arrow, false)
+                .setRotation(right ? 0f : MathUtility.PI)
                 .setBackgroundColor(Theme.BLACK);
 
         ViewGroup.insert(getView(), viewText, icon);

@@ -1,8 +1,8 @@
 package uia.physical.component;
 
+import uia.core.ui.primitives.shape.Geometry;
 import uia.core.basement.Callback;
 import uia.core.message.Message;
-import uia.core.ui.primitives.shape.Geometry;
 import uia.core.ui.style.Style;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
@@ -88,11 +88,6 @@ public abstract class WrapperView implements View {
     }
 
     @Override
-    public void setRotation(float radians) {
-        view.setRotation(radians);
-    }
-
-    @Override
     public void setInputConsumer(InputConsumer inputConsumer, boolean enableInputConsumer) {
         view.setInputConsumer(inputConsumer, enableInputConsumer);
     }
@@ -125,11 +120,6 @@ public abstract class WrapperView implements View {
     @Override
     public float getHeight() {
         return view.getHeight();
-    }
-
-    @Override
-    public float getRotation() {
-        return view.getRotation();
     }
 
     @Override
