@@ -1,15 +1,16 @@
 package uia.core.ui.style;
 
-import uia.physical.theme.Theme;
 import uia.core.ui.primitives.shape.Geometry;
-import uia.utility.Geometries;
 import uia.core.ui.primitives.color.Color;
 import uia.core.ui.primitives.font.Font;
+import uia.physical.theme.Theme;
+import uia.utility.Geometries;
 
 import java.util.function.Consumer;
 import java.util.Objects;
 
 import static uia.utility.MathUtility.TWO_PI;
+import static java.lang.Math.max;
 
 /**
  * Style is responsible for storing the UI component graphical settings.
@@ -305,18 +306,60 @@ public final class Style {
         return this.buildGeometryDynamically;
     }
 
-    // positioning
+    // margin & padding
 
     public Style setMargin() {
         return this;
     }
 
-    public Style setPosition(float x, float y) {
+    public Style setPadding() {
         return this;
     }
 
-    public Style translate(float x, float y) {
+    // positioning
+
+    /**
+     * Sets the component position.
+     *
+     * @param x the component position on the x-axis
+     * @param y the component position on the y-axis
+     * @return this Style
+     */
+
+    public Style setPosition(float x, float y) {
+        container[0] = x;
+        container[1] = y;
         return this;
+    }
+
+    /**
+     * Translates the component.
+     *
+     * @param x the translation on the x-axis
+     * @param y the translation on the y-axis
+     * @return this Style
+     */
+
+    public Style translate(float x, float y) {
+        container[0] += x;
+        container[1] += y;
+        return this;
+    }
+
+    /**
+     * @return the component position on the x-axis
+     */
+
+    public float getX() {
+        return container[0];
+    }
+
+    /**
+     * @return the component position on the y-axis
+     */
+
+    public float getY() {
+        return container[1];
     }
 
     // dimensioning
@@ -401,12 +444,48 @@ public final class Style {
         return maxDimension[1];
     }
 
-    public Style setDimension(float x, float y) {
+    /**
+     * Sets the component dimension.
+     *
+     * @param width  the component width
+     * @param height the component height
+     * @return this Style
+     */
+
+    public Style setDimension(float width, float height) {
+        container[2] = max(0, width);
+        container[3] = max(0, height);
         return this;
     }
 
+    /**
+     * Scales the component.
+     *
+     * @param x the scale on the x-axis
+     * @param y the scale on the y-axis
+     * @return this Style
+     */
+
     public Style scale(float x, float y) {
+        container[2] *= max(0, x);
+        container[3] *= max(0, y);
         return this;
+    }
+
+    /**
+     * @return the component width. Note that offsetWidth won't change as consequence of a rotation.
+     */
+
+    public float getOffsetWidth() {
+        return container[2];
+    }
+
+    /**
+     * @return the component height. Note that offsetHeight won't change as consequence of a rotation.
+     */
+
+    public float getOffsetHeight() {
+        return container[3];
     }
 
     // rotation
@@ -444,9 +523,7 @@ public final class Style {
         return container[4];
     }
 
-    //
-
-    /**
+    /*
      * Returns the bounding rect of the transformed UI element:
      * <ul>
      *     <li>the position on the x-axis of the left-top corner;</li>
@@ -458,16 +535,8 @@ public final class Style {
      *     <li>right padding;</li>
      *     <li>bottom padding;</li>
      * </ul>
-     */
+     *
     public float[] getBoundingRect(float[] array) {
         return array;
-    }
-
-    public float getOffsetWidth() {
-        return 0f;
-    }
-
-    public float getOffsetHeight() {
-        return 0f;
-    }
+    }*/
 }
