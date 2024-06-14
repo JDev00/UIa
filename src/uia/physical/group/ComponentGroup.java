@@ -2,12 +2,13 @@ package uia.physical.group;
 
 import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.group.utility.GroupUtility;
+import uia.core.ui.primitives.shape.Transform;
+import uia.core.ui.primitives.shape.Geometry;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.component.WrapperView;
 import uia.physical.LayoutUtility;
 import uia.core.message.Message;
 import uia.core.ui.ViewGroup;
-import uia.core.ui.primitives.shape.Shape;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
 
@@ -19,8 +20,8 @@ import java.util.*;
  * Implementation choices:
  * <ul>
  *     <li>
- *         the clipping functionality is enabled at build time. If you want to disable it, use the {@link #setClip(boolean)}
- *         method;
+ *         the clipping functionality is enabled at build time. If you want to disable it,
+ *         use the {@link #setClip(boolean)} method;
  *     </li>
  *     <li>
  *         the last added View is the first to handle events.
@@ -31,7 +32,7 @@ import java.util.*;
 public final class ComponentGroup extends WrapperView implements ViewGroup {
     private final List<View> views;
 
-    private final Shape clipShape;
+    private final Transform clipTransform;
 
     private float[] boundaries = {0f, 0f, 0f, 0f};
 
@@ -42,8 +43,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
         views = new ArrayList<>();
 
-        clipShape = new Shape();
-        clipShape.setGeometry(getGeometry());
+        clipTransform = new Transform();
     }
 
     @Override
@@ -136,21 +136,22 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     }
 
     /**
-     * Helper function. Updates clip shape position, dimension and rotation.
+     * Helper function. Updates clip Transform object.
      */
 
-    private void updateClipShape() {
+    private void updateClipTransform() {
         float[] bounds = getBounds();
-        clipShape.setPosition(bounds[0] + bounds[2] / 2f, bounds[1] + bounds[3] / 2f);
-        clipShape.setDimension(getWidth(), getHeight());
-        clipShape.setRotation(bounds[4]);
+        clipTransform
+                .setTranslation(bounds[0] + bounds[2] / 2f, bounds[1] + bounds[3] / 2f)
+                .setScale(getWidth(), getHeight())
+                .setRotation(bounds[4]);
     }
 
     @Override
     public void update(View parent) {
         super.update(parent);
         updateGroup();
-        updateClipShape();
+        updateClipTransform();
     }
 
     @Override
@@ -159,7 +160,8 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
         if (isVisible()) {
             if (clipRegion) {
-                graphics.setClip(clipShape);
+                Geometry geometry = getGeometry();
+                graphics.setClip(clipTransform, geometry.vertices(), geometry.toArray());
             }
             for (View i : views) {
                 i.draw(graphics);

@@ -5,14 +5,15 @@ import uia.physical.component.utility.ComponentUtility;
 import uia.physical.component.text.InlineTextRenderer;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.physical.component.text.TextRenderer;
+import uia.core.ui.primitives.shape.Transform;
+import uia.core.ui.primitives.shape.Geometry;
 import uia.physical.scroller.WheelScroller;
 import uia.core.ui.callbacks.OnMouseHover;
+import uia.core.ui.primitives.font.Font;
 import uia.physical.scroller.Scroller;
 import uia.core.ui.style.Style;
 import uia.core.ui.ViewText;
 import uia.core.ui.Graphics;
-import uia.core.ui.primitives.shape.Shape;
-import uia.core.ui.primitives.font.Font;
 import uia.core.ui.View;
 
 /**
@@ -29,7 +30,7 @@ public final class ComponentText extends WrapperView implements ViewText {
 
     private final TextRenderer[] textRenderer;
 
-    private final Shape clipShape;
+    private final Transform clipTransform;
 
     private String text = "";
     private String description = "";
@@ -45,10 +46,12 @@ public final class ComponentText extends WrapperView implements ViewText {
 
         scroller = new Scroller[]{new WheelScroller(), new WheelScroller()};
 
-        textRenderer = new TextRenderer[]{new InlineTextRenderer(), new MultilineTextRenderer()};
+        textRenderer = new TextRenderer[]{
+                new InlineTextRenderer(),
+                new MultilineTextRenderer()
+        };
 
-        clipShape = new Shape();
-        clipShape.setGeometry(getGeometry());
+        clipTransform = new Transform();
     }
 
     @Override
@@ -155,9 +158,13 @@ public final class ComponentText extends WrapperView implements ViewText {
      */
 
     private void updateClipShape(float[] bounds, float width, float height) {
-        clipShape.setPosition(bounds[0] + bounds[2] / 2f, bounds[1] + bounds[3] / 2f);
-        clipShape.setDimension(width, height);
-        clipShape.setRotation(bounds[4]);
+        clipTransform
+                .setTranslation(
+                        bounds[0] + bounds[2] / 2f,
+                        bounds[1] + bounds[3] / 2f
+                )
+                .setScale(width, height)
+                .setRotation(bounds[4]);
     }
 
     @Override
@@ -180,11 +187,12 @@ public final class ComponentText extends WrapperView implements ViewText {
         super.draw(graphics);
 
         if (isVisible()) {
+            Geometry geometry = getGeometry();
             Style style = getStyle();
             graphics
                     .setTextColor(style.getTextColor())
                     .setFont(style.getFont())
-                    .setClip(clipShape);
+                    .setClip(clipTransform, geometry.vertices(), geometry.toArray());
 
             String textToDisplay = !text.isEmpty() ? text : description;
             int renderer = singleLine ? 0 : 1;

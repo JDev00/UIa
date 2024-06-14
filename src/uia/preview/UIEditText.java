@@ -3,13 +3,14 @@ package uia.preview;
 import uia.core.ui.primitives.Key;
 import uia.core.ui.primitives.ScreenTouch;
 import uia.core.ui.primitives.color.Color;
-import uia.core.ui.primitives.shape.Shape;
+import uia.core.ui.primitives.shape.Geometry;
 import uia.core.ui.Graphics;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnKeyPressed;
 import uia.core.ui.callbacks.OnMouseExit;
 import uia.core.ui.callbacks.OnMouseHover;
 import uia.core.ui.primitives.font.Font;
+import uia.core.ui.primitives.shape.Transform;
 import uia.core.ui.style.Style;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.core.ui.style.TextVerticalAlignment;
@@ -43,8 +44,9 @@ public class UIEditText extends WrapperViewText {
     private final List<Integer> illegalCodes = new ArrayList<>();
 
     private final Color hightlightColor;
-    private final Shape highlight;
-    private final Shape clipShape = new Shape();
+    private final Transform highlightTransform;
+    private final Geometry highlightGeometry;
+    private final Transform clipTransform;
     private Cursor cursor;
 
     private int index;
@@ -100,12 +102,17 @@ public class UIEditText extends WrapperViewText {
         illegalCodes.add(226);  // KEYPAD LEFT_ARROW
         illegalCodes.add(227);  // KEYPAD RIGHT_ARROW*/
 
-        highlight = new Shape();
-        Geometries.rect(highlight.getGeometry());
+        cursor = new Cursor(view.getID());
 
+        // highlight
         hightlightColor = Color.createColor(65, 105, 225, 126);
 
-        cursor = new Cursor(view.getID());
+        highlightTransform = new Transform();
+
+        highlightGeometry = Geometries.rect(new Geometry());
+
+        // clip
+        clipTransform = new Transform();
     }
 
     @Override
@@ -388,15 +395,15 @@ public class UIEditText extends WrapperViewText {
         int iMax = getMaxIndex();
         float width = font.getWidth(iMin, iMax - iMin, chars);
         float height = font.getLineHeight();
-        highlight.setPosition(
-                boxPosition[0] + width / 2f,
-                boxPosition[1] + height / 2f
-        );
-        highlight.setDimension(
-                width,
-                height
-        );
-        graphics.drawShape(highlight);
+
+        highlightTransform
+                .setTranslation(
+                        boxPosition[0] + width / 2f,
+                        boxPosition[1] + height / 2f
+                )
+                .setScale(width, height)
+                .setRotation(0f);
+        graphics.drawShape(highlightTransform, highlightGeometry.vertices(), highlightGeometry.toArray());
     }
 
     /**
@@ -455,12 +462,14 @@ public class UIEditText extends WrapperViewText {
 
                 diff += ax * (width - lineWidth) / 2f;// aligner
 
-                highlight.setPosition(
-                        x + diff + wShape / 2f,
-                        y + (line - 0.5f) * lineHeight
-                );
-                highlight.setDimension(wShape, lineHeight);
-                graphics.drawShape(highlight);
+                highlightTransform
+                        .setTranslation(
+                                x + diff + wShape / 2f,
+                                y + (line - 0.5f) * lineHeight
+                        )
+                        .setScale(wShape, lineHeight)
+                        .setRotation(0f);
+                graphics.drawShape(highlightTransform, highlightGeometry.vertices(), highlightGeometry.toArray());
 
                 o = i;
                 line++;
@@ -523,7 +532,7 @@ public class UIEditText extends WrapperViewText {
         super.update(parent);
 
         if (isVisible()) {
-            ComponentUtility.makeShapeForClipRegion(this, clipShape);
+            ComponentUtility.makeTransformForClipRegion(this, 1f, 1f, clipTransform);
 
             int sol = 0;  // start of line
             int eol = -1; // end of line
@@ -582,7 +591,9 @@ public class UIEditText extends WrapperViewText {
         super.draw(graphics);
 
         if (isVisible()) {
-            graphics.setClip(clipShape);
+            Geometry geometry = getGeometry();
+            graphics.setClip(clipTransform, geometry.vertices(), geometry.toArray());
+
             drawBox(graphics);
             if (isOnFocus()) {
                 cursor.draw(graphics);

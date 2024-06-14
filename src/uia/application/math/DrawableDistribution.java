@@ -1,23 +1,23 @@
 package uia.application.math;
 
 import uia.physical.component.utility.ComponentUtility;
-import uia.core.ui.primitives.shape.NormalizedVertex;
+import uia.core.ui.primitives.shape.Transform;
+import uia.core.ui.primitives.shape.Geometry;
+import uia.core.ui.primitives.color.Color;
 import uia.physical.theme.Theme;
 import uia.utility.MathUtility;
-import uia.core.ui.primitives.shape.Geometry;
 import uia.utility.Geometries;
-import uia.core.ui.primitives.color.Color;
-import uia.core.ui.primitives.shape.Shape;
 import uia.core.ui.Graphics;
 
 import java.util.Objects;
 
 /**
- * A DrawableDistribution defines the graphical settings to draw a {@link PointDistribution} on screen.
+ * The DrawableDistribution defines the graphical settings to draw a {@link PointDistribution} on screen.
  */
 
 public class DrawableDistribution extends PointDistribution {
-    private final Shape shapeMarker;
+    private final Transform markerTransform;
+    private final Geometry geometryMarker;
     private Color lineColor;
     private Color pointColor;
     private float lineWidth = 2;
@@ -27,8 +27,9 @@ public class DrawableDistribution extends PointDistribution {
     private boolean enablePoint = true;
 
     public DrawableDistribution() {
-        shapeMarker = new Shape();
-        shapeMarker.setGeometry(Geometries.rect(shapeMarker.getGeometry()));
+        geometryMarker = Geometries.rect(new Geometry());
+
+        markerTransform = new Transform();
 
         lineColor = Theme.BLACK;
         pointColor = Theme.RED;
@@ -40,6 +41,7 @@ public class DrawableDistribution extends PointDistribution {
      * Enables or disables the drawing of points.
      *
      * @param enablePoint true to draw points
+     * @return this DrawableDistribution
      */
 
     public DrawableDistribution enablePoint(boolean enablePoint) {
@@ -51,6 +53,7 @@ public class DrawableDistribution extends PointDistribution {
      * Sets the point size.
      *
      * @param pointSize the point size greater than or equal to zero
+     * @return this DrawableDistribution
      */
 
     public DrawableDistribution setPointSize(float pointSize) {
@@ -62,6 +65,7 @@ public class DrawableDistribution extends PointDistribution {
      * Sets the point color.
      *
      * @param color the point color
+     * @return this DrawableDistribution
      * @throws NullPointerException if {@code color == null}
      */
 
@@ -77,6 +81,7 @@ public class DrawableDistribution extends PointDistribution {
      * Enables or disables the line that connects each point.
      *
      * @param enableLine true to enable the line
+     * @return this DrawableDistribution
      */
 
     public DrawableDistribution enableLine(boolean enableLine) {
@@ -88,6 +93,7 @@ public class DrawableDistribution extends PointDistribution {
      * Sets the color of the line connecting two points.
      *
      * @param color the line color
+     * @return this DrawableDistribution
      * @throws NullPointerException if {@code color == null}
      */
 
@@ -101,6 +107,7 @@ public class DrawableDistribution extends PointDistribution {
      * Sets the width of the line connecting two points.
      *
      * @param lineWidth the line width greater than or equal to zero
+     * @return this DrawableDistribution
      * @throws IllegalArgumentException if {@code lineWidth < 0}
      */
 
@@ -116,14 +123,15 @@ public class DrawableDistribution extends PointDistribution {
      * Sets the geometry used to render the point marker.
      *
      * @param markerGeometry a not null {@link Geometry}
+     * @return this DrawableDistribution
      */
 
     public DrawableDistribution setMarker(Geometry markerGeometry) {
-        Geometry internalGeometry = shapeMarker.getGeometry();
-        internalGeometry.removeAllVertices();
+        geometryMarker.removeAllVertices();
         for (int i = 0; i < markerGeometry.vertices(); i++) {
-            NormalizedVertex vertex = markerGeometry.get(i);
-            internalGeometry.addVertex(vertex.getX(), vertex.getY());
+            float vertexX = markerGeometry.getX(i);
+            float vertexY = markerGeometry.getY(i);
+            geometryMarker.addVertex(vertexX, vertexY);
         }
         return this;
     }
@@ -162,6 +170,7 @@ public class DrawableDistribution extends PointDistribution {
         float xMax = getMax(PointDistribution.AXIS.X);
         float yMax = getMax(PointDistribution.AXIS.Y);
 
+        // draws line between points
         if (enableLine) {
             graphics
                     .setShapeBorderWidth(lineWidth)
@@ -183,13 +192,14 @@ public class DrawableDistribution extends PointDistribution {
                         nextPointX, nextPointY, rotation,
                         xMin, xMax, yMin, yMax);
 
-                graphics.drawShape(
+                graphics.drawShape(null, 4,
                         markerPosition[0], markerPosition[1],
                         nextMarkerPosition[0], nextMarkerPosition[1]
                 );
             }
         }
 
+        // draws point
         if (enablePoint) {
             graphics
                     .setShapeColor(pointColor)
@@ -204,9 +214,10 @@ public class DrawableDistribution extends PointDistribution {
                         pointX, pointY, rotation,
                         xMin, xMax, yMin, yMax);
 
-                shapeMarker.setPosition(markerPosition[0], markerPosition[1]);
-                shapeMarker.setDimension(pointSize, pointSize);
-                graphics.drawShape(shapeMarker);
+                markerTransform
+                        .setTranslation(markerPosition[0], markerPosition[1])
+                        .setScale(pointSize, pointSize);
+                graphics.drawShape(markerTransform, geometryMarker.vertices(), geometryMarker.toArray());
             }
         }
     }
