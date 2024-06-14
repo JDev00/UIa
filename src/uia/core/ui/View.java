@@ -2,6 +2,7 @@ package uia.core.ui;
 
 import uia.core.basement.*;
 import uia.core.message.Message;
+import uia.core.ui.primitives.Drawable;
 
 /**
  * View ADT.
