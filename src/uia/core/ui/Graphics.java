@@ -1,7 +1,7 @@
 package uia.core.ui;
 
+import uia.core.ui.primitives.shape.Transform;
 import uia.core.ui.primitives.color.Color;
-import uia.core.ui.primitives.shape.Shape;
 import uia.core.ui.primitives.font.Font;
 import uia.core.ui.primitives.Image;
 
@@ -74,41 +74,32 @@ public interface Graphics {
     Graphics setShapeColor(Color color, Color borderColor);
 
     /**
-     * Draws an on-the-fly shape on this Graphics.
+     * Draws a shape on this Graphics.
      *
-     * @param vertices an array with the shape vertices. The array shape must be: [x1,y1, x2,y2, x3,y3, ...]
+     * @param transform the shape transformation; it could be null
+     * @param vertices  the shape vertices. The array shape must be: [x1,y1, x2,y2, x3,y3, ...]
      * @return this Graphics
      * @throws NullPointerException     if {@code vertices == null}
-     * @throws IllegalArgumentException if {@code vertices doesn't follow the required array shape}
-     * @apiNote drawShape(float...) is less powerful compared to {@link #drawShape(Shape)}, in fact
-     * vertices don't support translation, scaling and rotation. However, vertices can be expressed in a free form
-     * without value constraints.
-     * @implSpec This method must draw a self-contained shape and must not interfere with the {@link #drawShape(Shape)}.
-     * The first vertex must be used to close the shape.
-     * @since 1.4.0
+     * @throws IllegalArgumentException if {@code 'vertices' doesn't follow the required array shape}
+     * @since 1.6.0
      */
 
-    Graphics drawShape(float... vertices);
-
-    /**
-     * Draws the given {@link Shape} on this Graphics.
-     *
-     * @param shape a not null {@link Shape} to be drawn
-     * @return this Graphics
-     * @throws NullPointerException if {@code font == null}
-     */
-
-    Graphics drawShape(Shape shape);
+    Graphics drawShape(Transform transform, float... vertices);
 
     /**
      * Sets the current clipping area to an arbitrary clip shape.
      * This method set the user clip, which is independent of the clipping associated
      * with device bounds and window visibility.
      *
-     * @param shape a {@link Shape} to use to set the clip; it could be null
+     * @param transform the shape transformation; it could be null
+     * @param vertices  the shape vertices. The array shape must be: [x1,y1, x2,y2, x3,y3, ...]
+     * @return this Graphics
+     * @throws NullPointerException     if {@code vertices == null}
+     * @throws IllegalArgumentException if {@code 'vertices' doesn't follow the required array shape}
+     * @since 1.6.0
      */
 
-    void setClip(Shape shape);
+    Graphics setClip(Transform transform, float... vertices);
 
     /**
      * Restores the previous clipping area.
@@ -175,5 +166,5 @@ public interface Graphics {
      * @throws NullPointerException if {@code image == null}
      */
 
-    Graphics drawImage(Image image, float x, float y, float width, float height, float rotation);
+    Graphics drawImage(Transform transform, Image image, float x, float y, float width, float height, float rotation);
 }
