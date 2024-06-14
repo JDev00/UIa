@@ -3,11 +3,12 @@ package uia.physical.component;
 import uia.physical.component.utility.ComponentUtility;
 import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.EventTouchScreenMessage;
+import uia.core.ui.primitives.shape.GeometryUtility;
+import uia.core.ui.primitives.shape.Transform;
 import uia.core.ui.primitives.shape.Geometry;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.callbacks.CallbackStore;
 import uia.core.ui.primitives.ScreenTouch;
-import uia.core.ui.primitives.shape.Shape;
 import uia.core.message.MessageStore;
 import uia.core.basement.Callback;
 import uia.core.basement.Callable;
@@ -20,6 +21,7 @@ import uia.core.ui.View;
 
 import java.util.function.Consumer;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.List;
 
 import static java.lang.Math.max;
@@ -32,9 +34,11 @@ import static java.lang.Math.min;
 public final class Component implements View {
     private View parent;
 
-    private final Style style;
-    private final Shape shape;
+    private ColliderPolicy colliderPolicy = ColliderPolicy.SAT;
     private final Callable callable;
+    private final Transform transform;
+    private final Geometry geometry;
+    private final Style style;
 
     private final String id;
     private final float[] expanse = {1f, 1f, 1f, 1f, 0.185f};
@@ -56,10 +60,11 @@ public final class Component implements View {
 
         callable = new CallbackStore(4);
 
+        transform = new Transform();
+
         style = new Style();
 
-        shape = new Shape();
-        Geometries.rect(shape.getGeometry());
+        geometry = Geometries.rect(new Geometry());
     }
 
     /**
@@ -101,7 +106,7 @@ public final class Component implements View {
 
     @Override
     public Geometry getGeometry() {
-        return shape.getGeometry();
+        return geometry;
     }
 
     @Override
@@ -115,7 +120,6 @@ public final class Component implements View {
         container[2] = max(0, width);
         container[3] = max(0, height);
 
-        // TODO: is it correct?
         if (parent != null) {
             updateShape(parent);
         }
@@ -154,8 +158,9 @@ public final class Component implements View {
     }
 
     @Override
-    public void setColliderPolicy(ColliderPolicy policy) {
-        shape.setColliderPolicy(policy);
+    public void setColliderPolicy(ColliderPolicy colliderPolicy) {
+        Objects.requireNonNull(colliderPolicy);
+        this.colliderPolicy = colliderPolicy;
     }
 
     @Override
@@ -256,7 +261,7 @@ public final class Component implements View {
         boolean isBuilderDifferent = previousGeometryBuilderHashcode != currentGeometryBuilderHashcode;
         if (isGeometryToBeBuilt || isBuilderDifferent) {
             previousGeometryBuilderHashcode = currentGeometryBuilderHashcode;
-            geometryBuilder.accept(shape.getGeometry());
+            geometryBuilder.accept(geometry);
         }
     }
 
@@ -295,13 +300,14 @@ public final class Component implements View {
         dimension[0] = expanse[0] * componentWidth;
         dimension[1] = expanse[1] * componentHeight;
 
-        // updates shape
-        shape.setPosition(
-                ComponentUtility.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rot),
-                ComponentUtility.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rot)
-        );
-        shape.setDimension(dimension[0], dimension[1]);
-        shape.setRotation(rot + style.getRotation());
+        // updates geometry transformation
+        transform
+                .setTranslation(
+                        ComponentUtility.getPositionOnX(bounds[0], bounds[2], xDist, yDist, rot),
+                        ComponentUtility.getPositionOnY(bounds[1], bounds[3], xDist, yDist, rot)
+                )
+                .setRotation(rot + style.getRotation())
+                .setScale(dimension[0], dimension[1]);
     }
 
     /**
@@ -338,7 +344,7 @@ public final class Component implements View {
             graphics
                     .setShapeColor(style.getBackgroundColor(), style.getBorderColor())
                     .setShapeBorderWidth(style.getBorderWidth())
-                    .drawShape(shape);
+                    .drawShape(transform, geometry.vertices(), geometry.toArray());
         }
     }
 
@@ -352,14 +358,17 @@ public final class Component implements View {
         return dimension[1];
     }
 
+    private final float[] componentBounds = new float[5];
+
     @Override
     public float[] getBounds() {
-        return shape.getBounds();
+        GeometryUtility.computeBounds(transform, componentBounds);
+        return componentBounds;
     }
 
     @Override
     public boolean contains(float x, float y) {
-        return shape.contains(x, y);
+        return GeometryUtility.contains(colliderPolicy, transform, geometry, x, y);
     }
 
     @Override

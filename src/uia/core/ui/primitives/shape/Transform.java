@@ -2,6 +2,8 @@ package uia.core.ui.primitives.shape;
 
 import uia.utility.MathUtility;
 
+import java.util.Arrays;
+
 /**
  * Transform is responsible for keeping geometric transformations.
  * <br>
@@ -22,6 +24,14 @@ public final class Transform {
         translation = new float[]{0f, 0f};
         scale = new float[]{1f, 1f};
         rotation = 0f;
+    }
+
+    @Override
+    public String toString() {
+        return "Transform{translation=" + Arrays.toString(translation) +
+                ", scale=" + Arrays.toString(scale) +
+                ", rotation=" + rotation +
+                '}';
     }
 
     /**
