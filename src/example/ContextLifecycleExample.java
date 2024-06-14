@@ -1,6 +1,7 @@
 package example;
 
 import uia.physical.component.Component;
+import uia.physical.theme.Theme;
 import uia.platform.swing.ContextSwing;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.context.Context;
@@ -21,6 +22,9 @@ public class ContextLifecycleExample {
         Context context = createAWTContext();
 
         View view = createMockView();
+        view.getStyle()
+                .setBackgroundColor(Theme.RED);
+
         view.registerCallback((OnClick) touches -> {
             System.out.println("Terminated!");
             context.setLifecycleStage(Context.LifecycleStage.TERMINATED);
