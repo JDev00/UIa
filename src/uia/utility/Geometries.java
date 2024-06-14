@@ -162,7 +162,7 @@ public final class Geometries {
                 0.165f, -0.5f,
                 0.165f, 0.5f,
                 0.5f, 0.5f);
-        geometry.get(4).setPrimer(true);
+        //geometry.get(4).setPrimer(true);
         return geometry;
     }
 

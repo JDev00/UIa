@@ -1,70 +1,68 @@
 package uia.core.ui.primitives.shape;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.List;
+import uia.utility.MathUtility;
+
+import java.util.*;
 
 import static uia.utility.MathUtility.*;
 
 /**
- * Geometry has the responsibility to handle a set of normalized vertices.
+ * Geometry is responsible for handling a list of normalized vertices.
  * <br>
  * A normalized vertex has its dimensions (values) constrained between [-0.5, 0.5].
  */
 
-public class Geometry implements Iterable<NormalizedVertex> {
-    private final List<NormalizedVertex> vertices;
+public final class Geometry {
+    private static final int INIT_VERTICES = 8;
+    private static final int VERTICES_CHUNK_SIZE = 32;
+
+    private float[] vertices;
+    private int length = 0;
 
     public Geometry() {
-        vertices = new ArrayList<>();
+        vertices = new float[INIT_VERTICES];
     }
 
     @Override
     public String toString() {
         return "Geometry{" +
-                "vertices=" + vertices +
-                ", verticesNumber=" + vertices.size() +
+                "vertices=" + Arrays.toString(vertices) +
+                ", verticesNumber=" + vertices.length +
                 '}';
     }
 
     /**
-     * Removes all vertices from this geometry
+     * Removes all vertices from this geometry.
      *
      * @return this Geometry
      */
 
     public Geometry removeAllVertices() {
-        vertices.clear();
+        vertices = new float[INIT_VERTICES];
+        length = 0;
         return this;
     }
 
     /**
-     * Adds a vertex to this geometry and decides if it is a primer vertex.
-     * <br>
-     * A primer vertex is the vertex used to start a new piece of geometry.
+     * Adds a vertex to this geometry.
      *
-     * @param x      the vertex coordinate along x-axis
-     * @param y      the vertex coordinate along y-axis
-     * @param primer true to mark the vertex as primer
-     * @return this Geometry
-     */
-
-    public Geometry addVertex(float x, float y, boolean primer) {
-        vertices.add(new NormalizedVertex(x, y).setPrimer(vertices.isEmpty() || primer));
-        return this;
-    }
-
-    /**
-     * Adds a vertex to this geometry
-     *
-     * @param x the vertex coordinate along x-axis
-     * @param y the vertex coordinate along y-axis
+     * @param x the vertex coordinate along the x-axis
+     * @param y the vertex coordinate along the y-axis
      * @return this Geometry
      */
 
     public Geometry addVertex(float x, float y) {
-        return addVertex(x, y, false);
+        // increases the internal array used to hold vertices
+        if (2 * length == vertices.length) {
+            vertices = Arrays.copyOf(vertices, vertices.length + VERTICES_CHUNK_SIZE);
+        }
+
+        // updates geometry
+        vertices[2 * length] = MathUtility.constrain(x, -0.5f, 0.5f);
+        vertices[2 * length + 1] = MathUtility.constrain(y, -0.5f, 0.5f);
+        // updates geometry vertices count
+        length++;
+        return this;
     }
 
     /**
@@ -81,9 +79,31 @@ public class Geometry implements Iterable<NormalizedVertex> {
         if (vertices.length % 2 != 0) {
             throw new IllegalArgumentException("the 'vertices' shape must be [x1,y1, x2,y2, ... , xn, yn]");
         }
+
         for (int i = 0; i < vertices.length; i += 2) {
             addVertex(vertices[i], vertices[i + 1]);
         }
+        return this;
+    }
+
+    /**
+     * Sets the specified vertex.
+     *
+     * @param i the vertex position inside this geometry
+     * @param x the new vertex value along the x-axis
+     * @param y the new vertex value along the y-axis
+     * @return this Geometry
+     * @throws IndexOutOfBoundsException if {@code i < 0 || i >= vertices()}
+     */
+
+    public Geometry setVertex(int i, float x, float y) {
+        if (i < 0 || i >= vertices()) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        // updates vertex
+        vertices[2 * i] = x;
+        vertices[2 * i + 1] = y;
         return this;
     }
 
@@ -92,6 +112,10 @@ public class Geometry implements Iterable<NormalizedVertex> {
      * <br>
      * If the first vertex is removed and there are multiple vertices, the next one is
      * selected as the primer vertex.
+     * <br>
+     * Time complexity: O(n)
+     * <br>
+     * Space complexity: O(1)
      *
      * @param i the position of the vertex to remove
      * @return this Geometry
@@ -103,11 +127,13 @@ public class Geometry implements Iterable<NormalizedVertex> {
             throw new IndexOutOfBoundsException("the provided index 'i' is out of range. " +
                     "Current range: [0, " + (vertices() - 1) + "]");
         }
-        vertices.remove(i);
-        // if needed, set the first vertex as start point for geometry
-        if (i == 0 && !vertices.isEmpty()) {
-            vertices.get(0).setPrimer(true);
-        }
+
+        // removes the specified element
+        System.arraycopy(vertices, 2 * (i + 1), vertices, 2 * i, 2 * (length - i - 1));
+        vertices[2 * length - 1] = 0f;
+        vertices[2 * length - 2] = 0f;
+        // updates the number of vertices
+        length--;
         return this;
     }
 
@@ -116,24 +142,47 @@ public class Geometry implements Iterable<NormalizedVertex> {
      */
 
     public int vertices() {
-        return vertices.size();
+        return length;
     }
 
     /**
-     * Returns the specified vertex
+     * Returns the specified vertex.
+     * <br>
+     * Time complexity: T(1)
+     * <br>
+     * Space complexity: O(1)
      *
-     * @param i the position of the Vertex
-     * @return the specified {@link NormalizedVertex}
+     * @param i the position of the vertex
+     * @return the specified vertex on the x-axis
      * @throws IndexOutOfBoundsException if {@code i < 0 || i >= vertices()}
      */
 
-    public NormalizedVertex get(int i) {
-        return vertices.get(i);
+    public float getX(int i) {
+        return vertices[2 * i];
     }
 
-    @Override
-    public Iterator<NormalizedVertex> iterator() {
-        return vertices.iterator();
+    /**
+     * Returns the specified vertex.
+     * <br>
+     * Time complexity: T(1)
+     * <br>
+     * Space complexity: O(1)
+     *
+     * @param i the position of the vertex
+     * @return the specified vertex on the y-axis
+     * @throws IndexOutOfBoundsException if {@code i < 0 || i >= vertices()}
+     */
+
+    public float getY(int i) {
+        return vertices[2 * i + 1];
+    }
+
+    /**
+     * @return this Geometry as an array
+     */
+
+    public float[] toArray() {
+        return vertices;
     }
 
     /**
@@ -147,12 +196,13 @@ public class Geometry implements Iterable<NormalizedVertex> {
 
     public static Geometry rotate(Geometry geometry, float radians) {
         Objects.requireNonNull(geometry);
-        for (NormalizedVertex vertex : geometry) {
-            float vertexX = vertex.getX();
-            float vertexY = vertex.getY();
+
+        for (int i = 0; i < geometry.vertices(); i++) {
+            float vertexX = geometry.getX(i);
+            float vertexY = geometry.getY(i);
             float newVertexX = rotateX(vertexX, vertexY, radians);
             float newVertexY = rotateY(vertexX, vertexY, radians);
-            vertex.set(newVertexX, newVertexY);
+            geometry.setVertex(i, newVertexX, newVertexY);
         }
         return geometry;
     }
@@ -176,12 +226,13 @@ public class Geometry implements Iterable<NormalizedVertex> {
         if (scaleY <= 0) {
             throw new IllegalArgumentException("scaleY must be greater than 0");
         }
-        for (NormalizedVertex vertex : geometry) {
-            float vx = vertex.getX();
-            float vy = vertex.getY();
-            float nx = scaleX * vx;
-            float ny = scaleY * vy;
-            vertex.set(nx, ny);
+
+        for (int i = 0; i < geometry.vertices(); i++) {
+            float vertexX = geometry.getX(i);
+            float vertexY = geometry.getY(i);
+            float newVertexX = scaleX * vertexX;
+            float newVertexY = scaleY * vertexY;
+            geometry.setVertex(i, newVertexX, newVertexY);
         }
         return geometry;
     }
