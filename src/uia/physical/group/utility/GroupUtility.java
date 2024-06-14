@@ -1,19 +1,22 @@
 package uia.physical.group.utility;
 
 import uia.core.ui.primitives.ScreenTouch;
+import uia.physical.message.Messages;
 import uia.core.message.Message;
 import uia.core.ui.ViewGroup;
-import uia.physical.message.Messages;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+import java.util.List;
 
 /**
  * Collection of functions for ViewGroup components implementation.
  */
 
-public class GroupUtility {
+public final class GroupUtility {
+
+    private GroupUtility() {
+    }
 
     /**
      * Dispatches the specified message to the group children.

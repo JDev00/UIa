@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * LayoutUtility collects utility functions for measuring layout.
  */
-public class LayoutUtility {
+public final class LayoutUtility {
 
     private LayoutUtility() {
     }
