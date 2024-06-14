@@ -174,5 +174,5 @@ public interface Graphics {
      * @throws NullPointerException if {@code image == null}
      */
 
-    Graphics drawImage(Transform transform, Image image, float x, float y, float width, float height, float rotation);
+    Graphics drawImage(Image image, float x, float y, float width, float height, float rotation);
 }
