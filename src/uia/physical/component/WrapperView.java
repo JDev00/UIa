@@ -1,6 +1,6 @@
 package uia.physical.component;
 
-import uia.core.ui.primitives.shape.Geometry;
+import uia.core.ui.primitives.geometry.Geometry;
 import uia.core.basement.Callback;
 import uia.core.message.Message;
 import uia.core.ui.style.Style;

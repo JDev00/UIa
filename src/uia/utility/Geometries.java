@@ -1,6 +1,6 @@
 package uia.utility;
 
-import uia.core.ui.primitives.shape.Geometry;
+import uia.core.ui.primitives.geometry.Geometry;
 
 import java.util.Objects;
 

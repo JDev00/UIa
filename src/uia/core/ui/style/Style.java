@@ -1,6 +1,6 @@
 package uia.core.ui.style;
 
-import uia.core.ui.primitives.shape.Geometry;
+import uia.core.ui.primitives.geometry.Geometry;
 import uia.core.ui.primitives.color.Color;
 import uia.core.ui.primitives.font.Font;
 import uia.physical.theme.Theme;

@@ -1,4 +1,4 @@
-package uia.core.ui.primitives.shape;
+package uia.core.ui.primitives.geometry;
 
 import uia.utility.MathUtility;
 

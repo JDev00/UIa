@@ -1,8 +1,8 @@
 package uia.application.math;
 
 import uia.physical.component.utility.ComponentUtility;
-import uia.core.ui.primitives.shape.Transform;
-import uia.core.ui.primitives.shape.Geometry;
+import uia.core.ui.primitives.geometry.Transform;
+import uia.core.ui.primitives.geometry.Geometry;
 import uia.physical.component.WrapperView;
 import uia.core.ui.primitives.color.Color;
 import uia.physical.theme.Theme;

@@ -1,6 +1,6 @@
 package uia.core.basement;
 
-import uia.core.ui.primitives.shape.Geometry;
+import uia.core.ui.primitives.geometry.Geometry;
 import uia.core.ui.style.Style;
 import uia.core.ui.Graphics;
 

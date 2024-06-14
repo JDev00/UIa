@@ -2,7 +2,7 @@ package uia.application.calendar;
 
 import uia.physical.component.utility.ComponentUtility;
 import uia.core.ui.style.TextHorizontalAlignment;
-import uia.core.ui.primitives.shape.Geometry;
+import uia.core.ui.primitives.geometry.Geometry;
 import uia.physical.component.WrapperView;
 import uia.core.ui.primitives.color.Color;
 import uia.physical.group.ComponentGroup;

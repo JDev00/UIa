@@ -1,6 +1,6 @@
 package uia.platform.swing.graphics;
 
-import uia.core.ui.primitives.shape.Transform;
+import uia.core.ui.primitives.geometry.Transform;
 import uia.core.ui.primitives.color.Color;
 import uia.core.ui.primitives.font.Font;
 import uia.core.ui.primitives.Image;

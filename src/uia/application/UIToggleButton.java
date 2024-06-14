@@ -2,7 +2,7 @@ package uia.application;
 
 import uia.physical.component.utility.ComponentUtility;
 import uia.core.ui.style.TextVerticalAlignment;
-import uia.core.ui.primitives.shape.Geometry;
+import uia.core.ui.primitives.geometry.Geometry;
 import uia.physical.component.ComponentText;
 import uia.physical.component.WrapperView;
 import uia.physical.group.ComponentGroup;
