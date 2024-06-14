@@ -77,14 +77,17 @@ public interface Graphics {
      * Draws a shape on this Graphics.
      *
      * @param transform the shape transformation; it could be null
+     * @param length    the number of vertices to be drawn
      * @param vertices  the shape vertices. The array shape must be: [x1,y1, x2,y2, x3,y3, ...]
      * @return this Graphics
      * @throws NullPointerException     if {@code vertices == null}
-     * @throws IllegalArgumentException if {@code 'vertices' doesn't follow the required array shape}
+     * @throws IllegalArgumentException if {@code 'vertices' doesn't follow the required array shape
+     *                                  || length < 0
+     *                                  || length >= vertices.length}
      * @since 1.6.0
      */
 
-    Graphics drawShape(Transform transform, float... vertices);
+    Graphics drawShape(Transform transform, int length, float... vertices);
 
     /**
      * Sets the current clipping area to an arbitrary clip shape.
@@ -92,14 +95,17 @@ public interface Graphics {
      * with device bounds and window visibility.
      *
      * @param transform the shape transformation; it could be null
+     * @param length    the number of vertices to be drawn
      * @param vertices  the shape vertices. The array shape must be: [x1,y1, x2,y2, x3,y3, ...]
      * @return this Graphics
      * @throws NullPointerException     if {@code vertices == null}
-     * @throws IllegalArgumentException if {@code 'vertices' doesn't follow the required array shape}
+     * @throws IllegalArgumentException if {@code 'vertices' doesn't follow the required array shape
+     *                                  || length < 0
+     *                                  || length >= vertices.length}
      * @since 1.6.0
      */
 
-    Graphics setClip(Transform transform, float... vertices);
+    Graphics setClip(Transform transform, int length, float... vertices);
 
     /**
      * Restores the previous clipping area.
