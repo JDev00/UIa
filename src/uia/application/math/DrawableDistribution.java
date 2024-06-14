@@ -192,7 +192,7 @@ public class DrawableDistribution extends PointDistribution {
                         nextPointX, nextPointY, rotation,
                         xMin, xMax, yMin, yMax);
 
-                graphics.drawShape(null, 4,
+                graphics.drawShape(null, 2,
                         markerPosition[0], markerPosition[1],
                         nextMarkerPosition[0], nextMarkerPosition[1]
                 );
