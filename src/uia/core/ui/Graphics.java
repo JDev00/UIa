@@ -95,10 +95,9 @@ public interface Graphics {
      * with device bounds and window visibility.
      *
      * @param transform the shape transformation; it could be null
-     * @param length    the number of vertices to be drawn
-     * @param vertices  the shape vertices. The array shape must be: [x1,y1, x2,y2, x3,y3, ...]
+     * @param length    the number of vertices to be drawn; if 'vertices' is null, it is ignored
+     * @param vertices  the shape vertices. The array shape must be: [x1,y1, x2,y2, x3,y3, ...]; it could be null
      * @return this Graphics
-     * @throws NullPointerException     if {@code vertices == null}
      * @throws IllegalArgumentException if {@code 'vertices' doesn't follow the required array shape
      *                                  || length < 0
      *                                  || length >= vertices.length}
