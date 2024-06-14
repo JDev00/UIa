@@ -109,9 +109,11 @@ public interface Graphics {
 
     /**
      * Restores the previous clipping area.
+     *
+     * @return this Graphics
      */
 
-    void restoreClip();
+    Graphics restoreClip();
 
     // text
 
