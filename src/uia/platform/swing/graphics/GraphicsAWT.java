@@ -1,12 +1,12 @@
 package uia.platform.swing.graphics;
 
-import uia.physical.theme.Theme;
-import uia.utility.MathUtility;
+import uia.core.ui.primitives.shape.Transform;
 import uia.core.ui.primitives.color.Color;
-import uia.core.ui.primitives.shape.Shape;
-import uia.core.ui.Graphics;
 import uia.core.ui.primitives.font.Font;
 import uia.core.ui.primitives.Image;
+import uia.physical.theme.Theme;
+import uia.utility.MathUtility;
+import uia.core.ui.Graphics;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -122,38 +122,27 @@ public class GraphicsAWT implements Graphics {
     }
 
     @Override
-    public Graphics drawShape(float... vertices) {
-        Objects.requireNonNull(vertices);
-        if (vertices.length % 2 != 0) {
-            throw new IllegalArgumentException("The array shape must be [x1,y1, x2,y2, x3,y3, ...]");
-        }
-
-        GraphicsAWTUtility.createPath(vertices, shapePath);
+    public Graphics drawShape(Transform transform, int length, float... vertices) {
+        GraphicsAWTUtility.buildShape(transform, length, vertices, shapePath);
         drawPath(shapePath);
         return this;
     }
 
     @Override
-    public Graphics drawShape(Shape shape) {
-        GraphicsAWTUtility.createPath(shape, shapePath);
-        drawPath(shapePath);
-        return this;
-    }
-
-    @Override
-    public void setClip(Shape shape) {
+    public Graphics setClip(Transform transform, int length, float... vertices) {
         Graphics2D graphics = getGraphics();
-        if (shape != null) {
-            GraphicsAWTUtility.createPath(shape, clipPath);
+        if (vertices != null) {
+            GraphicsAWTUtility.buildShape(transform, length, vertices, clipPath);
             graphics.clip(clipPath);
         } else {
             graphics.setClip(null);
         }
         clipPaths.addLast(graphics.getClip());
+        return this;
     }
 
     @Override
-    public void restoreClip() {
+    public Graphics restoreClip() {
         Graphics2D graphics = getGraphics();
         try {
             clipPaths.removeLast();
@@ -161,6 +150,7 @@ public class GraphicsAWT implements Graphics {
         } catch (Exception error) {
             graphics.setClip(null);
         }
+        return this;
     }
 
     // text

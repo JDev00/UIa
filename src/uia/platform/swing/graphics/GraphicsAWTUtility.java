@@ -1,7 +1,7 @@
 package uia.platform.swing.graphics;
 
-import uia.core.ui.primitives.shape.Geometry;
-import uia.core.ui.primitives.shape.Shape;
+import uia.core.ui.primitives.shape.GeometryUtility;
+import uia.core.ui.primitives.shape.Transform;
 import uia.core.ui.primitives.color.Color;
 import uia.core.ui.primitives.font.Font;
 import uia.core.ui.primitives.Image;
@@ -106,68 +106,43 @@ public final class GraphicsAWTUtility {
     // Shape
 
     /**
-     * Creates a Path object suitable for AWT.
+     * Helper function. Populates a Path object suitable for AWT.
      * <br>
      * Time required: T(n)
      * <br>
      * Space required: O(1).
      *
-     * @param vertices   the vertices used to build the Path object
-     * @param targetPath the target Path object
-     * @throws NullPointerException if {@code vertices == null || targetPath == null}
+     * @param transform the Transform object used to transform the given vertices; it could be null
      */
 
-    public static void createPath(float[] vertices, Path2D targetPath) {
-        Objects.requireNonNull(vertices);
+    public static void buildShape(Transform transform, int length, float[] vertices, Path2D targetPath) {
         Objects.requireNonNull(targetPath);
 
         targetPath.reset();
 
-        for (int i = 0; i < vertices.length; i += 2) {
-            float x = vertices[i];
-            float y = vertices[i + 1];
-            if (targetPath.getCurrentPoint() == null) {
-                targetPath.moveTo(x, y);
-            } else {
-                targetPath.lineTo(x, y);
-            }
-        }
+        if (length > 0) {
+            boolean firstVertex = true;
+            float[] transformedVertex = {0f, 0f};
 
-        if (vertices.length > 0) {
-            targetPath.closePath();
-        }
-    }
+            for (int i = 0; i < length; i++) {
+                float vertexX = vertices[2 * i];
+                float vertexY = vertices[2 * i + 1];
 
-    /**
-     * Creates a Path object suitable for AWT.
-     * <br>
-     * Time required: T(n)
-     * <br>
-     * Space required: O(1).
-     *
-     * @param shape      the Shape to build as a Path
-     * @param targetPath the Path object used to contains the Shape points
-     * @throws NullPointerException if {@code shape == null || targetPath == null}
-     */
-
-    public static void createPath(Shape shape, Path2D targetPath) {
-        Objects.requireNonNull(shape);
-        Objects.requireNonNull(targetPath);
-
-        targetPath.reset();
-
-        Geometry geometry = shape.getGeometry();
-        Shape.TransformedVertex target = new Shape.TransformedVertex();
-
-        if (geometry.vertices() > 0) {
-            for (int i = 0; i < geometry.vertices(); i++) {
-                Shape.transform(shape, geometry.get(i), target);
-                float x = target.x;
-                float y = target.y;
-                if (target.primer) {
-                    targetPath.moveTo(x, y);
+                // calculates the transformed vertex
+                if (transform == null) {
+                    transformedVertex[0] = vertexX;
+                    transformedVertex[1] = vertexY;
                 } else {
-                    targetPath.lineTo(x, y);
+                    GeometryUtility.computeTransformedVertex(transform, vertexX, vertexY, transformedVertex);
+                }
+
+                float newVertexX = transformedVertex[0];
+                float newVertexY = transformedVertex[1];
+                if (firstVertex) {
+                    firstVertex = false;
+                    targetPath.moveTo(newVertexX, newVertexY);
+                } else {
+                    targetPath.lineTo(newVertexX, newVertexY);
                 }
             }
 
