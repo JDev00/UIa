@@ -1,10 +1,10 @@
 package uia.physical.component.utility;
 
 import uia.core.ui.callbacks.OnMessageReceived;
+import uia.core.ui.primitives.shape.Transform;
 import uia.core.ui.primitives.shape.Geometry;
 import uia.core.ui.callbacks.OnKeyReleased;
 import uia.core.ui.primitives.ScreenTouch;
-import uia.core.ui.primitives.shape.Shape;
 import uia.core.ui.callbacks.OnKeyPressed;
 import uia.core.ui.callbacks.OnKeyTyped;
 import uia.core.ui.primitives.Key;
@@ -22,6 +22,7 @@ import static uia.utility.MathUtility.rotateY;
 /**
  * Collection of utilities for View implementations.
  */
+
 public final class ComponentUtility {
 
     private ComponentUtility() {
@@ -159,44 +160,29 @@ public final class ComponentUtility {
     }
 
     /**
-     * Makes the specified Shape suitable for the clip region operation.
+     * Makes the given Transform Object suitable for clip region operation.
+     * <br>
+     * Time complexity: T(1)
+     * <br>
+     * Space complexity: O(1)
      *
-     * @param view  a not null View used to prepare the Shape
-     * @param shape a not null Shape to be prepared to the clip region operation
-     * @throws NullPointerException if {@code view == null or {@code shape == null}
+     * @throws NullPointerException if {@code view == null || targetTransform == null}
      */
 
-    public static void makeShapeForClipRegion(View view, Shape shape) {
-        makeShapeForClipRegion(view, shape, 1f, 1f);
-    }
-
-    /**
-     * Makes the specified Shape suitable for the clip region operation.
-     *
-     * @param view   a not null View used to prepare the Shape
-     * @param shape  a not null Shape to be prepared to the clip region operation
-     * @param scaleX a value (> 0) used to scale the shape on the x-axis
-     * @param scaleY a value (> 0) used to scale the shape on the y-axis
-     * @throws NullPointerException if {@code view == null or {@code shape == null}
-     */
-
-    public static void makeShapeForClipRegion(View view, Shape shape,
-                                              float scaleX, float scaleY) {
+    public static void makeTransformForClipRegion(View view, float scaleX, float scaleY,
+                                                  Transform targetTransform) {
+        Objects.requireNonNull(targetTransform);
         Objects.requireNonNull(view);
-        Objects.requireNonNull(shape);
-        if (scaleX <= 0) {
-            throw new IllegalArgumentException("scaleX must be greater than 0");
-        }
-        if (scaleY <= 0) {
-            throw new IllegalArgumentException("scaleY must be greater than 0");
-        }
+
         float[] bounds = view.getBounds();
         float width = view.getWidth();
         float height = view.getHeight();
-        shape.setGeometry(view.getGeometry());
-        shape.setPosition(bounds[0] + bounds[2] / 2f, bounds[1] + bounds[3] / 2f);
-        shape.setDimension(scaleX * width, scaleY * height);
-        shape.setRotation(bounds[4]);
+
+        // updates the target Transform object
+        targetTransform
+                .setTranslation(bounds[0] + bounds[2] / 2f, bounds[1] + bounds[3] / 2f)
+                .setScale(scaleX * width, scaleY * height)
+                .setRotation(bounds[4]);
     }
 
     /**
