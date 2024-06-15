@@ -52,7 +52,7 @@ public class Font {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, fontStyle, size, leadingFactor);
+        return Objects.hash(fontStyle, name, leadingFactor, descent, leading, ascent, size);
     }
 
     @Override
