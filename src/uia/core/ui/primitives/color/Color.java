@@ -164,8 +164,8 @@ public final class Color {
     /**
      * Creates a new Color based on the specified hex value.
      *
-     * @param hex a not null hex value
-     * @return a new {@link Color} or null if the specified hex is not valid
+     * @param hex a hex value
+     * @return a new Color or null if the specified hex is not valid
      */
 
     public static Color createColor(String hex) {
