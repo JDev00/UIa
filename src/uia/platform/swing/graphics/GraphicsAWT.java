@@ -16,32 +16,35 @@ import java.awt.geom.Path2D;
 import java.awt.Graphics2D;
 import java.util.*;
 
-// TODO: to improve performance
-
 /**
  * {@link Graphics} implementation based on Java AWT.
  */
 
 public class GraphicsAWT implements Graphics {
     private final Supplier<Graphics2D> graphics2DSupplier;
+    private final GraphicsAWTCache graphicsAWTCache;
 
     private final Deque<java.awt.Shape> clipPaths;
     private final Path2D clipPath;
     private final Path2D shapePath;
 
     private float shapeBorderWidth = 0;
-    private Color shapeBorderColor = null;
     private Color shapeColor = Theme.WHITE;
+    private Color shapeBorderColor;
     private Color textColor = Theme.BLACK;
 
     public GraphicsAWT(Supplier<Graphics2D> graphics2DSupplier) {
+        this.graphics2DSupplier = graphics2DSupplier;
+
+        shapeBorderColor = shapeColor;
+
+        graphicsAWTCache = new GraphicsAWTCache();
+
         clipPaths = new ArrayDeque<>();
 
         clipPath = new Path2D.Float();
 
         shapePath = new Path2D.Float();
-
-        this.graphics2DSupplier = graphics2DSupplier;
     }
 
     /**
@@ -77,14 +80,12 @@ public class GraphicsAWT implements Graphics {
     @Override
     public Graphics setShapeColor(Color color) {
         if (color != null) {
-            this.shapeColor = color;
             this.shapeBorderColor = color;
+            this.shapeColor = color;
 
-            // spike - to improve performance
+            java.awt.Color awtColor = graphicsAWTCache.cacheAndGetNativeColor(color);
             Graphics2D graphics = getGraphics();
-            java.awt.Color awtColor = GraphicsAWTUtility.createColor(color);
             graphics.setColor(awtColor);
-            //
         }
         return this;
     }
@@ -93,7 +94,10 @@ public class GraphicsAWT implements Graphics {
     public Graphics setShapeColor(Color color, Color borderColor) {
         if (color != null) {
             this.setShapeColor(color);
-            this.shapeBorderColor = borderColor == null ? color : borderColor;
+            // updates the shape border color
+            if (borderColor != null) {
+                this.shapeBorderColor = borderColor;
+            }
         }
         return this;
     }
@@ -108,14 +112,9 @@ public class GraphicsAWT implements Graphics {
 
         if (shapeBorderWidth > 0) {
             java.awt.Paint previousPaint = graphics.getPaint();
-            // spike - to improve performance
-            java.awt.Paint awtStrokeColor = GraphicsAWTUtility.createColor(shapeBorderColor);
-            if (awtStrokeColor == null) {
-                awtStrokeColor = GraphicsAWTUtility.createColor(shapeColor);
-            }
-            //
+            java.awt.Color awtBorderColor = graphicsAWTCache.cacheAndGetNativeColor(shapeBorderColor);
 
-            graphics.setPaint(awtStrokeColor);
+            graphics.setPaint(awtBorderColor);
             graphics.draw(path);
             graphics.setPaint(previousPaint);
         }
@@ -157,9 +156,8 @@ public class GraphicsAWT implements Graphics {
 
     @Override
     public Graphics setFont(Font font) {
-        // spike - to improve performance
-        java.awt.Font awtFont = GraphicsAWTUtility.createFont(font);
-        //
+        //java.awt.Font awtFont = GraphicsAWTUtility.createFont(font);
+        java.awt.Font awtFont = graphicsAWTCache.cacheAndGetNativeFont(font);
         Graphics2D graphics = getGraphics();
         graphics.setFont(awtFont);
         return this;
@@ -185,18 +183,16 @@ public class GraphicsAWT implements Graphics {
         }
 
         java.awt.Paint previousPaint = graphics.getPaint();
+        java.awt.Color awtTextColor = graphicsAWTCache.cacheAndGetNativeColor(textColor);
 
-        // spike - to improve performance
-        java.awt.Color awtTextColor = GraphicsAWTUtility.createColor(textColor);
         graphics.setColor(awtTextColor);
-        //
-
         graphics.drawChars(data, offset, length, (int) x, (int) y);
         graphics.setPaint(previousPaint);
 
         if (rotated) {
             graphics.setTransform(previousMatrix);
         }
+
         return this;
     }
 
@@ -228,6 +224,7 @@ public class GraphicsAWT implements Graphics {
         if (rotated) {
             graphics.setTransform(previousMatrix);
         }
+
         return this;
     }
 }
