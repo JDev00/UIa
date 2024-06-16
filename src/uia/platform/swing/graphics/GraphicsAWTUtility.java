@@ -67,20 +67,23 @@ public final class GraphicsAWTUtility {
         }
 
         // builds the UIa font
-        buildFont(font, result);
+        buildFontData(font, result);
 
         return result;
     }
 
     /**
      * Builds the given font with the awt font data.
+     * <br>
+     * Time complexity: T(1).
      *
      * @param font    a font to be built
      * @param awtFont the awt font used to build the given font
      * @throws NullPointerException if {@code font == nul || awtFont == null}
+     * @since 1.6.0
      */
 
-    public static void buildFont(Font font, java.awt.Font awtFont) {
+    public static void buildFontData(Font font, java.awt.Font awtFont) {
         Objects.requireNonNull(font);
         Objects.requireNonNull(awtFont);
 
@@ -89,7 +92,7 @@ public final class GraphicsAWTUtility {
                 metrics.getAscent(),
                 metrics.getDescent(),
                 metrics.getLeading(),
-                (off, len, text) -> metrics.charsWidth(text, off, len)
+                (offset, length, text) -> metrics.charsWidth(text, offset, length)
         );
     }
 
