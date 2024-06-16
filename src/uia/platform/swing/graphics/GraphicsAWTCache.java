@@ -3,7 +3,7 @@ package uia.platform.swing.graphics;
 import uia.core.ui.primitives.color.Color;
 import uia.core.ui.primitives.font.Font;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,8 +15,8 @@ public class GraphicsAWTCache {
     private final Map<Integer, java.awt.Font> fontCache;
 
     public GraphicsAWTCache() {
-        colorCache = new Hashtable<>();
-        fontCache = new Hashtable<>();
+        colorCache = new HashMap<>();
+        fontCache = new HashMap<>();
     }
 
     @Override
