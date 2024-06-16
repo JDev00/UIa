@@ -29,7 +29,12 @@ public class GraphicsAWTCache {
     /**
      * Caches the specified Color.
      * <br>
-     * Time complexity: T(1)
+     * <br>
+     * Time complexity:
+     * <ul>
+     *     <li>average case: O(1)</li>
+     *     <li>worst case: O(n).</li>
+     * </ul>
      *
      * @param color a Color to cache
      */
@@ -52,7 +57,12 @@ public class GraphicsAWTCache {
      * Caches and returns the specified Color. If the Color is already cached, it immediately
      * returns the native color.
      * <br>
-     * Time complexity: T(1)
+     * <br>
+     * Time complexity:
+     * <ul>
+     *     <li>average case: O(1)</li>
+     *     <li>worst case: O(n).</li>
+     * </ul>
      *
      * @param color the color to be cached
      * @return the native cached Color
@@ -66,7 +76,12 @@ public class GraphicsAWTCache {
     /**
      * Caches the specified Font.
      * <br>
-     * Time complexity: O(n)
+     * <br>
+     * Time complexity:
+     * <ul>
+     *     <li>average case: O(1)</li>
+     *     <li>worst case: O(n).</li>
+     * </ul>
      *
      * @param font a Font to be cached
      */
@@ -95,7 +110,12 @@ public class GraphicsAWTCache {
      * Caches and returns the specified font. If the font is already cached, it immediately
      * returns the native font.
      * <br>
-     * Time complexity: T(1)
+     * <br>
+     * Time complexity:
+     * <ul>
+     *     <li>average case: O(1)</li>
+     *     <li>worst case: O(n).</li>
+     * </ul>
      *
      * @param font the font to be cached
      * @return the native cached font
