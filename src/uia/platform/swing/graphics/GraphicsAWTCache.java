@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Proof of concept.
+ * GraphicsAWTCache is responsible for caching objects required for by the Graphics component.
  */
 
 public class GraphicsAWTCache {
