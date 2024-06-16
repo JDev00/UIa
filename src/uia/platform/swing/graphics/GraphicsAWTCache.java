@@ -66,13 +66,19 @@ public class GraphicsAWTCache {
     /**
      * Caches the specified Font.
      * <br>
-     * Time complexity: T(1)
+     * Time complexity: O(n)
      *
      * @param font a Font to be cached
      */
 
     public void cacheFont(Font font) {
         int fontKey = font.hashCode();
+        // bugfix: rebuilds font data
+        if (fontCache.containsKey(fontKey)) {
+            java.awt.Font awtFont = getNativeFont(font);
+            GraphicsAWTUtility.buildFontData(font, awtFont);
+        }
+        // creates and caches font if not already cached
         fontCache.computeIfAbsent(fontKey, key -> GraphicsAWTUtility.createFont(font));
     }
 
