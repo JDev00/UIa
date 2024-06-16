@@ -156,7 +156,6 @@ public class GraphicsAWT implements Graphics {
 
     @Override
     public Graphics setFont(Font font) {
-        //java.awt.Font awtFont = GraphicsAWTUtility.createFont(font);
         java.awt.Font awtFont = graphicsAWTCache.cacheAndGetNativeFont(font);
         Graphics2D graphics = getGraphics();
         graphics.setFont(awtFont);
