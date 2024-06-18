@@ -1,8 +1,8 @@
 package uia.physical.component.utility;
 
 import uia.core.ui.callbacks.OnMessageReceived;
-import uia.core.ui.primitives.geometry.Transform;
-import uia.core.ui.primitives.geometry.Geometry;
+import uia.core.rendering.geometry.Transform;
+import uia.core.rendering.geometry.Geometry;
 import uia.core.ui.callbacks.OnKeyReleased;
 import uia.core.ui.primitives.ScreenTouch;
 import uia.core.ui.callbacks.OnKeyPressed;

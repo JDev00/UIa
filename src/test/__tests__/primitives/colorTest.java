@@ -1,6 +1,6 @@
 package test.__tests__.primitives;
 
-import uia.core.ui.primitives.color.Color;
+import uia.core.rendering.color.Color;
 import test.core.TestAssertion;
 import test.core.TestExecutor;
 import test.core.Test;

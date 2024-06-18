@@ -1,4 +1,4 @@
-package uia.core.ui.primitives.color;
+package uia.core.rendering.color;
 
 /**
  * Color channels.

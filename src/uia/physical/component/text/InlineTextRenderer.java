@@ -6,7 +6,7 @@ import uia.core.ui.style.TextVerticalAlignment;
 import uia.core.ui.style.Style;
 import uia.core.ui.ViewText;
 import uia.core.rendering.Graphics;
-import uia.core.ui.primitives.font.Font;
+import uia.core.rendering.font.Font;
 
 import java.util.Objects;
 

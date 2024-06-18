@@ -1,7 +1,7 @@
 package uia.platform.swing.graphics;
 
-import uia.core.ui.primitives.color.Color;
-import uia.core.ui.primitives.font.Font;
+import uia.core.rendering.color.Color;
+import uia.core.rendering.font.Font;
 
 import java.util.HashMap;
 import java.util.Map;

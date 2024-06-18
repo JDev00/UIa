@@ -1,9 +1,9 @@
 package uia.platform.swing.graphics;
 
-import uia.core.ui.primitives.geometry.Transform;
-import uia.core.ui.primitives.color.Color;
-import uia.core.ui.primitives.font.Font;
-import uia.core.ui.primitives.Image;
+import uia.core.rendering.geometry.Transform;
+import uia.core.rendering.color.Color;
+import uia.core.rendering.font.Font;
+import uia.core.rendering.image.Image;
 import uia.physical.theme.Theme;
 import uia.utility.MathUtility;
 import uia.core.rendering.Graphics;

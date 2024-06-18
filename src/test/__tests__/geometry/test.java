@@ -1,6 +1,6 @@
 package test.__tests__.geometry;
 
-import uia.core.ui.primitives.geometry.Geometry;
+import uia.core.rendering.geometry.Geometry;
 
 import test.core.*;
 

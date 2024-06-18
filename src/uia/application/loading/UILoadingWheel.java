@@ -2,7 +2,7 @@ package uia.application.loading;
 
 import uia.physical.component.WrapperView;
 import uia.utility.MathUtility;
-import uia.core.ui.primitives.geometry.Geometry;
+import uia.core.rendering.geometry.Geometry;
 import uia.utility.Geometries;
 import uia.core.ui.View;
 

@@ -1,6 +1,6 @@
 package test.__tests__.primitives;
 
-import uia.core.ui.primitives.font.Font;
+import uia.core.rendering.font.Font;
 import test.core.TestAssertion;
 import test.core.TestExecutor;
 import test.core.Test;
