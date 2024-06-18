@@ -2,28 +2,31 @@ package uia.application.calendar;
 
 import uia.physical.ui.component.utility.ComponentUtility;
 import uia.core.ui.style.TextHorizontalAlignment;
-import uia.core.rendering.geometry.Geometry;
+import uia.core.ui.style.TextVerticalAlignment;
+import uia.physical.ui.component.ComponentText;
 import uia.physical.ui.component.WrapperView;
-import uia.core.rendering.color.Color;
 import uia.physical.ui.group.ComponentGroup;
+import uia.core.rendering.geometry.Geometry;
 import uia.physical.ui.component.Component;
+import uia.core.rendering.color.Color;
+import uia.core.ui.callbacks.OnClick;
 import uia.core.rendering.font.Font;
 import uia.physical.ui.ThemeDarcula;
-import uia.core.ui.callbacks.OnClick;
-import uia.application.UIButtonList;
-import uia.physical.ui.Theme;
+import uia.utility.MathUtility;
 import uia.core.ui.style.Style;
 import uia.utility.Geometries;
+import uia.physical.ui.Theme;
 import uia.core.ui.ViewGroup;
+import uia.core.ui.ViewText;
 import uia.core.ui.View;
 
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.*;
 
-// TODO: to complete the restructuring
-
 /**
  * Abstract representation of the Gregorian calendar.
+ * <br>
  * It provides all the calendar basement operations expect day selection.
  */
 
@@ -31,9 +34,9 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
     private final Calendar calendar = GregorianCalendar.getInstance();
 
     private final CalendarCell[] cells = new CalendarCell[38];
-    private final UIButtonList header;
+    private final ViewGroup header;
     private final View overlayCell;
-    private Color currentDayColor;
+    private Color currentDayColor = Theme.PINK;
     private final String[] months;
     private final Font font;
 
@@ -50,13 +53,10 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
 
         font = Font.createDesktopFont(Font.FontStyle.ITALIC);
 
-        currentDayColor = Theme.PINK;
-
         java.util.function.Consumer<Boolean> shiftDate = next -> {
             int offset = next ? 1 : -1;
             int month = currentDate[1] + offset;
             int year = currentDate[2];
-
             if (month > 12) {
                 month = 1;
                 year++;
@@ -66,10 +66,8 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
             }
             changeDate(month, year);
         };
-
-        header = createHeader("CALENDAR_HEADER_" + getID(), font);
-        header.registerCallback((UIButtonList.OnPreviousValue) value -> shiftDate.accept(false));
-        header.registerCallback((UIButtonList.OnNextValue) value -> shiftDate.accept(true));
+        header = createHeader(font, shiftDate);
+        header.getStyle().setFont(font);
 
         overlayCell = new Component("CALENDAR_OVERLAY_" + getID(), 0f, 0f, 0f, 0f);
         overlayCell.setInputConsumer(InputConsumer.SCREEN_TOUCH, false);
@@ -115,35 +113,50 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
      * Helper function. Creates the calendar header.
      */
 
-    private static UIButtonList createHeader(String id, Font font) {
-        UIButtonList result = new UIButtonList(
-                new Component(id, 0.5f, 0.15f, 0.75f, 0.2f)
+    private static ViewGroup createHeader(Font font, Consumer<Boolean> callback) {
+        ViewGroup result = new ComponentGroup(
+                new Component("HEADER", 0.5f, 0.15f, 0.75f, 0.2f)
         );
-        result.setInputConsumer(InputConsumer.SCREEN_TOUCH, false);
         result.getStyle()
-                .setGeometry(Geometries::rect, false)
-                .setTextAlignment(TextHorizontalAlignment.LEFT)
                 .setBackgroundColor(Theme.TRANSPARENT)
-                .setTextColor(Theme.WHITE)
+                .setTextColor(Theme.WHITE);
+
+        // group style
+        Style groupStyle = result.getStyle();
+
+        // calendar header text
+        ViewText headerText = new ComponentText(
+                new Component("TEXT", 0.35f, 0.5f, 0.7f, 1f)
+        );
+        headerText.setText("HEADER!");
+        headerText.getStyle()
+                .setTextAlignment(TextVerticalAlignment.CENTER)
+                .setTextAlignment(TextHorizontalAlignment.LEFT)
+                .setTextColor(groupStyle.getTextColor())
+                .setBackgroundColor(Theme.TRANSPARENT)
                 .setFont(font);
-        result.setStyleFunction(UIButtonList.Element.RIGHT_ARROW, false, style -> style
-                .setBackgroundColor(Theme.WHITE)
-        );
-        result.setStyleFunction(UIButtonList.Element.LEFT_ARROW, false, style -> style
-                .setBackgroundColor(Theme.WHITE)
-        );
 
-        /*ViewText text = result.getViewText();
-        text.setPosition(0.35f, 0.5f);*/
+        // calendar header left arrow
+        View leftArrow = new Component("LEFT_ARROW", 0.75f, 0.5f, 0.05f, 0.4f)
+                .setExpanseLimit(1.2f, 1.2f);
+        leftArrow.registerCallback((OnClick) touches -> callback.accept(false));
+        leftArrow.setColliderPolicy(ColliderPolicy.AABB);
+        leftArrow.getStyle()
+                .setGeometry(Geometries::arrow, false)
+                .setTextColor(groupStyle.getBackgroundColor())
+                .setRotation(MathUtility.PI);
 
-        /*View right = result.getViewRight();
-        right.setDimension(0.05f, 0.4f);
-        right.setPosition(0.965f, 0.5f);
+        // calendar header right arrow
+        View rightArrow = new Component("RIGHT_ARROW", 0.965f, 0.5f, 0.05f, 0.4f)
+                .setExpanseLimit(1.2f, 1.2f);
+        rightArrow.registerCallback((OnClick) touches -> callback.accept(true));
+        rightArrow.setColliderPolicy(ColliderPolicy.AABB);
+        rightArrow.getStyle()
+                .setTextColor(groupStyle.getBackgroundColor())
+                .setGeometry(Geometries::arrow, false);
 
-        View left = result.getViewLeft();
-        left.setDimension(0.05f, 0.4f);
-        left.setPosition(0.75f, 0.5f);*/
-
+        // populates and returns header
+        ViewGroup.insert(result, headerText, leftArrow, rightArrow);
         return result;
     }
 
@@ -161,6 +174,7 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         if (day < 1 || day > 31) {
             throw new IndexOutOfBoundsException("the day must be between [1, 31]. You gave " + day);
         }
+
         cells[7 + day - 1].selected = selected;
     }
 
@@ -173,6 +187,7 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         if (day < 1 || day > 31) {
             throw new IndexOutOfBoundsException("the day must be between [1, 31]. You gave " + day);
         }
+
         return cells[7 + day - 1].selected;
     }
 
@@ -201,16 +216,6 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
     protected float getDayCelHeight() {
         CalendarCell cell = cells[7];
         return cell.getHeight();
-    }
-
-    //
-
-    /**
-     * @return the calendar {@link Font}
-     */
-
-    public Font getFont() {
-        return font;
     }
 
     /**
@@ -348,7 +353,8 @@ public abstract class AbstractCalendarView extends WrapperView implements Calend
         }
 
         // update month
-        header.setValues(months[month - 1] + " " + year, "");
+        ViewText headerText = (ViewText) header.get("TEXT");
+        headerText.setText(months[month - 1] + " " + year);
     }
 
     private final int[] setDate = {1, 1, 2024};
