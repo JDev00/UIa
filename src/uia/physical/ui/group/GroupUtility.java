@@ -1,8 +1,8 @@
 package uia.physical.ui.group;
 
 import uia.core.ui.primitives.ScreenTouch;
-import uia.physical.message.Messages;
 import uia.core.basement.message.Message;
+import uia.physical.message.Messages;
 import uia.core.ui.ViewGroup;
 
 import java.util.ArrayList;

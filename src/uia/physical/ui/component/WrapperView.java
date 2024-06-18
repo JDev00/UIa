@@ -1,14 +1,14 @@
 package uia.physical.ui.component;
 
 import uia.core.rendering.geometry.Geometry;
-import uia.core.basement.Callback;
 import uia.core.basement.message.Message;
-import uia.core.ui.style.Style;
 import uia.core.rendering.Graphics;
+import uia.core.basement.Callback;
+import uia.core.ui.style.Style;
 import uia.core.ui.View;
 
 /**
- * WrapperView wraps a specified View implementation
+ * WrapperView wraps a given View implementation.
  */
 
 public abstract class WrapperView implements View {

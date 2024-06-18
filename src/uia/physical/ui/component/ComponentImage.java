@@ -1,9 +1,9 @@
 package uia.physical.ui.component;
 
 import uia.physical.ui.component.utility.ComponentUtility;
+import uia.core.rendering.image.Image;
 import uia.core.rendering.Graphics;
 import uia.core.ui.View;
-import uia.core.rendering.image.Image;
 
 /**
  * ComponentImage is designed to display an Image on a View.

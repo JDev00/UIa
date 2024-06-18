@@ -3,17 +3,17 @@ package uia.physical.ui.component;
 import uia.physical.ui.component.text.MultilineTextRenderer;
 import uia.physical.ui.component.utility.ComponentUtility;
 import uia.physical.ui.component.text.InlineTextRenderer;
-import uia.core.ui.style.TextHorizontalAlignment;
 import uia.physical.ui.component.text.TextRenderer;
-import uia.core.rendering.Transform;
-import uia.core.rendering.geometry.Geometry;
+import uia.core.ui.style.TextHorizontalAlignment;
 import uia.physical.ui.scroller.WheelScroller;
+import uia.core.rendering.geometry.Geometry;
 import uia.core.ui.callbacks.OnMouseHover;
-import uia.core.rendering.font.Font;
 import uia.physical.ui.scroller.Scroller;
+import uia.core.rendering.Transform;
+import uia.core.rendering.font.Font;
+import uia.core.rendering.Graphics;
 import uia.core.ui.style.Style;
 import uia.core.ui.ViewText;
-import uia.core.rendering.Graphics;
 import uia.core.ui.View;
 
 /**

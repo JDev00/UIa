@@ -3,8 +3,7 @@ package uia.physical.ui.component;
 import uia.core.ui.ViewText;
 
 /**
- * WrapperViewText enables the creation of complex components, like every day graphical widgets,
- * specifically designed to handle text.
+ * WrapperViewText wraps a given ViewText implementation.
  */
 
 public abstract class WrapperViewText extends WrapperView implements ViewText {

@@ -1,17 +1,16 @@
 package uia.physical.ui.component;
 
-import uia.core.basement.Callback;
-import uia.core.basement.message.Message;
 import uia.core.rendering.geometry.Geometry;
-import uia.core.ui.style.Style;
+import uia.core.basement.message.Message;
 import uia.core.rendering.Graphics;
+import uia.core.basement.Callback;
+import uia.core.ui.style.Style;
 import uia.core.ui.View;
 
 /**
- * ComponentHiddenRoot is a simple View designed to be used as a root for user interface tree components.
+ * ComponentHiddenRoot is a View designed to be used as a root for user interface tree components.
  * <br>
- * <br>
- * <b>Important:</b> do not use it directly. It is designed to be used within a Context-specific implementation.
+ * <b>Do not use it directly.</b> It is designed to be used within a Context-specific implementation.
  */
 
 public final class ComponentHiddenRoot implements View {
