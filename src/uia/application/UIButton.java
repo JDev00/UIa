@@ -4,7 +4,7 @@ import uia.physical.ui.component.WrapperView;
 import uia.core.ui.style.StyleFunction;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.basement.Callback;
-import uia.physical.ui.theme.Theme;
+import uia.physical.ui.Theme;
 import uia.core.ui.View;
 
 import java.util.Objects;

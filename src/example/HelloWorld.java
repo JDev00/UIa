@@ -12,7 +12,7 @@ import uia.platform.swing.ContextSwing;
 import uia.physical.message.Messages;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.context.Context;
-import uia.physical.ui.theme.Theme;
+import uia.physical.ui.Theme;
 import uia.application.UIButton;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;

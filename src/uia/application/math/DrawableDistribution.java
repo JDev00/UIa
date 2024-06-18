@@ -4,7 +4,7 @@ import uia.physical.ui.component.utility.ComponentUtility;
 import uia.core.rendering.Transform;
 import uia.core.rendering.geometry.Geometry;
 import uia.core.rendering.color.Color;
-import uia.physical.ui.theme.Theme;
+import uia.physical.ui.Theme;
 import uia.utility.MathUtility;
 import uia.utility.Geometries;
 import uia.core.rendering.Graphics;

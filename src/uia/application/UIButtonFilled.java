@@ -7,7 +7,7 @@ import uia.physical.ui.component.ComponentText;
 import uia.physical.ui.component.WrapperView;
 import uia.physical.ui.group.ComponentGroup;
 import uia.physical.ui.component.Component;
-import uia.physical.ui.theme.Theme;
+import uia.physical.ui.Theme;
 import uia.core.ui.style.Style;
 import uia.utility.MathUtility;
 import uia.utility.Geometries;

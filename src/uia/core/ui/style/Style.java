@@ -3,7 +3,7 @@ package uia.core.ui.style;
 import uia.core.rendering.geometry.Geometry;
 import uia.core.rendering.color.Color;
 import uia.core.rendering.font.Font;
-import uia.physical.ui.theme.Theme;
+import uia.physical.ui.Theme;
 import uia.utility.Geometries;
 
 import java.util.function.Consumer;

@@ -7,7 +7,7 @@ import uia.physical.ui.group.ComponentGroup;
 import uia.physical.ui.component.Component;
 import uia.application.math.UIGraphic;
 import uia.core.context.Context;
-import uia.physical.ui.theme.Theme;
+import uia.physical.ui.Theme;
 import uia.core.ui.ViewGroup;
 
 /**

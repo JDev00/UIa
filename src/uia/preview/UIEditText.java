@@ -18,7 +18,7 @@ import uia.physical.ui.component.Component;
 import uia.physical.ui.component.ComponentText;
 import uia.physical.ui.component.WrapperView;
 import uia.physical.ui.component.WrapperViewText;
-import uia.physical.ui.theme.Theme;
+import uia.physical.ui.Theme;
 import uia.physical.ui.component.utility.ComponentUtility;
 import uia.utility.Geometries;
 import uia.utility.Timer;

@@ -9,7 +9,7 @@ import uia.application.UIToggleButton;
 import uia.application.UIButtonFilled;
 import uia.application.UIButtonList;
 import uia.core.context.Context;
-import uia.physical.ui.theme.Theme;
+import uia.physical.ui.Theme;
 import uia.core.ui.ViewGroup;
 
 import static test.__tests__.utility.TestUtility.*;

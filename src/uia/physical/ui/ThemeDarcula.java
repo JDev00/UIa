@@ -1,4 +1,4 @@
-package uia.physical.ui.theme;
+package uia.physical.ui;
 
 import uia.core.rendering.color.Color;
 

@@ -10,7 +10,7 @@ import uia.physical.ui.component.Component;
 import uia.core.ui.style.StyleFunction;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.basement.Callback;
-import uia.physical.ui.theme.Theme;
+import uia.physical.ui.Theme;
 import uia.core.ui.style.Style;
 import uia.utility.MathUtility;
 import uia.utility.Geometries;
