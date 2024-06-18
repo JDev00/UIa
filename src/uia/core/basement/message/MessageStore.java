@@ -1,4 +1,4 @@
-package uia.core.message;
+package uia.core.basement.message;
 
 import java.util.List;
 

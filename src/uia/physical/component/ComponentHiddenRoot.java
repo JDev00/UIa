@@ -1,7 +1,7 @@
 package uia.physical.component;
 
 import uia.core.basement.Callback;
-import uia.core.message.Message;
+import uia.core.basement.message.Message;
 import uia.core.rendering.geometry.Geometry;
 import uia.core.ui.style.Style;
 import uia.core.rendering.Graphics;

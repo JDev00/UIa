@@ -7,7 +7,7 @@ import uia.core.rendering.geometry.Geometry;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.component.WrapperView;
 import uia.physical.LayoutUtility;
-import uia.core.message.Message;
+import uia.core.basement.message.Message;
 import uia.core.ui.ViewGroup;
 import uia.core.rendering.Graphics;
 import uia.core.ui.View;

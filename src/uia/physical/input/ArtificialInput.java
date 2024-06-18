@@ -2,7 +2,7 @@ package uia.physical.input;
 
 import uia.core.ui.primitives.Key;
 import uia.core.ui.primitives.ScreenTouch;
-import uia.core.message.Message;
+import uia.core.basement.message.Message;
 import uia.core.context.InputEmulator;
 import uia.physical.message.Messages;
 

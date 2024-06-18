@@ -1,7 +1,7 @@
 package uia.physical.message;
 
 import uia.core.ui.primitives.ScreenTouch;
-import uia.core.message.Message;
+import uia.core.basement.message.Message;
 
 import java.util.List;
 

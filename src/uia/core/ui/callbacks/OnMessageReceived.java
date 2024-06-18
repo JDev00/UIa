@@ -1,7 +1,7 @@
 package uia.core.ui.callbacks;
 
 import uia.core.basement.Callback;
-import uia.core.message.Message;
+import uia.core.basement.message.Message;
 
 /**
  * Callback called when recipient receives the message.

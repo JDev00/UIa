@@ -4,10 +4,10 @@ import test.core.BeforeEachTest;
 import test.core.Test;
 import test.core.TestAssertion;
 import test.core.TestExecutor;
-import uia.core.message.Message;
+import uia.core.basement.message.Message;
 import uia.physical.message.Messages;
 import uia.physical.message.store.ConcreteMessageStore;
-import uia.core.message.MessageStore;
+import uia.core.basement.message.MessageStore;
 
 import java.util.Arrays;
 import java.util.List;

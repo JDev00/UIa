@@ -3,7 +3,7 @@ package test.__tests__;
 import test.core.Test;
 import test.core.TestAssertion;
 import test.core.TestExecutor;
-import uia.core.message.Message;
+import uia.core.basement.message.Message;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnMessageReceived;
 import uia.physical.component.Component;

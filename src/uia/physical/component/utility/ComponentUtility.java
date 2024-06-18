@@ -8,7 +8,7 @@ import uia.core.ui.primitives.ScreenTouch;
 import uia.core.ui.callbacks.OnKeyPressed;
 import uia.core.ui.callbacks.OnKeyTyped;
 import uia.core.ui.primitives.Key;
-import uia.core.message.Message;
+import uia.core.basement.message.Message;
 import uia.utility.Geometries;
 import uia.core.ui.View;
 

@@ -2,7 +2,7 @@ package uia.platform.swing;
 
 import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.EventTouchScreenMessage;
-import uia.core.message.MessageStore;
+import uia.core.basement.message.MessageStore;
 import uia.physical.input.ArtificialInput;
 import uia.core.context.InputEmulator;
 import uia.physical.message.Messages;
