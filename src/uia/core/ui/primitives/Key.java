@@ -1,7 +1,7 @@
 package uia.core.ui.primitives;
 
 /**
- * Keyboard key representation
+ * UIa keyboard key abstraction.
  */
 
 public class Key {

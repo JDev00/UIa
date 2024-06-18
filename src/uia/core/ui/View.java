@@ -1,7 +1,8 @@
 package uia.core.ui;
 
-import uia.core.basement.*;
+import uia.core.ui.primitives.Drawable;
 import uia.core.message.Message;
+import uia.core.basement.*;
 
 /**
  * View ADT.
@@ -9,7 +10,7 @@ import uia.core.message.Message;
  * A View is a special area on the screen with the user can interact with. Shortly, it is the basement for
  * every graphical widget built with UIa. From the architectural point of view, it is made up of two components:
  * <ul>
- * <li>a {@link Drawable} used to define the graphical aspects: Geometry and Paint;</li>
+ * <li>{@link Drawable} used to define the graphical aspects: geometry and style;</li>
  * <li>{@link Callback}s used to respond to an event when it is detected.</li>
  * </ul>
  * <b>A View is identified by an ID assigned at declaration time.</b>

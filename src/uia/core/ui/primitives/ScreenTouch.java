@@ -3,7 +3,7 @@ package uia.core.ui.primitives;
 import java.util.Objects;
 
 /**
- * Mouse pointer or Touch (on mobile context) representation.
+ * UIa mouse pointer or touch (on mobile context) abstraction.
  */
 
 public class ScreenTouch {
