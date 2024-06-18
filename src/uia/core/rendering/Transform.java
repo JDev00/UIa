@@ -49,6 +49,20 @@ public final class Transform {
     }
 
     /**
+     * Translates the specified amount.
+     *
+     * @param x the translation on the x-axis
+     * @param y the translation on the y-axis
+     * @return this Transform
+     */
+
+    public Transform translate(float x, float y) {
+        translation[0] += x;
+        translation[1] += y;
+        return this;
+    }
+
+    /**
      * @return the translation on the x-axis
      */
 
@@ -111,6 +125,19 @@ public final class Transform {
 
     public Transform setRotation(float radians) {
         rotation = radians % MathUtility.TWO_PI;
+        return this;
+    }
+
+    /**
+     * Rotates of the specified amount.
+     *
+     * @param radians the rotation in radians
+     * @return this Transform
+     */
+
+    public Transform rotate(float radians) {
+        float amount = radians % MathUtility.TWO_PI;
+        rotation += amount;
         return this;
     }
 
