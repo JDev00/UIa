@@ -1,6 +1,5 @@
 package uia.core.rendering;
 
-import uia.core.rendering.geometry.Transform;
 import uia.core.rendering.image.Image;
 import uia.core.rendering.color.Color;
 import uia.core.rendering.font.Font;

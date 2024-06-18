@@ -5,7 +5,7 @@ import uia.physical.component.utility.ComponentUtility;
 import uia.physical.component.text.InlineTextRenderer;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.physical.component.text.TextRenderer;
-import uia.core.rendering.geometry.Transform;
+import uia.core.rendering.Transform;
 import uia.core.rendering.geometry.Geometry;
 import uia.physical.scroller.WheelScroller;
 import uia.core.ui.callbacks.OnMouseHover;

@@ -1,6 +1,6 @@
 package uia.platform.swing.graphics;
 
-import uia.core.rendering.geometry.Transform;
+import uia.core.rendering.Transform;
 import uia.core.rendering.color.Color;
 import uia.core.rendering.font.Font;
 import uia.core.rendering.image.Image;

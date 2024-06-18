@@ -4,7 +4,7 @@ import uia.physical.component.utility.ComponentUtility;
 import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.core.rendering.geometry.GeometryUtility;
-import uia.core.rendering.geometry.Transform;
+import uia.core.rendering.Transform;
 import uia.core.rendering.geometry.Geometry;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.callbacks.CallbackStore;

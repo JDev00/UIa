@@ -1,6 +1,7 @@
 package uia.core.rendering.geometry;
 
 import uia.core.basement.Collidable;
+import uia.core.rendering.Transform;
 
 import java.util.Objects;
 

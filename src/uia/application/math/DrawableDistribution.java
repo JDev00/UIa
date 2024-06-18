@@ -1,7 +1,7 @@
 package uia.application.math;
 
 import uia.physical.component.utility.ComponentUtility;
-import uia.core.rendering.geometry.Transform;
+import uia.core.rendering.Transform;
 import uia.core.rendering.geometry.Geometry;
 import uia.core.rendering.color.Color;
 import uia.physical.theme.Theme;
