@@ -9,7 +9,7 @@ import uia.physical.component.WrapperView;
 import uia.physical.LayoutUtility;
 import uia.core.message.Message;
 import uia.core.ui.ViewGroup;
-import uia.core.ui.Graphics;
+import uia.core.rendering.Graphics;
 import uia.core.ui.View;
 
 import java.util.*;

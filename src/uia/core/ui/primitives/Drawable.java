@@ -2,7 +2,7 @@ package uia.core.ui.primitives;
 
 import uia.core.ui.primitives.geometry.Geometry;
 import uia.core.ui.style.Style;
-import uia.core.ui.Graphics;
+import uia.core.rendering.Graphics;
 
 /**
  * Drawable is designed to group together all the aspects that characterise a complex graphical object

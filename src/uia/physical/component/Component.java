@@ -16,7 +16,7 @@ import uia.core.message.Message;
 import uia.core.ui.callbacks.*;
 import uia.core.ui.style.Style;
 import uia.utility.Geometries;
-import uia.core.ui.Graphics;
+import uia.core.rendering.Graphics;
 import uia.core.ui.View;
 
 import java.util.function.Consumer;

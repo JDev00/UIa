@@ -4,7 +4,7 @@ import uia.core.ui.primitives.Key;
 import uia.core.ui.primitives.ScreenTouch;
 import uia.core.ui.primitives.color.Color;
 import uia.core.ui.primitives.geometry.Geometry;
-import uia.core.ui.Graphics;
+import uia.core.rendering.Graphics;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnKeyPressed;
 import uia.core.ui.callbacks.OnMouseExit;

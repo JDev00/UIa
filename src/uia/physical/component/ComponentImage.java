@@ -1,7 +1,7 @@
 package uia.physical.component;
 
 import uia.physical.component.utility.ComponentUtility;
-import uia.core.ui.Graphics;
+import uia.core.rendering.Graphics;
 import uia.core.ui.View;
 import uia.core.ui.primitives.Image;
 

@@ -1,4 +1,4 @@
-package uia.core.ui;
+package uia.core.rendering;
 
 import uia.core.ui.primitives.geometry.Transform;
 import uia.core.ui.primitives.color.Color;

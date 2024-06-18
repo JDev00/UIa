@@ -4,7 +4,7 @@ import uia.physical.component.ComponentHiddenRoot;
 import uia.platform.swing.graphics.GraphicsAWT;
 import uia.physical.message.MessagingSystem;
 import uia.core.context.Context;
-import uia.core.ui.Graphics;
+import uia.core.rendering.Graphics;
 import uia.utility.Timer;
 import uia.core.ui.View;
 

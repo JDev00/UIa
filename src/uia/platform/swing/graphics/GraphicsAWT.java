@@ -6,7 +6,7 @@ import uia.core.ui.primitives.font.Font;
 import uia.core.ui.primitives.Image;
 import uia.physical.theme.Theme;
 import uia.utility.MathUtility;
-import uia.core.ui.Graphics;
+import uia.core.rendering.Graphics;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;

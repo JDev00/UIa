@@ -13,7 +13,7 @@ import uia.core.ui.primitives.font.Font;
 import uia.physical.scroller.Scroller;
 import uia.core.ui.style.Style;
 import uia.core.ui.ViewText;
-import uia.core.ui.Graphics;
+import uia.core.rendering.Graphics;
 import uia.core.ui.View;
 
 /**

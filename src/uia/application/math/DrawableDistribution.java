@@ -7,7 +7,7 @@ import uia.core.ui.primitives.color.Color;
 import uia.physical.theme.Theme;
 import uia.utility.MathUtility;
 import uia.utility.Geometries;
-import uia.core.ui.Graphics;
+import uia.core.rendering.Graphics;
 
 import java.util.Objects;
 
