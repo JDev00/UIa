@@ -1,7 +1,6 @@
 package uia.physical.ui.group;
 
 import uia.physical.message.EventTouchScreenMessage;
-import uia.physical.ui.group.utility.GroupUtility;
 import uia.core.rendering.Transform;
 import uia.core.rendering.geometry.Geometry;
 import uia.physical.message.EventKeyMessage;

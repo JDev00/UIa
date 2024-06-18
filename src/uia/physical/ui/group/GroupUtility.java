@@ -1,4 +1,4 @@
-package uia.physical.ui.group.utility;
+package uia.physical.ui.group;
 
 import uia.core.ui.primitives.ScreenTouch;
 import uia.physical.message.Messages;
