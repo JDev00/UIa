@@ -5,7 +5,7 @@ import uia.utility.MathUtility;
 import java.util.Arrays;
 
 /**
- * Transform is responsible for keeping geometric transformations.
+ * Transform is responsible for keeping transformations.
  * <br>
  * The transformations handled are:
  * <ul>
