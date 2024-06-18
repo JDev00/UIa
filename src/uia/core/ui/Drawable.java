@@ -1,4 +1,4 @@
-package uia.core.ui.primitives;
+package uia.core.ui;
 
 import uia.core.ui.primitives.geometry.Geometry;
 import uia.core.ui.style.Style;
