@@ -12,6 +12,9 @@ import static uia.utility.MathUtility.*;
 
 public final class Geometries {
 
+    private Geometries() {
+    }
+
     /**
      * Standard number of geometry vertices.
      */
@@ -60,7 +63,8 @@ public final class Geometries {
 
         vertices = vertices / 4;
 
-        float f1 = 1, f2 = 1;
+        float f1 = 1;
+        float f2 = 1;
 
         if (ratio >= 1) {
             f1 = 1f / ratio;
@@ -140,29 +144,6 @@ public final class Geometries {
             float a = TWO_PI * i / vertices;
             geometry.addVertex(cos(a) / 2f, sin(a) / 2f);
         }
-        return geometry;
-    }
-
-    /**
-     * Resets the given geometry and creates a pause geometry.
-     *
-     * @param geometry the geometry where the vertices are to be stored
-     * @return the given geometry object filled with geometry vertices
-     * @throws NullPointerException if {@code geometry == null}
-     */
-
-    public static Geometry pause(Geometry geometry) {
-        geometry.removeAllVertices();
-        geometry.addVertices(
-                -0.5f, -0.5f,
-                -0.165f, -0.5f,
-                -0.165f, 0.5f,
-                -0.5f, 0.5f,
-                0.5f, -0.5f,
-                0.165f, -0.5f,
-                0.165f, 0.5f,
-                0.5f, 0.5f);
-        //geometry.get(4).setPrimer(true);
         return geometry;
     }
 

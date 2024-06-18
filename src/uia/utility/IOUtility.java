@@ -1,18 +1,16 @@
 package uia.utility;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.ArrayList;
+import java.io.PrintWriter;
+import java.io.FileReader;
 import java.util.Objects;
+import java.util.List;
+import java.io.File;
 
 /**
- * Utility class.
- * <br>
- * Collection of input/output functions.
+ * Collection of utility input/output functions.
  */
 
 public final class IOUtility {

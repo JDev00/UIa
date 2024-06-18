@@ -1,7 +1,7 @@
 package uia.utility;
 
 /**
- * Timer representation
+ * Timer representation.
  */
 
 public class Timer {
