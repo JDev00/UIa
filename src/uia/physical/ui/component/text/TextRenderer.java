@@ -1,4 +1,4 @@
-package uia.physical.component.text;
+package uia.physical.ui.component.text;
 
 import uia.core.rendering.Graphics;
 import uia.core.ui.ViewText;

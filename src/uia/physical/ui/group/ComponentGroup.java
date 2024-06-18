@@ -1,12 +1,12 @@
-package uia.physical.group;
+package uia.physical.ui.group;
 
 import uia.physical.message.EventTouchScreenMessage;
-import uia.physical.group.utility.GroupUtility;
+import uia.physical.ui.group.utility.GroupUtility;
 import uia.core.rendering.Transform;
 import uia.core.rendering.geometry.Geometry;
 import uia.physical.message.EventKeyMessage;
-import uia.physical.component.WrapperView;
-import uia.physical.LayoutUtility;
+import uia.physical.ui.component.WrapperView;
+import uia.physical.ui.LayoutUtility;
 import uia.core.basement.message.Message;
 import uia.core.ui.ViewGroup;
 import uia.core.rendering.Graphics;

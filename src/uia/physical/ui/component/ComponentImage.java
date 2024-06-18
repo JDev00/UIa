@@ -1,6 +1,6 @@
-package uia.physical.component;
+package uia.physical.ui.component;
 
-import uia.physical.component.utility.ComponentUtility;
+import uia.physical.ui.component.utility.ComponentUtility;
 import uia.core.rendering.Graphics;
 import uia.core.ui.View;
 import uia.core.rendering.image.Image;

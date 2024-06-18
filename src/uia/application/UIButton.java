@@ -1,10 +1,10 @@
 package uia.application;
 
-import uia.physical.component.WrapperView;
+import uia.physical.ui.component.WrapperView;
 import uia.core.ui.style.StyleFunction;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.basement.Callback;
-import uia.physical.theme.Theme;
+import uia.physical.ui.theme.Theme;
 import uia.core.ui.View;
 
 import java.util.Objects;

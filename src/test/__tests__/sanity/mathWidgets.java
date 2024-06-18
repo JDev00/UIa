@@ -2,12 +2,12 @@ package test.__tests__.sanity;
 
 import uia.application.math.DrawableDistribution;
 import test.__tests__.utility.TestUtility;
-import uia.physical.component.WrapperView;
-import uia.physical.group.ComponentGroup;
-import uia.physical.component.Component;
+import uia.physical.ui.component.WrapperView;
+import uia.physical.ui.group.ComponentGroup;
+import uia.physical.ui.component.Component;
 import uia.application.math.UIGraphic;
 import uia.core.context.Context;
-import uia.physical.theme.Theme;
+import uia.physical.ui.theme.Theme;
 import uia.core.ui.ViewGroup;
 
 /**

@@ -1,10 +1,10 @@
 package uia.application;
 
-import uia.physical.component.utility.ComponentUtility;
-import uia.physical.component.WrapperView;
-import uia.physical.group.ComponentGroup;
-import uia.physical.component.Component;
-import uia.physical.theme.Theme;
+import uia.physical.ui.component.utility.ComponentUtility;
+import uia.physical.ui.component.WrapperView;
+import uia.physical.ui.group.ComponentGroup;
+import uia.physical.ui.component.Component;
+import uia.physical.ui.theme.Theme;
 import uia.utility.MathUtility;
 import uia.core.ui.style.Style;
 import uia.core.ui.ViewGroup;

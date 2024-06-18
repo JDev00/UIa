@@ -1,11 +1,11 @@
 package test.__tests__.utility;
 
-import uia.physical.component.ComponentText;
-import uia.physical.group.ComponentGroup;
-import uia.physical.component.Component;
+import uia.physical.ui.component.ComponentText;
+import uia.physical.ui.group.ComponentGroup;
+import uia.physical.ui.component.Component;
 import uia.platform.swing.ContextSwing;
 import uia.core.context.Context;
-import uia.physical.theme.Theme;
+import uia.physical.ui.theme.Theme;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.View;

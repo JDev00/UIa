@@ -1,7 +1,7 @@
 package example;
 
-import uia.physical.component.Component;
-import uia.physical.theme.Theme;
+import uia.physical.ui.component.Component;
+import uia.physical.ui.theme.Theme;
 import uia.platform.swing.ContextSwing;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.context.Context;

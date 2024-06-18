@@ -1,17 +1,17 @@
 package uia.application.calendar;
 
-import uia.physical.component.utility.ComponentUtility;
+import uia.physical.ui.component.utility.ComponentUtility;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.core.rendering.geometry.Geometry;
-import uia.physical.component.WrapperView;
+import uia.physical.ui.component.WrapperView;
 import uia.core.rendering.color.Color;
-import uia.physical.group.ComponentGroup;
-import uia.physical.component.Component;
+import uia.physical.ui.group.ComponentGroup;
+import uia.physical.ui.component.Component;
 import uia.core.rendering.font.Font;
-import uia.physical.theme.ThemeDarcula;
+import uia.physical.ui.theme.ThemeDarcula;
 import uia.core.ui.callbacks.OnClick;
 import uia.application.UIButtonList;
-import uia.physical.theme.Theme;
+import uia.physical.ui.theme.Theme;
 import uia.core.ui.style.Style;
 import uia.utility.Geometries;
 import uia.core.ui.ViewGroup;

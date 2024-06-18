@@ -1,4 +1,4 @@
-package uia.physical;
+package uia.physical.ui;
 
 import uia.core.ui.View;
 

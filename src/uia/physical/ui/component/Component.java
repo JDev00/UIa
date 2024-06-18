@@ -1,6 +1,6 @@
-package uia.physical.component;
+package uia.physical.ui.component;
 
-import uia.physical.component.utility.ComponentUtility;
+import uia.physical.ui.component.utility.ComponentUtility;
 import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.core.rendering.geometry.GeometryUtility;

@@ -1,6 +1,6 @@
 package uia.platform.swing;
 
-import uia.physical.component.ComponentHiddenRoot;
+import uia.physical.ui.component.ComponentHiddenRoot;
 import uia.platform.swing.graphics.GraphicsAWT;
 import uia.physical.message.MessagingSystem;
 import uia.core.context.Context;

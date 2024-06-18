@@ -1,4 +1,4 @@
-package uia.physical.scroller;
+package uia.physical.ui.scroller;
 
 import uia.core.ui.primitives.ScreenTouch;
 import uia.utility.MathUtility;

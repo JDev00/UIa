@@ -1,11 +1,11 @@
 package uia.application.calendar;
 
 import uia.core.ui.style.TextVerticalAlignment;
-import uia.physical.component.WrapperViewText;
-import uia.physical.component.ComponentText;
+import uia.physical.ui.component.WrapperViewText;
+import uia.physical.ui.component.ComponentText;
 import uia.core.ui.callbacks.OnMouseEnter;
 import uia.core.ui.callbacks.OnMouseExit;
-import uia.physical.component.Component;
+import uia.physical.ui.component.Component;
 
 /**
  * CalendarCell is designed to be used as a calendar day or a week day.

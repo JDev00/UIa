@@ -4,12 +4,12 @@ import uia.application.UIProgressbar;
 import uia.application.calendar.SingleDaySelectionCalendar;
 import uia.application.calendar.CalendarView;
 import uia.application.calendar.Calendars;
-import uia.physical.component.Component;
+import uia.physical.ui.component.Component;
 import uia.application.UIToggleButton;
 import uia.application.UIButtonFilled;
 import uia.application.UIButtonList;
 import uia.core.context.Context;
-import uia.physical.theme.Theme;
+import uia.physical.ui.theme.Theme;
 import uia.core.ui.ViewGroup;
 
 import static test.__tests__.utility.TestUtility.*;

@@ -1,9 +1,9 @@
 package test.__tests__.utility;
 
 import uia.core.ui.style.TextHorizontalAlignment;
-import uia.physical.component.ComponentText;
-import uia.physical.component.WrapperView;
-import uia.physical.component.Component;
+import uia.physical.ui.component.ComponentText;
+import uia.physical.ui.component.WrapperView;
+import uia.physical.ui.component.Component;
 import uia.core.ui.ViewText;
 import uia.core.rendering.font.Font;
 import uia.core.ui.View;

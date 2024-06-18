@@ -6,9 +6,9 @@ import test.core.TestExecutor;
 import uia.core.basement.message.Message;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnMessageReceived;
-import uia.physical.component.Component;
+import uia.physical.ui.component.Component;
 import uia.physical.message.Messages;
-import uia.physical.component.utility.ComponentUtility;
+import uia.physical.ui.component.utility.ComponentUtility;
 
 /**
  * Unit tests

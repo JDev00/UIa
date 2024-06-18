@@ -1,6 +1,6 @@
-package uia.physical.component.text;
+package uia.physical.ui.component.text;
 
-import uia.physical.component.utility.ComponentUtility;
+import uia.physical.ui.component.utility.ComponentUtility;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.core.ui.style.TextVerticalAlignment;
 import uia.core.ui.style.Style;

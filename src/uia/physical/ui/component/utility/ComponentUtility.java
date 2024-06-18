@@ -1,4 +1,4 @@
-package uia.physical.component.utility;
+package uia.physical.ui.component.utility;
 
 import uia.core.ui.callbacks.OnMessageReceived;
 import uia.core.rendering.Transform;

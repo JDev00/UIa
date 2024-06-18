@@ -2,11 +2,11 @@ package uia.application.list;
 
 import uia.application.list.positioner.ViewPositionerFactory;
 import uia.application.list.positioner.ViewPositioner;
-import uia.physical.component.WrapperView;
-import uia.physical.group.ComponentGroup;
-import uia.physical.component.Component;
+import uia.physical.ui.component.WrapperView;
+import uia.physical.ui.group.ComponentGroup;
+import uia.physical.ui.component.Component;
 import uia.application.UIScrollbar;
-import uia.physical.theme.Theme;
+import uia.physical.ui.theme.Theme;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.View;
 
