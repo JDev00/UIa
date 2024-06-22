@@ -1,11 +1,12 @@
-UIa current version is 1.6.0-dev5
+UIa current version is 1.6.0
 
 ################
-Version 1.6.0-dev5
+Version 1.6.0
 ################
 
-* Adds Style (first increment)
 * Core revision
+* Feature: Style (first increment)
+* Performance: improved rendering operations
 
 ################
 Version 1.5.7
