@@ -1,26 +1,21 @@
 package uia.core.rendering;
 
-import uia.core.rendering.image.Image;
 import uia.core.rendering.color.Color;
+import uia.core.rendering.image.Image;
 import uia.core.rendering.font.Font;
 
 /**
  * Graphics ADT.
  * <br>
- * A Graphics is responsible for drawing things on the screen. It is designed to provide a set of functionalities
- * that are unrelated to the specific platform.
- * <br>
- * <br>
- * <b>Purpose</b>:
- * <br>
- * to provide a set of features, that are platform independent, to:
+ * A Graphics is responsible for drawing things on the screen. It is designed to provide drawing
+ * functionalities that are platform independent. These functionalities allow to:
  * <ul>
  *     <li>draw a shape;</li>
  *     <li>draw a text;</li>
  *     <li>draw an image.</li>
  * </ul>
- * And, for each drawing operation, make it possible to modify the graphical appearance of the object
- * being rendered.
+ * In addition, for each drawing operation, it is possible to modify the graphical appearance
+ * of the object being rendered.
  */
 
 public interface Graphics {
@@ -35,6 +30,44 @@ public interface Graphics {
     // shape
 
     /**
+     * Sets a Color object that will be used to paint the shapes, including theirs borders,
+     * that are rendered after this method is called.
+     * <br>
+     * <br>
+     * <i>Policies:</i>
+     * <ul>
+     *     <li>any shape rendered after this method will be affected;</li>
+     *     <li>the shape border color will be set to the same specified color.</li>
+     * </ul>
+     *
+     * @param color the Color used to paint shapes; a null color is ignored
+     * @return this Graphics
+     * @since 1.6.0
+     */
+
+    Graphics setShapeColor(Color color);
+
+    /**
+     * Sets a Color object that will be used to paint the border of the shapes rendered after
+     * this method is called.
+     * <br>
+     * <br>
+     * <i>Policies:</i>
+     * <ul>
+     *     <li>any shape rendered after this method will be affected;</li>
+     *     <li>the shape border color, once set, is valid until a new call to the
+     *     {@link #setShapeColor(Color)} method is made.</li>
+     * </ul>
+     *
+     * @param borderColor the Color used to paint the shape border; a null Color forces the system to use
+     *                    the last shape color set with {@link #setShapeColor(Color)}.
+     * @return this Graphics
+     * @since 1.6.0
+     */
+
+    Graphics setShapeBorderColor(Color borderColor);
+
+    /**
      * Sets the width of the line used to display the shape border.
      * <br>
      * <i>Every Shape rendered after this method will be affected.</i>
@@ -46,31 +79,6 @@ public interface Graphics {
      */
 
     Graphics setShapeBorderWidth(float lineWidth);
-
-    /**
-     * Sets a Color object that will be used to paint the shapes rendered after this method is called.
-     * <br>
-     * <i>Every Shape rendered after this method will be affected.</i>
-     *
-     * @param color the Color used to paint shapes; a null color is ignored
-     * @return this Graphics
-     * @since 1.6.0
-     */
-
-    Graphics setShapeColor(Color color);
-
-    /**
-     * Sets a Color object that will be used to paint the shapes rendered after this method is called.
-     * <br>
-     * <i>Every Shape rendered after this method will be affected.</i>
-     *
-     * @param color       the Color used to paint shapes; a null color is ignored
-     * @param borderColor the Color used to paint the shape border; a null color is ignored
-     * @return this Graphics
-     * @since 1.6.0
-     */
-
-    Graphics setShapeColor(Color color, Color borderColor);
 
     /**
      * Draws a shape on this Graphics.

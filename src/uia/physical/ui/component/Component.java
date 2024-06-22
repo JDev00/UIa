@@ -121,7 +121,7 @@ public final class Component implements View {
         container[3] = max(0, height);
 
         if (parent != null) {
-            updateShape(parent);
+            updateTransform(parent);
         }
     }
 
@@ -250,28 +250,12 @@ public final class Component implements View {
     }
 
     /**
-     * Helper function. Updates View geometry.
-     */
-
-    private void updateGeometry() {
-        Consumer<Geometry> geometryBuilder = style.getGeometryBuilder();
-        int currentGeometryBuilderHashcode = geometryBuilder.hashCode();
-
-        boolean isGeometryToBeBuilt = style.isGeometryToBeBuiltDynamically();
-        boolean isBuilderDifferent = previousGeometryBuilderHashcode != currentGeometryBuilderHashcode;
-        if (isGeometryToBeBuilt || isBuilderDifferent) {
-            previousGeometryBuilderHashcode = currentGeometryBuilderHashcode;
-            geometryBuilder.accept(geometry);
-        }
-    }
-
-    /**
      * Helper function. Updates View shape.
      *
      * @param parent the view parent
      */
 
-    private void updateShape(View parent) {
+    private void updateTransform(View parent) {
         float[] bounds = parent.getBounds();
         float width = parent.getWidth();
         float height = parent.getHeight();
@@ -311,6 +295,22 @@ public final class Component implements View {
     }
 
     /**
+     * Helper function. Updates View geometry.
+     */
+
+    private void updateGeometry() {
+        Consumer<Geometry> geometryBuilder = style.getGeometryBuilder();
+        int currentGeometryBuilderHashcode = geometryBuilder.hashCode();
+
+        boolean isGeometryToBeBuilt = style.isGeometryToBeBuiltDynamically();
+        boolean isBuilderDifferent = previousGeometryBuilderHashcode != currentGeometryBuilderHashcode;
+        if (isGeometryToBeBuilt || isBuilderDifferent) {
+            previousGeometryBuilderHashcode = currentGeometryBuilderHashcode;
+            geometryBuilder.accept(geometry);
+        }
+    }
+
+    /**
      * Helper function. Updates the expansion animation.
      */
 
@@ -333,7 +333,7 @@ public final class Component implements View {
 
         if (visible) {
             updateAnimation();
-            updateShape(parent);
+            updateTransform(parent);
             updateGeometry();
         }
     }
@@ -342,7 +342,8 @@ public final class Component implements View {
     public void draw(Graphics graphics) {
         if (visible) {
             graphics
-                    .setShapeColor(style.getBackgroundColor(), style.getBorderColor())
+                    .setShapeColor(style.getBackgroundColor())
+                    .setShapeBorderColor(style.getBorderColor())
                     .setShapeBorderWidth(style.getBorderWidth())
                     .drawShape(transform, geometry.vertices(), geometry.toArray());
         }

@@ -1,12 +1,12 @@
 package uia.platform.swing.graphics;
 
-import uia.core.rendering.Transform;
 import uia.core.rendering.color.Color;
-import uia.core.rendering.font.Font;
 import uia.core.rendering.image.Image;
-import uia.physical.ui.Theme;
-import uia.utility.MathUtility;
+import uia.core.rendering.Transform;
+import uia.core.rendering.font.Font;
 import uia.core.rendering.Graphics;
+import uia.utility.MathUtility;
+import uia.physical.ui.Theme;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -30,13 +30,11 @@ public class GraphicsAWT implements Graphics {
 
     private float shapeBorderWidth = 0;
     private Color shapeColor = Theme.WHITE;
-    private Color shapeBorderColor;
+    private Color shapeBorderColor = shapeColor;
     private Color textColor = Theme.BLACK;
 
     public GraphicsAWT(Supplier<Graphics2D> graphics2DSupplier) {
         this.graphics2DSupplier = graphics2DSupplier;
-
-        shapeBorderColor = shapeColor;
 
         graphicsAWTCache = new GraphicsAWTCache();
 
@@ -63,21 +61,6 @@ public class GraphicsAWT implements Graphics {
     // shape
 
     @Override
-    public Graphics setShapeBorderWidth(float lineWidth) {
-        if (lineWidth < 0) {
-            throw new IllegalArgumentException("lineWidth can not be < 0");
-        }
-        this.shapeBorderWidth = lineWidth;
-
-        // spike - to improve performance
-        Graphics2D graphics = getGraphics();
-        BasicStroke awtStroke = new BasicStroke(lineWidth);
-        graphics.setStroke(awtStroke);
-        //
-        return this;
-    }
-
-    @Override
     public Graphics setShapeColor(Color color) {
         if (color != null) {
             this.shapeBorderColor = color;
@@ -91,14 +74,28 @@ public class GraphicsAWT implements Graphics {
     }
 
     @Override
-    public Graphics setShapeColor(Color color, Color borderColor) {
-        if (color != null) {
-            this.setShapeColor(color);
-            // updates the shape border color
-            if (borderColor != null) {
-                this.shapeBorderColor = borderColor;
-            }
+    public Graphics setShapeBorderColor(Color shapeBorderColor) {
+        Color borderColorToBeUsed = shapeBorderColor;
+        if (shapeBorderColor == null) {
+            borderColorToBeUsed = shapeColor;
         }
+        this.shapeBorderColor = borderColorToBeUsed;
+        return this;
+    }
+
+    @Override
+    public Graphics setShapeBorderWidth(float lineWidth) {
+        if (lineWidth < 0) {
+            throw new IllegalArgumentException("lineWidth can not be < 0");
+        }
+
+        this.shapeBorderWidth = lineWidth;
+
+        // spike - to improve performance
+        Graphics2D graphics = getGraphics();
+        BasicStroke awtStroke = new BasicStroke(lineWidth);
+        graphics.setStroke(awtStroke);
+        //
         return this;
     }
 
@@ -111,12 +108,12 @@ public class GraphicsAWT implements Graphics {
         graphics.fill(path);
 
         if (shapeBorderWidth > 0) {
-            java.awt.Paint previousPaint = graphics.getPaint();
+            java.awt.Paint previousUsedPaint = graphics.getPaint();
             java.awt.Color awtBorderColor = graphicsAWTCache.cacheAndGetNativeColor(shapeBorderColor);
 
             graphics.setPaint(awtBorderColor);
             graphics.draw(path);
-            graphics.setPaint(previousPaint);
+            graphics.setPaint(previousUsedPaint);
         }
     }
 
