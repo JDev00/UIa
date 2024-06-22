@@ -8,7 +8,7 @@ To achieve the cross-platform/library goal, the UIa core has been designed to be
 <br>
 Currently, its core is structured as follows:
 
-![Screenshot](docs/UIa_UML.jpeg)
+![Screenshot](docs/uia_core.png)
 
 Two interfaces are the fundamentals of UIa:
 <ul>
