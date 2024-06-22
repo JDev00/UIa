@@ -86,16 +86,17 @@ public class GraphicsAWT implements Graphics {
     @Override
     public Graphics setShapeBorderWidth(float lineWidth) {
         if (lineWidth < 0) {
-            throw new IllegalArgumentException("lineWidth can not be < 0");
+            throw new IllegalArgumentException("'lineWidth' is < 0. It must be >= 0.");
         }
 
+        // register stroke value
         this.shapeBorderWidth = lineWidth;
 
-        // spike - to improve performance
+        // sets the stroke value to the native graphic
+        BasicStroke cachedStroke = graphicsAWTCache.cacheAndGetNativeStroke(lineWidth);
         Graphics2D graphics = getGraphics();
-        BasicStroke awtStroke = new BasicStroke(lineWidth);
-        graphics.setStroke(awtStroke);
-        //
+        graphics.setStroke(cachedStroke);
+
         return this;
     }
 

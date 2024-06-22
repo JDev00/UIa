@@ -5,16 +5,19 @@ import uia.core.rendering.font.Font;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.awt.*;
 
 /**
- * GraphicsAWTCache is responsible for caching objects required for by the Graphics component.
+ * GraphicsAWTCache is responsible for caching objects required by the AWT Graphics component.
  */
 
 public class GraphicsAWTCache {
     private final Map<Integer, java.awt.Color> colorCache;
     private final Map<Integer, java.awt.Font> fontCache;
+    private final Map<Float, BasicStroke> strokeCache;
 
     public GraphicsAWTCache() {
+        strokeCache = new HashMap<>();
         colorCache = new HashMap<>();
         fontCache = new HashMap<>();
     }
@@ -23,8 +26,11 @@ public class GraphicsAWTCache {
     public String toString() {
         return "GraphicsAWTCache{colorCache=" + colorCache.size() +
                 ", fontCache=" + fontCache.size() +
+                ", strokeCache=" + strokeCache.size() +
                 '}';
     }
+
+    // color cache
 
     /**
      * Caches the specified Color.
@@ -72,6 +78,8 @@ public class GraphicsAWTCache {
         cacheColor(color);
         return getNativeColor(color);
     }
+
+    // font cache
 
     /**
      * Caches the specified Font.
@@ -124,5 +132,52 @@ public class GraphicsAWTCache {
     public java.awt.Font cacheAndGetNativeFont(Font font) {
         cacheFont(font);
         return getNativeFont(font);
+    }
+
+    // stroke cache
+
+    /**
+     * Caches the specified stroke value.
+     * <br>
+     * <br>
+     * Time complexity:
+     * <ul>
+     *     <li>average case: O(1)</li>
+     *     <li>worst case: O(n).</li>
+     * </ul>
+     *
+     * @param strokeWidth the stroke value to be cached
+     */
+
+    public void cacheStroke(float strokeWidth) {
+        strokeCache.computeIfAbsent(strokeWidth, key -> new BasicStroke(strokeWidth));
+    }
+
+    /**
+     * @return the native stroke associated to the stroke value
+     */
+
+    public BasicStroke getNativeStroke(float strokeWidth) {
+        return strokeCache.get(strokeWidth);
+    }
+
+    /**
+     * Caches and returns the specified stroke. If the stroke is already cached, it immediately
+     * returns the native stroke.
+     * <br>
+     * <br>
+     * Time complexity:
+     * <ul>
+     *     <li>average case: O(1)</li>
+     *     <li>worst case: O(n).</li>
+     * </ul>
+     *
+     * @param strokeWidth the value of the stroke to be cached
+     * @return the native cached stroke value
+     */
+
+    public BasicStroke cacheAndGetNativeStroke(float strokeWidth) {
+        cacheStroke(strokeWidth);
+        return getNativeStroke(strokeWidth);
     }
 }
