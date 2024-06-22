@@ -27,6 +27,33 @@ public interface Graphics {
 
     void dispose();
 
+    // clip region
+
+    /**
+     * Sets the current clipping area to an arbitrary clip shape.
+     * This method set the user clip, which is independent of the clipping associated
+     * with device bounds and window visibility.
+     *
+     * @param transform the shape transformation; it could be null
+     * @param length    the number of vertices to be drawn; if 'vertices' is null, it is ignored
+     * @param vertices  the shape vertices. The array shape must be: [x1,y1, x2,y2, x3,y3, ...]; it could be null
+     * @return this Graphics
+     * @throws IllegalArgumentException if {@code 'vertices' doesn't follow the required array shape
+     *                                  || length < 0
+     *                                  || length >= vertices.length}
+     * @since 1.6.0
+     */
+
+    Graphics setClip(Transform transform, int length, float... vertices);
+
+    /**
+     * Restores the previous clipping area.
+     *
+     * @return this Graphics
+     */
+
+    Graphics restoreClip();
+
     // shape
 
     /**
@@ -95,31 +122,6 @@ public interface Graphics {
      */
 
     Graphics drawShape(Transform transform, int length, float... vertices);
-
-    /**
-     * Sets the current clipping area to an arbitrary clip shape.
-     * This method set the user clip, which is independent of the clipping associated
-     * with device bounds and window visibility.
-     *
-     * @param transform the shape transformation; it could be null
-     * @param length    the number of vertices to be drawn; if 'vertices' is null, it is ignored
-     * @param vertices  the shape vertices. The array shape must be: [x1,y1, x2,y2, x3,y3, ...]; it could be null
-     * @return this Graphics
-     * @throws IllegalArgumentException if {@code 'vertices' doesn't follow the required array shape
-     *                                  || length < 0
-     *                                  || length >= vertices.length}
-     * @since 1.6.0
-     */
-
-    Graphics setClip(Transform transform, int length, float... vertices);
-
-    /**
-     * Restores the previous clipping area.
-     *
-     * @return this Graphics
-     */
-
-    Graphics restoreClip();
 
     // text
 
