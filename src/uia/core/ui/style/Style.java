@@ -522,21 +522,4 @@ public final class Style {
     public float getRotation() {
         return container[4];
     }
-
-    /*
-     * Returns the bounding rect of the transformed UI element:
-     * <ul>
-     *     <li>the position on the x-axis of the left-top corner;</li>
-     *     <li>the position on the y-axis of the left-top corner;</li>
-     *     <li>width;</li>
-     *     <li>height;</li>
-     *     <li>left padding;</li>
-     *     <li>top padding;</li>
-     *     <li>right padding;</li>
-     *     <li>bottom padding;</li>
-     * </ul>
-     *
-    public float[] getBoundingRect(float[] array) {
-        return array;
-    }*/
 }
