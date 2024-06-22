@@ -3,8 +3,8 @@ package uia.core.ui.style;
 import uia.core.rendering.geometry.Geometry;
 import uia.core.rendering.color.Color;
 import uia.core.rendering.font.Font;
-import uia.physical.ui.Theme;
 import uia.utility.Geometries;
+import uia.physical.ui.Theme;
 
 import java.util.function.Consumer;
 import java.util.Objects;
@@ -309,11 +309,11 @@ public final class Style {
     // margin & padding
 
     public Style setMargin() {
-        return this;
+        throw new UnsupportedOperationException();
     }
 
     public Style setPadding() {
-        return this;
+        throw new UnsupportedOperationException();
     }
 
     // positioning
