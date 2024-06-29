@@ -12,6 +12,7 @@ import uia.core.ui.primitives.Key;
 import uia.utility.Geometries;
 import uia.core.ui.View;
 
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.List;
@@ -38,34 +39,41 @@ public final class ComponentUtility {
      * @throws NullPointerException if {@code view == null || screenTouches == null}
      */
 
-    public static List<ScreenTouch> getAndConsumeTouchesOnViewArea(View view, List<ScreenTouch> screenTouches, boolean consumeTouches) {
-        Objects.requireNonNull(view);
+    public static ScreenTouch[] getAndConsumeTouchesOnViewArea(View view, boolean consumeTouches, ScreenTouch... screenTouches) {
         Objects.requireNonNull(screenTouches);
+        Objects.requireNonNull(view);
 
-        List<ScreenTouch> result = new ArrayList<>(2);
+        List<ScreenTouch> result = Collections.emptyList();
         if (view.isVisible()) {
+            // reallocates the array with the number of screenTouches
+            result = new ArrayList<>(screenTouches.length);
+
+            // calculates the screenTouch offset
             float[] viewBounds = view.getBounds();
             int[] touchOffset = {
                     -((int) viewBounds[0]),
                     -((int) viewBounds[1])
             };
-            // returns touches that lie on the given view
-            screenTouches.forEach(touch -> {
-                if (!touch.isConsumed()
-                        && touch.getAction() != ScreenTouch.Action.EXITED
-                        && view.contains(touch.getX(), touch.getY())) {
-                    ScreenTouch copiedScreenTouch = ScreenTouch.copy(touch, touchOffset[0], touchOffset[1]);
+            // returns touches that are on the view area
+            for (ScreenTouch screenTouch : screenTouches) {
+                if (!screenTouch.isConsumed()
+                        && screenTouch.getAction() != ScreenTouch.Action.EXITED
+                        && view.contains(screenTouch.getX(), screenTouch.getY())) {
+                    // copies the given screenTouch
+                    ScreenTouch copiedScreenTouch = ScreenTouch.copy(screenTouch, touchOffset[0], touchOffset[1]);
+                    // consumes the copied screenTouch
                     copiedScreenTouch.consume();
                     result.add(copiedScreenTouch);
 
                     // consumes the original screenTouch if necessary
                     if (consumeTouches) {
-                        touch.consume();
+                        screenTouch.consume();
                     }
                 }
-            });
+            }
         }
-        return result;
+
+        return result.toArray(new ScreenTouch[0]);
     }
 
     /**
