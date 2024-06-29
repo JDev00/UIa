@@ -77,23 +77,30 @@ public final class ComponentUtility {
      * @throws NullPointerException if {@code view == null || screenTouches == null}
      */
 
-    public static List<ScreenTouch> copyAndConsumeTouches(View view, List<ScreenTouch> screenTouches) {
-        Objects.requireNonNull(view);
+    public static ScreenTouch[] copyAndConsumeTouches(View view, ScreenTouch... screenTouches) {
         Objects.requireNonNull(screenTouches);
+        Objects.requireNonNull(view);
 
-        List<ScreenTouch> result = new ArrayList<>(2);
+        ScreenTouch[] result = {};
         if (view.isVisible()) {
+            result = new ScreenTouch[screenTouches.length];
+
+            // calculates the screenTouch offset
             float[] viewBounds = view.getBounds();
             int[] touchOffset = {
                     -((int) viewBounds[0]),
                     -((int) viewBounds[1])
             };
-            screenTouches.forEach(touch -> {
-                touch.consume();
-                ScreenTouch copiedScreenTouch = ScreenTouch.copy(touch, touchOffset[0], touchOffset[1]);
+            for (int i = 0; i < screenTouches.length; i++) {
+                ScreenTouch screenTouch = screenTouches[i];
+                // consumes the screenTouch
+                screenTouch.consume();
+                // copies it
+                ScreenTouch copiedScreenTouch = ScreenTouch.copy(screenTouch, touchOffset[0], touchOffset[1]);
                 copiedScreenTouch.consume();
-                result.add(copiedScreenTouch);
-            });
+                // populates the result
+                result[i] = copiedScreenTouch;
+            }
         }
         return result;
     }
