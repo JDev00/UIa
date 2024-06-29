@@ -4,16 +4,17 @@ import uia.core.ui.style.TextVerticalAlignment;
 import uia.core.ui.callbacks.OnMessageReceived;
 import uia.physical.ui.component.ComponentText;
 import uia.physical.ui.component.WrapperView;
-import uia.core.rendering.color.Color;
 import uia.physical.ui.group.ComponentGroup;
-import uia.core.rendering.font.Font;
+import uia.physical.message.MessageFactory;
 import uia.physical.ui.component.Component;
+import uia.core.basement.message.Message;
 import uia.platform.swing.ContextSwing;
-import uia.physical.message.Messages;
+import uia.core.rendering.color.Color;
 import uia.core.ui.callbacks.OnClick;
+import uia.core.rendering.font.Font;
 import uia.core.context.Context;
-import uia.physical.ui.Theme;
 import uia.application.UIButton;
+import uia.physical.ui.Theme;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.View;
@@ -37,8 +38,9 @@ public class HelloWorld extends WrapperView {
         UIButton button = createCustomButton();
         // now comes for the interesting part of the job: showing and hiding a View without creating dependencies.
         button.registerCallback((OnClick) touches -> {
-            String messageToSend = button.isEnabled() ? "Wake up!" : "Sleep now :)";
-            button.sendMessage(Messages.newMessage(messageToSend, "POPUP"));
+            String messagePayload = button.isEnabled() ? "Wake up!" : "Bye";
+            Message message = MessageFactory.create(messagePayload, "POPUP");
+            button.sendMessage(message);
         });
         // add another callback to listen for messages sent to this button
         button.registerCallback((OnMessageReceived) message -> {
@@ -50,18 +52,19 @@ public class HelloWorld extends WrapperView {
 
         // now create a new simple popup.
         View popup = createSimplePopup();
-        // creates an event to listen for messages sent to this popup from other views
-        popup.registerCallback((OnMessageReceived) message -> {
-            String payload = message.getPayload();
+        // add a callback that will be invoked when a message, for this popup, is received
+        popup.registerCallback((OnMessageReceived) receivedMessage -> {
+            String payload = receivedMessage.getPayload();
             boolean visibility = payload.contains("Wake up");
             // shows or hides this popup accordingly
             popup.setVisible(visibility);
             // sends a message to BUTTON to inform it that popup woke up or went to sleep
-            String messageToSend = visibility ? "Hey!" : "Bye bye";
-            popup.sendMessage(Messages.newMessage(messageToSend, "BUTTON"));
+            String messagePayload = visibility ? "Hey!" : "Bye";
+            Message messageToSend = MessageFactory.create(messagePayload, "BUTTON");
+            popup.sendMessage(messageToSend);
         });
 
-        // adds button and popup to the HelloWorld group
+        // add button and popup to the group
         ViewGroup.insert(getView(), button, popup);
     }
 
