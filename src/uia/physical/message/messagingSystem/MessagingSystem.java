@@ -1,5 +1,6 @@
-package uia.physical.message;
+package uia.physical.message.messagingSystem;
 
+import uia.physical.message.EventTouchScreenMessage;
 import uia.physical.message.store.GlobalMessageStore;
 import uia.core.basement.message.MessageStore;
 import uia.core.basement.message.Message;

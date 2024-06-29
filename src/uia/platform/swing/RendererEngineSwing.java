@@ -2,7 +2,7 @@ package uia.platform.swing;
 
 import uia.physical.ui.component.ComponentHiddenRoot;
 import uia.platform.swing.graphics.GraphicsAWT;
-import uia.physical.message.MessagingSystem;
+import uia.physical.message.messagingSystem.MessagingSystem;
 import uia.core.context.Context;
 import uia.core.rendering.Graphics;
 import uia.utility.Timer;
