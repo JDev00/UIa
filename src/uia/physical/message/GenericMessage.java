@@ -3,18 +3,18 @@ package uia.physical.message;
 import uia.core.basement.message.Message;
 
 /**
- * UIa standard {@link Message} implementation.
+ * UIa generic {@link Message} implementation.
  */
 
-public class GenericMessage implements Message {
+public final class GenericMessage implements Message {
+    private final String recipient;
     private final Object message;
     private final String source;
-    private final String recipient;
 
     public GenericMessage(Object message, String source, String recipient) {
+        this.recipient = recipient;
         this.message = message;
         this.source = source;
-        this.recipient = recipient;
     }
 
     @Override
