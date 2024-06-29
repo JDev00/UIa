@@ -3,19 +3,17 @@ package uia.platform.swing;
 import uia.physical.message.store.GlobalMessageStore;
 import uia.core.basement.message.MessageStore;
 import uia.physical.callbacks.CallbackStore;
-import uia.physical.message.Messages;
+import uia.physical.message.MessageFactory;
+import uia.core.ui.primitives.ScreenTouch;
+import uia.core.basement.message.Message;
+import uia.core.context.window.Window;
+import uia.core.ui.primitives.Key;
 import uia.core.basement.Callable;
 import uia.core.basement.Callback;
-import uia.core.context.window.Window;
-import uia.core.ui.primitives.ScreenTouch;
 import uia.core.context.window.*;
-import uia.core.ui.primitives.Key;
 
 import java.util.function.IntFunction;
-import java.util.Collections;
-import java.util.ArrayList;
 import java.awt.event.*;
-import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 
@@ -91,20 +89,20 @@ public class WindowSwing implements Window {
         jFrame.addMouseListener(new MouseListener() {
             @Override
             public void mousePressed(MouseEvent event) {
-                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.PRESSED);
-                addScreenTouchEvent(screenTouches);
+                ScreenTouch screenTouch = createScreenTouche(event, 0, ScreenTouch.Action.PRESSED);
+                addScreenTouchEvent(screenTouch);
             }
 
             @Override
             public void mouseReleased(MouseEvent event) {
-                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.RELEASED);
-                addScreenTouchEvent(screenTouches);
+                ScreenTouch screenTouch = createScreenTouche(event, 0, ScreenTouch.Action.RELEASED);
+                addScreenTouchEvent(screenTouch);
             }
 
             @Override
             public void mouseClicked(MouseEvent event) {
-                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.CLICKED);
-                addScreenTouchEvent(screenTouches);
+                ScreenTouch screenTouch = createScreenTouche(event, 0, ScreenTouch.Action.CLICKED);
+                addScreenTouchEvent(screenTouch);
             }
 
             @Override
@@ -114,26 +112,26 @@ public class WindowSwing implements Window {
 
             @Override
             public void mouseExited(MouseEvent event) {
-                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.EXITED);
-                addScreenTouchEvent(screenTouches);
+                ScreenTouch screenTouch = createScreenTouche(event, 0, ScreenTouch.Action.EXITED);
+                addScreenTouchEvent(screenTouch);
             }
         });
         jFrame.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent event) {
-                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.DRAGGED);
-                addScreenTouchEvent(screenTouches);
+                ScreenTouch screenTouch = createScreenTouche(event, 0, ScreenTouch.Action.DRAGGED);
+                addScreenTouchEvent(screenTouch);
             }
 
             @Override
             public void mouseMoved(MouseEvent event) {
-                List<ScreenTouch> screenTouches = createScreenTouches(event, 0, ScreenTouch.Action.MOVED);
-                addScreenTouchEvent(screenTouches);
+                ScreenTouch screenTouch = createScreenTouche(event, 0, ScreenTouch.Action.MOVED);
+                addScreenTouchEvent(screenTouch);
             }
         });
         jFrame.addMouseWheelListener(event -> {
-            List<ScreenTouch> screenTouches = createScreenTouches(event, event.getWheelRotation(), ScreenTouch.Action.WHEEL);
-            addScreenTouchEvent(screenTouches);
+            ScreenTouch screenTouch = createScreenTouche(event, event.getWheelRotation(), ScreenTouch.Action.WHEEL);
+            addScreenTouchEvent(screenTouch);
         });
     }
 
@@ -142,22 +140,28 @@ public class WindowSwing implements Window {
      */
 
     private void addKeyEvent(Key key) {
-        globalMessageStore.add(Messages.newKeyEventMessage(key, null));
+        // creates a new message
+        Message message = MessageFactory.create(key, null);
+        // adds the message to the global store
+        globalMessageStore.add(message);
     }
 
     /**
      * Helper function. Adds a new ScreenTouch event to the global store.
      */
 
-    private void addScreenTouchEvent(List<ScreenTouch> screenTouches) {
-        globalMessageStore.add(Messages.newScreenEventMessage(screenTouches, null));
+    private void addScreenTouchEvent(ScreenTouch screenTouch) {
+        // creates a new message
+        Message message = MessageFactory.create(screenTouch, null);
+        // adds the message to the global store
+        globalMessageStore.add(message);
     }
 
     /**
      * Helper function. Returns a new List of {@link ScreenTouch}s.
      */
 
-    private List<ScreenTouch> createScreenTouches(MouseEvent mouseEvent, int wheelRotation, ScreenTouch.Action action) {
+    private ScreenTouch createScreenTouche(MouseEvent mouseEvent, int wheelRotation, ScreenTouch.Action action) {
         IntFunction<ScreenTouch.Button> mapNativeMouseButton = button -> {
             switch (button) {
                 case 1:
@@ -175,14 +179,12 @@ public class WindowSwing implements Window {
         int y = mouseEvent.getY();
         int[] insets = getInsets();
         int[] position = {x - insets[0], y - insets[1]};
-
-        ScreenTouch screenTouch = new ScreenTouch(
+        return new ScreenTouch(
                 action,
                 mapNativeMouseButton.apply(mouseEvent.getButton()),
                 position[0],
                 position[1],
                 wheelRotation);
-        return new ArrayList<>(Collections.singletonList(screenTouch));
     }
 
     /**
