@@ -5,7 +5,7 @@ import test.core.Test;
 import test.core.TestAssertion;
 import test.core.TestExecutor;
 import uia.core.basement.message.Message;
-import uia.physical.message.Messages;
+import uia.physical.message.MessageFactory;
 import uia.physical.message.store.ConcreteMessageStore;
 import uia.core.basement.message.MessageStore;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class testMessageStore {
 
     public static Message createMockMessage() {
-        return Messages.newMessage("", "");
+        return MessageFactory.create("", "");
     }
 
     public MessageStore messageStore;
@@ -39,6 +39,7 @@ public class testMessageStore {
             messageStore.add(createMockMessage());
         }
 
+        // verify
         assertion.expect(messageStore.size()).toBe(MESSAGES);
     }
 
@@ -56,9 +57,12 @@ public class testMessageStore {
         };
         Arrays.stream(messagesToAdd).forEach(messageStore::add);
 
-        int REQUESTED_MESSAGES = 3;
-        List<Message> result = messageStore.pop(REQUESTED_MESSAGES);
-        assertion.expect(result.size()).toBe(REQUESTED_MESSAGES);
+        // act
+        int NUMBER_OF_MESSAGE_TO_REMOVE = 3;
+        List<Message> result = messageStore.pop(NUMBER_OF_MESSAGE_TO_REMOVE);
+
+        // verify
+        assertion.expect(result.size()).toBe(NUMBER_OF_MESSAGE_TO_REMOVE);
         for (int i = 0; i < result.size(); i++) {
             assertion.expect(result.get(i)).toBe(messagesToAdd[i]);
         }

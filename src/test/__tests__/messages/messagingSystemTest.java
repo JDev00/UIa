@@ -5,7 +5,7 @@ import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.callbacks.OnMessageReceived;
 import uia.core.context.Context;
-import uia.physical.message.Messages;
+import uia.physical.message.MessageFactory;
 
 import static test.__tests__.utility.TestUtility.*;
 
@@ -31,21 +31,22 @@ public class messagingSystemTest {
         testAssertion.assertions(messages);
 
         String MESSAGE = "hello";
-        String TARGET = "B";
+        String TARGET_VIEW = "B";
 
         // setup
-        ViewGroup.insert(rootView, createView(TARGET, 0f, 0f, 0.1f, 0.1f));
+        ViewGroup.insert(rootView, createView(TARGET_VIEW, 0f, 0f, 0.1f, 0.1f));
 
-        // test clause
-        View targetView = rootView.get(TARGET);
-        targetView.registerCallback((OnMessageReceived) message -> {
-            testAssertion.expect(message.getPayload()).toBe(MESSAGE);
+        // verify
+        View targetView = rootView.get(TARGET_VIEW);
+        targetView.registerCallback((OnMessageReceived) receivedMessage -> {
+            String messagePayload = receivedMessage.getPayload();
+            testAssertion.expect(messagePayload).toBe(MESSAGE);
         });
 
+        // act
         for (int i = 0; i < messages; i++) {
-            rootView.sendMessage(Messages.newMessage(MESSAGE, TARGET));
+            rootView.sendMessage(MessageFactory.create(MESSAGE, TARGET_VIEW));
         }
-
         TestUtils.wait(2_100);
     }
 

@@ -6,27 +6,35 @@ import test.core.TestExecutor;
 import uia.core.basement.message.Message;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.OnMessageReceived;
+import uia.physical.message.MessageFactory;
 import uia.physical.ui.component.Component;
-import uia.physical.message.Messages;
 import uia.physical.ui.component.utility.ComponentUtility;
 
 /**
- * Unit tests
+ * Unit tests.
  */
+
 public class ComponentUtilityTest {
+    static String VIEW_ID = "1";
+
+    static View createView() {
+        return new Component(VIEW_ID, 0f, 0f, 0f, 0f);
+    }
 
     @Test
     public void messageShouldBeNotified(TestAssertion assertion) {
         assertion.assertions(1);
 
         // setup
-        String id = "1";
-        Message message = Messages.newMessage("ciao", id);
-        View view = new Component(id, 0, 0, 0, 0);
+        View view = createView();
+        Message message = MessageFactory.create("ciao", VIEW_ID);
+
+        // verify
         view.registerCallback((OnMessageReceived) mex -> {
             assertion.expect(mex).toBe(message);
         });
 
+        // act
         ComponentUtility.notifyMessageListeners(view, message);
     }
 
@@ -35,21 +43,25 @@ public class ComponentUtilityTest {
         assertion.assertions(1);
 
         // setup
-        String id = "1";
-        Message message = Messages.newMessage("ciao", null);
-        View view = new Component(id, 0, 0, 0, 0);
+        View view = createView();
+        Message message = MessageFactory.create("ciao", null);
+
+        // verify
         view.registerCallback((OnMessageReceived) mex -> {
             assertion.expect(mex).toBe(message);
         });
 
+        // act
         ComponentUtility.notifyMessageListeners(view, message);
     }
 
     @Test
-    public void nullMessageShouldThrowNullPointerException(TestAssertion assertion) {
+    public void tryingToNotifyClientsWithANullMessageShouldThrowAnException(TestAssertion assertion) {
         assertion.assertions(1);
+
+        // verify
         assertion.expect(() -> {
-            View view = new Component("", 0, 0, 0, 0);
+            View view = createView();
             ComponentUtility.notifyMessageListeners(view, null);
         }).toThrowException(NullPointerException.class);
     }
@@ -57,8 +69,10 @@ public class ComponentUtilityTest {
     @Test
     public void nullViewShouldThrowNullPointerException(TestAssertion assertion) {
         assertion.assertions(1);
+
+        // verify
         assertion.expect(() -> {
-            Message message = Messages.newMessage("", "");
+            Message message = MessageFactory.create("", "");
             ComponentUtility.notifyMessageListeners(null, message);
         }).toThrowException(NullPointerException.class);
     }
