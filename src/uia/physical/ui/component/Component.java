@@ -22,7 +22,6 @@ import uia.core.ui.View;
 import java.util.function.Consumer;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.List;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -179,42 +178,43 @@ public final class Component implements View {
     }
 
     /**
-     * Helper function. Notifies screenTouch listeners with the specified screen touches.
+     * Helper function. Notifies listeners with the specified screen touches.
      *
      * @param insideTouches the screen touches within the view area
      * @param globalTouches all screen touches
      */
 
-    private void notifyScreenTouchListeners(List<ScreenTouch> insideTouches,
-                                            List<ScreenTouch> globalTouches) {
-        if (!insideTouches.isEmpty()) {
-            // request focus
-            for (int i = 0; i < insideTouches.size() && !focus; i++) {
-                if (insideTouches.get(i).getAction() == ScreenTouch.Action.PRESSED) {
+    private void notifyScreenTouchListeners(ScreenTouch[] insideTouches,
+                                            ScreenTouch[] globalTouches) {
+        if (insideTouches.length > 0) {
+            // requests focus
+            for (int i = 0; i < insideTouches.length && !focus; i++) {
+                if (insideTouches[i].getAction() == ScreenTouch.Action.PRESSED) {
                     requestFocus(true);
                 }
             }
-            // invoke mouse enter or mouse hover callback
+            // invokes the callback for the 'mouse enter' event
             if (!over) {
                 over = true;
                 notifyCallbacks(OnMouseEnter.class, insideTouches);
             } else {
+                // invokes the callback for the 'mouse hover' event
                 notifyCallbacks(OnMouseHover.class, insideTouches);
             }
-            // invoke click callback
-            insideTouches.forEach(touch -> {
-                if (touch.getAction() == ScreenTouch.Action.CLICKED) {
+            // invokes the callback when clicked on this view
+            for (ScreenTouch screenTouch : insideTouches) {
+                if (screenTouch.getAction() == ScreenTouch.Action.CLICKED) {
                     notifyCallbacks(OnClick.class, insideTouches);
                 }
-            });
+            }
         } else {
-            // remove focus
-            for (int i = 0; i < globalTouches.size() && focus; i++) {
-                if (globalTouches.get(i).getAction() == ScreenTouch.Action.PRESSED) {
+            // removes focus
+            for (int i = 0; i < globalTouches.length && focus; i++) {
+                if (globalTouches[i].getAction() == ScreenTouch.Action.PRESSED) {
                     requestFocus(false);
                 }
             }
-            // invoke mouse exit callback
+            // invokes the callback for the 'mouse exit' event
             if (over) {
                 over = false;
                 if (visible) {
@@ -228,22 +228,18 @@ public final class Component implements View {
     public void readMessage(Message message) {
         if (message instanceof EventTouchScreenMessage.Lock) {
             if (id.equals(message.getRecipient())) {
-                List<ScreenTouch> screenTouches = message.getPayload();
-                List<ScreenTouch> localTouches = ComponentUtility.copyAndConsumeTouches(
-                        this, screenTouches
-                );
+                ScreenTouch[] screenTouches = message.getPayload();
+                ScreenTouch[] localTouches = ComponentUtility.copyAndConsumeTouches(this, screenTouches);
+                // notifies listeners
                 notifyScreenTouchListeners(localTouches, screenTouches);
             }
         } else if (message instanceof EventTouchScreenMessage) {
-            List<ScreenTouch> screenTouches = message.getPayload();
-            List<ScreenTouch> localTouches = ComponentUtility.getAndConsumeTouchesOnViewArea(
-                    this, screenTouches, consumeScreenTouch
-            );
+            ScreenTouch[] screenTouches = message.getPayload();
+            ScreenTouch[] localTouches = ComponentUtility.getAndConsumeTouchesOnViewArea(this, consumeScreenTouch, screenTouches);
+            // notifies listeners
             notifyScreenTouchListeners(localTouches, screenTouches);
         } else if (message instanceof EventKeyMessage) {
-            ComponentUtility.notifyKeyListeners(
-                    this, message.getPayload(), consumeKey
-            );
+            ComponentUtility.notifyKeyListeners(this, message.getPayload(), consumeKey);
         } else {
             ComponentUtility.notifyMessageListeners(this, message);
         }
