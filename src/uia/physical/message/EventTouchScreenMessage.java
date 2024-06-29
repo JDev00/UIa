@@ -3,28 +3,29 @@ package uia.physical.message;
 import uia.core.ui.primitives.ScreenTouch;
 import uia.core.basement.message.Message;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * EventTouchScreenMessage is a UIa framework message that carries
- * a list of {@link ScreenTouch} as payload.
+ * an array of {@link ScreenTouch} as payload.
  */
 
 public final class EventTouchScreenMessage implements Message {
-    private final List<ScreenTouch> screenTouches;
+    private final ScreenTouch[] screenTouches;
     private final String source;
     private final String recipient;
 
-    public EventTouchScreenMessage(List<ScreenTouch> screenTouches, String source, String recipient) {
+    public EventTouchScreenMessage(String source, String recipient, ScreenTouch... screenTouches) {
         this.screenTouches = screenTouches;
-        this.source = source;
         this.recipient = recipient;
+        this.source = source;
     }
 
     @Override
     public String toString() {
         return "EventTouchScreenMessage{" +
-                "screenTouches=" + screenTouches +
+                "screenTouches=" + Arrays.toString(screenTouches) +
                 ", source='" + source + '\'' +
                 ", recipient='" + recipient + '\'' +
                 '}';
@@ -40,9 +41,8 @@ public final class EventTouchScreenMessage implements Message {
         return recipient;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public List<ScreenTouch> getPayload() {
+    public ScreenTouch[] getPayload() {
         return screenTouches;
     }
 
