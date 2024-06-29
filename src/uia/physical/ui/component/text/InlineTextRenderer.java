@@ -3,10 +3,10 @@ package uia.physical.ui.component.text;
 import uia.physical.ui.component.utility.ComponentUtility;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.core.ui.style.TextVerticalAlignment;
+import uia.core.rendering.font.Font;
+import uia.core.rendering.Graphics;
 import uia.core.ui.style.Style;
 import uia.core.ui.ViewText;
-import uia.core.rendering.Graphics;
-import uia.core.rendering.font.Font;
 
 import java.util.Objects;
 
@@ -14,7 +14,7 @@ import java.util.Objects;
  * Single line text renderer.
  */
 
-public class InlineTextRenderer implements TextRenderer {
+public final class InlineTextRenderer implements TextRenderer {
 
     // TODO: BUG - change text rotation
     @Override
