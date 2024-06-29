@@ -89,19 +89,19 @@ public class WindowSwing implements Window {
         jFrame.addMouseListener(new MouseListener() {
             @Override
             public void mousePressed(MouseEvent event) {
-                ScreenTouch screenTouch = createScreenTouche(event, 0, ScreenTouch.Action.PRESSED);
+                ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.PRESSED);
                 addScreenTouchEvent(screenTouch);
             }
 
             @Override
             public void mouseReleased(MouseEvent event) {
-                ScreenTouch screenTouch = createScreenTouche(event, 0, ScreenTouch.Action.RELEASED);
+                ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.RELEASED);
                 addScreenTouchEvent(screenTouch);
             }
 
             @Override
             public void mouseClicked(MouseEvent event) {
-                ScreenTouch screenTouch = createScreenTouche(event, 0, ScreenTouch.Action.CLICKED);
+                ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.CLICKED);
                 addScreenTouchEvent(screenTouch);
             }
 
@@ -112,25 +112,25 @@ public class WindowSwing implements Window {
 
             @Override
             public void mouseExited(MouseEvent event) {
-                ScreenTouch screenTouch = createScreenTouche(event, 0, ScreenTouch.Action.EXITED);
+                ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.EXITED);
                 addScreenTouchEvent(screenTouch);
             }
         });
         jFrame.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent event) {
-                ScreenTouch screenTouch = createScreenTouche(event, 0, ScreenTouch.Action.DRAGGED);
+                ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.DRAGGED);
                 addScreenTouchEvent(screenTouch);
             }
 
             @Override
             public void mouseMoved(MouseEvent event) {
-                ScreenTouch screenTouch = createScreenTouche(event, 0, ScreenTouch.Action.MOVED);
+                ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.MOVED);
                 addScreenTouchEvent(screenTouch);
             }
         });
         jFrame.addMouseWheelListener(event -> {
-            ScreenTouch screenTouch = createScreenTouche(event, event.getWheelRotation(), ScreenTouch.Action.WHEEL);
+            ScreenTouch screenTouch = createScreenTouch(event, event.getWheelRotation(), ScreenTouch.Action.WHEEL);
             addScreenTouchEvent(screenTouch);
         });
     }
@@ -158,10 +158,10 @@ public class WindowSwing implements Window {
     }
 
     /**
-     * Helper function. Returns a new List of {@link ScreenTouch}s.
+     * Helper function. Returns a new ScreenTouch object.
      */
 
-    private ScreenTouch createScreenTouche(MouseEvent mouseEvent, int wheelRotation, ScreenTouch.Action action) {
+    private ScreenTouch createScreenTouch(MouseEvent mouseEvent, int wheelRotation, ScreenTouch.Action action) {
         IntFunction<ScreenTouch.Button> mapNativeMouseButton = button -> {
             switch (button) {
                 case 1:
