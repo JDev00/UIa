@@ -32,13 +32,14 @@ public class MessagingSystem {
         if (maxMessagesToProcess <= 0) {
             throw new IllegalArgumentException("maxMessagesPerSecond must be greater than 0");
         }
+
         this.maxMessagesToProcess = maxMessagesToProcess;
     }
 
     /**
-     * Sends the dequeued messages to the specified View
+     * Sends the dequeued messages to the given View.
      *
-     * @param view a not null {@link View} to send the dequeued messages
+     * @param view a {@link View} to send the dequeued messages
      * @throws NullPointerException if {@code view == null}
      */
 
