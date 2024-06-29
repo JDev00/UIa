@@ -2,8 +2,6 @@ package uia.physical.ui.scroller;
 
 import uia.core.ui.primitives.ScreenTouch;
 
-import java.util.List;
-
 /**
  * Mono-dimensional scroller ADT.
  */
@@ -11,7 +9,7 @@ import java.util.List;
 public interface Scroller {
 
     /**
-     * Reset this scroller to its initial value.
+     * Resets this scroller to its initial value.
      */
 
     void reset();
@@ -28,7 +26,7 @@ public interface Scroller {
     void setFactor(float factor);
 
     /**
-     * Set the maximum value for this scroller
+     * Sets the maximum value for this scroller.
      *
      * @param length the maximum distance to travel
      */
@@ -36,7 +34,7 @@ public interface Scroller {
     void setMax(float length);
 
     /**
-     * Set the scroll value
+     * Sets the scroll value.
      *
      * @param value the scroll value
      */
@@ -44,26 +42,26 @@ public interface Scroller {
     void setValue(float value);
 
     /**
-     * Pause this scroller
+     * Pauses this scroller.
      */
 
     void pause();
 
     /**
-     * Resume this scroller
+     * Resumes this scroller.
      */
 
     void resume();
 
     /**
-     * Update this scroller
+     * Updates this scroller.
      *
-     * @param screenTouches a not null List of {@link ScreenTouch}s
+     * @param screenTouches the screenTouches used to update this scroller
      * @return true if this scroller has been updated
      * @throws NullPointerException if {@code screenTouches == null}
      */
 
-    boolean update(List<ScreenTouch> screenTouches);
+    boolean update(ScreenTouch... screenTouches);
 
     /**
      * @return the scroller value
