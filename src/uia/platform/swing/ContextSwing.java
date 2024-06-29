@@ -3,27 +3,28 @@ package uia.platform.swing;
 import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.core.basement.message.MessageStore;
+import uia.physical.message.MessageFactory;
 import uia.physical.input.ArtificialInput;
-import uia.core.context.InputEmulator;
-import uia.physical.message.Messages;
-import uia.core.context.Context;
-import uia.core.context.window.Window;
 import uia.core.ui.primitives.ScreenTouch;
+import uia.core.context.window.Window;
+import uia.core.context.InputEmulator;
+import uia.core.context.Context;
 import uia.core.ui.View;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.awt.datatransfer.*;
-import java.util.List;
 import java.util.*;
 import java.awt.*;
 
 /**
- * Framework built-in {@link Context} implementation based on Java Swing.
- * <br><br>
+ * UIa {@link Context} implementation based on Java Swing.
+ * <br>
+ * <br>
  * <b>Usage example:</b>
- * <br><br>
+ * <br>
+ * <br>
  * <code>
  * <p>
  * Context context = createAndStart(1000, 500);
@@ -31,11 +32,12 @@ import java.awt.*;
  */
 
 public class ContextSwing implements Context {
-    private ScheduledExecutorService renderingThread;
     private LifecycleStage lifecycleStage = LifecycleStage.PAUSED;
-    private final WindowSwing window;
+    private ScheduledExecutorService renderingThread;
+
     private final RendererEngineSwing rendererEngine;
     private final InputEmulator inputEmulator;
+    private final WindowSwing window;
 
     public ContextSwing(int x, int y) {
         rendererEngine = new RendererEngineSwing();
@@ -47,12 +49,13 @@ public class ContextSwing implements Context {
         inputEmulator = new ArtificialInput(message -> {
             int[] insets = window.getInsets();
             if (message instanceof EventTouchScreenMessage) {
-                List<ScreenTouch> screenTouch = message.getPayload();
+                ScreenTouch[] screenTouch = message.getPayload();
                 // copies and translates the screenTouch
-                ScreenTouch copiedScreenTouch = ScreenTouch.copy(screenTouch.get(0), insets[0], insets[1]);
-                // reallocates the message
-                message = Messages.newScreenEventMessage(copiedScreenTouch, message.getRecipient());
+                ScreenTouch copiedScreenTouch = ScreenTouch.copy(screenTouch[0], insets[0], insets[1]);
+                // recreates the message
+                message = MessageFactory.create(copiedScreenTouch, message.getRecipient());
             }
+            // adds the message to the message store
             globalMessageStore.add(message);
         });
     }

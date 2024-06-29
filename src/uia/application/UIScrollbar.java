@@ -56,11 +56,11 @@ public final class UIScrollbar extends WrapperView {
                         true
                 );
         registerCallback((OnClick) touches -> {
-            ScreenTouch touch = touches.get(0);
+            ScreenTouch touch = touches[0];
             updateScroll(touch.getX(), touch.getY());
         });
         registerCallback((OnMouseHover) touches -> {
-            ScreenTouch touch = touches.get(0);
+            ScreenTouch touch = touches[0];
             if (touch.getAction().equals(ScreenTouch.Action.DRAGGED)) {
                 if (requestLock()) {
                     barDragOffset = getBarDragOffset(touch.getX(), touch.getY());

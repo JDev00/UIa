@@ -68,7 +68,7 @@ public class UIEditText extends WrapperViewText {
         });
         final boolean[] selected = {false};
         registerCallback((OnMouseHover) touches -> {
-            ScreenTouch screenTouch = touches.get(0);
+            ScreenTouch screenTouch = touches[0];
             if (ScreenTouch.madeAction(screenTouch, ScreenTouch.Action.PRESSED)
                     || ScreenTouch.madeAction(screenTouch, ScreenTouch.Action.DRAGGED)) {
                 int ind = getIndex(screenTouch.getX(), screenTouch.getY());

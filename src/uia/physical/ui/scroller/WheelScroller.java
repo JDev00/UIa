@@ -3,16 +3,14 @@ package uia.physical.ui.scroller;
 import uia.core.ui.primitives.ScreenTouch;
 import uia.utility.MathUtility;
 
-import java.util.List;
-
 /**
- * {@link Scroller} implementation
+ * {@link Scroller} implementation.
  */
 
 public class WheelScroller implements Scroller {
+    private float factor = 1f;
     private float length;
     private float value;
-    private float factor = 1f;
 
     private boolean pause = false;
 
@@ -50,16 +48,16 @@ public class WheelScroller implements Scroller {
     }
 
     @Override
-    public boolean update(List<ScreenTouch> screenTouches) {
+    public boolean update(ScreenTouch... screenTouches) {
         try {
-            ScreenTouch p = screenTouches.get(0);
-            if (!pause && p.getWheelRotation() != 0) {
-                value = MathUtility.constrain(value + factor * p.getWheelRotation(), 0, length);
+            ScreenTouch screenTouch = screenTouches[0];
+            if (!pause && screenTouch.getWheelRotation() != 0) {
+                value = MathUtility.constrain(value + factor * screenTouch.getWheelRotation(), 0, length);
                 return true;
             }
         } catch (Exception ignored) {
+            //
         }
-
         return false;
     }
 

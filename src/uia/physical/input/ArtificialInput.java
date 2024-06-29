@@ -1,17 +1,15 @@
 package uia.physical.input;
 
-import uia.core.ui.primitives.Key;
+import uia.physical.message.MessageFactory;
 import uia.core.ui.primitives.ScreenTouch;
 import uia.core.basement.message.Message;
 import uia.core.context.InputEmulator;
-import uia.physical.message.Messages;
+import uia.core.ui.primitives.Key;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.function.Consumer;
 
 /**
- * Built-in {@link InputEmulator} implementation.
+ * Concrete {@link InputEmulator} implementation.
  */
 
 public final class ArtificialInput implements InputEmulator {
@@ -27,11 +25,12 @@ public final class ArtificialInput implements InputEmulator {
 
     private void generateScreenPointer(ScreenTouch.Action action, ScreenTouch.Button button,
                                        int x, int y, int wheelRotation) {
-        ScreenTouch result = new ScreenTouch(action, button, x, y, wheelRotation);
-        eventMessageReader.accept(Messages.newScreenEventMessage(
-                new ArrayList<>(Collections.singletonList(result)),
-                null)
-        );
+        // creates the screenTouch object
+        ScreenTouch screenTouch = new ScreenTouch(action, button, x, y, wheelRotation);
+        // creates the corresponding message
+        Message screenTouchMessage = MessageFactory.create(screenTouch, null);
+        // dispatch it
+        eventMessageReader.accept(screenTouchMessage);
     }
 
     /**
@@ -64,8 +63,12 @@ public final class ArtificialInput implements InputEmulator {
      */
 
     private void generateKey(Key.Action action, int modifiers, char keyChar, int keyCode) {
-        Key result = new Key(action, modifiers, keyChar, keyCode);
-        eventMessageReader.accept(Messages.newKeyEventMessage(result, null));
+        // creates the key object
+        Key key = new Key(action, modifiers, keyChar, keyCode);
+        // creates the corresponding message
+        Message keyMessage = MessageFactory.create(key, null);
+        // dispatch it
+        eventMessageReader.accept(keyMessage);
     }
 
     @Override

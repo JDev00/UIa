@@ -1,12 +1,12 @@
 package uia.physical.message;
 
-import uia.core.basement.message.Message;
-import uia.core.ui.View;
 import uia.physical.message.store.GlobalMessageStore;
 import uia.core.basement.message.MessageStore;
+import uia.core.basement.message.Message;
+import uia.core.ui.View;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.List;
 
 /**
  * MessagingSystem is responsible for managing and dispatching messages.
@@ -52,7 +52,7 @@ public class MessagingSystem {
             } else if (message instanceof EventTouchScreenMessage.Unlock) {
                 lockedScreenTouchRecipient = null;
             } else if (lockedScreenTouchRecipient != null && message instanceof EventTouchScreenMessage) {
-                message = new EventTouchScreenMessage.Lock(message.getPayload(), lockedScreenTouchRecipient);
+                message = new EventTouchScreenMessage.Lock(lockedScreenTouchRecipient, message.getPayload());
             }
             view.readMessage(message);
         }

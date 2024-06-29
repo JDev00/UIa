@@ -1,13 +1,11 @@
 package uia.physical.ui.group;
 
+import uia.physical.message.MessageFactory;
 import uia.core.ui.primitives.ScreenTouch;
 import uia.core.basement.message.Message;
-import uia.physical.message.Messages;
 import uia.core.ui.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.Objects;
-import java.util.List;
 
 /**
  * Collection of functions for ViewGroup components implementation.
@@ -27,8 +25,8 @@ public final class GroupUtility {
      */
 
     public static void dispatchMessageToChildren(ViewGroup group, Message message) {
-        Objects.requireNonNull(group);
         Objects.requireNonNull(message);
+        Objects.requireNonNull(group);
 
         for (int i = group.size() - 1; i >= 0; i--) {
             group.get(i).readMessage(message);
@@ -44,8 +42,8 @@ public final class GroupUtility {
      */
 
     public static void dispatchKeyMessageToChildren(ViewGroup group, Message keyMessage) {
-        Objects.requireNonNull(group);
         Objects.requireNonNull(keyMessage);
+        Objects.requireNonNull(group);
 
         if (group.isVisible()) {
             for (int i = group.size() - 1; i >= 0; i--) {
@@ -63,30 +61,34 @@ public final class GroupUtility {
      */
 
     public static void dispatchScreenTouchMessageToChildren(ViewGroup group, Message screenTouchMessage) {
-        Objects.requireNonNull(group);
         Objects.requireNonNull(screenTouchMessage);
+        Objects.requireNonNull(group);
 
-        List<ScreenTouch> screenTouchesToDispatch = new ArrayList<>();
+        ScreenTouch[] screenTouchesToDispatch = {};
 
         if (group.isVisible()) {
-            List<ScreenTouch> screenTouches = screenTouchMessage.getPayload();
-            screenTouches.forEach(screenTouch -> {
-                ScreenTouch currentTouch = screenTouch;
+            ScreenTouch[] screenTouches = screenTouchMessage.getPayload();
+            screenTouchesToDispatch = new ScreenTouch[screenTouches.length];
 
-                if (group.hasClip() && !group.contains(screenTouch.getX(), screenTouch.getY())) {
-                    currentTouch = ScreenTouch.copy(screenTouch, 0, 0);
-                    currentTouch.consume();
+            for (int i = 0; i < screenTouches.length; i++) {
+                ScreenTouch screenTouch = screenTouches[i];
+                if (group.hasClip()
+                        && !group.contains(screenTouch.getX(), screenTouch.getY())) {
+                    // copies the screenTouch
+                    screenTouch = ScreenTouch.copy(screenTouch, 0, 0);
+                    // consumes the copied screenTouch
+                    screenTouch.consume();
                 }
-                screenTouchesToDispatch.add(currentTouch);
-            });
+                screenTouchesToDispatch[i] = screenTouch;
+            }
         }
 
-        Message result = Messages.newScreenEventMessage(
-                screenTouchesToDispatch,
-                screenTouchMessage.getRecipient()
-        );
+        // creates the message to be dispatched
+        String recipient = screenTouchMessage.getRecipient();
+        Message messageToSend = MessageFactory.create(screenTouchesToDispatch, recipient);
+        // dispatches the message
         for (int i = group.size() - 1; i >= 0; i--) {
-            group.get(i).readMessage(result);
+            group.get(i).readMessage(messageToSend);
         }
     }
 }
