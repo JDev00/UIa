@@ -4,7 +4,6 @@ import uia.core.ui.primitives.ScreenTouch;
 import uia.core.basement.message.Message;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * EventTouchScreenMessage is a UIa framework message that carries
@@ -120,10 +119,10 @@ public final class EventTouchScreenMessage implements Message {
      */
 
     public static class Lock implements Message {
-        private final List<ScreenTouch> screenTouches;
+        private final ScreenTouch[] screenTouches;
         private final String recipient;
 
-        public Lock(List<ScreenTouch> screenTouches, String recipient) {
+        public Lock(String recipient, ScreenTouch... screenTouches) {
             this.screenTouches = screenTouches;
             this.recipient = recipient;
         }
@@ -131,7 +130,7 @@ public final class EventTouchScreenMessage implements Message {
         @Override
         public String toString() {
             return "Lock{" +
-                    "screenTouches=" + screenTouches +
+                    "screenTouches=" + Arrays.toString(screenTouches) +
                     ", recipient='" + recipient + '\'' +
                     '}';
         }
@@ -147,8 +146,7 @@ public final class EventTouchScreenMessage implements Message {
         }
 
         @Override
-        @SuppressWarnings("unchecked")
-        public List<ScreenTouch> getPayload() {
+        public ScreenTouch[] getPayload() {
             return screenTouches;
         }
     }
