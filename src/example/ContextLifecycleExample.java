@@ -1,34 +1,54 @@
 package example;
 
 import uia.physical.ui.component.Component;
-import uia.physical.ui.Theme;
+import uia.physical.ui.component.ComponentText;
 import uia.platform.swing.ContextSwing;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.context.Context;
+import uia.physical.ui.Theme;
+import uia.core.ui.ViewText;
 import uia.core.ui.View;
+
+/**
+ * Demonstrative example. Closes the application programmatically
+ * by clicking on the red view.
+ */
 
 public class ContextLifecycleExample {
 
-    public static View createMockView() {
-        return new Component("A", 0.5f, 0.5f, 0.5f, 0.5f).setExpanseLimit(1.1f, 1.1f);
+    /**
+     * Creates a custom View.
+     */
+
+    public static View createView() {
+        ViewText result = new ComponentText(
+                new Component("", 0.5f, 0.5f, 0.5f, 0.5f).setExpanseLimit(1.1f, 1.1f)
+        );
+        result.getStyle().setBackgroundColor(Theme.RED);
+        return result;
     }
 
-    public static Context createAWTContext() {
+    /**
+     * Creates and starts the application Context.
+     */
+
+    public static Context createContext() {
         int[] screenSize = ContextSwing.getScreenSize();
-        return ContextSwing.createAndStart(4 * screenSize[0] / 5, 4 * screenSize[1] / 5);
+        int width = 4 * screenSize[0] / 5;
+        int height = 4 * screenSize[1] / 5;
+        return ContextSwing.createAndStart(width, height);
+    }
+
+    private static void closeApplication(Context context) {
+        context.setLifecycleStage(Context.LifecycleStage.TERMINATED);
     }
 
     public static void main(String[] args) {
-        Context context = createAWTContext();
+        Context context = createContext();
 
-        View view = createMockView();
-        view.getStyle()
-                .setBackgroundColor(Theme.RED);
-
-        view.registerCallback((OnClick) touches -> {
-            System.out.println("Terminated!");
-            context.setLifecycleStage(Context.LifecycleStage.TERMINATED);
-        });
+        View view = createView();
+        // when the view is clicked, the application is closed
+        view.registerCallback((OnClick) touches -> closeApplication(context));
 
         context.setView(view);
     }
