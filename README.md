@@ -4,7 +4,7 @@ It is designed to make it easy to create the graphical aspects of an application
 
 ## Architecture overview
 UIa is built on top of a native graphics library or a third-party graphical framework. 
-To achieve the cross-platform/library goal, the UIa core has been designed to be highly adaptive.
+To achieve the cross-platform goal, the UIa core has been designed to be highly adaptive.
 <br>
 Currently, its core is structured as follows:
 
@@ -21,8 +21,7 @@ for the target platform and use it as application basement. A desktop Context im
 has been already provided. If you have other needs, try experimenting with creating your own custom Context implementation.
 
 ## Example
-The following part shows a simple Hello World application made with UIa. 
-It displays a button on the left and, when the user clicks on it, a simple popup appears on the right. 
-To hide the popup, simply click on the button.
+The following part shows a 'hello world' application made with UIa. 
+It displays a view on the left and, when the user clicks on it, a popup appears or disappears on the right. 
 
 https://github.com/JDev00/UIa/blob/1691ecc23c79b1b117b6e2bc77d2ff8c65fa5c58/src/example/HelloWorld.java
