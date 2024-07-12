@@ -1,4 +1,11 @@
-UIa current version is 1.6.1
+UIa current version is 2.0.0
+
+################
+Version 2.0.0
+################
+
+* Conceptual change: splits UIa into UIa and UIaX
+* Moves all high-level widgets to UIaX
 
 ################
 Version 1.6.1
