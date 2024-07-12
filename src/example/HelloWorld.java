@@ -12,36 +12,41 @@ import uia.platform.swing.ContextSwing;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.rendering.font.Font;
 import uia.core.context.Context;
+import uia.utility.Geometries;
 import uia.physical.ui.Theme;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.View;
 
 /**
- * Demonstrative example. Display a simple view that allows to show and hide a popup.
+ * Demonstrative example. Display a simple button that allows to show and hide a popup.
  */
 
 public class HelloWorld extends WrapperView {
+    private static final String BUTTON_ID = "MY_BUTTON";
+    private static final String POPUP_ID = "POPUP";
 
     public HelloWorld() {
         // default components are based on the decorator pattern, so you need to pass the smallest UI unit
         // (in this example: Component).
-        // Here we will create a ComponentGroup that will allow us to easily manage a set of views.
+        // Here we will create a ComponentGroup that will allow us to easily manage a list of views.
         super(new ComponentGroup(
                 new Component("HELLO_WORLD", 0.5f, 0.5f, 1f, 1f))
         );
         getStyle().setBackgroundColor(Theme.DARK_GRAY);
 
-        // let us create a new specialised View: a Button
+        // uses a ViewText to create a simple button
         boolean[] isButtonEnabled = {false};
-        ViewText button = createCustomView();
+        ViewText button = createCustomButton(BUTTON_ID);
         // now comes for the interesting part of the job: showing and hiding a View without creating dependencies.
+        // when clicked, it sends a message to the popup.
         button.registerCallback((OnClick) touches -> {
             // changes the view state: enabled/disabled
             isButtonEnabled[0] = !isButtonEnabled[0];
             // creates the message
-            String messagePayload = isButtonEnabled[0] ? "Wake up!" : "Bye";
-            Message message = MessageFactory.create(messagePayload, "POPUP");
+            String messagePayload = isButtonEnabled[0] ? "Hi!" : "Bye";
+            Message message = MessageFactory.create(messagePayload, POPUP_ID);
+            // sends the message
             button.sendMessage(message);
         });
         // add another callback to listen for messages sent to this button
@@ -51,17 +56,17 @@ public class HelloWorld extends WrapperView {
             button.setText(textToDisplay);
         });
 
-        // now create a new simple popup.
-        View popup = createSimplePopup();
-        // add a callback that will be invoked when a message, for this popup, is received
+        // creates a simple popup.
+        View popup = createPopup(POPUP_ID);
+        // adds a callback that will be invoked when a message, for this popup, is received
         popup.registerCallback((OnMessageReceived) receivedMessage -> {
             String payload = receivedMessage.getPayload();
-            boolean visibility = payload.contains("Wake up");
+            boolean visibility = payload.contains("Hi");
             // shows or hides this popup accordingly
             popup.setVisible(visibility);
-            // sends a message to BUTTON to inform it that popup woke up or went to sleep
+            // sends a message to the button to tell it that the popup is visible or not
             String messagePayload = visibility ? "Hey!" : "Bye";
-            Message messageToSend = MessageFactory.create(messagePayload, "BUTTON");
+            Message messageToSend = MessageFactory.create(messagePayload, BUTTON_ID);
             popup.sendMessage(messageToSend);
         });
 
@@ -70,46 +75,41 @@ public class HelloWorld extends WrapperView {
     }
 
     /**
-     * Helper function. Creates a custom demonstrative button
+     * Helper function. Creates a custom button.
      */
 
-    private static ViewText createCustomView() {
-        ViewText text = new ComponentText(
-                new Component("BUTTON", 0.25f, 0.5f, 0.1f, 0.1f).setExpanseLimit(1.2f, 1.2f)
+    private static ViewText createCustomButton(String id) {
+        ViewText result = new ComponentText(
+                new Component(id, 0.25f, 0.5f, 0.1f, 0.1f).setExpanseLimit(1.2f, 1.2f)
         );
-        // set some text
-        text.setText("Show\npopup!");
-        // set the style for text
-        text.getStyle()
+        // sets some text
+        result.setText("Show\npopup!");
+        // sets the style of the text component
+        result.getStyle()
+                .setGeometry(geometry -> Geometries.rect(
+                                geometry,
+                                Geometries.STD_VERT,
+                                0.25f,
+                                result.getWidth() / result.getHeight()
+                        ), true
+                )
                 .setTextAlignment(TextVerticalAlignment.CENTER)
+                .setBackgroundColor(Theme.ROYAL_BLUE)
                 .setFontStyle(Font.FontStyle.BOLD)
+                .setTextColor(Theme.WHITE)
                 .setFontSize(18f);
 
-        /*UIButton result = new UIButton(text);
-        result.setStateStyleFunction(UIButton.State.OFF, style -> style
-                .setBackgroundColor(Color.createColor(100, 200, 100, 50))
-                .setBorderColor(Theme.LIME)
-                .setTextColor(Theme.LIME)
-                .setBorderWidth(6)
-        );
-        result.setStateStyleFunction(UIButton.State.ON, style -> style
-                .setBackgroundColor(Color.createColor(200, 100, 0, 50))
-                .setBorderColor(Theme.RED)
-                .setTextColor(Theme.RED)
-                .setBorderWidth(2)
-        );*/
-
-        return text;
+        return result;
     }
 
     /**
-     * Helper function. Creates a simple popup
+     * Helper function. Creates a simple popup.
      */
 
-    private static View createSimplePopup() {
+    private static View createPopup(String id) {
         // create a viewText. It will be used to emulate a simple popup.
         ViewText result = new ComponentText(
-                new Component("POPUP", 0.66f, 0.5f, 0.33f, 0.5f)
+                new Component(id, 0.66f, 0.5f, 0.33f, 0.5f)
         );
         // hide this popup at the beginning
         result.setVisible(false);
@@ -121,6 +121,7 @@ public class HelloWorld extends WrapperView {
                 .setFontStyle(Font.FontStyle.ITALIC)
                 .setTextColor(Theme.DARK_GRAY)
                 .setFontSize(25);
+
         return result;
     }
 
