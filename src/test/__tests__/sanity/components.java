@@ -3,8 +3,8 @@ package test.__tests__.sanity;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.core.ui.style.TextVerticalAlignment;
 import uia.physical.ui.component.ComponentImage;
-import test.__tests__.utility.TestUtility;
 import uia.physical.ui.component.Component;
+import test.__tests__.utility.TestUtility;
 import uia.core.context.Context;
 import uia.physical.ui.Theme;
 import uia.core.ui.ViewGroup;
@@ -16,9 +16,9 @@ import static test.__tests__.utility.TestUtility.*;
  * Sanity test.
  */
 
-public final class standardComponents {
+public final class components {
 
-    private standardComponents() {
+    private components() {
     }
 
     /**

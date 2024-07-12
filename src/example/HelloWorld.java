@@ -9,18 +9,16 @@ import uia.physical.message.MessageFactory;
 import uia.physical.ui.component.Component;
 import uia.core.basement.message.Message;
 import uia.platform.swing.ContextSwing;
-import uia.core.rendering.color.Color;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.rendering.font.Font;
 import uia.core.context.Context;
-import uia.application.UIButton;
 import uia.physical.ui.Theme;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.View;
 
 /**
- * Demonstrative example. Display a simple button that allows to show and hide a popup.
+ * Demonstrative example. Display a simple view that allows to show and hide a popup.
  */
 
 public class HelloWorld extends WrapperView {
@@ -35,10 +33,14 @@ public class HelloWorld extends WrapperView {
         getStyle().setBackgroundColor(Theme.DARK_GRAY);
 
         // let us create a new specialised View: a Button
-        UIButton button = createCustomButton();
+        boolean[] isButtonEnabled = {false};
+        ViewText button = createCustomView();
         // now comes for the interesting part of the job: showing and hiding a View without creating dependencies.
         button.registerCallback((OnClick) touches -> {
-            String messagePayload = button.isEnabled() ? "Wake up!" : "Bye";
+            // changes the view state: enabled/disabled
+            isButtonEnabled[0] = !isButtonEnabled[0];
+            // creates the message
+            String messagePayload = isButtonEnabled[0] ? "Wake up!" : "Bye";
             Message message = MessageFactory.create(messagePayload, "POPUP");
             button.sendMessage(message);
         });
@@ -46,8 +48,7 @@ public class HelloWorld extends WrapperView {
         button.registerCallback((OnMessageReceived) message -> {
             String payload = message.getPayload();
             String textToDisplay = payload.contains("Hey") ? "Hide\npopup!" : "Show\npopup!";
-            ViewText viewText = button.getView();
-            viewText.setText(textToDisplay);
+            button.setText(textToDisplay);
         });
 
         // now create a new simple popup.
@@ -72,7 +73,7 @@ public class HelloWorld extends WrapperView {
      * Helper function. Creates a custom demonstrative button
      */
 
-    private static UIButton createCustomButton() {
+    private static ViewText createCustomView() {
         ViewText text = new ComponentText(
                 new Component("BUTTON", 0.25f, 0.5f, 0.1f, 0.1f).setExpanseLimit(1.2f, 1.2f)
         );
@@ -84,7 +85,7 @@ public class HelloWorld extends WrapperView {
                 .setFontStyle(Font.FontStyle.BOLD)
                 .setFontSize(18f);
 
-        UIButton result = new UIButton(text);
+        /*UIButton result = new UIButton(text);
         result.setStateStyleFunction(UIButton.State.OFF, style -> style
                 .setBackgroundColor(Color.createColor(100, 200, 100, 50))
                 .setBorderColor(Theme.LIME)
@@ -96,9 +97,9 @@ public class HelloWorld extends WrapperView {
                 .setBorderColor(Theme.RED)
                 .setTextColor(Theme.RED)
                 .setBorderWidth(2)
-        );
+        );*/
 
-        return result;
+        return text;
     }
 
     /**
