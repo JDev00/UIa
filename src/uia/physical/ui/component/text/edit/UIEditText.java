@@ -1,28 +1,28 @@
 package uia.physical.ui.component.text.edit;
 
-import uia.core.ui.primitives.Key;
-import uia.core.ui.primitives.ScreenTouch;
-import uia.core.rendering.color.Color;
-import uia.core.rendering.geometry.Geometry;
-import uia.core.rendering.Graphics;
-import uia.core.ui.View;
-import uia.core.ui.callbacks.OnKeyPressed;
-import uia.core.ui.callbacks.OnMouseExit;
-import uia.core.ui.callbacks.OnMouseHover;
-import uia.core.rendering.font.Font;
-import uia.core.rendering.Transform;
-import uia.core.ui.style.Style;
+import uia.physical.ui.component.utility.ComponentUtility;
+import uia.physical.ui.component.text.WrapperViewText;
+import uia.physical.ui.component.text.ComponentText;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.core.ui.style.TextVerticalAlignment;
-import uia.physical.ui.component.Component;
-import uia.physical.ui.component.text.ComponentText;
+import uia.core.rendering.geometry.Geometries;
 import uia.physical.ui.component.WrapperView;
-import uia.physical.ui.component.text.WrapperViewText;
-import uia.physical.ui.Theme;
-import uia.physical.ui.component.utility.ComponentUtility;
-import uia.physical.Geometries;
-import uia.utility.Timer;
+import uia.core.rendering.geometry.Geometry;
+import uia.physical.ui.component.Component;
+import uia.core.ui.primitives.ScreenTouch;
+import uia.core.ui.callbacks.OnKeyPressed;
+import uia.core.ui.callbacks.OnMouseHover;
+import uia.core.ui.callbacks.OnMouseExit;
+import uia.core.rendering.color.Color;
+import uia.core.rendering.Transform;
+import uia.core.rendering.font.Font;
+import uia.core.rendering.Graphics;
+import uia.core.ui.primitives.Key;
+import uia.core.ui.style.Style;
 import uia.utility.MathUtility;
+import uia.physical.ui.Theme;
+import uia.utility.Timer;
+import uia.core.ui.View;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,9 +34,7 @@ import static java.lang.Math.min;
 // TODO: to refactor
 
 /**
- * Standard UIa component.
- * <br>
- * Component designed to edit text.
+ * UIEditText is a component designed for editing text.
  */
 
 public class UIEditText extends WrapperViewText {

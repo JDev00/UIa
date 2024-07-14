@@ -1,6 +1,7 @@
 package uia.physical.ui.component.utility;
 
 import uia.core.ui.callbacks.OnMessageReceived;
+import uia.core.rendering.geometry.Geometries;
 import uia.core.rendering.geometry.Geometry;
 import uia.core.ui.callbacks.OnKeyReleased;
 import uia.core.ui.primitives.ScreenTouch;
@@ -9,7 +10,6 @@ import uia.core.basement.message.Message;
 import uia.core.ui.callbacks.OnKeyTyped;
 import uia.core.rendering.Transform;
 import uia.core.ui.primitives.Key;
-import uia.physical.Geometries;
 import uia.core.ui.View;
 
 import java.util.Collections;

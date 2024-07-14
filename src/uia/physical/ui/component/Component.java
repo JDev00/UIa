@@ -5,6 +5,7 @@ import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.core.rendering.geometry.GeometryUtility;
 import uia.core.basement.message.MessageStore;
+import uia.core.rendering.geometry.Geometries;
 import uia.core.rendering.geometry.Geometry;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.callbacks.CallbackStore;
@@ -16,7 +17,6 @@ import uia.core.basement.Callback;
 import uia.core.basement.Callable;
 import uia.core.ui.callbacks.*;
 import uia.core.ui.style.Style;
-import uia.physical.Geometries;
 import uia.core.ui.View;
 
 import java.util.function.Consumer;
