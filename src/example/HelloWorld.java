@@ -8,7 +8,6 @@ import uia.physical.ui.group.ComponentGroup;
 import uia.physical.message.MessageFactory;
 import uia.physical.ui.component.Component;
 import uia.core.basement.message.Message;
-import uia.platform.swing.ContextSwing;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.rendering.font.Font;
 import uia.core.context.Context;
@@ -17,6 +16,8 @@ import uia.physical.ui.Theme;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.View;
+
+import api.swing.ContextSwing;
 
 /**
  * Demonstrative example. Display a simple button that allows to show and hide a popup.

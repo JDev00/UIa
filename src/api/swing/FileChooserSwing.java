@@ -1,13 +1,13 @@
-package uia.platform.swing;
+package api.swing;
 
 import java.awt.Color;
 import java.io.File;
 
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.UIManager;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JFrame;
 
 /**
  * FileChooserSwing is used to select or save a file with OS file explorer.

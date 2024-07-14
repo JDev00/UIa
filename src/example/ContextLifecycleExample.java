@@ -2,12 +2,13 @@ package example;
 
 import uia.physical.ui.component.text.ComponentText;
 import uia.physical.ui.component.Component;
-import uia.platform.swing.ContextSwing;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.context.Context;
 import uia.physical.ui.Theme;
 import uia.core.ui.ViewText;
 import uia.core.ui.View;
+
+import api.swing.ContextSwing;
 
 /**
  * Demonstrative example. Closes the application programmatically

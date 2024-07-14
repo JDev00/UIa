@@ -1,4 +1,4 @@
-package uia.platform.swing.graphics;
+package api.swing.graphics;
 
 import uia.core.rendering.color.Color;
 import uia.core.rendering.font.Font;

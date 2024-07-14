@@ -1,16 +1,16 @@
-package uia.platform.swing;
+package api.swing;
 
-import uia.physical.ui.component.ComponentHiddenRoot;
-import uia.platform.swing.graphics.GraphicsAWT;
 import uia.physical.message.messagingSystem.MessagingSystem;
-import uia.core.context.Context;
+import uia.physical.ui.component.ComponentHiddenRoot;
+import api.swing.graphics.GraphicsAWT;
 import uia.core.rendering.Graphics;
+import uia.core.context.Context;
 import uia.utility.Timer;
 import uia.core.ui.View;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+import java.util.List;
 import java.awt.*;
 
 import javax.swing.*;

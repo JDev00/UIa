@@ -1,10 +1,10 @@
-package uia.platform.swing.graphics;
+package api.swing.graphics;
 
 import uia.core.rendering.geometry.GeometryUtility;
-import uia.core.rendering.Transform;
 import uia.core.rendering.color.Color;
-import uia.core.rendering.font.Font;
 import uia.core.rendering.image.Image;
+import uia.core.rendering.Transform;
+import uia.core.rendering.font.Font;
 
 import javax.imageio.ImageIO;
 import java.awt.geom.Path2D;

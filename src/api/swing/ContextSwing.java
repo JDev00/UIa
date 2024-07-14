@@ -1,4 +1,4 @@
-package uia.platform.swing;
+package api.swing;
 
 import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.EventTouchScreenMessage;
