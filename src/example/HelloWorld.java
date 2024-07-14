@@ -1,8 +1,8 @@
 package example;
 
+import uia.physical.ui.component.text.ComponentText;
 import uia.core.ui.style.TextVerticalAlignment;
 import uia.core.ui.callbacks.OnMessageReceived;
-import uia.physical.ui.component.ComponentText;
 import uia.physical.ui.component.WrapperView;
 import uia.physical.ui.group.ComponentGroup;
 import uia.physical.message.MessageFactory;

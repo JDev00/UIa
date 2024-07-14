@@ -1,4 +1,4 @@
-package uia.physical.ui.component.text;
+package uia.physical.ui.component.text.renderer;
 
 import uia.physical.ui.component.utility.ComponentUtility;
 import uia.core.ui.style.TextHorizontalAlignment;
@@ -16,7 +16,6 @@ import java.util.Objects;
 
 public final class InlineTextRenderer implements TextRenderer {
 
-    // TODO: BUG - change text rotation
     @Override
     public float draw(ViewText viewText, Graphics graphics, String text, float x, float y, float rotation) {
         Objects.requireNonNull(viewText);
@@ -27,6 +26,8 @@ public final class InlineTextRenderer implements TextRenderer {
         TextHorizontalAlignment horizontalAlignment = style.getHorizontalTextAlignment();
         TextVerticalAlignment verticalAlignment = style.getVerticalTextAlignment();
         Font font = style.getFont();
+
+        // TODO: BUG - change text rotation
 
         char[] chars = text.toCharArray();
 

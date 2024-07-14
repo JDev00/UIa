@@ -1,4 +1,4 @@
-package uia.physical.ui.component.text;
+package uia.physical.ui.component.text.renderer;
 
 import uia.core.rendering.Graphics;
 import uia.core.ui.ViewText;
@@ -6,7 +6,7 @@ import uia.core.ui.ViewText;
 /**
  * TextRenderer ADT.
  * <br>
- * TextRenderer is responsible to display a text on a {@link Graphics}.
+ * TextRenderer is responsible for displaying a text on a {@link Graphics}.
  */
 
 public interface TextRenderer {

@@ -1,5 +1,6 @@
-package uia.physical.ui.component;
+package uia.physical.ui.component.text;
 
+import uia.physical.ui.component.WrapperView;
 import uia.core.ui.ViewText;
 
 /**

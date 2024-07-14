@@ -1,4 +1,4 @@
-package uia.physical.ui.component.text;
+package uia.physical.ui.component.text.renderer;
 
 import uia.physical.ui.component.utility.ComponentUtility;
 import uia.core.ui.style.TextHorizontalAlignment;

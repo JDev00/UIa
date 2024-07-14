@@ -1,11 +1,12 @@
-package uia.physical.ui.component;
+package uia.physical.ui.component.text;
 
-import uia.physical.ui.component.text.MultilineTextRenderer;
+import uia.physical.ui.component.text.renderer.MultilineTextRenderer;
+import uia.physical.ui.component.text.renderer.InlineTextRenderer;
+import uia.physical.ui.component.text.renderer.TextRenderer;
 import uia.physical.ui.component.utility.ComponentUtility;
-import uia.physical.ui.component.text.InlineTextRenderer;
-import uia.physical.ui.component.text.TextRenderer;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.physical.ui.scroller.WheelScroller;
+import uia.physical.ui.component.WrapperView;
 import uia.core.rendering.geometry.Geometry;
 import uia.core.ui.callbacks.OnMouseHover;
 import uia.physical.ui.scroller.Scroller;
@@ -17,7 +18,7 @@ import uia.core.ui.ViewText;
 import uia.core.ui.View;
 
 /**
- * Implementation of {@link ViewText}
+ * Implementation of {@link ViewText}.
  * <br>
  * Note that <b>text properties</b> are calculated at rendering time.
  */
