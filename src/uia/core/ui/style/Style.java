@@ -1,6 +1,6 @@
 package uia.core.ui.style;
 
-import uia.core.rendering.geometry.Geometries;
+import uia.core.rendering.geometry.GeometryCollection;
 import uia.core.rendering.geometry.Geometry;
 import uia.core.rendering.color.Color;
 import uia.core.rendering.font.Font;
@@ -46,7 +46,7 @@ public final class Style {
 
         font = Font.createDesktopFont(Font.FontStyle.PLAIN);
 
-        geometryBuilder = Geometries::rect;
+        geometryBuilder = GeometryCollection::rect;
     }
 
     @Override

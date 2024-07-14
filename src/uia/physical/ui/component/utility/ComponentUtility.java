@@ -1,7 +1,7 @@
 package uia.physical.ui.component.utility;
 
+import uia.core.rendering.geometry.GeometryCollection;
 import uia.core.ui.callbacks.OnMessageReceived;
-import uia.core.rendering.geometry.Geometries;
 import uia.core.rendering.geometry.Geometry;
 import uia.core.ui.callbacks.OnKeyReleased;
 import uia.core.ui.primitives.ScreenTouch;
@@ -235,10 +235,10 @@ public final class ComponentUtility {
     /**
      * Build a rounded rectangle.
      *
-     * @see Geometries#rect(Geometry, int, float, float, float, float, float)
+     * @see GeometryCollection#rect(Geometry, int, float, float, float, float, float)
      */
 
     public static void buildRect(Geometry geometry, float width, float height, float radius) {
-        Geometries.rect(geometry, Geometries.STD_VERT, radius, width / height);
+        GeometryCollection.rect(geometry, GeometryCollection.STD_VERT, radius, width / height);
     }
 }

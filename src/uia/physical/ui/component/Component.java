@@ -1,11 +1,11 @@
 package uia.physical.ui.component;
 
 import uia.physical.ui.component.utility.ComponentUtility;
+import uia.core.rendering.geometry.GeometryCollection;
 import uia.physical.message.store.GlobalMessageStore;
 import uia.physical.message.EventTouchScreenMessage;
 import uia.core.rendering.geometry.GeometryUtility;
 import uia.core.basement.message.MessageStore;
-import uia.core.rendering.geometry.Geometries;
 import uia.core.rendering.geometry.Geometry;
 import uia.physical.message.EventKeyMessage;
 import uia.physical.callbacks.CallbackStore;
@@ -63,7 +63,7 @@ public final class Component implements View {
 
         style = new Style();
 
-        geometry = Geometries.rect(new Geometry());
+        geometry = GeometryCollection.rect(new Geometry());
     }
 
     /**

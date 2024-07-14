@@ -2,10 +2,10 @@ package uia.physical.ui.component.text.edit;
 
 import uia.physical.ui.component.utility.ComponentUtility;
 import uia.physical.ui.component.text.WrapperViewText;
+import uia.core.rendering.geometry.GeometryCollection;
 import uia.physical.ui.component.text.ComponentText;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.core.ui.style.TextVerticalAlignment;
-import uia.core.rendering.geometry.Geometries;
 import uia.physical.ui.component.WrapperView;
 import uia.core.rendering.geometry.Geometry;
 import uia.physical.ui.component.Component;
@@ -107,7 +107,7 @@ public class UIEditText extends WrapperViewText {
 
         highlightTransform = new Transform();
 
-        highlightGeometry = Geometries.rect(new Geometry());
+        highlightGeometry = GeometryCollection.rect(new Geometry());
 
         // clip
         clipTransform = new Transform();

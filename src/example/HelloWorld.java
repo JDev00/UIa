@@ -1,9 +1,9 @@
 package example;
 
+import uia.core.rendering.geometry.GeometryCollection;
 import uia.physical.ui.component.text.ComponentText;
 import uia.core.ui.style.TextVerticalAlignment;
 import uia.core.ui.callbacks.OnMessageReceived;
-import uia.core.rendering.geometry.Geometries;
 import uia.physical.ui.component.WrapperView;
 import uia.physical.ui.group.ComponentGroup;
 import uia.physical.message.MessageFactory;
@@ -87,9 +87,9 @@ public class HelloWorld extends WrapperView {
         result.setText("Show\npopup!");
         // sets the style of the text component
         result.getStyle()
-                .setGeometry(geometry -> Geometries.rect(
+                .setGeometry(geometry -> GeometryCollection.rect(
                                 geometry,
-                                Geometries.STD_VERT,
+                                GeometryCollection.STD_VERT,
                                 0.25f,
                                 result.getWidth() / result.getHeight()
                         ), true

@@ -7,12 +7,12 @@ import java.util.Objects;
 import static uia.utility.MathUtility.*;
 
 /**
- * Collection of utilities for the creation of geometries.
+ * The GeometryCollection collects a list of geometries.
  */
 
-public final class Geometries {
+public final class GeometryCollection {
 
-    private Geometries() {
+    private GeometryCollection() {
     }
 
     /**
