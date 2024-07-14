@@ -14,16 +14,16 @@ public class CharList {
     private final int maxCapacity;
     private final int iCapacity;
 
-    public CharList(int iCapacity, int maxCapacity) {
-        data = new char[iCapacity];
+    public CharList(int initialCapacity, int maxCapacity) {
+        data = new char[initialCapacity];
 
         size = 0;
         this.maxCapacity = maxCapacity;
-        this.iCapacity = iCapacity;
+        this.iCapacity = initialCapacity;
     }
 
     public CharList(int iCapacity) {
-        this(iCapacity, 500_000);
+        this(iCapacity, 200_000);
     }
 
     /**
@@ -62,7 +62,9 @@ public class CharList {
      */
 
     public boolean add(int i, char a) {
-        if (i < 0 || i > size) return false;
+        if (i < 0 || i > size) {
+            return false;
+        }
 
         if (size == data.length) {
             resize(2 * size + 1);
@@ -93,7 +95,9 @@ public class CharList {
                 || i < 0 || i > size
                 || off < 0 || off >= a.length
                 || length < 0 || length > a.length
-                || off + length > a.length) return false;
+                || off + length > a.length) {
+            return false;
+        }
 
         if (size + length >= data.length) {
             resize(data.length + length);
