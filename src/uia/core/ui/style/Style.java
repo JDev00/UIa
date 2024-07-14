@@ -1,10 +1,10 @@
 package uia.core.ui.style;
 
 import uia.core.rendering.geometry.GeometryCollection;
+import uia.core.rendering.color.ColorCollection;
 import uia.core.rendering.geometry.Geometry;
 import uia.core.rendering.color.Color;
 import uia.core.rendering.font.Font;
-import uia.physical.ui.Theme;
 
 import java.util.function.Consumer;
 import java.util.Objects;
@@ -37,8 +37,8 @@ public final class Style {
     private final float[] container = {0f, 0f, 0f, 0f, 0f};
 
     public Style() {
-        backgroundColor = Theme.WHITE;
-        textColor = Theme.BLACK;
+        backgroundColor = ColorCollection.WHITE;
+        textColor = ColorCollection.BLACK;
         borderColor = null;
 
         textHorizontalAlignment = TextHorizontalAlignment.CENTER;

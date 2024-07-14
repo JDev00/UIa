@@ -1,10 +1,10 @@
 package test.__tests__.utility;
 
 import uia.physical.ui.component.text.ComponentText;
+import uia.core.rendering.color.ColorCollection;
 import uia.physical.ui.group.ComponentGroup;
 import uia.physical.ui.component.Component;
 import uia.core.context.Context;
-import uia.physical.ui.Theme;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.View;
@@ -58,7 +58,7 @@ public final class TestUtility {
 
     public static ViewGroup createRoot() {
         ViewGroup result = createViewGroup("ROOT_GROUP", 0.5f, 0.5f, 1f, 1f);
-        result.getStyle().setBackgroundColor(Theme.DARK_GRAY);
+        result.getStyle().setBackgroundColor(ColorCollection.DARK_GRAY);
         return result;
     }
 

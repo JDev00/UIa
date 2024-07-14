@@ -1,10 +1,10 @@
 package example;
 
 import uia.physical.ui.component.text.ComponentText;
+import uia.core.rendering.color.ColorCollection;
 import uia.physical.ui.component.Component;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.context.Context;
-import uia.physical.ui.Theme;
 import uia.core.ui.ViewText;
 import uia.core.ui.View;
 
@@ -25,7 +25,7 @@ public class ContextLifecycleExample {
         ViewText result = new ComponentText(
                 new Component("", 0.5f, 0.5f, 0.5f, 0.5f).setExpanseLimit(1.1f, 1.1f)
         );
-        result.getStyle().setBackgroundColor(Theme.RED);
+        result.getStyle().setBackgroundColor(ColorCollection.RED);
         return result;
     }
 

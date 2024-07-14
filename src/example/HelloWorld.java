@@ -2,6 +2,7 @@ package example;
 
 import uia.core.rendering.geometry.GeometryCollection;
 import uia.physical.ui.component.text.ComponentText;
+import uia.core.rendering.color.ColorCollection;
 import uia.core.ui.style.TextVerticalAlignment;
 import uia.core.ui.callbacks.OnMessageReceived;
 import uia.physical.ui.component.WrapperView;
@@ -12,7 +13,6 @@ import uia.core.basement.message.Message;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.rendering.font.Font;
 import uia.core.context.Context;
-import uia.physical.ui.Theme;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.View;
@@ -34,7 +34,7 @@ public class HelloWorld extends WrapperView {
         super(new ComponentGroup(
                 new Component("HELLO_WORLD", 0.5f, 0.5f, 1f, 1f))
         );
-        getStyle().setBackgroundColor(Theme.DARK_GRAY);
+        getStyle().setBackgroundColor(ColorCollection.DARK_GRAY);
 
         // uses a ViewText to create a simple button
         boolean[] isButtonEnabled = {false};
@@ -95,9 +95,9 @@ public class HelloWorld extends WrapperView {
                         ), true
                 )
                 .setTextAlignment(TextVerticalAlignment.CENTER)
-                .setBackgroundColor(Theme.ROYAL_BLUE)
+                .setBackgroundColor(ColorCollection.ROYAL_BLUE)
+                .setTextColor(ColorCollection.WHITE)
                 .setFontStyle(Font.FontStyle.BOLD)
-                .setTextColor(Theme.WHITE)
                 .setFontSize(18f);
 
         return result;
@@ -119,8 +119,8 @@ public class HelloWorld extends WrapperView {
         // set text style
         result.getStyle()
                 .setTextAlignment(TextVerticalAlignment.CENTER)
+                .setTextColor(ColorCollection.DARK_GRAY)
                 .setFontStyle(Font.FontStyle.ITALIC)
-                .setTextColor(Theme.DARK_GRAY)
                 .setFontSize(25);
 
         return result;

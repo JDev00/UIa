@@ -1,12 +1,12 @@
 package api.swing.graphics;
 
+import uia.core.rendering.color.ColorCollection;
 import uia.core.rendering.color.Color;
 import uia.core.rendering.image.Image;
 import uia.core.rendering.Transform;
 import uia.core.rendering.font.Font;
 import uia.core.rendering.Graphics;
 import uia.utility.MathUtility;
-import uia.physical.ui.Theme;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -29,9 +29,9 @@ public class GraphicsAWT implements Graphics {
     private final Path2D shapePath;
 
     private float shapeBorderWidth = 0;
-    private Color shapeColor = Theme.WHITE;
+    private Color shapeColor = ColorCollection.WHITE;
     private Color shapeBorderColor = shapeColor;
-    private Color textColor = Theme.BLACK;
+    private Color textColor = ColorCollection.BLACK;
 
     public GraphicsAWT(Supplier<Graphics2D> graphics2DSupplier) {
         this.graphics2DSupplier = graphics2DSupplier;

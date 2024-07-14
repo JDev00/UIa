@@ -5,6 +5,7 @@ import uia.physical.ui.component.text.WrapperViewText;
 import uia.core.rendering.geometry.GeometryCollection;
 import uia.physical.ui.component.text.ComponentText;
 import uia.core.ui.style.TextHorizontalAlignment;
+import uia.core.rendering.color.ColorCollection;
 import uia.core.ui.style.TextVerticalAlignment;
 import uia.physical.ui.component.WrapperView;
 import uia.core.rendering.geometry.Geometry;
@@ -20,7 +21,6 @@ import uia.core.rendering.Graphics;
 import uia.core.ui.primitives.Key;
 import uia.core.ui.style.Style;
 import uia.utility.MathUtility;
-import uia.physical.ui.Theme;
 import uia.utility.Timer;
 import uia.core.ui.View;
 
@@ -751,7 +751,7 @@ public class UIEditText extends WrapperViewText {
 
         public Cursor(String id) {
             super(new Component("EDIT_TEXT_CURSOR_" + id, 0f, 0f, 1f, 1f));
-            getStyle().setBackgroundColor(Theme.BLACK);
+            getStyle().setBackgroundColor(ColorCollection.BLACK);
 
             timer = new Timer();
         }

@@ -1,14 +1,15 @@
 package test.__tests__.sanity;
 
 import uia.core.ui.style.TextHorizontalAlignment;
-import uia.core.ui.style.TextVerticalAlignment;
+import uia.core.rendering.color.ColorCollection;
 import uia.physical.ui.component.ComponentImage;
+import uia.core.ui.style.TextVerticalAlignment;
 import uia.physical.ui.component.Component;
-import test.__tests__.utility.TestUtility;
 import uia.core.context.Context;
-import uia.physical.ui.Theme;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
+
+import test.__tests__.utility.TestUtility;
 
 import static test.__tests__.utility.TestUtility.*;
 
@@ -16,9 +17,9 @@ import static test.__tests__.utility.TestUtility.*;
  * Sanity test.
  */
 
-public final class components {
+public final class PhysicalComponentsTest {
 
-    private components() {
+    private PhysicalComponentsTest() {
     }
 
     /**
@@ -31,7 +32,7 @@ public final class components {
         text.getStyle()
                 .setTextAlignment(TextHorizontalAlignment.RIGHT)
                 .setTextAlignment(TextVerticalAlignment.CENTER)
-                .setTextColor(Theme.PINK)
+                .setTextColor(ColorCollection.PINK)
                 .setRotation(0.3f);
 
         ComponentImage image = new ComponentImage(
@@ -41,7 +42,7 @@ public final class components {
 
         ViewGroup group = createViewGroup("GROUP", 0.4f, 0.5f, 0.5f, 0.5f);
         group.getStyle()
-                .setBackgroundColor(Theme.LIGHT_GRAY)
+                .setBackgroundColor(ColorCollection.LIGHT_GRAY)
                 .setRotation(0.1f);
 
         ViewGroup.insert(group, image, text);
