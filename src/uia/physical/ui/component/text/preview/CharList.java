@@ -1,4 +1,4 @@
-package uia.preview;
+package uia.physical.ui.component.text.preview;
 
 import static java.lang.Math.*;
 

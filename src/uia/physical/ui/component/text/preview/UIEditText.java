@@ -1,4 +1,4 @@
-package uia.preview;
+package uia.physical.ui.component.text.preview;
 
 import uia.core.ui.primitives.Key;
 import uia.core.ui.primitives.ScreenTouch;
