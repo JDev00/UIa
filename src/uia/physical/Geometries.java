@@ -1,6 +1,7 @@
-package uia.utility;
+package uia.physical;
 
 import uia.core.rendering.geometry.Geometry;
+import uia.utility.MathUtility;
 
 import java.util.Objects;
 

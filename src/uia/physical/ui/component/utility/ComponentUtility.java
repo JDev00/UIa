@@ -9,7 +9,7 @@ import uia.core.basement.message.Message;
 import uia.core.ui.callbacks.OnKeyTyped;
 import uia.core.rendering.Transform;
 import uia.core.ui.primitives.Key;
-import uia.utility.Geometries;
+import uia.physical.Geometries;
 import uia.core.ui.View;
 
 import java.util.Collections;

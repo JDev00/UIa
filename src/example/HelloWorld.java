@@ -12,7 +12,7 @@ import uia.platform.swing.ContextSwing;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.rendering.font.Font;
 import uia.core.context.Context;
-import uia.utility.Geometries;
+import uia.physical.Geometries;
 import uia.physical.ui.Theme;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;

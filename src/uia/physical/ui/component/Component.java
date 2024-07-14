@@ -16,7 +16,7 @@ import uia.core.basement.Callback;
 import uia.core.basement.Callable;
 import uia.core.ui.callbacks.*;
 import uia.core.ui.style.Style;
-import uia.utility.Geometries;
+import uia.physical.Geometries;
 import uia.core.ui.View;
 
 import java.util.function.Consumer;

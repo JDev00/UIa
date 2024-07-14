@@ -20,7 +20,7 @@ import uia.physical.ui.component.WrapperView;
 import uia.physical.ui.component.text.WrapperViewText;
 import uia.physical.ui.Theme;
 import uia.physical.ui.component.utility.ComponentUtility;
-import uia.utility.Geometries;
+import uia.physical.Geometries;
 import uia.utility.Timer;
 import uia.utility.MathUtility;
 
