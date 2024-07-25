@@ -61,7 +61,9 @@ public final class MathUtility {
     }
 
     /**
-     * Checks if the given String is a number
+     * Checks if the given String is a number.
+     * <br>
+     * Time complexity: T(n)
      *
      * @param input a not null String to control
      * @return true if the given String is a number
@@ -77,7 +79,11 @@ public final class MathUtility {
     }
 
     /**
-     * Cuts the decimals to the specified amount
+     * Limits the decimals to the specified amount.
+     * <br>
+     * Time complexity: T(n)
+     * <br>
+     * Space complexity: O(n)
      *
      * @param number   a not null number
      * @param decimals the number of decimals; it must be {@code >= 0}
@@ -85,18 +91,17 @@ public final class MathUtility {
      */
 
     public static String limitDecimals(String number, int decimals) {
-        String out = null;
+        String result = null;
         if (isNumber(number)) {
-            out = number;
-            int i = number.indexOf(".");
-            if (i != -1 && decimals >= 0) {
-                out = number.substring(
-                        0,
-                        min(i + (decimals == 0 ? 0 : (decimals + 1)), number.length())
-                );
+            result = number;
+            int dotIndex = number.indexOf(".");
+            if (dotIndex != -1 && decimals >= 0) {
+                int substringStart = 0;
+                int substringEnd = min(dotIndex + (decimals == 0 ? 0 : (decimals + 1)), number.length());
+                result = number.substring(substringStart, substringEnd);
             }
         }
-        return out;
+        return result;
     }
 
     /**
