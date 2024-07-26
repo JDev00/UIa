@@ -16,13 +16,14 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
- * RendererEngine is responsible to render on the native Graphic a specified View.
+ * The RendererEngine is responsible for rendering a single view
+ * on the AWT graphics.
  */
 
 public class RendererEngineSwing extends JPanel {
     private final MessagingSystem messagingSystem;
     private final Timer timer;
-    private Graphics2D nativeGraphics;
+    private Graphics2D graphics2D;
     private final Graphics graphics;
     private final List<Context.RenderingHint> hints;
     private final View rootView;
@@ -35,7 +36,7 @@ public class RendererEngineSwing extends JPanel {
     public RendererEngineSwing() {
         messagingSystem = new MessagingSystem();
 
-        graphics = new GraphicsAWT(() -> nativeGraphics);
+        graphics = new GraphicsAWT(() -> graphics2D);
 
         rootView = new ComponentHiddenRoot();
 
@@ -51,7 +52,7 @@ public class RendererEngineSwing extends JPanel {
      * @param view a {@link View}; it could be null
      */
 
-    protected void setView(View view) {
+    public void setView(View view) {
         this.view = view;
     }
 
@@ -62,10 +63,37 @@ public class RendererEngineSwing extends JPanel {
      * @throws NullPointerException if {@code renderingHints == null}
      */
 
-    protected void setHints(List<Context.RenderingHint> renderingHints) {
+    public void setHints(List<Context.RenderingHint> renderingHints) {
         Objects.requireNonNull(renderingHints);
         hints.clear();
         hints.addAll(renderingHints);
+    }
+
+    /**
+     * Helper function. Updates the root View.
+     */
+
+    private void updateRootView(int x, int y, boolean focus) {
+        // remove focus when rootView loses it
+        if (view != null && !focus && rootView.isOnFocus()) {
+            view.requestFocus(false);
+        }
+        rootView.setPosition(0f, 0f);
+        rootView.setDimension(x, y);
+        rootView.requestFocus(focus);
+    }
+
+    /**
+     * Draws the specified View on the AWT Graphics.
+     *
+     * @param screenWidth  the window width
+     * @param screenHeight the window height
+     * @param screenFocus  true if window is on focus
+     */
+
+    public void draw(int screenWidth, int screenHeight, boolean screenFocus) {
+        updateRootView(screenWidth, screenHeight, screenFocus);
+        repaint();
     }
 
     /**
@@ -89,43 +117,29 @@ public class RendererEngineSwing extends JPanel {
         for (Context.RenderingHint i : hints) {
             switch (i) {
                 case ANTIALIASING_ON:
-                    nativeGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                    graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                     break;
                 case ANTIALIASING_OFF:
-                    nativeGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+                    graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
                     break;
                 case TEXT_ANTIALIASING_ON:
-                    nativeGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                    graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
                     break;
                 case TEXT_ANTIALIASING_OFF:
-                    nativeGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+                    graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
                     break;
                 case COLOR_QUALITY_HIGH:
-                    nativeGraphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+                    graphics2D.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
                     break;
                 case COLOR_QUALITY_LOW:
-                    nativeGraphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
+                    graphics2D.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
                     break;
             }
         }
     }
 
     /**
-     * Helper function. Update root View.
-     */
-
-    private void updateRootView(int x, int y, boolean focus) {
-        // remove focus when rootView loses it
-        if (view != null && !focus && rootView.isOnFocus()) {
-            view.requestFocus(false);
-        }
-        rootView.setPosition(0f, 0f);
-        rootView.setDimension(x, y);
-        rootView.requestFocus(focus);
-    }
-
-    /**
-     * Helper function. Updates the managed View.
+     * Helper function. Updates the View.
      */
 
     private void updateView() {
@@ -138,32 +152,27 @@ public class RendererEngineSwing extends JPanel {
     }
 
     /**
-     * Draw the specified View on the native Graphics.
-     *
-     * @param screenWidth  the window width
-     * @param screenHeight the window height
-     * @param screenFocus  true if window is on focus
+     * Helper function. Draws the View on screen.
      */
 
-    protected void draw(int screenWidth, int screenHeight, boolean screenFocus) {
-        updateRootView(screenWidth, screenHeight, screenFocus);
-        repaint();
+    private void drawView() {
+        if (view != null) {
+            view.draw(this.graphics);
+        }
     }
 
     @Override
     protected void paintComponent(java.awt.Graphics graphics) {
         super.paintComponent(graphics);
 
-        nativeGraphics = (Graphics2D) graphics;
+        graphics2D = (Graphics2D) graphics;
         applyHints();
         try {
             calculateMetrics();
             updateView();
-            if (view != null) {
-                view.draw(this.graphics);
-            }
-        } catch (Exception exception) {
-            exception.printStackTrace();
+            drawView();
+        } catch (Exception error) {
+            error.printStackTrace();
         }
     }
 }
