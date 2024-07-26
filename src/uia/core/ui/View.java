@@ -18,6 +18,19 @@ import uia.core.basement.*;
 
 public interface View extends Callable, Drawable, Collidable {
 
+    /**
+     * InputConsumer defines what type of input can be consumed by the View.
+     * <ul>
+     *     <li>
+     *         SCREEN_TOUCH: allows the View to consume the received touches (clicks on the
+     *         desktop context, or screen touches on the mobile context)
+     *     </li>
+     *     <li>
+     *         KEY: allows the View to consume the received keyboard keys.
+     *     </li>
+     * </ul>
+     */
+
     enum InputConsumer {SCREEN_TOUCH, KEY}
 
     /**
@@ -55,11 +68,12 @@ public interface View extends Callable, Drawable, Collidable {
     boolean isVisible();
 
     /**
-     * Input consumer functionality consumes screen touches or keys that are dispatched to this View.
+     * The input consumer functionality, when enabled, consumes input given to this View.
+     * <br>
+     * For a list of consumable inputs, see {@link InputConsumer}.
      *
      * @param inputConsumer       the input consumer type: see {@link InputConsumer}
-     * @param enableInputConsumer true to consume screen touches/keys managed by this View;
-     *                            false to disable the specified consumer
+     * @param enableInputConsumer true to consume the specified input type; false otherwise
      */
 
     void setInputConsumer(InputConsumer inputConsumer, boolean enableInputConsumer);
