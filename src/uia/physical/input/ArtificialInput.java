@@ -6,10 +6,13 @@ import uia.core.basement.message.Message;
 import uia.core.context.InputEmulator;
 import uia.core.ui.primitives.Key;
 
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
- * Concrete {@link InputEmulator} implementation.
+ * UIa standard {@link InputEmulator} implementation.
  */
 
 public final class ArtificialInput implements InputEmulator {
@@ -23,10 +26,10 @@ public final class ArtificialInput implements InputEmulator {
      * Helper function. Generate a new {@link ScreenTouch} object.
      */
 
-    private void generateScreenPointer(ScreenTouch.Action action, ScreenTouch.Button button,
-                                       int x, int y, int wheelRotation) {
+    private void createScreenTouch(ScreenTouch.Action action, int x, int y) {
+        int wheelRotation = 0;
         // creates the screenTouch object
-        ScreenTouch screenTouch = new ScreenTouch(action, button, x, y, wheelRotation);
+        ScreenTouch screenTouch = new ScreenTouch(action, null, x, y, wheelRotation);
         // creates the corresponding message
         Message screenTouchMessage = MessageFactory.create(screenTouch, null);
         // dispatch it
@@ -34,37 +37,40 @@ public final class ArtificialInput implements InputEmulator {
     }
 
     /**
-     * Helper function. Generate a new sequence of {@link ScreenTouch}s.
+     * Helper function. Creates a new sequence of {@link ScreenTouch}s.
      */
 
-    private void generateScreenTouchesSequence(ScreenTouch.Action action, ScreenTouch.Button button,
-                                               int xStart, int yStart, int xEnd, int yEnd,
-                                               int interactions, float duration) {
-        int sleepMillis = (int) (1000 * duration) / interactions;
+    private void createScreenTouchSequence(ScreenTouch.Action action,
+                                           int xStart, int yStart, int xEnd, int yEnd,
+                                           int interactions, float duration) {
+        int period = (int) (1_000 * duration) / interactions;
+        int[] interactionNumber = {0};
 
-        new Thread(() -> {
-            for (int i = 0; i <= interactions; i++) {
-                int x = xStart + i * (xEnd - xStart) / interactions;
-                int y = yStart + i * (yEnd - yStart) / interactions;
-                generateScreenPointer(action, button, x, y, 0);
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(() -> {
+            int counter = interactionNumber[0];
+            int touchX = xStart + counter * (xEnd - xStart) / interactions;
+            int touchY = yStart + counter * (yEnd - yStart) / interactions;
+            createScreenTouch(action, touchX, touchY);
 
-                if (sleepMillis > 0) {
-                    try {
-                        Thread.sleep(sleepMillis);
-                    } catch (Exception ignored) {
-                    }
-                }
+            // increases the interactions counter
+            interactionNumber[0]++;
+
+            // terminates this executor if all interactions have been generated
+            if (interactionNumber[0] == interactions) {
+                executor.shutdownNow();
             }
-        }).start();
+        }, 0, period, TimeUnit.MILLISECONDS);
     }
 
     /**
-     * Helper function. Generate a new {@link Key}.
+     * Helper function. Creates a new {@link Key}.
      */
 
-    private void generateKey(Key.Action action, int modifiers, char keyChar, int keyCode) {
+    private void generateKey(Key.Action action, char keyChar, int keyCode) {
+        int keyModifiers = 0;
         // creates the key object
-        Key key = new Key(action, modifiers, keyChar, keyCode);
+        Key key = new Key(action, keyModifiers, keyChar, keyCode);
         // creates the corresponding message
         Message keyMessage = MessageFactory.create(key, null);
         // dispatch it
@@ -73,39 +79,39 @@ public final class ArtificialInput implements InputEmulator {
 
     @Override
     public InputEmulator clickOn(int x, int y) {
-        generateScreenPointer(ScreenTouch.Action.CLICKED, null, x, y, 0);
+        createScreenTouch(ScreenTouch.Action.CLICKED, x, y);
         return this;
     }
 
     @Override
-    public InputEmulator moveMouseOnScreen(int xStart, int yStart, int xEnd, int yEnd, int movements, float duration) {
-        generateScreenTouchesSequence(ScreenTouch.Action.MOVED, null,
-                xStart, yStart, xEnd, yEnd, movements, duration);
+    public InputEmulator moveMouseOnScreen(int xStart, int yStart, int xEnd, int yEnd,
+                                           int movements, float duration) {
+        createScreenTouchSequence(ScreenTouch.Action.MOVED, xStart, yStart, xEnd, yEnd, movements, duration);
         return this;
     }
 
     @Override
-    public InputEmulator dragMouseOnScreen(int xStart, int yStart, int xEnd, int yEnd, int movements, float duration) {
-        generateScreenTouchesSequence(ScreenTouch.Action.DRAGGED, null,
-                xStart, yStart, xEnd, yEnd, movements, duration);
+    public InputEmulator dragMouseOnScreen(int xStart, int yStart, int xEnd, int yEnd,
+                                           int movements, float duration) {
+        createScreenTouchSequence(ScreenTouch.Action.DRAGGED, xStart, yStart, xEnd, yEnd, movements, duration);
         return this;
     }
 
     @Override
     public InputEmulator pressKey(char key, int keyCode) {
-        generateKey(Key.Action.PRESSED, 0, key, keyCode);
+        generateKey(Key.Action.PRESSED, key, keyCode);
         return this;
     }
 
     @Override
     public InputEmulator releaseKey(char key, int keyCode) {
-        generateKey(Key.Action.RELEASED, 0, key, keyCode);
+        generateKey(Key.Action.RELEASED, key, keyCode);
         return this;
     }
 
     @Override
     public InputEmulator typeKey(char key, int keyCode) {
-        generateKey(Key.Action.TYPED, 0, key, keyCode);
+        generateKey(Key.Action.TYPED, key, keyCode);
         return this;
     }
 }
