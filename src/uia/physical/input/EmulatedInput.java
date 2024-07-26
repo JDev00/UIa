@@ -86,6 +86,13 @@ public final class EmulatedInput implements InputEmulator {
     @Override
     public InputEmulator moveMouseOnScreen(int xStart, int yStart, int xEnd, int yEnd,
                                            int movements, float duration) {
+        if (movements <= 0) {
+            throw new IllegalArgumentException("the number of mouse 'movements' must be greater than zero");
+        }
+        if (duration <= 0) {
+            throw new IllegalArgumentException("the duration of the movement must be greater than zero");
+        }
+
         createScreenTouchSequence(ScreenTouch.Action.MOVED, xStart, yStart, xEnd, yEnd, movements, duration);
         return this;
     }
@@ -93,6 +100,13 @@ public final class EmulatedInput implements InputEmulator {
     @Override
     public InputEmulator dragMouseOnScreen(int xStart, int yStart, int xEnd, int yEnd,
                                            int movements, float duration) {
+        if (movements <= 0) {
+            throw new IllegalArgumentException("the number of mouse 'movements' must be greater than zero");
+        }
+        if (duration <= 0) {
+            throw new IllegalArgumentException("the duration of the movement must be greater than zero");
+        }
+
         createScreenTouchSequence(ScreenTouch.Action.DRAGGED, xStart, yStart, xEnd, yEnd, movements, duration);
         return this;
     }
