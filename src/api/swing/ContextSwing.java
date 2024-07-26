@@ -46,17 +46,17 @@ public class ContextSwing implements Context {
         window.addUIComponent(rendererEngine);
 
         MessageStore globalMessageStore = GlobalMessageStore.getInstance();
-        inputEmulator = new EmulatedInput(message -> {
+        inputEmulator = new EmulatedInput(generatedInput -> {
             int[] insets = window.getInsets();
-            if (message instanceof EventTouchScreenMessage) {
-                ScreenTouch[] screenTouch = message.getPayload();
+            if (generatedInput instanceof EventTouchScreenMessage) {
+                ScreenTouch[] screenTouch = generatedInput.getPayload();
                 // copies and translates the screenTouch
                 ScreenTouch copiedScreenTouch = ScreenTouch.copy(screenTouch[0], insets[0], insets[1]);
                 // recreates the message
-                message = MessageFactory.create(copiedScreenTouch, message.getRecipient());
+                generatedInput = MessageFactory.create(copiedScreenTouch, generatedInput.getRecipient());
             }
             // adds the message to the message store
-            globalMessageStore.add(message);
+            globalMessageStore.add(generatedInput);
         });
     }
 
