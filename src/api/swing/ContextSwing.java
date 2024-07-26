@@ -35,15 +35,15 @@ public class ContextSwing implements Context {
     private LifecycleStage lifecycleStage = LifecycleStage.PAUSED;
     private ScheduledExecutorService renderingThread;
 
-    private final RendererEngineSwing rendererEngine;
+    private final RenderingEngineSwing renderingEngine;
     private final InputEmulator inputEmulator;
     private final WindowSwing window;
 
     public ContextSwing(int x, int y) {
-        rendererEngine = new RendererEngineSwing();
+        renderingEngine = new RenderingEngineSwing();
 
         window = new WindowSwing(x, y);
-        window.addUIComponent(rendererEngine);
+        window.addUIComponent(renderingEngine);
 
         MessageStore globalMessageStore = GlobalMessageStore.getInstance();
         inputEmulator = new EmulatedInput(generatedInput -> {
@@ -62,7 +62,7 @@ public class ContextSwing implements Context {
 
     @Override
     public void setView(View view) {
-        rendererEngine.setView(view);
+        renderingEngine.setView(view);
     }
 
     /**
@@ -88,7 +88,7 @@ public class ContextSwing implements Context {
             case RUNNING:
                 int repaintPeriodMillis = 1000 / 60;
                 renderingThread = Executors.newSingleThreadScheduledExecutor();
-                renderingThread.scheduleAtFixedRate(() -> rendererEngine.draw(
+                renderingThread.scheduleAtFixedRate(() -> renderingEngine.draw(
                                 window.getViewportWidth(),
                                 window.getViewportHeight(),
                                 window.isFocused()
@@ -114,7 +114,7 @@ public class ContextSwing implements Context {
 
     @Override
     public void setRenderingHint(RenderingHint... hints) {
-        rendererEngine.setHints(Arrays.asList(hints));
+        renderingEngine.setHints(Arrays.asList(hints));
     }
 
     @Override

@@ -16,11 +16,11 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
- * The RendererEngine is responsible for rendering a single view
+ * The RenderingEngineSwing is responsible for rendering a single view
  * on the AWT graphics.
  */
 
-public class RendererEngineSwing extends JPanel {
+public class RenderingEngineSwing extends JPanel {
     private final MessagingSystem messagingSystem;
     private final Timer timer;
     private Graphics2D graphics2D;
@@ -33,7 +33,7 @@ public class RendererEngineSwing extends JPanel {
     private int frameCount;
     private float lastFrameCount;
 
-    public RendererEngineSwing() {
+    public RenderingEngineSwing() {
         messagingSystem = new MessagingSystem();
 
         graphics = new GraphicsAWT(() -> graphics2D);
