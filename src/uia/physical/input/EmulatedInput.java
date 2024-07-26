@@ -15,10 +15,10 @@ import java.util.function.Consumer;
  * UIa standard {@link InputEmulator} implementation.
  */
 
-public final class ArtificialInput implements InputEmulator {
+public final class EmulatedInput implements InputEmulator {
     private final Consumer<Message> eventMessageReader;
 
-    public ArtificialInput(Consumer<Message> eventMessageReader) {
+    public EmulatedInput(Consumer<Message> eventMessageReader) {
         this.eventMessageReader = eventMessageReader;
     }
 
