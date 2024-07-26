@@ -16,10 +16,10 @@ import java.util.function.Consumer;
  */
 
 public final class EmulatedInput implements InputEmulator {
-    private final Consumer<Message> eventMessageReader;
+    private final Consumer<Message> generatedInputReader;
 
-    public EmulatedInput(Consumer<Message> eventMessageReader) {
-        this.eventMessageReader = eventMessageReader;
+    public EmulatedInput(Consumer<Message> generatedInputReader) {
+        this.generatedInputReader = generatedInputReader;
     }
 
     /**
@@ -33,7 +33,7 @@ public final class EmulatedInput implements InputEmulator {
         // creates the corresponding message
         Message screenTouchMessage = MessageFactory.create(screenTouch, null);
         // dispatch it
-        eventMessageReader.accept(screenTouchMessage);
+        generatedInputReader.accept(screenTouchMessage);
     }
 
     /**
@@ -73,8 +73,8 @@ public final class EmulatedInput implements InputEmulator {
         Key key = new Key(action, keyModifiers, keyChar, keyCode);
         // creates the corresponding message
         Message keyMessage = MessageFactory.create(key, null);
-        // dispatch it
-        eventMessageReader.accept(keyMessage);
+        // dispatch the key message
+        generatedInputReader.accept(keyMessage);
     }
 
     @Override
