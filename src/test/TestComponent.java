@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 class TestComponent {
+    GlobalMessageStore globalMessageStore = GlobalMessageStore.getInstance();
     Context context;
     View rootView;
 
@@ -26,15 +28,18 @@ class TestComponent {
 
         context = createMockContext();
         context.setView(rootView);
-
-        GlobalMessageStore globalMessageStore = GlobalMessageStore.getInstance();
-        globalMessageStore.mount(new ConcreteMessageStore());
     }
 
-    /*@AfterEach
+    @AfterEach
     public void afterEach() {
-        context.setLifecycleStage(Context.LifecycleStage.TERMINATED);
-    }*/
+        // pauses the current context
+        context.setLifecycleStage(Context.LifecycleStage.PAUSED);
+        context.getWindow().setVisible(false);
+        // waits for the context to pause itself
+        waitFor(250);
+        // mounts a new store
+        globalMessageStore.mount(new ConcreteMessageStore());
+    }
 
     @Test
     void viewBoundsWidthAndHeightShouldBeDifferentAfterARotation() {
@@ -93,7 +98,7 @@ class TestComponent {
         assertEquals(1, countAssertions[0]);
     }
 
-    @Disabled
+    @Disabled("")
     @Test
     void mouseOnViewShouldGenerateAnEvent() {
         int[] countAssertions = {0};
@@ -104,7 +109,7 @@ class TestComponent {
         // act
         context.getInputEmulator().moveMouseOnScreen(
                 100, 100,
-                110, 110,
+                200, 100,
                 2, 0.1f
         );
 
@@ -113,7 +118,7 @@ class TestComponent {
         assertEquals(1, countAssertions[0]);
     }
 
-    @Disabled
+    @Disabled("")
     @Test
     void mouseEnteringViewShouldGenerateAnEvent() {
         int[] countAssertions = {0};
@@ -133,7 +138,7 @@ class TestComponent {
         assertEquals(1, countAssertions[0]);
     }
 
-    @Disabled
+    @Disabled("")
     @Test
     void mouseExitingViewShouldGenerateAnEvent() {
         int[] countAssertions = {0};
@@ -163,7 +168,7 @@ class TestComponent {
         assertEquals(1, countAssertions[0]);
     }
 
-    @Disabled
+    @Disabled("")
     @Test
     void typingKeyShouldGenerateAnEvent() {
         int[] countAssertions = {0};
@@ -186,7 +191,7 @@ class TestComponent {
         assertEquals(1, countAssertions[0]);
     }
 
-    @Disabled
+    @Disabled("")
     @Test
     void releasingKeyShouldGenerateAnEvent() {
         int[] countAssertions = {0};
@@ -209,7 +214,7 @@ class TestComponent {
         assertEquals(1, countAssertions[0]);
     }
 
-    @Disabled
+    @Disabled("")
     @Test
     void pressingKeyShouldGenerateAnEvent() {
         int[] countAssertions = {0};

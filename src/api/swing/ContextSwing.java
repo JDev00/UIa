@@ -90,7 +90,7 @@ public class ContextSwing implements Context {
         this.lifecycleStage = lifecycleStage;
         switch (lifecycleStage) {
             case RUNNING:
-                int repaintPeriod = 1000 / 60;
+                int repaintPeriod = 1_000 / 60;
                 renderingThread = Executors.newSingleThreadScheduledExecutor();
                 renderingThread.scheduleAtFixedRate(() -> renderingEngine.draw(
                                 window.getViewportWidth(),
