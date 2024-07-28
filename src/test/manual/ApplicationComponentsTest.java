@@ -17,9 +17,9 @@ import static utility.TestUtility.*;
  * Sanity test.
  */
 
-public final class PhysicalComponentsTest {
+class ApplicationComponentsTest {
 
-    private PhysicalComponentsTest() {
+    private ApplicationComponentsTest() {
     }
 
     /**
