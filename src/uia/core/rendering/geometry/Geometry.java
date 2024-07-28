@@ -98,12 +98,13 @@ public final class Geometry {
 
     public Geometry setVertex(int i, float x, float y) {
         if (i < 0 || i >= vertices()) {
-            throw new IndexOutOfBoundsException();
+            String error = "index 'i' is out of range. Current range is [0, " + (vertices() - 1) + "]";
+            throw new IndexOutOfBoundsException(error);
         }
 
-        // updates vertex
-        vertices[2 * i] = x;
-        vertices[2 * i + 1] = y;
+        // modifies vertex
+        vertices[2 * i] = MathUtility.constrain(x, -0.5f, 0.5f);
+        vertices[2 * i + 1] = MathUtility.constrain(y, -0.5f, 0.5f);
         return this;
     }
 
@@ -124,8 +125,8 @@ public final class Geometry {
 
     public Geometry removeVertex(int i) {
         if (i < 0 || i >= vertices()) {
-            throw new IndexOutOfBoundsException("the provided index 'i' is out of range. " +
-                    "Current range: [0, " + (vertices() - 1) + "]");
+            String error = "index 'i' is out of range. Current range is [0, " + (vertices() - 1) + "]";
+            throw new IndexOutOfBoundsException(error);
         }
 
         // removes the specified element

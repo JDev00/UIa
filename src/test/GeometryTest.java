@@ -1,10 +1,9 @@
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import uia.core.rendering.geometry.Geometry;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Geometry unit tests.
@@ -28,6 +27,27 @@ class GeometryTest {
         // verify
         int expectedVertices = 1;
         assertEquals(expectedVertices, geometry.vertices());
+    }
+
+    @Test
+    void aListOfVerticesShouldBeAddedToTheGeometry() {
+        // setup
+        geometry.addVertex(0f, 0f);
+
+        // act
+        geometry.addVertices(0f, 0.5f, 0.25f, 0.4f);
+
+        // verify
+        float[] expectedVertices = {0f, 0f, 0f, 0.5f, 0.25f, 0.4f};
+        assertArrayEquals(expectedVertices, geometry.getVertices());
+    }
+
+    @Test
+    void tryingToAddAnInvalidListOfVertexShouldThrowAnException() {
+        // act & verify
+        assertThrows(IllegalArgumentException.class, () -> {
+            geometry.addVertices(0f);
+        });
     }
 
     @Test
@@ -62,5 +82,33 @@ class GeometryTest {
         assertEquals(expectedVerticesNumber, geometry.vertices());
         float[] expectedVertices = {0.1f, 0.2f, 0.5f, -0.5f};
         assertArrayEquals(expectedVertices, geometry.getVertices());
+    }
+
+    @Test
+    void tryingToRemoveAnInvalidVertexShouldThrowAnException() {
+        // setup
+        geometry.addVertex(0f, 0f);
+
+        // act & verify
+        assertThrows(IndexOutOfBoundsException.class, () -> geometry.removeVertex(1));
+    }
+
+    @Test
+    void vertexValuesShouldBeChanged() {
+        // setup
+        geometry.addVertex(0f, 0f);
+
+        // act
+        geometry.setVertex(0, 1f, -1f);
+
+        // verify
+        float[] expectedVertices = {0.5f, -0.5f};
+        assertArrayEquals(expectedVertices, geometry.getVertices());
+    }
+
+    @Test
+    void tryingToModifyAnInvalidVertexShouldThrowAnException() {
+        // act & verify
+        assertThrows(IndexOutOfBoundsException.class, () -> geometry.setVertex(1, 0f, 0f));
     }
 }
