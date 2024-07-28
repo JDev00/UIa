@@ -178,11 +178,34 @@ public final class Geometry {
     }
 
     /**
-     * @return this Geometry as an array
+     * Returns the geometry vertices including those allocated in the data structure but not
+     * used.
+     * <br>
+     * Time complexity: T(1)
+     * <br>
+     * Space complexity: O(1)
+     *
+     * @return the geometry vertices as an array
      */
 
     public float[] toArray() {
         return vertices;
+    }
+
+    /**
+     * Returns the geometry vertices.
+     * <br>
+     * Time complexity: T(n)
+     * <br>
+     * Space complexity: O(n)
+     *
+     * @return the geometry vertices
+     */
+
+    public float[] getVertices() {
+        float[] result = new float[2 * length];
+        System.arraycopy(vertices, 0, result, 0, result.length);
+        return result;
     }
 
     /**
