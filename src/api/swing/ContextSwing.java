@@ -79,23 +79,25 @@ public class ContextSwing implements Context {
 
     @Override
     public void setLifecycleStage(LifecycleStage lifecycleStage) {
+        if (lifecycleStage == null) {
+            throw new NullPointerException("'lifecycleStage' can't be null");
+        }
+
         if (this.lifecycleStage.equals(lifecycleStage)) {
             return;
         }
-        this.lifecycleStage = Objects.requireNonNull(lifecycleStage);
+        this.lifecycleStage = lifecycleStage;
 
         switch (lifecycleStage) {
             case RUNNING:
-                int repaintPeriodMillis = 1000 / 60;
+                int repaintPeriod = 1000 / 60;
                 renderingThread = Executors.newSingleThreadScheduledExecutor();
                 renderingThread.scheduleAtFixedRate(() -> renderingEngine.draw(
                                 window.getViewportWidth(),
                                 window.getViewportHeight(),
                                 window.isFocused()
                         ),
-                        0,
-                        repaintPeriodMillis,
-                        TimeUnit.MILLISECONDS);
+                        0, repaintPeriod, TimeUnit.MILLISECONDS);
                 break;
             case PAUSED:
                 killRenderingThread();
