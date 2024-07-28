@@ -39,60 +39,65 @@ public final class GeometryCollection {
                 -0.5f, -0.5f,
                 0.5f, -0.5f,
                 0.5f, 0.5f,
-                -0.5f, 0.5f);
+                -0.5f, 0.5f
+        );
         return geometry;
     }
 
     /**
      * Resets the given geometry and creates a rectangle with rounded corners.
      *
-     * @param geometry the geometry where the vertices are to be stored
-     * @param vertices the amount of vertices (> 0) used to create the geometry
-     * @param a        the upper-left corner radius between [0,1]
-     * @param b        the upper-right corner radius between [0,1]
-     * @param c        the lower-right corner radius between [0,1]
-     * @param d        the lower-left corner radius between [0,1]
-     * @param ratio    the width to height ration between [0,1]
+     * @param geometry         the geometry where the vertices are to be stored
+     * @param vertices         the amount of vertices (> 0) used to create the geometry
+     * @param upperLeftRadius  the upper-left corner radius between [0, 1]
+     * @param upperRightRadius the upper-right corner radius between [0, 1]
+     * @param lowerRightRadius the lower-right corner radius between [0, 1]
+     * @param lowerLeftRadius  the lower-left corner radius between [0, 1]
+     * @param ratio            the width to height ration between [0, 1]
      * @return the given geometry object filled with geometry vertices
      * @throws NullPointerException if {@code geometry == null}
      */
 
     public static Geometry rect(Geometry geometry, int vertices,
-                                float a, float b, float c, float d, float ratio) {
+                                float upperLeftRadius,
+                                float upperRightRadius,
+                                float lowerRightRadius,
+                                float lowerLeftRadius,
+                                float ratio) {
         geometry.removeAllVertices();
 
         vertices = vertices / 4;
 
         float f1 = 1;
         float f2 = 1;
-
         if (ratio >= 1) {
             f1 = 1f / ratio;
         } else {
             f2 = ratio;
         }
 
-        float ax = a * f1, ay = a * f2;
-        float bx = b * f1, by = b * f2;
-        float cx = c * f1, cy = c * f2;
-        float dx = d * f1, dy = d * f2;
+        float ax = upperLeftRadius * f1;
+        float ay = upperLeftRadius * f2;
+        float bx = upperRightRadius * f1;
+        float by = upperRightRadius * f2;
+        float cx = lowerRightRadius * f1;
+        float cy = lowerRightRadius * f2;
+        float dx = lowerLeftRadius * f1;
+        float dy = lowerLeftRadius * f2;
         float angle;
 
         for (int i = 0; i <= vertices; i++) {
             angle = PI - HALF_PI * i / vertices;
             geometry.addVertex((-1 + ax + ax * cos(angle)) / 2f, (-1 + ay * (1 - sin(angle))) / 2f);
         }
-
         for (int i = 0; i <= vertices; i++) {
             angle = HALF_PI - HALF_PI * i / vertices;
             geometry.addVertex((1 - bx + bx * cos(angle)) / 2f, (-1 + by - by * sin(angle)) / 2f);
         }
-
         for (int i = 0; i <= vertices; i++) {
             angle = -HALF_PI * i / vertices;
             geometry.addVertex((1 - cx + cx * cos(angle)) / 2f, (1 - cy - cy * sin(angle)) / 2f);
         }
-
         for (int i = 0; i <= vertices; i++) {
             angle = -HALF_PI - HALF_PI * i / vertices;
             geometry.addVertex((-1 + dx + dx * cos(angle)) / 2f, (1 - dy - dy * sin(angle)) / 2f);
@@ -104,6 +109,10 @@ public final class GeometryCollection {
     /**
      * Resets the given geometry and creates a rectangle with rounded corners.
      *
+     * @param geometry the geometry where the vertices are to be stored
+     * @param vertices the amount of vertices (> 0) used to create the geometry
+     * @param radius   the corner radius between [0, 1]
+     * @param ratio    the width to height ration between [0,1]
      * @return the given geometry object filled with geometry vertices
      * @see #rect(Geometry, int, float, float, float, float, float)
      */
@@ -125,7 +134,8 @@ public final class GeometryCollection {
         geometry.addVertices(
                 -0.5f, -0.5f,
                 0.5f, 0,
-                -0.5f, 0.5f);
+                -0.5f, 0.5f
+        );
         return geometry;
     }
 
@@ -161,7 +171,8 @@ public final class GeometryCollection {
                 -0.5f, -0.5f,
                 0.5f, 0,
                 -0.5f, 0.5f,
-                -0.5f / 1.5f, 0);
+                -0.5f / 1.5f, 0
+        );
         return geometry;
     }
 
@@ -189,7 +200,8 @@ public final class GeometryCollection {
                 -th, th,
                 -0.5f, th,
                 -0.5f, -th,
-                -th, -th);
+                -th, -th
+        );
         return geometry;
     }
 
@@ -217,7 +229,8 @@ public final class GeometryCollection {
                 th / 2f, 0,
                 0.5f, -0.5f,
                 0.5f - th, -0.5f,
-                0, -th / 2f);
+                0, -th / 2f
+        );
         return geometry;
     }
 
