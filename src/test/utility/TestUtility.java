@@ -1,4 +1,4 @@
-package test.__tests__.utility;
+package utility;
 
 import uia.application.ui.component.text.ComponentText;
 import uia.core.rendering.color.ColorCollection;
@@ -18,6 +18,20 @@ import api.swing.ContextSwing;
 public final class TestUtility {
 
     private TestUtility() {
+    }
+
+    /**
+     * Freezes the thread that calls this function for the specified amount of milliseconds.
+     *
+     * @param millis the freeze time (> 0) in milliseconds
+     */
+
+    public static void waitFor(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException error) {
+            error.printStackTrace();
+        }
     }
 
     /**
