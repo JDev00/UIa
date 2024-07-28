@@ -82,12 +82,12 @@ public class ContextSwing implements Context {
         if (lifecycleStage == null) {
             throw new NullPointerException("'lifecycleStage' can't be null");
         }
-
-        if (this.lifecycleStage.equals(lifecycleStage)) {
+        if (lifecycleStage.equals(this.lifecycleStage)) {
             return;
         }
-        this.lifecycleStage = lifecycleStage;
 
+        // updates the lifecycle stage
+        this.lifecycleStage = lifecycleStage;
         switch (lifecycleStage) {
             case RUNNING:
                 int repaintPeriod = 1000 / 60;
