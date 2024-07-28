@@ -1,4 +1,10 @@
-UIa current version is 2.0.1
+UIa current version is 2.1.0
+
+################
+Version 2.1.0
+################
+
+* Removes the UIa test library. Updates tests with JUnit 5
 
 ################
 Version 2.0.1
