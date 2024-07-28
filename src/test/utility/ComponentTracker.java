@@ -1,4 +1,4 @@
-package test.__tests__.utility;
+package utility;
 
 import uia.application.ui.component.text.ComponentText;
 import uia.core.ui.style.TextHorizontalAlignment;
