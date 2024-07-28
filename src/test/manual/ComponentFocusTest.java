@@ -1,4 +1,4 @@
-package test.__tests__.sanity;
+package manual;
 
 import uia.core.rendering.color.ColorCollection;
 import uia.application.ui.group.ComponentGroup;
@@ -9,13 +9,13 @@ import uia.core.ui.style.Style;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.View;
 
-import test.__tests__.utility.TestUtility;
+import utility.TestUtility;
 
 /**
  * Sanity test.
  */
 
-public final class ComponentFocusTest {
+class ComponentFocusTest {
     private static final int NO_BORDER_WIDTH = 0;
     private static final int BORDER_WIDTH = 10;
 

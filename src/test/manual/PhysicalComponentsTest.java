@@ -1,4 +1,4 @@
-package test.__tests__.sanity;
+package manual;
 
 import uia.application.ui.component.ComponentImage;
 import uia.core.ui.style.TextHorizontalAlignment;
@@ -9,9 +9,9 @@ import uia.core.context.Context;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 
-import test.__tests__.utility.TestUtility;
+import utility.TestUtility;
 
-import static test.__tests__.utility.TestUtility.*;
+import static utility.TestUtility.*;
 
 /**
  * Sanity test.
