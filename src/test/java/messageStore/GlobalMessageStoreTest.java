@@ -7,7 +7,7 @@ import uia.application.message.store.ConcreteMessageStore;
 import uia.application.message.store.GlobalMessageStore;
 import uia.core.basement.message.MessageStore;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * GlobalMessageStore unit tests.
