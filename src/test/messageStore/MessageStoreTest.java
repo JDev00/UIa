@@ -19,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MessageStoreTest {
 
-    public static Message createMockMessage() {
+    Message createMockMessage() {
         return MessageFactory.create("", "");
     }
 
-    public MessageStore messageStore;
+    MessageStore messageStore;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         messageStore = new ConcreteMessageStore();
     }
 
