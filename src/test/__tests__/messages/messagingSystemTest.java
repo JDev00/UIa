@@ -5,7 +5,7 @@ import uia.core.ui.View;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.callbacks.OnMessageReceived;
 import uia.core.context.Context;
-import uia.physical.message.MessageFactory;
+import uia.application.message.MessageFactory;
 
 import static test.__tests__.utility.TestUtility.*;
 

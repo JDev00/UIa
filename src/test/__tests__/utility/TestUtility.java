@@ -1,9 +1,9 @@
 package test.__tests__.utility;
 
-import uia.physical.ui.component.text.ComponentText;
+import uia.application.ui.component.text.ComponentText;
 import uia.core.rendering.color.ColorCollection;
-import uia.physical.ui.group.ComponentGroup;
-import uia.physical.ui.component.Component;
+import uia.application.ui.group.ComponentGroup;
+import uia.application.ui.component.Component;
 import uia.core.context.Context;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;

@@ -1,11 +1,11 @@
 package api.swing;
 
-import uia.physical.message.store.GlobalMessageStore;
-import uia.physical.message.EventTouchScreenMessage;
+import uia.application.message.store.GlobalMessageStore;
+import uia.application.message.EventTouchScreenMessage;
+import uia.application.message.MessageFactory;
 import uia.core.basement.message.MessageStore;
-import uia.physical.message.MessageFactory;
+import uia.application.input.EmulatedInput;
 import uia.core.ui.primitives.ScreenTouch;
-import uia.physical.input.EmulatedInput;
 import uia.core.context.window.Window;
 import uia.core.context.InputEmulator;
 import uia.core.context.Context;

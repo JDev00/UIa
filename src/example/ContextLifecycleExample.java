@@ -1,8 +1,8 @@
 package example;
 
-import uia.physical.ui.component.text.ComponentText;
+import uia.application.ui.component.text.ComponentText;
 import uia.core.rendering.color.ColorCollection;
-import uia.physical.ui.component.Component;
+import uia.application.ui.component.Component;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.context.Context;
 import uia.core.ui.ViewText;

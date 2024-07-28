@@ -1,7 +1,7 @@
 package api.swing;
 
-import uia.physical.message.messagingSystem.MessagingSystem;
-import uia.physical.ui.component.ComponentHiddenRoot;
+import uia.application.message.messagingSystem.MessagingSystem;
+import uia.application.ui.component.ComponentHiddenRoot;
 import api.swing.graphics.GraphicsAWT;
 import uia.core.rendering.Graphics;
 import uia.core.context.Context;

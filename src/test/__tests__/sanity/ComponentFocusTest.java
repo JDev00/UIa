@@ -1,8 +1,8 @@
 package test.__tests__.sanity;
 
 import uia.core.rendering.color.ColorCollection;
-import uia.physical.ui.group.ComponentGroup;
-import uia.physical.ui.component.Component;
+import uia.application.ui.group.ComponentGroup;
+import uia.application.ui.component.Component;
 import uia.core.ui.callbacks.OnFocus;
 import uia.core.context.Context;
 import uia.core.ui.style.Style;

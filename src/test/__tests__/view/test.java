@@ -5,8 +5,8 @@ import uia.core.basement.Collidable;
 import uia.core.context.Context;
 import uia.core.ui.View;
 import uia.core.ui.callbacks.*;
-import uia.physical.message.store.ConcreteMessageStore;
-import uia.physical.message.store.GlobalMessageStore;
+import uia.application.message.store.ConcreteMessageStore;
+import uia.application.message.store.GlobalMessageStore;
 
 import static test.__tests__.utility.TestUtility.*;
 

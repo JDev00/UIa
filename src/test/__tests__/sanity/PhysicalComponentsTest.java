@@ -1,10 +1,10 @@
 package test.__tests__.sanity;
 
+import uia.application.ui.component.ComponentImage;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.core.rendering.color.ColorCollection;
-import uia.physical.ui.component.ComponentImage;
 import uia.core.ui.style.TextVerticalAlignment;
-import uia.physical.ui.component.Component;
+import uia.application.ui.component.Component;
 import uia.core.context.Context;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;

@@ -1,14 +1,14 @@
 package example;
 
+import uia.application.ui.component.text.ComponentText;
 import uia.core.rendering.geometry.GeometryCollection;
-import uia.physical.ui.component.text.ComponentText;
 import uia.core.rendering.color.ColorCollection;
+import uia.application.ui.component.WrapperView;
 import uia.core.ui.style.TextVerticalAlignment;
 import uia.core.ui.callbacks.OnMessageReceived;
-import uia.physical.ui.component.WrapperView;
-import uia.physical.ui.group.ComponentGroup;
-import uia.physical.message.MessageFactory;
-import uia.physical.ui.component.Component;
+import uia.application.ui.group.ComponentGroup;
+import uia.application.message.MessageFactory;
+import uia.application.ui.component.Component;
 import uia.core.basement.message.Message;
 import uia.core.ui.callbacks.OnClick;
 import uia.core.rendering.font.Font;

@@ -1,9 +1,9 @@
 package api.swing;
 
-import uia.physical.message.store.GlobalMessageStore;
+import uia.application.message.store.GlobalMessageStore;
 import uia.core.basement.message.MessageStore;
-import uia.physical.callbacks.CallbackStore;
-import uia.physical.message.MessageFactory;
+import uia.application.message.MessageFactory;
+import uia.application.events.CallbackStore;
 import uia.core.ui.primitives.ScreenTouch;
 import uia.core.basement.message.Message;
 import uia.core.context.window.Window;

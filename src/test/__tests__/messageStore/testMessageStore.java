@@ -5,8 +5,8 @@ import test.core.Test;
 import test.core.TestAssertion;
 import test.core.TestExecutor;
 import uia.core.basement.message.Message;
-import uia.physical.message.MessageFactory;
-import uia.physical.message.store.ConcreteMessageStore;
+import uia.application.message.MessageFactory;
+import uia.application.message.store.ConcreteMessageStore;
 import uia.core.basement.message.MessageStore;
 
 import java.util.Arrays;
