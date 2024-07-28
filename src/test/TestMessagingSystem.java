@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import uia.core.ui.callbacks.OnMessageReceived;
@@ -21,11 +22,18 @@ class TestMessagingSystem {
     ViewGroup rootView;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         rootView = createRoot();
 
         context = createMockContext();
         context.setView(rootView);
+    }
+
+    @AfterEach
+    void afterEach() {
+        // pauses this context and hides its window
+        context.setLifecycleStage(Context.LifecycleStage.PAUSED);
+        context.getWindow().setVisible(false);
     }
 
     @Test
