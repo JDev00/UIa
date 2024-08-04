@@ -49,26 +49,14 @@ public class UIEditText extends WrapperViewText {
 
     public UIEditText(View view) {
         super(new ComponentText(view));
-        registerCallback((OnKeyPressed) this::handleKey);
 
-        final boolean[] selected = {false};
+        final boolean[] textSelectionResult = {false};
         registerCallback((OnMouseHover) touches -> {
             ScreenTouch screenTouch = touches[0];
-            if (ScreenTouch.madeAction(screenTouch, ScreenTouch.Action.PRESSED)
-                    || ScreenTouch.madeAction(screenTouch, ScreenTouch.Action.DRAGGED)) {
-                int ind = getIndex(screenTouch.getX(), screenTouch.getY());
-                if (ind != -1) {
-                    index = ind;
-                    if (!selected[0]) {
-                        selected[0] = true;
-                        hIndex = index;
-                    }
-                }
-            } else if (ScreenTouch.madeAction(screenTouch, ScreenTouch.Action.RELEASED)) {
-                selected[0] = false;
-            }
+            selectText(screenTouch, textSelectionResult);
         });
-        registerCallback((OnMouseExit) o -> selected[0] = false);
+        registerCallback((OnMouseExit) empty -> textSelectionResult[0] = false);
+        registerCallback((OnKeyPressed) this::handleKey);
 
         keyHandler = new KeyHandler();
 
@@ -93,6 +81,32 @@ public class UIEditText extends WrapperViewText {
         boolean hasKeyBeenHandled = keyHandler.handleKey(key);
         if (hasKeyBeenHandled) {
             cursor.resetTimer();
+        }
+    }
+
+    /**
+     * Helper function. Selects text.
+     *
+     * @param screenTouch     a not null screenTouch
+     * @param selectionResult the array used to store the selection result
+     */
+
+    private void selectText(ScreenTouch screenTouch, boolean[] selectionResult) {
+        boolean pressed = ScreenTouch.madeAction(screenTouch, ScreenTouch.Action.PRESSED);
+        boolean dragged = ScreenTouch.madeAction(screenTouch, ScreenTouch.Action.DRAGGED);
+        boolean released = ScreenTouch.madeAction(screenTouch, ScreenTouch.Action.RELEASED);
+
+        if (pressed || dragged) {
+            int charPosition = getIndex(screenTouch.getX(), screenTouch.getY());
+            if (charPosition != -1) {
+                index = charPosition;
+                if (!selectionResult[0]) {
+                    selectionResult[0] = true;
+                    hIndex = index;
+                }
+            }
+        } else if (released) {
+            selectionResult[0] = false;
         }
     }
 
