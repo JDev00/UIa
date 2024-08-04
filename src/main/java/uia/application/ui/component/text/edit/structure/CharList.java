@@ -223,11 +223,12 @@ public class CharList {
     }
 
     /**
-     * Note that this method allow you to directly modify the internal structure.
+     * Returns this list as an array.
      * <br>
-     * Anyway all the operations on CharList are safe for CharList.
+     * This method does not copy the internal structure, so side effects are allowed.
+     * In fact, all operations on CharList will continue to be secure.
      *
-     * @return an array of chars
+     * @return this charList as an array
      */
 
     public char[] toArray() {
