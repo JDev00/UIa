@@ -42,7 +42,7 @@ public class UIEditText extends WrapperViewText {
     private final Transform highlightTransform;
     private final Geometry highlightGeometry;
     private final Transform clipTransform;
-    private final UITextCursor cursor;
+    private final UITextCursor textCursor;
 
     private int index;
     private int hIndex;
@@ -60,7 +60,7 @@ public class UIEditText extends WrapperViewText {
 
         keyHandler = new KeyHandler();
 
-        cursor = new UITextCursor("EDIT_TEXT_CURSOR_" + view.getID());
+        textCursor = new UITextCursor("EDIT_TEXT_CURSOR_" + view.getID());
 
         // highlight
         hightlightColor = Color.createColor(65, 105, 225, 126);
@@ -80,7 +80,7 @@ public class UIEditText extends WrapperViewText {
     private void handleKey(Key key) {
         boolean hasKeyBeenHandled = keyHandler.handleKey(key);
         if (hasKeyBeenHandled) {
-            cursor.resetTimer();
+            textCursor.resetTimer();
         }
     }
 
@@ -134,20 +134,13 @@ public class UIEditText extends WrapperViewText {
         }
     }
 
-    private void addText(int i, char[] in) {
+    /*private void addText(int i, char[] in) {
         if (charList.add(i, in, 0, in.length)) {
             index += in.length;
             hIndex = index;
             refreshText();
         }
-    }
-
-    private void removeText(int i) {
-        if (charList.remove(i)) {
-            hIndex = index = min(i, chars());
-            refreshText();
-        }
-    }
+    }*/
 
     private void removeText(int i, int j) {
         if (charList.remove(i, j)) {
@@ -176,13 +169,9 @@ public class UIEditText extends WrapperViewText {
         return max(index, hIndex);
     }
 
-    /**
-     * Reset the selection box
-     */
-
-    private void resetTextBox() {
+    /*private void resetTextBox() {
         index = hIndex = 0;
-    }
+    }*/
 
     private void setIndex(int i) {
         if (i >= 0) {
@@ -360,15 +349,15 @@ public class UIEditText extends WrapperViewText {
             Style style = getStyle();
             float[] bounds = getBounds();
             float lineHeight = style.getFont().getLineHeight();
-            cursor.setPosition(
+            textCursor.setPosition(
                     cursorPosition[0],
                     cursorPosition[1]
             );
-            cursor.setDimension(
+            textCursor.setDimension(
                     2f / bounds[2],
                     lineHeight / bounds[3]
             );
-            cursor.update(this);
+            textCursor.update(this);
         }
     }
 
@@ -419,7 +408,7 @@ public class UIEditText extends WrapperViewText {
      */
 
     private void drawBox(Graphics graphics) {
-        if (getSelectionCount() > 0) {
+        if (isTextSelected()) {
             graphics.setShapeColor(hightlightColor);
 
             if (isSingleLine()) {
@@ -441,7 +430,7 @@ public class UIEditText extends WrapperViewText {
 
             drawBox(graphics);
             if (isOnFocus()) {
-                cursor.draw(graphics);
+                textCursor.draw(graphics);
             }
             graphics.restoreClip();
         }
@@ -700,6 +689,17 @@ public class UIEditText extends WrapperViewText {
                     setHIndex(cursorIndex);
                 }
             });
+        }
+
+        /**
+         * Helper function. Removes the specified char from text.
+         */
+
+        private void removeText(int charPosition) {
+            if (charList.remove(charPosition)) {
+                hIndex = index = min(charPosition, chars());
+                refreshText();
+            }
         }
 
         /**
