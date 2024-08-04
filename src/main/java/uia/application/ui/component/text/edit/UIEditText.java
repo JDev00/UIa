@@ -156,14 +156,6 @@ public class UIEditText extends WrapperViewText {
         }
     }
 
-    /*private void addText(int i, char[] in) {
-        if (charList.add(i, in, 0, in.length)) {
-            index += in.length;
-            hIndex = index;
-            refreshText();
-        }
-    }*/
-
     private void removeText(int i, int j) {
         if (charList.remove(i, j)) {
             hIndex = index = MathUtility.constrain(i, 0, chars());
@@ -190,10 +182,6 @@ public class UIEditText extends WrapperViewText {
     private int getMaxIndex() {
         return max(index, hIndex);
     }
-
-    /*private void resetTextBox() {
-        index = hIndex = 0;
-    }*/
 
     private void setIndex(int i) {
         if (i >= 0) {
