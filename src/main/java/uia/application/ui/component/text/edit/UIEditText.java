@@ -28,6 +28,8 @@ import java.util.*;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
+import static uia.application.ui.component.text.edit.structure.EdiTextAlgorithms.*;
+
 // TODO: to refactor
 
 /**
@@ -285,7 +287,7 @@ public class UIEditText extends WrapperViewText {
 
             if (i == iMax || chars[i] == '\n') {
                 sol = eol + 1;
-                eol = getBr(chars, length, i);
+                eol = getNextBreakLine(chars, length, i);
 
                 float lineWidth = font.getWidth(sol, eol - sol, chars);
                 float wShape = font.getWidth(o, i - o, chars);
@@ -382,7 +384,7 @@ public class UIEditText extends WrapperViewText {
                 for (int i = 0; i <= length; i++) {
                     if ((i == length || chars[i] == '\n') && index > endOfLine) {
                         startOfLine = endOfLine + 1;
-                        endOfLine = getBr(chars, length, i);
+                        endOfLine = getNextBreakLine(chars, length, i);
                         currentLine++;
 
                     }
@@ -585,27 +587,6 @@ public class UIEditText extends WrapperViewText {
 
     private boolean isTextSelected() {
         return getSelectionCount() > 0;
-    }
-
-    /**
-     * Returns the next break line.
-     * <br>
-     * Time complexity: O(n)
-     * <br>
-     * Space complexity: O(1)
-     *
-     * @param chars      a not null array of chars
-     * @param length     the number of elements to scan
-     * @param startIndex the scanner start position
-     * @return the next break line position or {@code length}
-     */
-
-    private static int getBr(char[] chars, int length, int startIndex) {
-        int position = startIndex;
-        while (position < length && chars[position] != '\n') {
-            position++;
-        }
-        return position;
     }
 
     /**
