@@ -27,9 +27,9 @@ public class CharList {
     }
 
     /**
-     * Resize this structure
+     * Resizes this list.
      *
-     * @param length the new structure's size
+     * @param length the new list size
      */
 
     private void resize(int length) {
@@ -45,7 +45,7 @@ public class CharList {
     }
 
     /**
-     * Remove all chars and reset this structure but keep the capacity limit
+     * Remove all chars and reset this list, but keep the capacity limit.
      */
 
     public void clear() {
@@ -54,15 +54,15 @@ public class CharList {
     }
 
     /**
-     * Add a new char
+     * Adds a new char at the specified position.
      *
-     * @param i the position in which insert the given char
-     * @param a the char to be added
+     * @param index   the position at which to insert the given char
+     * @param newChar the char to be added
      * @return true if the operation succeeded
      */
 
-    public boolean add(int i, char a) {
-        if (i < 0 || i > size) {
+    public boolean add(int index, char newChar) {
+        if (index < 0 || index > size) {
             return false;
         }
 
@@ -70,14 +70,25 @@ public class CharList {
             resize(2 * size + 1);
         }
 
-        for (int k = size; k > i; k--) {
+        for (int k = size; k > index; k--) {
             data[k] = data[k - 1];
         }
 
-        data[i] = a;
+        data[index] = newChar;
         size = min(size + 1, maxCapacity);
 
         return true;
+    }
+
+    /**
+     * Adds a new char to the end of this list.
+     *
+     * @param newChar the char to be added
+     * @return true if the operation succeeded
+     */
+
+    public boolean add(char newChar) {
+        return add(size, newChar);
     }
 
     /**
@@ -119,113 +130,28 @@ public class CharList {
     }
 
     /**
-     * Add a new char
+     * Replaces the specified char.
      *
-     * @param a the char to add
-     * @return true if the operation succeeded
+     * @param index       the position of the char to be replaced
+     * @param replacement the char used as replacement
      */
 
-    public boolean add(char a) {
-        return add(size, a);
-    }
-
-    /**
-     * Add a new char at the specified indices.
-     * <br>
-     * Complexity: Theta(n)
-     *
-     * @param indices an array filled with the positions of the given char
-     * @param off     the start array position
-     * @param len     the array length
-     * @param a       a char to insert
-     */
-
-    public boolean add(int[] indices, int off, int len, char a) {
-        if (indices == null) return false;
-
-        if (len + size >= data.length) {
-            resize(data.length + len + 10);
-        }
-
-        int count = 0;
-        for (int i = 0; i < len; i++) {
-            int j = indices[off + i];
-            if (j >= 0 && j < size) count++;
-        }
-
-        int s = size - 1;
-        int r = count;
-
-        for (int i = len - 1; i >= 0; i--) {
-            int j = indices[off + i];
-
-            if (j >= 0 && j < size) {
-
-                for (int k = s; k >= j; k--) {
-                    data[k + count] = data[k];
-                }
-
-                data[j + count - 1] = a;
-                s = j + count - (count + 1);
-                count--;
-            }
-        }
-
-        size += r;
-
-        return true;
-    }
-
-    /**
-     * Replace a char
-     *
-     * @param i the position of the char to replace
-     * @param a the char used as replacement
-     */
-
-    public void set(int i, char a) {
-        if (i >= 0 && i < size) data[i] = a;
-    }
-
-    /**
-     * Remove all the occurrences of a char.
-     * <br>
-     * Complexity: Theta(n)
-     *
-     * @param c the char to remove
-     */
-
-    public void remove(char c) {
-        int i = 0;
-        int j = 1;
-
-        while (j < size) {
-
-            if (data[i] != c) i++;
-
-            if (data[i] == c && data[j] != c) {
-                data[i] = data[j];
-                data[j] = c;
-                i++;
-            }
-
-            j++;
-        }
-
-        // resize only if the last char is equal to c
-        if (size > 0 && data[size - 1] == c) {
-            size = Math.max(0, size - (j - i));
+    public void set(int index, char replacement) {
+        if (index >= 0 && index < size) {
+            data[index] = replacement;
         }
     }
 
     /**
-     * Remove all chars between the interval [i, j]
+     * Removes all chars between the interval [i, j].
      *
      * @return true if the operation succeeded
      */
 
     public boolean remove(int i, int j) {
-        if (i < 0 || i > size || i > j || j >= size) return false;
+        if (i < 0 || i > size || i > j || j >= size) {
+            return false;
+        }
 
         for (int k = j; k < size - 1; k++) {
             data[i + (k - j)] = data[k + 1];
@@ -237,40 +163,14 @@ public class CharList {
     }
 
     /**
-     * Remove the specified char
+     * Removes the specified char from this list.
      *
+     * @param index the position of the char to remove
      * @return true if the operation succeeded
      */
 
-    public boolean remove(int i) {
-        return remove(i, i);
-    }
-
-    /**
-     * Remove the chars specified by the given array of indices
-     *
-     * @param off the first element of the given array
-     * @param len the indices that must be used
-     */
-
-    public boolean remove(int[] indices, int off, int len) {
-        if (indices == null || indices.length == 0) return false;
-
-        // Mark the chars to delete
-        int count = 0;
-        for (int i = 0; i < len; i++) {
-            int j = indices[off + i];
-
-            if (j >= 0 && j < size) {
-                data[j] = 0;
-                count++;
-            }
-        }
-
-        // remove the marked chars
-        if (count > 0) remove((char) 0);
-
-        return true;
+    public boolean remove(int index) {
+        return remove(index, index);
     }
 
     @Override
@@ -279,12 +179,17 @@ public class CharList {
     }
 
     /**
-     * @param i position of the char
-     * @return the specified char
+     * @param index the position of the char to be retrieved
+     * @return the searched char
+     * @throws IndexOutOfBoundsException if {@code index < 0 or index >= size()}
      */
 
-    public char get(int i) {
-        return data[i];
+    public char get(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("'index' is out of bounds [0, " + size + " ]");
+        }
+
+        return data[index];
     }
 
     /**
@@ -304,12 +209,15 @@ public class CharList {
     }
 
     /**
-     * @return true if this structure contains the given char
+     * @param searchedChar the char to look for
+     * @return true if the given char is contained in this list
      */
 
-    public boolean contains(char a) {
+    public boolean contains(char searchedChar) {
         for (int i = 0; i < size; i++) {
-            if (data[i] == a) return true;
+            if (data[i] == searchedChar) {
+                return true;
+            }
         }
         return false;
     }
