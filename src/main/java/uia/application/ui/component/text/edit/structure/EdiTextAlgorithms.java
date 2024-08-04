@@ -4,6 +4,7 @@ import uia.core.ui.style.TextHorizontalAlignment;
 import uia.core.rendering.font.Font;
 import uia.core.ui.style.Style;
 import uia.core.ui.ViewText;
+import uia.core.ui.style.TextVerticalAlignment;
 
 public final class EdiTextAlgorithms {
 
@@ -29,6 +30,51 @@ public final class EdiTextAlgorithms {
             position++;
         }
         return position;
+    }
+
+    /**
+     * Returns the character index covered by cursor.
+     * <br>
+     * Specifically, given a pointer coordinates (px, py), find the nearest character
+     * and return its index.
+     * <br>
+     * Time complexity: O(n)
+     * <br>
+     * Space complexity: O(1)
+     *
+     * @return the character index or -1
+     */
+
+    public static int getIndexForInlineText(ViewText viewText,
+                                            char[] chars, int length, float pointerX, float pointerY) {
+        Style style = viewText.getStyle();
+        Font font = style.getFont();
+
+        float[] bounds = viewText.getBounds();
+        float heightLine = font.getLineHeight();
+
+        int ax = TextHorizontalAlignment.map(style.getHorizontalTextAlignment());
+        float y = TextVerticalAlignment.map(style.getVerticalTextAlignment())
+                * (bounds[3] - heightLine) / 2f;
+
+        if (pointerY > y && pointerY < y + heightLine) {
+            float x = ax * (bounds[2] - font.getWidth(0, length, chars)) / 2f;
+
+            float dim;
+            int j = 0;
+            while (j < length) {
+                dim = font.getWidth(chars[j]);
+                if (pointerX < x + dim / 2f) {
+                    break;
+                }
+                x += dim;
+                j++;
+            }
+
+            return j;
+        }
+
+        return -1;
     }
 
     /**

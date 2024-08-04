@@ -19,7 +19,6 @@ import uia.core.rendering.Graphics;
 import uia.core.ui.primitives.Key;
 import uia.core.ui.style.Style;
 import uia.utility.MathUtility;
-import uia.core.ui.ViewText;
 import uia.core.ui.View;
 
 import java.util.function.Consumer;
@@ -452,54 +451,11 @@ public class UIEditText extends WrapperViewText {
         int length = chars();
         char[] chars = charList.toArray();
         if (isSingleLine()) {
-            result = getIndexForInlineText(chars, length, mx, my);
+            result = getIndexForInlineText(this, chars, length, mx, my);
         } else {
             result = getIndexForMultilineText(this, chars, length, mx, my);
         }
         return result;
-    }
-
-    /**
-     * Helper function. Returns the character index covered by cursor.
-     * <br>
-     * More formally: given a pointer coordinates, find the nearest character and return its index.
-     * <br>
-     * Time required: O(n);
-     * <br>
-     * Space required: O(1).
-     *
-     * @return the character index or -1
-     */
-
-    private int getIndexForInlineText(char[] chars, int length, float mx, float my) {
-        Style style = getStyle();
-        Font font = style.getFont();
-
-        float[] bounds = getBounds();
-        float heightLine = font.getLineHeight();
-
-        int ax = TextHorizontalAlignment.map(style.getHorizontalTextAlignment());
-        float y = TextVerticalAlignment.map(style.getVerticalTextAlignment())
-                * (bounds[3] - heightLine) / 2f;
-
-        if (my > y && my < y + heightLine) {
-            float x = ax * (bounds[2] - font.getWidth(0, length, chars)) / 2f;
-
-            float dim;
-            int j = 0;
-            while (j < length) {
-                dim = font.getWidth(chars[j]);
-                if (mx < x + dim / 2f) {
-                    break;
-                }
-                x += dim;
-                j++;
-            }
-
-            return j;
-        }
-
-        return -1;
     }
 
     /*
