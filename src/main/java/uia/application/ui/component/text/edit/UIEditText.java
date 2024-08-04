@@ -24,9 +24,7 @@ import uia.utility.MathUtility;
 import uia.utility.Timer;
 import uia.core.ui.View;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -34,12 +32,13 @@ import static java.lang.Math.min;
 // TODO: to refactor
 
 /**
- * UIEditText is a component designed for editing text.
+ * UIEditText is a component designed for editing text, either for single line
+ * or multi line text.
  */
 
 public class UIEditText extends WrapperViewText {
     private final CharList charList = new CharList(10);
-    private final List<Integer> illegalCodes = new ArrayList<>();
+    private final Set<Integer> illegalCodes = new HashSet<>();
 
     private final Color hightlightColor;
     private final Transform highlightTransform;
@@ -53,12 +52,12 @@ public class UIEditText extends WrapperViewText {
     public UIEditText(View view) {
         super(new ComponentText(view));
         registerCallback((OnKeyPressed) key -> {
-            boolean selectedText = getSelectionCount() > 0;
-            if (defaultAction(key, selectedText)) {
+            boolean isTextSelected = getSelectionCount() > 0;
+            if (defaultAction(key, isTextSelected)) {
                 cursor.resetTimer();
             } else if (!illegalCodes.contains(key.getKeyCode())) {
                 cursor.resetTimer();
-                if (selectedText) {
+                if (isTextSelected) {
                     clearSelected();
                 }
                 addText(index, key.getKeyChar());
@@ -83,22 +82,11 @@ public class UIEditText extends WrapperViewText {
         });
         registerCallback((OnMouseExit) o -> selected[0] = false);
 
-        // shift, ctrl, alt gr, esc, caps-lock
-        illegalCodes.addAll(Arrays.asList(16, 17, 18, 27, 20));
-
-        /*illegalCodes.add(Key.KEY_TAB);
-        illegalCodes.add(Key.KEY_SHIFT);
-        illegalCodes.add(Key.KEY_CTRL);
-        illegalCodes.add(Key.KEY_ALT);
-        illegalCodes.add(Key.KEY_CAPS_LOCK);
-        illegalCodes.add(Key.KEY_ESCAPE);
-        illegalCodes.add(Key.KEY_NUM_LOCK);
-        illegalCodes.add(Key.KEY_INSERT);
-        illegalCodes.add(Key.KEY_ALT_GRAPH);
-        illegalCodes.add(33);   // PAGE_UP
-        illegalCodes.add(34);   // PAGE_DOWN
-        illegalCodes.add(226);  // KEYPAD LEFT_ARROW
-        illegalCodes.add(227);  // KEYPAD RIGHT_ARROW*/
+        // registers the unhandled keys
+        int[] unhandledKeys = SpecialKeys.getAllKeys();
+        for (int unhandledKey : unhandledKeys) {
+            illegalCodes.add(unhandledKey);
+        }
 
         cursor = new Cursor(view.getID());
 
