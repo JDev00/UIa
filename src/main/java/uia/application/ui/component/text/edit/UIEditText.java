@@ -5,10 +5,7 @@ import uia.application.ui.component.text.WrapperViewText;
 import uia.application.ui.component.text.ComponentText;
 import uia.core.rendering.geometry.GeometryCollection;
 import uia.core.ui.style.TextHorizontalAlignment;
-import uia.core.rendering.color.ColorCollection;
-import uia.application.ui.component.WrapperView;
 import uia.core.ui.style.TextVerticalAlignment;
-import uia.application.ui.component.Component;
 import uia.core.rendering.geometry.Geometry;
 import uia.core.ui.primitives.ScreenTouch;
 import uia.core.ui.callbacks.OnKeyPressed;
@@ -21,7 +18,6 @@ import uia.core.rendering.Graphics;
 import uia.core.ui.primitives.Key;
 import uia.core.ui.style.Style;
 import uia.utility.MathUtility;
-import uia.utility.Timer;
 import uia.core.ui.View;
 
 import java.util.*;
@@ -44,7 +40,7 @@ public class UIEditText extends WrapperViewText {
     private final Transform highlightTransform;
     private final Geometry highlightGeometry;
     private final Transform clipTransform;
-    private Cursor cursor;
+    private UITextCursor cursor;
 
     private int index;
     private int hIndex;
@@ -88,7 +84,7 @@ public class UIEditText extends WrapperViewText {
             illegalCodes.add(unhandledKey);
         }
 
-        cursor = new Cursor(view.getID());
+        cursor = new UITextCursor("EDIT_TEXT_CURSOR_" + view.getID());
 
         // highlight
         hightlightColor = Color.createColor(65, 105, 225, 126);
@@ -728,35 +724,6 @@ public class UIEditText extends WrapperViewText {
 
     public int getSelectionCount() {
         return Math.abs(index - hIndex);
-    }
-
-    /**
-     * Text cursor representation
-     */
-
-    public static class Cursor extends WrapperView {
-        private final Timer timer;
-
-        public Cursor(String id) {
-            super(new Component("EDIT_TEXT_CURSOR_" + id, 0f, 0f, 1f, 1f));
-            getStyle().setBackgroundColor(ColorCollection.BLACK);
-
-            timer = new Timer();
-        }
-
-        public void resetTimer() {
-            timer.reset();
-        }
-
-        @Override
-        public void draw(Graphics graphics) {
-            float seconds = timer.seconds();
-            if (seconds <= 0.5f) {
-                super.draw(graphics);
-            } else if (seconds >= 1f) {
-                timer.reset();
-            }
-        }
     }
 
     /**
