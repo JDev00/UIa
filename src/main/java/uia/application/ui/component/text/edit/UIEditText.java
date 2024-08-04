@@ -36,7 +36,6 @@ import static java.lang.Math.min;
 
 public class UIEditText extends WrapperViewText {
     private final CharList charList = new CharList(10);
-    private final Set<Integer> illegalCodes = new HashSet<>();
     private final KeyHandler keyHandler;
 
     private final Color hightlightColor;
@@ -71,12 +70,6 @@ public class UIEditText extends WrapperViewText {
         });
         registerCallback((OnMouseExit) o -> selected[0] = false);
 
-        // registers the unhandled keys
-        int[] unhandledKeys = SpecialKeys.getAllKeys();
-        for (int unhandledKey : unhandledKeys) {
-            illegalCodes.add(unhandledKey);
-        }
-
         keyHandler = new KeyHandler();
 
         cursor = new UITextCursor("EDIT_TEXT_CURSOR_" + view.getID());
@@ -98,15 +91,8 @@ public class UIEditText extends WrapperViewText {
 
     private void handleKey(Key key) {
         boolean hasKeyBeenHandled = keyHandler.handleKey(key);
-
         if (hasKeyBeenHandled) {
             cursor.resetTimer();
-        } else if (!illegalCodes.contains(key.getKeyCode())) {
-            cursor.resetTimer();
-            if (isTextSelected()) {
-                clearSelected();
-            }
-            addText(index, key.getKeyChar());
         }
     }
 
@@ -628,11 +614,18 @@ public class UIEditText extends WrapperViewText {
         private static final int KEY_C = 67;
         private static final int KEY_V = 86;
 
+        private final Set<Integer> unhandledKeys = new HashSet<>();
         private final Map<Integer, Consumer<Key>> keyMapper;
 
         private KeyHandler() {
-            keyMapper = new HashMap<>();
+            // registers the unhandled keys
+            int[] specialKeys = SpecialKeys.getAllKeys();
+            for (int unhandledKey : specialKeys) {
+                unhandledKeys.add(unhandledKey);
+            }
 
+            // registers the function to be used when a mapped key is detected
+            keyMapper = new HashMap<>();
             keyMapper.put(KEY_CANC, receivedKey -> {
                 if (isTextSelected()) {
                     clearSelected();
@@ -724,6 +717,15 @@ public class UIEditText extends WrapperViewText {
             Consumer<Key> consumeKey = keyMapper.get(keyCode);
             if (consumeKey != null) {
                 consumeKey.accept(key);
+                return true;
+            } else if (!unhandledKeys.contains(keyCode)) {
+                // deletes the selected text
+                if (isTextSelected()) {
+                    clearSelected();
+                }
+                // adds the key to text
+                char keyChar = key.getKeyChar();
+                addText(index, keyChar);
                 return true;
             }
 
