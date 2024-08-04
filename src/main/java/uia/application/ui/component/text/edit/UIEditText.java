@@ -351,22 +351,17 @@ public class UIEditText extends WrapperViewText {
     }
 
     /**
-     * Updates cursor.
+     * Helper function. Updates the text cursor.
      */
 
     private void updateCursor(float[] cursorPosition) {
         if (isOnFocus()) {
-            Style style = getStyle();
+            Font font = getStyle().getFont();
             float[] bounds = getBounds();
-            float lineHeight = style.getFont().getLineHeight();
-            textCursor.setPosition(
-                    cursorPosition[0],
-                    cursorPosition[1]
-            );
-            textCursor.setDimension(
-                    2f / bounds[2],
-                    lineHeight / bounds[3]
-            );
+            float lineHeight = font.getLineHeight();
+
+            textCursor.setPosition(cursorPosition[0], cursorPosition[1]);
+            textCursor.setDimension(2f / bounds[2], lineHeight / bounds[3]);
             textCursor.update(this);
         }
     }
@@ -379,12 +374,12 @@ public class UIEditText extends WrapperViewText {
             ComponentUtility.makeTransformForClipRegion(this, 1f, 1f, clipTransform);
 
             int startOfLine = 0;
-            int endOfLine = -1;
             int currentLine = 0;
-            int length = chars();
-            char[] chars = charList.toArray();
 
             if (!isSingleLine()) {
+                int endOfLine = -1;
+                int length = chars();
+                char[] chars = charList.toArray();
                 // calculate the text cursor line.
                 // Time complexity: T(n).
                 // Space complexity: O(1)
@@ -398,7 +393,6 @@ public class UIEditText extends WrapperViewText {
                 }
             } else {
                 currentLine = 1;
-                endOfLine = length;
             }
 
             // updates cursor
