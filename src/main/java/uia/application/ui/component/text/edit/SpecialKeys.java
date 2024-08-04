@@ -5,13 +5,18 @@ package uia.application.ui.component.text.edit;
  */
 
 public enum SpecialKeys {
+    BACKSPACE(8),
     SHIFT(16),
     CTRL(17),
     ALT_GR(18),
     CAPS_LOCK(20),
     ESC(27),
     PAGE_UP(33),
-    PAGE_DOWN(34);
+    PAGE_DOWN(34),
+    KEY_LEFT(37),
+    KEY_UP(38),
+    KEY_RIGHT(39),
+    KEY_DOWN(40);
 
     final int keyCode;
 

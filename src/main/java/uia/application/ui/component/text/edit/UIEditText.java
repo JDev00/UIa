@@ -18,8 +18,10 @@ import uia.core.rendering.Graphics;
 import uia.core.ui.primitives.Key;
 import uia.core.ui.style.Style;
 import uia.utility.MathUtility;
+import uia.core.ui.ViewText;
 import uia.core.ui.View;
 
+import java.util.function.Consumer;
 import java.util.*;
 
 import static java.lang.Math.max;
@@ -35,30 +37,21 @@ import static java.lang.Math.min;
 public class UIEditText extends WrapperViewText {
     private final CharList charList = new CharList(10);
     private final Set<Integer> illegalCodes = new HashSet<>();
+    private final KeyHandler keyHandler;
 
     private final Color hightlightColor;
     private final Transform highlightTransform;
     private final Geometry highlightGeometry;
     private final Transform clipTransform;
-    private UITextCursor cursor;
+    private final UITextCursor cursor;
 
     private int index;
     private int hIndex;
 
     public UIEditText(View view) {
         super(new ComponentText(view));
-        registerCallback((OnKeyPressed) key -> {
-            boolean isTextSelected = getSelectionCount() > 0;
-            if (defaultAction(key, isTextSelected)) {
-                cursor.resetTimer();
-            } else if (!illegalCodes.contains(key.getKeyCode())) {
-                cursor.resetTimer();
-                if (isTextSelected) {
-                    clearSelected();
-                }
-                addText(index, key.getKeyChar());
-            }
-        });
+        registerCallback((OnKeyPressed) this::handleKey);
+
         final boolean[] selected = {false};
         registerCallback((OnMouseHover) touches -> {
             ScreenTouch screenTouch = touches[0];
@@ -84,17 +77,37 @@ public class UIEditText extends WrapperViewText {
             illegalCodes.add(unhandledKey);
         }
 
+        keyHandler = new KeyHandler();
+
         cursor = new UITextCursor("EDIT_TEXT_CURSOR_" + view.getID());
 
         // highlight
         hightlightColor = Color.createColor(65, 105, 225, 126);
-
-        highlightTransform = new Transform();
-
         highlightGeometry = GeometryCollection.rect(new Geometry());
+        highlightTransform = new Transform();
 
         // clip
         clipTransform = new Transform();
+    }
+
+    /**
+     * Helper function. Handles the given key.
+     *
+     * @param key the key to handle
+     */
+
+    private void handleKey(Key key) {
+        boolean hasKeyBeenHandled = keyHandler.handleKey(key);
+
+        if (hasKeyBeenHandled) {
+            cursor.resetTimer();
+        } else if (!illegalCodes.contains(key.getKeyCode())) {
+            cursor.resetTimer();
+            if (isTextSelected()) {
+                clearSelected();
+            }
+            addText(index, key.getKeyChar());
+        }
     }
 
     @Override
@@ -171,14 +184,16 @@ public class UIEditText extends WrapperViewText {
         index = hIndex = 0;
     }
 
-    // test functionality
     private void setIndex(int i) {
-        if (i >= 0) index = MathUtility.constrain(i, 0, chars());
+        if (i >= 0) {
+            index = MathUtility.constrain(i, 0, chars());
+        }
     }
 
-    // test functionality
     private void setHIndex(int i) {
-        if (i >= 0) hIndex = MathUtility.constrain(i, 0, chars());
+        if (i >= 0) {
+            hIndex = MathUtility.constrain(i, 0, chars());
+        }
     }
 
     /**
@@ -187,158 +202,6 @@ public class UIEditText extends WrapperViewText {
 
     private void clearSelected() {
         removeText(getMinIndex(), getMaxIndex() - 1);
-    }
-
-    /**
-     * Default typing actions
-     *
-     * @param key      the last key
-     * @param selected true if a part of the text is selected
-     */
-
-    private boolean defaultAction(Key key, boolean selected) {
-        /*if (key.isKeystroke(Key.MASK_CTRL, Key.KEY_Z - 4)) {
-            if (selected) clearSelected();
-            //addText(getIndex(), getContext().pasteFromClipboard().toCharArray());
-            return true;
-        }
-
-        if (key.isKeystroke(Key.MASK_CTRL, Key.KEY_A)) {
-            hIndex = 0;
-            index = chars();
-            return true;
-        }
-
-        if (key.isKeystroke(Key.MASK_SHIFT, Key.KEY_LEFT)) {
-            index = Math.max(0, index - 1);
-            return true;
-        }
-
-        if (key.isKeystroke(Key.MASK_SHIFT, Key.KEY_RIGHT)) {
-            index = min(index + 1, chars());
-            return true;
-        }
-
-        if (key.isKeystroke(Key.MASK_SHIFT, Key.KEY_UP)) {
-            int ind = getIndex(-1);
-            if (ind >= 0) index = ind;
-            return true;
-        }
-
-        if (key.isKeystroke(Key.MASK_SHIFT, Key.KEY_DOWN)) {
-            int ind = getIndex(1);
-            if (ind >= 0) index = ind;
-            return true;
-        }*/
-
-        /*else if (key.isCode(Key.MASK_CTRL, Key.KEY_A + 2) && isTextSelected()) {
-            //getContext().copyIntoClipboard(String.valueOf(buffer.toArray(), getMinIndex(), getSelectionCount()));
-        }*/
-
-        /*switch (key.getKeyCode()) {
-
-            case Key.KEY_LEFT:
-                int k = getMinIndex() - 1;
-                setIndex(k);
-                setHIndex(k);
-                return true;
-
-            case Key.KEY_UP:
-                k = getIndex(-1);
-                setIndex(k);
-                setHIndex(k);
-                return true;
-
-            case Key.KEY_RIGHT:
-                k = getMaxIndex() + 1;
-                setIndex(k);
-                setHIndex(k);
-                return true;
-
-            case Key.KEY_DOWN:
-                k = getIndex(1);
-                setIndex(k);
-                setHIndex(k);
-                return true;
-
-            case Key.KEY_ENTER:
-                if (!singleLine) {
-                    addText(index, '\n');
-
-                    // adjust scroller position
-                    //if (getCursorY() + getLineHeight() >= y() + 0.5f * height()) scrollY(false);
-                }
-                return true;
-
-            case Key.KEY_BACKSPACE:
-                if (selected) {
-                    clearSelected();
-                } else {
-                    removeText(index - 1);
-                }
-                return true;
-
-            case Key.KEY_DELETE:
-                if (selected) {
-                    clearSelected();
-                } else {
-                    removeText(index);
-                }
-                return true;
-        }*/
-
-        if (key.getKeyCode() == 8) {// backspace
-            if (selected) {
-                clearSelected();
-            } else {
-                removeText(index - 1);
-            }
-            return true;
-        } else if (key.getKeyCode() == 127) {// canc
-            if (selected) {
-                clearSelected();
-            } else {
-                removeText(index);
-            }
-            return true;
-        } else if (key.getKeyCode() == 40) {// key-down
-            /*int ind = getIndex(1);
-            if (ind >= 0) {
-                index = ind;
-            }*/
-            return true;
-        } else if (key.getKeyCode() == 38) {// key-up
-            /*int ind = getIndex(1);
-            if (ind >= 0) {
-                index = ind;
-            }*/
-            return true;
-        } else if (key.isKeystroke(1, 37)) {// shift-left
-            index = max(0, index - 1);
-            return true;
-        } else if (key.getKeyCode() == 37) {// key-left
-            int k = getMinIndex() - 1;
-            setIndex(k);
-            setHIndex(k);
-            return true;
-        } else if (key.isKeystroke(1, 39)) {// shift-right
-            index = min(index + 1, chars());
-            return true;
-        } else if (key.getKeyCode() == 39) {// key-right
-            int k = getMaxIndex() + 1;
-            setIndex(k);
-            setHIndex(k);
-            return true;
-        } else if (key.isKeystroke(2, 65)) {// ctrl-a
-            hIndex = 0;
-            index = chars();
-            return true;
-        } else if (key.isKeystroke(2, 67)) {// ctrl-c
-            return true;
-        } else if (key.isKeystroke(2, 86)) {// ctrl-v
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -599,7 +462,7 @@ public class UIEditText extends WrapperViewText {
         if (isSingleLine()) {
             result = getIndexForInlineText(chars, length, mx, my);
         } else {
-            result = getIndexForMultilineText(chars, length, mx, my);
+            result = getIndexForMultilineText(this, chars, length, mx, my);
         }
         return result;
     }
@@ -659,14 +522,14 @@ public class UIEditText extends WrapperViewText {
      * @return the character index or -1
      */
 
-    private int getIndexForMultilineText(char[] chars, int length, float mx, float my) {
-        Style style = getStyle();
+    private static int getIndexForMultilineText(ViewText viewText, char[] chars, int length, float mx, float my) {
+        Style style = viewText.getStyle();
         Font font = style.getFont();
-        float[] bounds = getBounds();
+        float[] bounds = viewText.getBounds();
         float heightLine = font.getLineHeight();
 
         int ax = TextHorizontalAlignment.map(style.getHorizontalTextAlignment());
-        float y = -getScrollValue()[1];
+        float y = -viewText.getScrollValue()[1];
 
         int sol;      // start of line
         int eol = -1; // end of line
@@ -727,20 +590,144 @@ public class UIEditText extends WrapperViewText {
     }
 
     /**
+     * @return true if the text is partially or fully selected
+     */
+
+    private boolean isTextSelected() {
+        return getSelectionCount() > 0;
+    }
+
+    /**
      * Returns the next break line.
      * <br>
-     * Time required: O(n);
+     * Time complexity: O(n)
      * <br>
-     * Space required: O(1)
+     * Space complexity: O(1)
      *
-     * @param chars  a not null array of chars
-     * @param length the number of elements to scan
-     * @param i      the scanner start position
+     * @param chars      a not null array of chars
+     * @param length     the number of elements to scan
+     * @param startIndex the scanner start position
      * @return the next break line position or {@code length}
      */
 
-    private static int getBr(char[] chars, int length, int i) {
-        while (i < length && chars[i] != '\n') i++;
-        return i;
+    private static int getBr(char[] chars, int length, int startIndex) {
+        int position = startIndex;
+        while (position < length && chars[position] != '\n') {
+            position++;
+        }
+        return position;
+    }
+
+    /**
+     * KeyHandler is responsible for handling the received key.
+     */
+
+    private final class KeyHandler {
+        private static final int KEY_CANC = 127;
+        private static final int KEY_A = 65;
+        private static final int KEY_C = 67;
+        private static final int KEY_V = 86;
+
+        private final Map<Integer, Consumer<Key>> keyMapper;
+
+        private KeyHandler() {
+            keyMapper = new HashMap<>();
+
+            keyMapper.put(KEY_CANC, receivedKey -> {
+                if (isTextSelected()) {
+                    clearSelected();
+                } else {
+                    removeText(index);
+                }
+            });
+            keyMapper.put(SpecialKeys.BACKSPACE.getKeyCode(), receivedKey -> {
+                if (isTextSelected()) {
+                    clearSelected();
+                } else {
+                    removeText(index - 1);
+                }
+            });
+            keyMapper.put(SpecialKeys.KEY_UP.getKeyCode(), receivedKey -> {
+                boolean isKeyStroke = receivedKey.isKeystroke(1, SpecialKeys.KEY_UP.getKeyCode());
+                if (isKeyStroke) {
+                    //int ind = getIndex(-1);
+                    //if (ind >= 0) index = ind;
+                } else {
+                /*int ind = getIndex(1);
+                if (ind >= 0) {
+                    index = ind;
+                }*/
+                }
+            });
+            keyMapper.put(SpecialKeys.KEY_DOWN.getKeyCode(), receivedKey -> {
+                boolean isKeyStroke = receivedKey.isKeystroke(1, SpecialKeys.KEY_DOWN.getKeyCode());
+                if (isKeyStroke) {
+                /*int index = getIndex(1);
+                if (index >= 0) {
+                    this.index = index;
+                }*/
+                } else {
+                /*int ind = getIndex(1);
+                if (ind >= 0) {
+                    index = ind;
+                }*/
+                }
+            });
+            keyMapper.put(SpecialKeys.KEY_LEFT.getKeyCode(), receivedKey -> {
+                boolean isKeyStroke = receivedKey.isKeystroke(1, SpecialKeys.KEY_LEFT.getKeyCode());
+                if (isKeyStroke) {
+                    index = max(0, index - 1);
+                } else {
+                    int cursorIndex = getMinIndex() - 1;
+                    setIndex(cursorIndex);
+                    setHIndex(cursorIndex);
+                }
+            });
+            keyMapper.put(SpecialKeys.KEY_RIGHT.getKeyCode(), receivedKey -> {
+                boolean isKeyStroke = receivedKey.isKeystroke(1, SpecialKeys.KEY_RIGHT.getKeyCode());
+                if (isKeyStroke) {
+                    index = min(index + 1, chars());
+                } else {
+                    int cursorIndex = getMaxIndex() + 1;
+                    setIndex(cursorIndex);
+                    setHIndex(cursorIndex);
+                }
+            });
+        }
+
+        /**
+         * Handles the given key.
+         *
+         * @param key the key to handle
+         * @return true if the key has been handled correctly; false otherwise
+         */
+
+        private boolean handleKey(Key key) {
+            // special operations
+            if (key.isKeystroke(2, KEY_A)) {
+                hIndex = 0;
+                index = chars();
+                return true;
+            } else if (key.isKeystroke(2, KEY_C)) {
+                //getContext().copyIntoClipboard(String.valueOf(buffer.toArray(), getMinIndex(), getSelectionCount()));
+                return true;
+            } else if (key.isKeystroke(2, KEY_V)) {
+                /*if (isTextSelected()) {
+                    clearSelected();
+                }
+                addText(getIndex(), getContext().pasteFromClipboard().toCharArray());*/
+                return true;
+            }
+
+            // operations on the mapped keys
+            int keyCode = key.getKeyCode();
+            Consumer<Key> consumeKey = keyMapper.get(keyCode);
+            if (consumeKey != null) {
+                consumeKey.accept(key);
+                return true;
+            }
+
+            return false;
+        }
     }
 }
