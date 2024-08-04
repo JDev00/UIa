@@ -112,6 +112,26 @@ public class UIEditText extends WrapperViewText {
         }
     }
 
+    /**
+     * Helper function. Finds the nearest character and return its index.
+     *
+     * @param cursorX the cursor position on the x-axis
+     * @param cursorY the cursor position on the y-axis
+     * @return the character index covered by cursor otherwise -1
+     */
+
+    private int getIndex(float cursorX, float cursorY) {
+        int result;
+        int length = chars();
+        char[] chars = charList.toArray();
+        if (isSingleLine()) {
+            result = getIndexForInlineText(this, chars, length, cursorX, cursorY);
+        } else {
+            result = getIndexForMultilineText(this, chars, length, cursorX, cursorY);
+        }
+        return result;
+    }
+
     @Override
     public void setText(String text) {
         super.setText(text);
@@ -436,26 +456,6 @@ public class UIEditText extends WrapperViewText {
             }
             graphics.restoreClip();
         }
-    }
-
-    /**
-     * Finds the nearest character and return its index.
-     *
-     * @param mx the cursor position on the x-axis
-     * @param my the cursor position on the y-axis
-     * @return the character index covered by cursor otherwise -1
-     */
-
-    private int getIndex(float mx, float my) {
-        int result;
-        int length = chars();
-        char[] chars = charList.toArray();
-        if (isSingleLine()) {
-            result = getIndexForInlineText(this, chars, length, mx, my);
-        } else {
-            result = getIndexForMultilineText(this, chars, length, mx, my);
-        }
-        return result;
     }
 
     /*
