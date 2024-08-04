@@ -516,31 +516,31 @@ public class UIEditText extends WrapperViewText {
         if (isVisible()) {
             ComponentUtility.makeTransformForClipRegion(this, 1f, 1f, clipTransform);
 
-            int sol = 0;  // start of line
-            int eol = -1; // end of line
+            int startOfLine = 0;
+            int endOfLine = -1;
             int currentLine = 0;
             int length = chars();
             char[] chars = charList.toArray();
 
             if (!isSingleLine()) {
-                // calculate the cursor's line.
-                // Time required: T(n). Space required: O(1)
+                // calculate the text cursor line.
+                // Time complexity: T(n).
+                // Space complexity: O(1)
                 for (int i = 0; i <= length; i++) {
-                    if (i == length || chars[i] == '\n') {
-                        if (index > eol) {
-                            sol = eol + 1;
-                            eol = getBr(chars, length, i);
-                            currentLine++;
-                        }
+                    if ((i == length || chars[i] == '\n') && index > endOfLine) {
+                        startOfLine = endOfLine + 1;
+                        endOfLine = getBr(chars, length, i);
+                        currentLine++;
+
                     }
                 }
             } else {
                 currentLine = 1;
-                eol = length;
+                endOfLine = length;
             }
 
             // updates cursor
-            float[] cursorPosition = calculateCursorPosition(currentLine, sol);
+            float[] cursorPosition = calculateCursorPosition(currentLine, startOfLine);
             updateCursor(cursorPosition);
         }
     }
