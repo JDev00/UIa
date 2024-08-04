@@ -32,9 +32,10 @@ public final class EdiTextAlgorithms {
     }
 
     /**
-     * Helper function. Returns the character index covered by cursor.
+     * Returns the character index covered by the text cursor.
      * <br>
-     * More formally: given a pointer coordinates, find the nearest character and return its index.
+     * Specifically, given a pointer coordinates (px, py), find the nearest
+     * character and return its index.
      * <br>
      * Time required: O(n);
      * <br>
@@ -43,7 +44,8 @@ public final class EdiTextAlgorithms {
      * @return the character index or -1
      */
 
-    public static int getIndexForMultilineText(ViewText viewText, char[] chars, int length, float mx, float my) {
+    public static int getIndexForMultilineText(ViewText viewText,
+                                               char[] chars, int length, float pointerX, float pointerY) {
         Style style = viewText.getStyle();
         Font font = style.getFont();
         float[] bounds = viewText.getBounds();
@@ -52,22 +54,22 @@ public final class EdiTextAlgorithms {
         int ax = TextHorizontalAlignment.map(style.getHorizontalTextAlignment());
         float y = -viewText.getScrollValue()[1];
 
-        int sol;      // start of line
-        int eol = -1; // end of line
+        int startOfLine;
+        int endOfLine = -1;
 
         for (int i = 0; i <= length; i++) {
 
             if (i == length || chars[i] == '\n') {
-                sol = eol + 1;
-                eol = i;
+                startOfLine = endOfLine + 1;
+                endOfLine = i;
                 y += heightLine;
-                if (my > y - heightLine && my < y) {
-                    float x = ax * (bounds[2] - font.getWidth(sol, eol - sol, chars)) / 2f;
+                if (pointerY > y - heightLine && pointerY < y) {
+                    float x = ax * (bounds[2] - font.getWidth(startOfLine, endOfLine - startOfLine, chars)) / 2f;
                     float dim;
-                    int j = sol;
-                    while (j < eol) {
+                    int j = startOfLine;
+                    while (j < endOfLine) {
                         dim = font.getWidth(chars[j]);
-                        if (mx < x + dim / 2f) {
+                        if (pointerX < x + dim / 2f) {
                             break;
                         }
                         x += dim;
