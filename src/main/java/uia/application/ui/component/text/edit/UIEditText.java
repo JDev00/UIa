@@ -135,6 +135,7 @@ public class UIEditText extends WrapperViewText {
     @Override
     public void setText(String text) {
         super.setText(text);
+
         charList.clear();
         charList.add(0, text.toCharArray(), 0, text.length());
         index = hIndex = 0;
@@ -144,11 +145,7 @@ public class UIEditText extends WrapperViewText {
         super.setText(charList.toString());
     }
 
-    /*
-     * To remove.
-     */
-
-    public void addText(int i, char in) {
+    private void addText(int i, char in) {
         if (charList.add(i, in)) {
             index++;
             hIndex = index;
@@ -196,10 +193,10 @@ public class UIEditText extends WrapperViewText {
     }
 
     /**
-     * Remove the highlighted chars
+     * Removes the selected text.
      */
 
-    private void clearSelected() {
+    private void removeSelectedText() {
         removeText(getMinIndex(), getMaxIndex() - 1);
     }
 
@@ -402,11 +399,11 @@ public class UIEditText extends WrapperViewText {
     }
 
     /**
-     * Draws a rectangle around the highlighted text.
+     * Helper function. Draws a rectangle around the highlighted text.
      * <br>
-     * Time required: O(n);
+     * Time complexity: O(n)
      * <br>
-     * Space required: O(1)
+     * Space complexity: O(1)
      *
      * @param graphics a not null {@link Graphics}
      */
@@ -440,40 +437,13 @@ public class UIEditText extends WrapperViewText {
         }
     }
 
-    /*
-     * Return the position of the char currently cursor covered shifted on a different line.
-     * <br>
-     * This method has been provided to easily move cursor UP and DOWN between text lines.
-     * <br>
-     * Time required: O(n),
-     * <br>
-     * Space required: O(1).
-     *
-     * @param i the line offset; +1 to move cursor on the next line; -1 to move cursor on the previous line
-     * @return the position of the char currently cursor covered
-     *
-
-    @Deprecated
-    private int getIndex(int i) {
-        return getIndex(getText(), chars(),
-                cursorX - textPos[0] + getBounds()[2] / 2f,
-                cursorY - textPos[1] + i * getLineHeight());
-    }*/
-
-    /**
-     * @return the number of selected chars
-     */
-
-    public int getSelectionCount() {
-        return Math.abs(index - hIndex);
-    }
-
     /**
      * @return true if the text is partially or fully selected
      */
 
     private boolean isTextSelected() {
-        return getSelectionCount() > 0;
+        int selectionCount = Math.abs(index - hIndex);
+        return selectionCount > 0;
     }
 
     /**
@@ -500,14 +470,14 @@ public class UIEditText extends WrapperViewText {
             keyMapper = new HashMap<>();
             keyMapper.put(KEY_CANC, receivedKey -> {
                 if (isTextSelected()) {
-                    clearSelected();
+                    removeSelectedText();
                 } else {
                     removeText(index);
                 }
             });
             keyMapper.put(SpecialKeys.BACKSPACE.getKeyCode(), receivedKey -> {
                 if (isTextSelected()) {
-                    clearSelected();
+                    removeSelectedText();
                 } else {
                     removeText(index - 1);
                 }
@@ -604,7 +574,7 @@ public class UIEditText extends WrapperViewText {
             } else if (!unhandledKeys.contains(keyCode)) {
                 // deletes the selected text
                 if (isTextSelected()) {
-                    clearSelected();
+                    removeSelectedText();
                 }
                 // adds the key to text
                 char keyChar = key.getKeyChar();
