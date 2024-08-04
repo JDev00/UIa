@@ -1,4 +1,4 @@
-package uia.application.ui.component.text.edit;
+package uia.application.ui.component.text.edit.structure;
 
 import static java.lang.Math.*;
 

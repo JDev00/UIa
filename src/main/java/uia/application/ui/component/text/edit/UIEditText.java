@@ -1,5 +1,6 @@
 package uia.application.ui.component.text.edit;
 
+import uia.application.ui.component.text.edit.structure.CharList;
 import uia.application.ui.component.utility.ComponentUtility;
 import uia.application.ui.component.text.WrapperViewText;
 import uia.application.ui.component.text.ComponentText;
