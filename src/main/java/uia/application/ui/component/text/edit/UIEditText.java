@@ -162,30 +162,6 @@ public class UIEditText extends WrapperViewText {
     }
 
     /**
-     *
-     */
-    private float[] calculateInlineBoxDimension() {
-        Style style = getStyle();
-        Font font = style.getFont();
-        int iMin = getMinIndex();
-
-        char[] chars = charList.toArray();
-        float[] bounds = getBounds();
-
-        int ax = TextHorizontalAlignment.map(style.getHorizontalTextAlignment());
-        int ay = TextVerticalAlignment.map(style.getVerticalTextAlignment());
-        float deltaTextX = ax * (bounds[2] - font.getWidth(0, chars(), chars)) / 2f;
-        float deltaTextY = ay * (bounds[3] - getTextBounds()[3]) / 2f;
-        return new float[]{
-                bounds[0]
-                        + deltaTextX
-                        + font.getWidth(0, iMin, chars)
-                        - (ax - 1f) * 4f,
-                bounds[1] + deltaTextY
-        };
-    }
-
-    /**
      * Helper function. Draws a box on single line text.
      */
 
@@ -374,7 +350,7 @@ public class UIEditText extends WrapperViewText {
             graphics.setShapeColor(hightlightColor);
 
             if (isSingleLine()) {
-                float[] boxPosition = calculateInlineBoxDimension();
+                float[] boxPosition = getSingleLineTextBoxPosition(this, getMinIndex());
                 drawInlineBox(graphics, boxPosition);
             } else {
                 drawMultilineBox(graphics);

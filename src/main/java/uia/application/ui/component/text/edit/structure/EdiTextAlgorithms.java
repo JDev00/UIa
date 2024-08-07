@@ -1,10 +1,10 @@
 package uia.application.ui.component.text.edit.structure;
 
 import uia.core.ui.style.TextHorizontalAlignment;
+import uia.core.ui.style.TextVerticalAlignment;
 import uia.core.rendering.font.Font;
 import uia.core.ui.style.Style;
 import uia.core.ui.ViewText;
-import uia.core.ui.style.TextVerticalAlignment;
 
 public final class EdiTextAlgorithms {
 
@@ -128,5 +128,38 @@ public final class EdiTextAlgorithms {
         }
 
         return -1;
+    }
+
+    /**
+     * Calculates the position of the box around the selected text.
+     * <br>
+     * This algorithm is designed to work on single line text only.
+     *
+     * @param view            a not null view text to highlight the selected text
+     * @param highlightOffset the index, between [0, text.length()) with respect to the text,
+     *                        where the selection starts
+     * @return the position of the box around the text
+     */
+
+    public static float[] getSingleLineTextBoxPosition(ViewText view, int highlightOffset) {
+        Style style = view.getStyle();
+        Font font = style.getFont();
+
+        char[] text = view.getText().toCharArray();
+        float[] textBounds = view.getTextBounds();
+        float[] bounds = view.getBounds();
+
+        int ax = TextHorizontalAlignment.map(style.getHorizontalTextAlignment());
+        int ay = TextVerticalAlignment.map(style.getVerticalTextAlignment());
+        float deltaTextX = ax * 0.5f * (bounds[2] - font.getWidth(0, text.length, text));
+        float deltaTextY = ay * 0.5f * (bounds[3] - textBounds[3]);
+
+        return new float[]{
+                bounds[0]
+                        + deltaTextX
+                        + font.getWidth(0, highlightOffset, text)
+                        - 4f * (ax - 1f),
+                bounds[1] + deltaTextY
+        };
     }
 }
