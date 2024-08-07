@@ -396,32 +396,6 @@ public class UIEditText extends WrapperViewText {
                     removeText(index - 1);
                 }
             });
-            keyMapper.put(SpecialKeys.KEY_UP.getKeyCode(), receivedKey -> {
-                boolean isKeyStroke = receivedKey.isKeystroke(1, SpecialKeys.KEY_UP.getKeyCode());
-                if (isKeyStroke) {
-                    //int ind = getIndex(-1);
-                    //if (ind >= 0) index = ind;
-                } else {
-                /*int ind = getIndex(1);
-                if (ind >= 0) {
-                    index = ind;
-                }*/
-                }
-            });
-            keyMapper.put(SpecialKeys.KEY_DOWN.getKeyCode(), receivedKey -> {
-                boolean isKeyStroke = receivedKey.isKeystroke(1, SpecialKeys.KEY_DOWN.getKeyCode());
-                if (isKeyStroke) {
-                /*int index = getIndex(1);
-                if (index >= 0) {
-                    this.index = index;
-                }*/
-                } else {
-                /*int ind = getIndex(1);
-                if (ind >= 0) {
-                    index = ind;
-                }*/
-                }
-            });
             keyMapper.put(SpecialKeys.KEY_LEFT.getKeyCode(), receivedKey -> {
                 boolean isKeyStroke = receivedKey.isKeystroke(1, SpecialKeys.KEY_LEFT.getKeyCode());
                 if (isKeyStroke) {
