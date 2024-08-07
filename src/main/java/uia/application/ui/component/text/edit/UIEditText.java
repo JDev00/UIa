@@ -175,10 +175,7 @@ public class UIEditText extends WrapperViewText {
         float height = font.getLineHeight();
 
         highlightTransform
-                .setTranslation(
-                        boxPosition[0] + width / 2f,
-                        boxPosition[1] + height / 2f
-                )
+                .setTranslation(boxPosition[0] + width / 2f, boxPosition[1] + height / 2f)
                 .setScale(width, height)
                 .setRotation(0f);
         graphics.drawShape(highlightTransform, highlightGeometry.vertices(), highlightGeometry.toArray());
@@ -205,51 +202,50 @@ public class UIEditText extends WrapperViewText {
         float x = textBounds[0];
         float y = textBounds[1];
 
-        int iMin = getMinIndex();
-        int iMax = getMaxIndex();
-        int sol = 0; // start of line
-        int eol;     // end of line
-        int o;
+        int startSelection = getMinIndex();
+        int stopSelection = getMaxIndex();
+        int startOfLine = 0;
+        int endOfLine;
+        int lastLineIndex;
         int line = 1;
 
-        // calculate the first highlight's offset position along x-axis
-        for (int i = 0; i < iMin; i++) {
+        // calculates the first highlight offset position on the x-axis
+        for (int i = 0; i < startSelection; i++) {
             if (chars[i] == '\n') {
-                sol = i + 1;
+                startOfLine = i + 1;
                 line++;
             }
         }
 
-        float diff = font.getWidth(sol, iMin - sol, chars);// calculate the offset
-        o = iMin;
-        eol = sol - 1;
+        // calculates the offset position
+        float diff = font.getWidth(startOfLine, startSelection - startOfLine, chars);
+        lastLineIndex = startSelection;
+        endOfLine = startOfLine - 1;
 
-        for (int i = iMin; i <= iMax; i++) {
+        for (int i = startSelection; i <= stopSelection; i++) {
 
-            if (i == iMax || chars[i] == '\n') {
-                sol = eol + 1;
-                eol = getNextBreakLine(chars, length, i);
+            if (i == stopSelection || chars[i] == '\n') {
+                startOfLine = endOfLine + 1;
+                endOfLine = getNextBreakLine(chars, length, i);
 
-                float lineWidth = font.getWidth(sol, eol - sol, chars);
-                float wShape = font.getWidth(o, i - o, chars);
+                float lineWidth = font.getWidth(startOfLine, endOfLine - startOfLine, chars);
+                float wShape = font.getWidth(lastLineIndex, i - lastLineIndex, chars);
 
                 // highlight all the line long
                 if (lineWidth == 0f) {
                     lineWidth = wShape = 10f;
                 }
 
-                diff += ax * (width - lineWidth) / 2f;// aligner
+                // aligner
+                diff += ax * (width - lineWidth) / 2f;
 
                 highlightTransform
-                        .setTranslation(
-                                x + diff + wShape / 2f,
-                                y + (line - 0.5f) * lineHeight
-                        )
+                        .setTranslation(x + diff + wShape / 2f, y + (line - 0.5f) * lineHeight)
                         .setScale(wShape, lineHeight)
                         .setRotation(0f);
                 graphics.drawShape(highlightTransform, highlightGeometry.vertices(), highlightGeometry.toArray());
 
-                o = i;
+                lastLineIndex = i;
                 line++;
                 diff = 0f;
             }
