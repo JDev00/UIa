@@ -141,25 +141,6 @@ public class UIEditText extends WrapperViewText {
         index = hIndex = 0;
     }
 
-    private void refreshText() {
-        super.setText(charList.toString());
-    }
-
-    private void addText(int i, char in) {
-        if (charList.add(i, in)) {
-            index++;
-            hIndex = index;
-            refreshText();
-        }
-    }
-
-    private void removeText(int i, int j) {
-        if (charList.remove(i, j)) {
-            hIndex = index = MathUtility.constrain(i, 0, chars());
-            refreshText();
-        }
-    }
-
     private int chars() {
         return charList.size();
     }
@@ -178,26 +159,6 @@ public class UIEditText extends WrapperViewText {
 
     private int getMaxIndex() {
         return max(index, hIndex);
-    }
-
-    private void setIndex(int i) {
-        if (i >= 0) {
-            index = MathUtility.constrain(i, 0, chars());
-        }
-    }
-
-    private void setHIndex(int i) {
-        if (i >= 0) {
-            hIndex = MathUtility.constrain(i, 0, chars());
-        }
-    }
-
-    /**
-     * Removes the selected text.
-     */
-
-    private void removeSelectedText() {
-        removeText(getMinIndex(), getMaxIndex() - 1);
     }
 
     /**
@@ -531,6 +492,26 @@ public class UIEditText extends WrapperViewText {
         }
 
         /**
+         * Helper function. Refreshes the component text.
+         */
+
+        private void refreshText() {
+            UIEditText.super.setText(charList.toString());
+        }
+
+        /**
+         * Helper function. Adds the given char.
+         */
+
+        private void addText(int i, char charToAdd) {
+            if (charList.add(i, charToAdd)) {
+                index++;
+                hIndex = index;
+                refreshText();
+            }
+        }
+
+        /**
          * Helper function. Removes the specified char from text.
          */
 
@@ -538,6 +519,39 @@ public class UIEditText extends WrapperViewText {
             if (charList.remove(charPosition)) {
                 hIndex = index = min(charPosition, chars());
                 refreshText();
+            }
+        }
+
+        /**
+         * Helper function. Removes the selected text.
+         */
+
+        private void removeSelectedText() {
+            int start = getMinIndex();
+            int stop = getMaxIndex() - 1;
+            if (charList.remove(start, stop)) {
+                hIndex = index = MathUtility.constrain(start, 0, chars());
+                refreshText();
+            }
+        }
+
+        /**
+         * Helper function.
+         */
+
+        private void setIndex(int i) {
+            if (i >= 0) {
+                index = MathUtility.constrain(i, 0, chars());
+            }
+        }
+
+        /**
+         * Helper function.
+         */
+
+        private void setHIndex(int i) {
+            if (i >= 0) {
+                hIndex = MathUtility.constrain(i, 0, chars());
             }
         }
 
