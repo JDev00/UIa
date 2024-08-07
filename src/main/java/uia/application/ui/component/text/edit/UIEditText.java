@@ -162,26 +162,6 @@ public class UIEditText extends WrapperViewText {
     }
 
     /**
-     * Helper function. Draws a box on single line text.
-     */
-
-    private void drawInlineBox(Graphics graphics, float[] boxPosition) {
-        char[] chars = charList.toArray();
-        Font font = getStyle().getFont();
-
-        int iMin = getMinIndex();
-        int iMax = getMaxIndex();
-        float width = font.getWidth(iMin, iMax - iMin, chars);
-        float height = font.getLineHeight();
-
-        highlightTransform
-                .setTranslation(boxPosition[0] + width / 2f, boxPosition[1] + height / 2f)
-                .setScale(width, height)
-                .setRotation(0f);
-        graphics.drawShape(highlightTransform, highlightGeometry.vertices(), highlightGeometry.toArray());
-    }
-
-    /**
      * Helper function. Draws a box on multiline text.
      */
 
@@ -347,7 +327,8 @@ public class UIEditText extends WrapperViewText {
 
             if (isSingleLine()) {
                 float[] boxPosition = getSingleLineTextBoxPosition(this, getMinIndex());
-                drawInlineBox(graphics, boxPosition);
+                int[] selectionRange = {getMinIndex(), getMaxIndex()};
+                drawInlineBox(this, highlightGeometry, highlightTransform, graphics, selectionRange, boxPosition);
             } else {
                 drawMultilineBox(graphics);
             }

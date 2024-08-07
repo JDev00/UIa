@@ -1,5 +1,8 @@
 package uia.application.ui.component.text.edit.structure;
 
+import uia.core.rendering.Graphics;
+import uia.core.rendering.Transform;
+import uia.core.rendering.geometry.Geometry;
 import uia.core.ui.style.TextHorizontalAlignment;
 import uia.core.ui.style.TextVerticalAlignment;
 import uia.core.rendering.font.Font;
@@ -161,5 +164,26 @@ public final class EdiTextAlgorithms {
                         - 4f * (ax - 1f),
                 bounds[1] + deltaTextY
         };
+    }
+
+    /**
+     * Helper function. Draws a box on single line text.
+     */
+
+    public static void drawInlineBox(ViewText view, Geometry geometry, Transform transform, Graphics graphics,
+                                      int[] selectionRange, float[] boxPosition) {
+        Font font = view.getStyle().getFont();
+
+        char[] text = view.getText().toCharArray();
+        int start = selectionRange[0];
+        int stop = selectionRange[1];
+        float width = font.getWidth(start, stop - start, text);
+        float height = font.getLineHeight();
+
+        transform
+                .setTranslation(boxPosition[0] + width / 2f, boxPosition[1] + height / 2f)
+                .setScale(width, height)
+                .setRotation(0f);
+        graphics.drawShape(transform, geometry.vertices(), geometry.toArray());
     }
 }
