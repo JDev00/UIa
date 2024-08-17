@@ -1,35 +1,43 @@
 package uia.core.basement;
 
 /**
- * Callable stores a group of {@link Callback}s.
+ * Callable is responsible for storing and notifying a list of {@link Callback}s.
  */
 
 public interface Callable {
 
     /**
-     * Registers a new Callback
+     * Registers a new callback.
      *
      * @param callback a new (not duplicated) {@link Callback}
+     * @return a unique ID for the registered callback or -1 if the callback
+     * is not registered because it is duplicated
+     * @throws NullPointerException if {@code callback == null}
      */
 
-    void registerCallback(Callback<?> callback);
+    long registerCallback(Callback<?> callback);
 
     /**
-     * Unregisters the specified Callback
+     * Unregisters the specified callback.
      *
-     * @param callback the {@link Callback} to unregister
+     * @param callbackID the ID of the callback to unregister; if an
+     *                   unregistered callback ID is passed, nothing happens
      */
 
-    void unregisterCallback(Callback<?> callback);
+    void unregisterCallback(long callbackID);
 
     /**
-     * Notifies the specified Callback type.
-     * <br>
-     * This operation notifies all callbacks whose type is the specified one.
+     * Notifies all callbacks of the specified type.
      *
      * @param type the {@link Callback} type
-     * @param data a not null Object to dispatch to the callbacks
+     * @param data an Object to dispatch to the callbacks
      */
 
     void notifyCallbacks(Class<? extends Callback> type, Object data);
+
+    /**
+     * @return the number of registered callbacks
+     */
+
+    int numberOfCallbacks();
 }

@@ -8,7 +8,7 @@ import uia.core.ui.style.Style;
 import uia.core.ui.View;
 
 /**
- * WrapperView wraps a given View implementation.
+ * Helper class. Wraps a given View implementation.
  */
 
 public abstract class WrapperView implements View {
@@ -28,18 +28,23 @@ public abstract class WrapperView implements View {
     }
 
     @Override
-    public void registerCallback(Callback<?> callback) {
-        view.registerCallback(callback);
+    public long registerCallback(Callback<?> callback) {
+        return view.registerCallback(callback);
     }
 
     @Override
-    public void unregisterCallback(Callback<?> callback) {
-        view.unregisterCallback(callback);
+    public void unregisterCallback(long callbackID) {
+        view.unregisterCallback(callbackID);
     }
 
     @Override
     public void notifyCallbacks(Class<? extends Callback> type, Object data) {
         view.notifyCallbacks(type, data);
+    }
+
+    @Override
+    public int numberOfCallbacks() {
+        return view.numberOfCallbacks();
     }
 
     @Override

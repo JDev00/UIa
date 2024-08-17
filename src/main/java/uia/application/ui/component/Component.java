@@ -84,18 +84,23 @@ public final class Component implements View {
     }
 
     @Override
-    public void registerCallback(Callback<?> callback) {
-        callable.registerCallback(callback);
+    public long registerCallback(Callback<?> callback) {
+        return callable.registerCallback(callback);
     }
 
     @Override
-    public void unregisterCallback(Callback<?> callback) {
-        callable.unregisterCallback(callback);
+    public void unregisterCallback(long callbackID) {
+        callable.unregisterCallback(callbackID);
     }
 
     @Override
     public void notifyCallbacks(Class<? extends Callback> type, Object data) {
         callable.notifyCallbacks(type, data);
+    }
+
+    @Override
+    public int numberOfCallbacks() {
+        return callable.numberOfCallbacks();
     }
 
     @Override

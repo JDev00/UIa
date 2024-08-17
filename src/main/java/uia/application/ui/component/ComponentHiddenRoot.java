@@ -20,18 +20,23 @@ public final class ComponentHiddenRoot implements View {
     private boolean focus = true;
 
     @Override
-    public void registerCallback(Callback<?> callback) {
+    public long registerCallback(Callback<?> callback) {
         throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
     }
 
     @Override
-    public void unregisterCallback(Callback<?> callback) {
+    public void unregisterCallback(long callbackID) {
         throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
     }
 
     @Override
     public void notifyCallbacks(Class<? extends Callback> type, Object o) {
         throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
+    }
+
+    @Override
+    public int numberOfCallbacks() {
+        return 0;
     }
 
     @Override
