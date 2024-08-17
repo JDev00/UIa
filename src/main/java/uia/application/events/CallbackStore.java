@@ -37,6 +37,9 @@ public class CallbackStore implements Callable {
 
     @Override
     public void notifyCallbacks(Class<? extends Callback> type, Object data) {
+        Objects.requireNonNull(type);
+        Objects.requireNonNull(data);
+
         try {
             String typeName = type.getName();
 
@@ -55,8 +58,8 @@ public class CallbackStore implements Callable {
                     callbackClass = callbackClass.getSuperclass();
                 }
             }
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        } catch (Exception ignored) {
+            // ignored
         }
     }
 

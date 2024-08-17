@@ -30,7 +30,8 @@ public interface Callable {
      * Notifies all callbacks of the specified type.
      *
      * @param type the {@link Callback} type
-     * @param data an Object to dispatch to the callbacks
+     * @param data the data to be sent to the clients via the callbacks
+     * @throws NullPointerException if {@code callback == null || data == null}
      */
 
     void notifyCallbacks(Class<? extends Callback> type, Object data);
