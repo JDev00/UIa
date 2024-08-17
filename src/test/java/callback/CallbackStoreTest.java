@@ -15,6 +15,8 @@ import static utility.TestUtility.waitFor;
  */
 
 class CallbackStoreTest {
+
+    @FunctionalInterface
     interface MockCustomCallback extends Callback<Boolean> {
     }
 
@@ -59,14 +61,10 @@ class CallbackStoreTest {
     void callbacksOfTheGivenTypeShouldBeNotifiedWithTheGivenValue() {
         // setup
         // creates a custom callback
-        MockCustomCallback customCallback = value -> {
-            assertEquals(true, value);
-        };
+        MockCustomCallback customCallback = value -> assertEquals(true, value);
         // creates a second callback. This should not be executed, so the
         // assertion will not be verified
-        Callback<Boolean> standardCallback = value -> {
-            assertEquals(false, value);
-        };
+        Callback<Boolean> standardCallback = value -> assertEquals(false, value);
         // registers the callback
         callable.registerCallback(standardCallback);
         callable.registerCallback(customCallback);
