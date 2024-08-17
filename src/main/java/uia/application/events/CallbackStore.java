@@ -14,8 +14,21 @@ import java.util.Map;
 public class CallbackStore implements Callable {
     private final Map<Long, Callback> callbacks;
 
+    private int idCounter = 0;
+
     public CallbackStore(int size) {
         callbacks = new HashMap<>(size);
+    }
+
+    /**
+     * Creates the next callback ID.
+     *
+     * @return the next callback ID
+     */
+
+    private int createNextID() {
+        idCounter++;
+        return idCounter;
     }
 
     @Override
@@ -24,7 +37,7 @@ public class CallbackStore implements Callable {
 
         long resultID = -1;
         if (!callbacks.containsValue(callback)) {
-            resultID = System.currentTimeMillis();
+            resultID = createNextID();
             callbacks.put(resultID, callback);
         }
         return resultID;
