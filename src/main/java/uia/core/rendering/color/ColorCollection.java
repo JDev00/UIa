@@ -33,6 +33,7 @@ public final class ColorCollection {
     public static final Color LIME = Color.createColor(0, 255, 0);
     public static final Color GREEN = Color.createColor(0, 128, 0);
     public static final Color GREEN_YELLOW = Color.createColor(173, 255, 47);
+    public static final Color YELLOW = Color.createColor(255, 255, 0);
     public static final Color TEAL = Color.createColor(0, 128, 128);
 
     // blue
