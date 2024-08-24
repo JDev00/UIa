@@ -8,12 +8,19 @@ import uia.core.rendering.font.Font;
 
 import java.util.function.Consumer;
 import java.util.Objects;
+import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Map;
 
 import static uia.utility.MathUtility.TWO_PI;
 import static java.lang.Math.max;
 
 /**
- * Style is responsible for storing the UI component graphical settings.
+ * Style is responsible for storing the graphical settings of a single
+ * UI component.
+ * <br>
+ * In addition to the exposed style attributes, the Style object can be extended at runtime
+ * by adding or removing new attributes using the {@link #setAttribute(String, Object)} method.
  */
 
 public final class Style {
@@ -36,6 +43,9 @@ public final class Style {
     private final float[] maxDimension = {0f, 0f};
     private final float[] container = {0f, 0f, 0f, 0f, 0f};
 
+    // generics
+    private final Map<String, Object> genericAttributes;
+
     public Style() {
         backgroundColor = ColorCollection.WHITE;
         textColor = ColorCollection.BLACK;
@@ -47,18 +57,63 @@ public final class Style {
         font = Font.createDesktopFont(Font.FontStyle.PLAIN);
 
         geometryBuilder = GeometryCollection::rect;
+
+        genericAttributes = new HashMap<>();
     }
 
     @Override
     public String toString() {
-        return "Style {\nbackgroundColor=" + backgroundColor +
+        return "Style{" + "backgroundColor=" + backgroundColor +
                 ",\nborderColor=" + borderColor +
                 ",\ntextColor=" + textColor +
+                ",\nborderWidth=" + borderWidth +
                 ",\ntextHorizontalAlignment=" + textHorizontalAlignment +
                 ",\ntextVerticalAlignment=" + textVerticalAlignment +
                 ",\nfont=" + font +
-                ",\nborderWidth=" + borderWidth +
-                "\n}";
+                ",\nbuildGeometryDynamically=" + buildGeometryDynamically +
+                ",\nminDimension=" + Arrays.toString(minDimension) +
+                ",\nmaxDimension=" + Arrays.toString(maxDimension) +
+                ",\ncontainer=" + Arrays.toString(container) +
+                ",\ngenericAttributes=" + genericAttributes +
+                '}';
+    }
+
+    /**
+     * Adds or updates the specified style attribute.
+     * The style attribute will be updated if it already exists.
+     *
+     * @param attributeName the name of the attribute to be added or updated
+     * @param value         the value of the style attribute
+     * @return this Style
+     * @throws NullPointerException if {@code attributeName == null || value == null}
+     */
+
+    public Style setAttribute(String attributeName, Object value) {
+        Objects.requireNonNull(attributeName);
+        Objects.requireNonNull(value);
+
+        genericAttributes.put(attributeName, value);
+        return this;
+    }
+
+    /**
+     * Returns the value of the specified attribute.
+     *
+     * @param attributeName the name of the attribute to be returned
+     * @return the style attribute cast to the specified type
+     * @throws NullPointerException     if {@code attributeName == null}
+     * @throws IllegalArgumentException if {@code attributeName does not exist}
+     */
+
+    @SuppressWarnings("unchecked")
+    public <T> T getAttribute(String attributeName) {
+        Objects.requireNonNull(attributeName);
+
+        Object result = genericAttributes.get(attributeName);
+        if (result == null) {
+            throw new IllegalArgumentException("attribute '" + attributeName + "' is not registered for this Style");
+        }
+        return (T) result;
     }
 
     /**
@@ -70,8 +125,7 @@ public final class Style {
      */
 
     public Style applyStyleFunction(StyleFunction styleFunction) {
-        Objects.requireNonNull(styleFunction);
-        styleFunction.apply(this);
+        Objects.requireNonNull(styleFunction).apply(this);
         return this;
     }
 
@@ -152,7 +206,7 @@ public final class Style {
 
     public Style setBorderWidth(float borderWidth) {
         if (borderWidth < 0) {
-            throw new IllegalArgumentException("borderWidth can't be < 0");
+            throw new IllegalArgumentException("'borderWidth' can't be < 0");
         }
         this.borderWidth = borderWidth;
         return this;
