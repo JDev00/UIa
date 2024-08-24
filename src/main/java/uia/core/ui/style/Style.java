@@ -86,6 +86,7 @@ public final class Style {
      * @param value         the value of the style attribute
      * @return this Style
      * @throws NullPointerException if {@code attributeName == null || value == null}
+     * @since 2.2.0
      */
 
     public Style setAttribute(String attributeName, Object value) {
@@ -103,6 +104,7 @@ public final class Style {
      * @return the style attribute cast to the specified type
      * @throws NullPointerException     if {@code attributeName == null}
      * @throws IllegalArgumentException if {@code attributeName does not exist}
+     * @since 2.2.0
      */
 
     @SuppressWarnings("unchecked")
