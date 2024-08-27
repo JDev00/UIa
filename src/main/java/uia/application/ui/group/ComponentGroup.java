@@ -166,7 +166,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         float[] groupBounds = getBounds();
         for (View view : views) {
             float[] viewBounds = view.getBounds();
-            if (Collidable.intersects(
+            if (!clipRegion || Collidable.intersects(
                     groupBounds[0] + groupBounds[2] / 2f,
                     groupBounds[1] + groupBounds[3] / 2f,
                     groupBounds[2],
