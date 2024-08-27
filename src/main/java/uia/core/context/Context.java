@@ -96,7 +96,7 @@ public interface Context {
      *
      * @param operation        a not null {@link ClipboardOperation}
      * @param stringToBeCopied a string to be copied in the clipboard; it could be null
-     * @return the clipboard content or null
+     * @return the content of the clipboard or null
      */
 
     String clipboard(ClipboardOperation operation, String stringToBeCopied);
