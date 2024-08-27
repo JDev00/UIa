@@ -13,6 +13,7 @@ import uia.core.basement.Callback;
 import uia.core.context.window.*;
 
 import java.util.function.IntFunction;
+import java.awt.image.BufferStrategy;
 import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
@@ -136,6 +137,19 @@ public class WindowSwing implements Window {
     }
 
     /**
+     * @return the buffer strategy used by this window
+     */
+
+    protected BufferStrategy getBufferStrategy() {
+        BufferStrategy bufferStrategy = jFrame.getBufferStrategy();
+        if (bufferStrategy == null) {
+            jFrame.createBufferStrategy(2);
+            bufferStrategy = jFrame.getBufferStrategy();
+        }
+        return bufferStrategy;
+    }
+
+    /**
      * Helper function. Adds a new Key event to the global store.
      */
 
@@ -177,14 +191,11 @@ public class WindowSwing implements Window {
 
         int x = mouseEvent.getX();
         int y = mouseEvent.getY();
-        int[] insets = getInsets();
-        int[] position = {x - insets[0], y - insets[1]};
         return new ScreenTouch(
                 action,
                 mapNativeMouseButton.apply(mouseEvent.getButton()),
-                position[0],
-                position[1],
-                wheelRotation);
+                x, y, wheelRotation
+        );
     }
 
     /**
@@ -200,14 +211,6 @@ public class WindowSwing implements Window {
         } else {
             notifyCallbacks(OnWindowLostFocus.class, WindowSwing.this);
         }
-    }
-
-    /**
-     * Helper function. Adds a new UI component to render.
-     */
-
-    protected void addUIComponent(Component component) {
-        jFrame.add(component);
     }
 
     /**
