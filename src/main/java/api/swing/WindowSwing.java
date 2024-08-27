@@ -137,6 +137,34 @@ public class WindowSwing implements Window {
     }
 
     /**
+     * Helper function. Creates a new ScreenTouch object.
+     */
+
+    private static ScreenTouch createScreenTouch(MouseEvent mouseEvent,
+                                                 int wheelRotation, ScreenTouch.Action action) {
+        IntFunction<ScreenTouch.Button> mapNativeMouseButton = button -> {
+            switch (button) {
+                case 1:
+                    return ScreenTouch.Button.LEFT;
+                case 2:
+                    return ScreenTouch.Button.CENTER;
+                case 3:
+                    return ScreenTouch.Button.RIGHT;
+                default:
+                    return null;
+            }
+        };
+
+        int x = mouseEvent.getX();
+        int y = mouseEvent.getY();
+        return new ScreenTouch(
+                action,
+                mapNativeMouseButton.apply(mouseEvent.getButton()),
+                x, y, wheelRotation
+        );
+    }
+
+    /**
      * @return the buffer strategy used by this window
      */
 
@@ -174,34 +202,6 @@ public class WindowSwing implements Window {
     }
 
     /**
-     * Helper function. Creates a new ScreenTouch object.
-     */
-
-    private static ScreenTouch createScreenTouch(MouseEvent mouseEvent,
-                                                 int wheelRotation, ScreenTouch.Action action) {
-        IntFunction<ScreenTouch.Button> mapNativeMouseButton = button -> {
-            switch (button) {
-                case 1:
-                    return ScreenTouch.Button.LEFT;
-                case 2:
-                    return ScreenTouch.Button.CENTER;
-                case 3:
-                    return ScreenTouch.Button.RIGHT;
-                default:
-                    return null;
-            }
-        };
-
-        int x = mouseEvent.getX();
-        int y = mouseEvent.getY();
-        return new ScreenTouch(
-                action,
-                mapNativeMouseButton.apply(mouseEvent.getButton()),
-                x, y, wheelRotation
-        );
-    }
-
-    /**
      * Helper function. Updates the window focus.
      *
      * @param focus true to set window on focus
@@ -217,7 +217,7 @@ public class WindowSwing implements Window {
     }
 
     /**
-     * Helper function. Destroys this Window.
+     * Helper method. Destroys this Window.
      */
 
     protected void destroy() {
