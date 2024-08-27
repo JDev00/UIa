@@ -108,7 +108,7 @@ public class WindowSwing implements Window {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                // useless
+                // ignored
             }
 
             @Override
@@ -174,10 +174,11 @@ public class WindowSwing implements Window {
     }
 
     /**
-     * Helper function. Returns a new ScreenTouch object.
+     * Helper function. Creates a new ScreenTouch object.
      */
 
-    private ScreenTouch createScreenTouch(MouseEvent mouseEvent, int wheelRotation, ScreenTouch.Action action) {
+    private static ScreenTouch createScreenTouch(MouseEvent mouseEvent,
+                                                 int wheelRotation, ScreenTouch.Action action) {
         IntFunction<ScreenTouch.Button> mapNativeMouseButton = button -> {
             switch (button) {
                 case 1:
