@@ -1,11 +1,8 @@
 package api.swing;
 
 import uia.application.message.store.GlobalMessageStore;
-import uia.application.message.EventTouchScreenMessage;
-import uia.application.message.MessageFactory;
 import uia.core.basement.message.MessageStore;
 import uia.application.input.EmulatedInput;
-import uia.core.ui.primitives.ScreenTouch;
 import uia.core.context.window.Window;
 import uia.core.context.InputEmulator;
 import uia.core.context.Context;
@@ -14,6 +11,7 @@ import uia.core.ui.View;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.awt.image.BufferStrategy;
 import java.awt.datatransfer.*;
 import java.util.*;
 import java.awt.*;
@@ -22,16 +20,20 @@ import java.awt.*;
  * UIa {@link Context} implementation based on Java Swing.
  * <br>
  * <br>
+ * <b>Implementation choices</b>
+ * <ul>
+ *  <li>rendering is scheduled to happen 30 times per second (aka 30 FPS) </li>
+ * </ul>
  * <b>Usage example:</b>
  * <br>
- * <br>
  * <code>
- * <p>
- * Context context = createAndStart(1000, 500);
+ * Context context = ContextSwing.createAndStart(1000, 500);
  * </code>
  */
 
 public class ContextSwing implements Context {
+    private static final int FPS_30 = 1_000 / 30;
+
     private LifecycleStage lifecycleStage = LifecycleStage.PAUSED;
     private ScheduledExecutorService renderingThread;
 
@@ -43,21 +45,9 @@ public class ContextSwing implements Context {
         renderingEngine = new RenderingEngineSwing();
 
         window = new WindowSwing(x, y);
-        window.addUIComponent(renderingEngine);
 
         MessageStore globalMessageStore = GlobalMessageStore.getInstance();
-        inputEmulator = new EmulatedInput(generatedInput -> {
-            int[] insets = window.getInsets();
-            if (generatedInput instanceof EventTouchScreenMessage) {
-                ScreenTouch[] screenTouch = generatedInput.getPayload();
-                // copies and translates the screenTouch
-                ScreenTouch copiedScreenTouch = ScreenTouch.copy(screenTouch[0], insets[0], insets[1]);
-                // recreates the message
-                generatedInput = MessageFactory.create(copiedScreenTouch, generatedInput.getRecipient());
-            }
-            // adds the message to the message store
-            globalMessageStore.add(generatedInput);
-        });
+        inputEmulator = new EmulatedInput(globalMessageStore::add);
     }
 
     @Override
@@ -66,7 +56,7 @@ public class ContextSwing implements Context {
     }
 
     /**
-     * Helper function. Kills the rendering process.
+     * Helper method. Kills the rendering process.
      */
 
     private void killRenderingThread() {
@@ -90,14 +80,24 @@ public class ContextSwing implements Context {
         this.lifecycleStage = lifecycleStage;
         switch (lifecycleStage) {
             case RUNNING:
-                int repaintPeriod = 1_000 / 60;
+                BufferStrategy bufferStrategy = window.getBufferStrategy();
+                final float[] drawableBounds = new float[4];
+
+                // creates the rendering thread
                 renderingThread = Executors.newSingleThreadScheduledExecutor();
-                renderingThread.scheduleAtFixedRate(() -> renderingEngine.draw(
-                                window.getViewportWidth(),
-                                window.getViewportHeight(),
-                                window.isFocused()
-                        ),
-                        0, repaintPeriod, TimeUnit.MILLISECONDS);
+                renderingThread.scheduleAtFixedRate(() -> {
+                            int[] insets = window.getInsets();
+                            drawableBounds[0] = insets[0];
+                            drawableBounds[1] = insets[1];
+                            drawableBounds[2] = window.getViewportWidth();
+                            drawableBounds[3] = window.getViewportHeight();
+
+                            Graphics graphics = bufferStrategy.getDrawGraphics();
+                            renderingEngine.draw(graphics, drawableBounds, window.isFocused());
+                            graphics.dispose();
+                            bufferStrategy.show();
+                        },
+                        0, FPS_30, TimeUnit.MILLISECONDS);
                 break;
             case PAUSED:
                 killRenderingThread();
