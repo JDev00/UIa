@@ -130,16 +130,16 @@ public class ContextSwing implements Context {
     }
 
     @Override
-    public String clipboard(ClipboardOperation operation, String str) {
+    public String clipboard(ClipboardOperation operation, String stringToBeCopied) {
         if (ClipboardOperation.COPY.equals(operation)) {
-            StringSelection selection = new StringSelection(str);
+            StringSelection selection = new StringSelection(stringToBeCopied);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
         } else {
-            Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
-            Transferable t = c.getContents(null);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            Transferable transferable = clipboard.getContents(null);
             try {
-                return (String) t.getTransferData(DataFlavor.stringFlavor);
+                return (String) transferable.getTransferData(DataFlavor.stringFlavor);
             } catch (Exception ignored) {
                 //
             }
