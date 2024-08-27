@@ -72,19 +72,19 @@ public class WindowSwing implements Window {
             @Override
             public void keyTyped(KeyEvent e) {
                 Key key = new Key(Key.Action.TYPED, e.getModifiers(), e.getKeyChar(), e.getKeyCode());
-                addKeyEvent(key);
+                sendMessage(key);
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
                 Key key = new Key(Key.Action.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode());
-                addKeyEvent(key);
+                sendMessage(key);
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
                 Key key = new Key(Key.Action.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode());
-                addKeyEvent(key);
+                sendMessage(key);
             }
         });
         jFrame.addMouseListener(new MouseListener() {
@@ -150,10 +150,11 @@ public class WindowSwing implements Window {
     }
 
     /**
-     * Helper method. Adds a new Key event to the global store.
+     * Helper method. Sends a new message with the given key object
+     * as payload.
      */
 
-    private void addKeyEvent(Key key) {
+    private void sendMessage(Key key) {
         // creates a new message
         Message message = MessageFactory.create(key, null);
         // adds the message to the global store
