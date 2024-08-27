@@ -316,7 +316,7 @@ public final class Component implements View {
      */
 
     private void updateAnimation() {
-        float frameFactor = 60f * expanse[4];
+        float frameFactor = 30f * expanse[4];
         float xq = (expanse[2] - 1f) / frameFactor;
         float yq = (expanse[3] - 1f) / frameFactor;
         if (over) {
