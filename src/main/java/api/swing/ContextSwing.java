@@ -152,8 +152,8 @@ public class ContextSwing implements Context {
      */
 
     public static int[] getScreenSize() {
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        return new int[]{dim.width, dim.height};
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        return new int[]{screenSize.width, screenSize.height};
     }
 
     /**
