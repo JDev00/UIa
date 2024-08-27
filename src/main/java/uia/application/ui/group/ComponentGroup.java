@@ -36,7 +36,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     private float[] boundaries = {0f, 0f, 0f, 0f};
 
-    private boolean clipRegion = true;
+    private boolean enableClipRegion = true;
 
     public ComponentGroup(View view) {
         super(view);
@@ -86,12 +86,12 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     @Override
     public void setClip(boolean clipRegion) {
-        this.clipRegion = clipRegion;
+        this.enableClipRegion = clipRegion;
     }
 
     @Override
     public boolean hasClip() {
-        return clipRegion;
+        return enableClipRegion;
     }
 
     @Override
@@ -166,7 +166,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         float[] groupBounds = getBounds();
         for (View view : views) {
             float[] viewBounds = view.getBounds();
-            if (!clipRegion || Collidable.intersects(
+            if (!enableClipRegion || Collidable.intersects(
                     groupBounds[0] + groupBounds[2] / 2f,
                     groupBounds[1] + groupBounds[3] / 2f,
                     groupBounds[2],
@@ -186,13 +186,13 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         super.draw(graphics);
 
         if (isVisible()) {
-            if (clipRegion) {
+            if (enableClipRegion) {
                 Geometry geometry = getGeometry();
                 graphics.setClip(clipTransform, geometry.vertices(), geometry.toArray());
             }
             drawViews(graphics);
             // restores the previous clip region
-            if (clipRegion) {
+            if (enableClipRegion) {
                 graphics.restoreClip();
             }
         }
