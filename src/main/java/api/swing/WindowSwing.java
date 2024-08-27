@@ -91,19 +91,19 @@ public class WindowSwing implements Window {
             @Override
             public void mousePressed(MouseEvent event) {
                 ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.PRESSED);
-                addScreenTouchEvent(screenTouch);
+                sendMessage(screenTouch);
             }
 
             @Override
             public void mouseReleased(MouseEvent event) {
                 ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.RELEASED);
-                addScreenTouchEvent(screenTouch);
+                sendMessage(screenTouch);
             }
 
             @Override
             public void mouseClicked(MouseEvent event) {
                 ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.CLICKED);
-                addScreenTouchEvent(screenTouch);
+                sendMessage(screenTouch);
             }
 
             @Override
@@ -114,25 +114,25 @@ public class WindowSwing implements Window {
             @Override
             public void mouseExited(MouseEvent event) {
                 ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.EXITED);
-                addScreenTouchEvent(screenTouch);
+                sendMessage(screenTouch);
             }
         });
         jFrame.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent event) {
                 ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.DRAGGED);
-                addScreenTouchEvent(screenTouch);
+                sendMessage(screenTouch);
             }
 
             @Override
             public void mouseMoved(MouseEvent event) {
                 ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.MOVED);
-                addScreenTouchEvent(screenTouch);
+                sendMessage(screenTouch);
             }
         });
         jFrame.addMouseWheelListener(event -> {
             ScreenTouch screenTouch = createScreenTouch(event, event.getWheelRotation(), ScreenTouch.Action.WHEEL);
-            addScreenTouchEvent(screenTouch);
+            sendMessage(screenTouch);
         });
     }
 
@@ -150,7 +150,7 @@ public class WindowSwing implements Window {
     }
 
     /**
-     * Helper function. Adds a new Key event to the global store.
+     * Helper method. Adds a new Key event to the global store.
      */
 
     private void addKeyEvent(Key key) {
@@ -161,10 +161,11 @@ public class WindowSwing implements Window {
     }
 
     /**
-     * Helper function. Adds a new ScreenTouch event to the global store.
+     * Helper method. Sends a new message with the given screenTouch object
+     * as payload.
      */
 
-    private void addScreenTouchEvent(ScreenTouch screenTouch) {
+    private void sendMessage(ScreenTouch screenTouch) {
         // creates a new message
         Message message = MessageFactory.create(screenTouch, null);
         // adds the message to the global store
