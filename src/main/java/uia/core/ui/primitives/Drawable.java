@@ -24,24 +24,6 @@ public interface Drawable {
     Geometry getGeometry();
 
     /**
-     * Set the Drawable position
-     *
-     * @param x the Drawable position on the x-axis
-     * @param y the Drawable position on the y-axis
-     */
-
-    void setPosition(float x, float y);
-
-    /**
-     * Set the Drawable dimension
-     *
-     * @param width  the Drawable width
-     * @param height the Drawable height
-     */
-
-    void setDimension(float width, float height);
-
-    /**
      * Draws this Drawable on the specified Graphic
      *
      * @param graphics a not null {@link Graphics}
