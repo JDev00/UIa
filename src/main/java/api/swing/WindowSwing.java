@@ -60,12 +60,12 @@ public class WindowSwing implements Window {
         });
         jFrame.addFocusListener(new FocusListener() {
             @Override
-            public void focusGained(FocusEvent e) {
+            public void focusGained(FocusEvent focusEvent) {
                 updateFocus(true);
             }
 
             @Override
-            public void focusLost(FocusEvent e) {
+            public void focusLost(FocusEvent focusEvent) {
                 updateFocus(false);
             }
         });
@@ -188,26 +188,11 @@ public class WindowSwing implements Window {
     }
 
     /**
-     * Helper method. Sends a new message with the given key object
-     * as payload.
+     * Helper method. Sends a new message with the given payload.
      */
 
-    private void sendMessage(Key key) {
-        // creates a new message
-        Message message = MessageFactory.create(key, null);
-        // adds the message to the global store
-        globalMessageStore.add(message);
-    }
-
-    /**
-     * Helper method. Sends a new message with the given screenTouch object
-     * as payload.
-     */
-
-    private void sendMessage(ScreenTouch screenTouch) {
-        // creates a new message
-        Message message = MessageFactory.create(screenTouch, null);
-        // adds the message to the global store
+    private void sendMessage(Object payload) {
+        Message message = MessageFactory.create(payload, null);
         globalMessageStore.add(message);
     }
 
