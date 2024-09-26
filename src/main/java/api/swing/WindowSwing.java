@@ -14,6 +14,7 @@ import uia.core.context.window.*;
 
 import java.util.function.IntFunction;
 import java.awt.image.BufferStrategy;
+import java.util.function.Consumer;
 import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +28,8 @@ public class WindowSwing implements Window {
     private final Callable callable;
 
     private final JFrame jFrame;
+    private final JPanel renderingPanel;
+    private Consumer<Graphics> onRefreshed;
     private final int[] screenSize = new int[2];
     private boolean focus = false;
 
@@ -38,9 +41,10 @@ public class WindowSwing implements Window {
 
         jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        jFrame.getContentPane().setPreferredSize(new Dimension(x, y));
         jFrame.setTitle("UIa Swing Window");
-        jFrame.pack();
+        jFrame.setSize(x, y);
+        //jFrame.getContentPane().setPreferredSize(new Dimension(x, y));
+        //jFrame.pack();
         jFrame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -87,7 +91,18 @@ public class WindowSwing implements Window {
                 sendMessage(key);
             }
         });
-        jFrame.addMouseListener(new MouseListener() {
+
+        // creates an awt component to be used as a rendering panel
+        renderingPanel = new JPanel(true) {
+            @Override
+            public void paint(Graphics g) {
+                super.paint(g);
+                if (onRefreshed != null) {
+                    onRefreshed.accept(g);
+                }
+            }
+        };
+        renderingPanel.addMouseListener(new MouseListener() {
             @Override
             public void mousePressed(MouseEvent event) {
                 ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.PRESSED);
@@ -117,7 +132,7 @@ public class WindowSwing implements Window {
                 sendMessage(screenTouch);
             }
         });
-        jFrame.addMouseMotionListener(new MouseMotionListener() {
+        renderingPanel.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent event) {
                 ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.DRAGGED);
@@ -130,10 +145,12 @@ public class WindowSwing implements Window {
                 sendMessage(screenTouch);
             }
         });
-        jFrame.addMouseWheelListener(event -> {
+        renderingPanel.addMouseWheelListener(event -> {
             ScreenTouch screenTouch = createScreenTouch(event, event.getWheelRotation(), ScreenTouch.Action.WHEEL);
             sendMessage(screenTouch);
         });
+
+        jFrame.add(renderingPanel, BorderLayout.CENTER);
     }
 
     /**
@@ -165,7 +182,17 @@ public class WindowSwing implements Window {
     }
 
     /**
+     * Refreshes this window.
+     */
+
+    protected void refresh(Consumer<Graphics> onRefreshed) {
+        this.onRefreshed = onRefreshed;
+        renderingPanel.repaint();
+    }
+
+    /**
      * @return the buffer strategy used by this window
+     * @deprecated
      */
 
     protected BufferStrategy getBufferStrategy() {

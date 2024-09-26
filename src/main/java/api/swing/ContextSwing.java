@@ -80,22 +80,26 @@ public class ContextSwing implements Context {
         this.lifecycleStage = lifecycleStage;
         switch (lifecycleStage) {
             case RUNNING:
-                BufferStrategy bufferStrategy = window.getBufferStrategy();
+                //BufferStrategy bufferStrategy = window.getBufferStrategy();
                 final float[] drawableBounds = new float[4];
 
                 // creates the rendering thread
                 renderingThread = Executors.newSingleThreadScheduledExecutor();
                 renderingThread.scheduleAtFixedRate(() -> {
-                            int[] insets = window.getInsets();
-                            drawableBounds[0] = insets[0];
-                            drawableBounds[1] = insets[1];
+                            //int[] insets = window.getInsets();
+                            drawableBounds[0] = 0;
+                            drawableBounds[1] = 0;
                             drawableBounds[2] = window.getViewportWidth();
                             drawableBounds[3] = window.getViewportHeight();
 
-                            Graphics graphics = bufferStrategy.getDrawGraphics();
+                            /*Graphics graphics = bufferStrategy.getDrawGraphics();
                             renderingEngine.draw(graphics, drawableBounds, window.isFocused());
                             graphics.dispose();
-                            bufferStrategy.show();
+                            bufferStrategy.show();*/
+
+                            window.refresh(graphics -> {
+                                renderingEngine.draw(graphics, drawableBounds, window.isFocused());
+                            });
                         },
                         0, FPS_30, TimeUnit.MILLISECONDS);
                 break;
