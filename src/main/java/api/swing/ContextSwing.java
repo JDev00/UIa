@@ -11,7 +11,6 @@ import uia.core.ui.View;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.awt.image.BufferStrategy;
 import java.awt.datatransfer.*;
 import java.util.*;
 import java.awt.*;
@@ -80,26 +79,19 @@ public class ContextSwing implements Context {
         this.lifecycleStage = lifecycleStage;
         switch (lifecycleStage) {
             case RUNNING:
-                //BufferStrategy bufferStrategy = window.getBufferStrategy();
                 final float[] drawableBounds = new float[4];
 
-                // creates the rendering thread
+                // creates and starts the rendering thread
                 renderingThread = Executors.newSingleThreadScheduledExecutor();
                 renderingThread.scheduleAtFixedRate(() -> {
-                            //int[] insets = window.getInsets();
-                            drawableBounds[0] = 0;
-                            drawableBounds[1] = 0;
                             drawableBounds[2] = window.getViewportWidth();
                             drawableBounds[3] = window.getViewportHeight();
 
-                            /*Graphics graphics = bufferStrategy.getDrawGraphics();
-                            renderingEngine.draw(graphics, drawableBounds, window.isFocused());
-                            graphics.dispose();
-                            bufferStrategy.show();*/
-
-                            window.refresh(graphics -> {
-                                renderingEngine.draw(graphics, drawableBounds, window.isFocused());
-                            });
+                            window.refresh(graphics -> renderingEngine.draw(
+                                    graphics,
+                                    drawableBounds,
+                                    window.isFocused())
+                            );
                         },
                         0, FPS_30, TimeUnit.MILLISECONDS);
                 break;

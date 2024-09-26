@@ -13,7 +13,6 @@ import uia.core.basement.Callback;
 import uia.core.context.window.*;
 
 import java.util.function.IntFunction;
-import java.awt.image.BufferStrategy;
 import java.util.function.Consumer;
 import java.awt.event.*;
 import javax.swing.*;
@@ -43,8 +42,6 @@ public class WindowSwing implements Window {
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jFrame.setTitle("UIa Swing Window");
         jFrame.setSize(x, y);
-        //jFrame.getContentPane().setPreferredSize(new Dimension(x, y));
-        //jFrame.pack();
         jFrame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -188,20 +185,6 @@ public class WindowSwing implements Window {
     protected void refresh(Consumer<Graphics> onRefreshed) {
         this.onRefreshed = onRefreshed;
         renderingPanel.repaint();
-    }
-
-    /**
-     * @return the buffer strategy used by this window
-     * @deprecated
-     */
-
-    protected BufferStrategy getBufferStrategy() {
-        BufferStrategy bufferStrategy = jFrame.getBufferStrategy();
-        if (bufferStrategy == null) {
-            jFrame.createBufferStrategy(2);
-            bufferStrategy = jFrame.getBufferStrategy();
-        }
-        return bufferStrategy;
     }
 
     /**
