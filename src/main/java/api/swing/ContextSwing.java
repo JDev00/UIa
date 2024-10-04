@@ -1,11 +1,8 @@
 package api.swing;
 
 import uia.application.message.store.GlobalMessageStore;
-import uia.application.message.EventTouchScreenMessage;
-import uia.application.message.MessageFactory;
 import uia.core.basement.message.MessageStore;
 import uia.application.input.EmulatedInput;
-import uia.core.ui.primitives.ScreenTouch;
 import uia.core.context.window.Window;
 import uia.core.context.InputEmulator;
 import uia.core.context.Context;
@@ -22,16 +19,20 @@ import java.awt.*;
  * UIa {@link Context} implementation based on Java Swing.
  * <br>
  * <br>
+ * <b>Implementation choices</b>
+ * <ul>
+ *  <li>rendering is scheduled to happen 30 times per second (aka 30 FPS) </li>
+ * </ul>
  * <b>Usage example:</b>
  * <br>
- * <br>
  * <code>
- * <p>
- * Context context = createAndStart(1000, 500);
+ * Context context = ContextSwing.createAndStart(1000, 500);
  * </code>
  */
 
 public class ContextSwing implements Context {
+    private static final int FPS_30 = 1_000 / 30;
+
     private LifecycleStage lifecycleStage = LifecycleStage.PAUSED;
     private ScheduledExecutorService renderingThread;
 
@@ -43,21 +44,9 @@ public class ContextSwing implements Context {
         renderingEngine = new RenderingEngineSwing();
 
         window = new WindowSwing(x, y);
-        window.addUIComponent(renderingEngine);
 
         MessageStore globalMessageStore = GlobalMessageStore.getInstance();
-        inputEmulator = new EmulatedInput(generatedInput -> {
-            int[] insets = window.getInsets();
-            if (generatedInput instanceof EventTouchScreenMessage) {
-                ScreenTouch[] screenTouch = generatedInput.getPayload();
-                // copies and translates the screenTouch
-                ScreenTouch copiedScreenTouch = ScreenTouch.copy(screenTouch[0], insets[0], insets[1]);
-                // recreates the message
-                generatedInput = MessageFactory.create(copiedScreenTouch, generatedInput.getRecipient());
-            }
-            // adds the message to the message store
-            globalMessageStore.add(generatedInput);
-        });
+        inputEmulator = new EmulatedInput(globalMessageStore::add);
     }
 
     @Override
@@ -66,7 +55,7 @@ public class ContextSwing implements Context {
     }
 
     /**
-     * Helper function. Kills the rendering process.
+     * Helper method. Kills the rendering process.
      */
 
     private void killRenderingThread() {
@@ -90,14 +79,21 @@ public class ContextSwing implements Context {
         this.lifecycleStage = lifecycleStage;
         switch (lifecycleStage) {
             case RUNNING:
-                int repaintPeriod = 1_000 / 60;
+                final float[] drawableBounds = new float[4];
+
+                // creates and starts the rendering thread
                 renderingThread = Executors.newSingleThreadScheduledExecutor();
-                renderingThread.scheduleAtFixedRate(() -> renderingEngine.draw(
-                                window.getViewportWidth(),
-                                window.getViewportHeight(),
-                                window.isFocused()
-                        ),
-                        0, repaintPeriod, TimeUnit.MILLISECONDS);
+                renderingThread.scheduleAtFixedRate(() -> {
+                            drawableBounds[2] = window.getViewportWidth();
+                            drawableBounds[3] = window.getViewportHeight();
+
+                            window.refresh(graphics -> renderingEngine.draw(
+                                    graphics,
+                                    drawableBounds,
+                                    window.isFocused())
+                            );
+                        },
+                        0, FPS_30, TimeUnit.MILLISECONDS);
                 break;
             case PAUSED:
                 killRenderingThread();
@@ -130,16 +126,16 @@ public class ContextSwing implements Context {
     }
 
     @Override
-    public String clipboard(ClipboardOperation operation, String str) {
+    public String clipboard(ClipboardOperation operation, String stringToBeCopied) {
         if (ClipboardOperation.COPY.equals(operation)) {
-            StringSelection selection = new StringSelection(str);
+            StringSelection selection = new StringSelection(stringToBeCopied);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
         } else {
-            Clipboard c = Toolkit.getDefaultToolkit().getSystemClipboard();
-            Transferable t = c.getContents(null);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            Transferable transferable = clipboard.getContents(null);
             try {
-                return (String) t.getTransferData(DataFlavor.stringFlavor);
+                return (String) transferable.getTransferData(DataFlavor.stringFlavor);
             } catch (Exception ignored) {
                 //
             }
@@ -152,8 +148,8 @@ public class ContextSwing implements Context {
      */
 
     public static int[] getScreenSize() {
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        return new int[]{dim.width, dim.height};
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        return new int[]{screenSize.width, screenSize.height};
     }
 
     /**

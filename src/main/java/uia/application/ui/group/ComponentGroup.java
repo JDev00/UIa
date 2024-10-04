@@ -7,6 +7,7 @@ import uia.core.rendering.geometry.Geometry;
 import uia.core.basement.message.Message;
 import uia.application.ui.LayoutUtility;
 import uia.core.rendering.Transform;
+import uia.core.basement.Collidable;
 import uia.core.rendering.Graphics;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.View;
@@ -19,7 +20,7 @@ import java.util.*;
  * Implementation choices:
  * <ul>
  *     <li>
- *         the clipping functionality is enabled at build time. If you want to disable it,
+ *         the clipping functionality is enabled by default. If you want to disable it,
  *         use the {@link #setClip(boolean)} method;
  *     </li>
  *     <li>
@@ -35,7 +36,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     private float[] boundaries = {0f, 0f, 0f, 0f};
 
-    private boolean clipRegion = true;
+    private boolean enableClipRegion = true;
 
     public ComponentGroup(View view) {
         super(view);
@@ -85,12 +86,12 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     @Override
     public void setClip(boolean clipRegion) {
-        this.clipRegion = clipRegion;
+        this.enableClipRegion = clipRegion;
     }
 
     @Override
     public boolean hasClip() {
-        return clipRegion;
+        return enableClipRegion;
     }
 
     @Override
@@ -153,19 +154,45 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         updateClipTransform();
     }
 
+    /**
+     * Helper method. Draws the group views on the given graphics.
+     * <br>
+     * Time complexity: O(n)
+     *
+     * @param graphics the graphics on which the group views are displayed
+     */
+
+    private void drawViews(Graphics graphics) {
+        float[] groupBounds = getBounds();
+        for (View view : views) {
+            float[] viewBounds = view.getBounds();
+            if (!enableClipRegion || Collidable.intersects(
+                    groupBounds[0] + groupBounds[2] / 2f,
+                    groupBounds[1] + groupBounds[3] / 2f,
+                    groupBounds[2],
+                    groupBounds[3],
+                    viewBounds[0] + viewBounds[2] / 2f,
+                    viewBounds[1] + viewBounds[3] / 2f,
+                    viewBounds[2],
+                    viewBounds[3]
+            )) {
+                view.draw(graphics);
+            }
+        }
+    }
+
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
 
         if (isVisible()) {
-            if (clipRegion) {
+            if (enableClipRegion) {
                 Geometry geometry = getGeometry();
                 graphics.setClip(clipTransform, geometry.vertices(), geometry.toArray());
             }
-            for (View i : views) {
-                i.draw(graphics);
-            }
-            if (clipRegion) {
+            drawViews(graphics);
+            // restores the previous clip region
+            if (enableClipRegion) {
                 graphics.restoreClip();
             }
         }

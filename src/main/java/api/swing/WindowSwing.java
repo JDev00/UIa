@@ -13,6 +13,7 @@ import uia.core.basement.Callback;
 import uia.core.context.window.*;
 
 import java.util.function.IntFunction;
+import java.util.function.Consumer;
 import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +27,8 @@ public class WindowSwing implements Window {
     private final Callable callable;
 
     private final JFrame jFrame;
+    private final JPanel renderingPanel;
+    private Consumer<Graphics> onRefreshed;
     private final int[] screenSize = new int[2];
     private boolean focus = false;
 
@@ -37,9 +40,7 @@ public class WindowSwing implements Window {
 
         jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        jFrame.getContentPane().setPreferredSize(new Dimension(x, y));
-        jFrame.setTitle("UIa Swing Window");
-        jFrame.pack();
+        jFrame.setSize(x, y);
         jFrame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -58,12 +59,12 @@ public class WindowSwing implements Window {
         });
         jFrame.addFocusListener(new FocusListener() {
             @Override
-            public void focusGained(FocusEvent e) {
+            public void focusGained(FocusEvent focusEvent) {
                 updateFocus(true);
             }
 
             @Override
-            public void focusLost(FocusEvent e) {
+            public void focusLost(FocusEvent focusEvent) {
                 updateFocus(false);
             }
         });
@@ -71,97 +72,89 @@ public class WindowSwing implements Window {
             @Override
             public void keyTyped(KeyEvent e) {
                 Key key = new Key(Key.Action.TYPED, e.getModifiers(), e.getKeyChar(), e.getKeyCode());
-                addKeyEvent(key);
+                sendMessage(key);
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
                 Key key = new Key(Key.Action.PRESSED, e.getModifiers(), e.getKeyChar(), e.getKeyCode());
-                addKeyEvent(key);
+                sendMessage(key);
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
                 Key key = new Key(Key.Action.RELEASED, e.getModifiers(), e.getKeyChar(), e.getKeyCode());
-                addKeyEvent(key);
+                sendMessage(key);
             }
         });
-        jFrame.addMouseListener(new MouseListener() {
+
+        // creates an awt component to be used as a rendering panel
+        renderingPanel = new JPanel(true) {
+            @Override
+            public void paint(Graphics g) {
+                super.paint(g);
+                if (onRefreshed != null) {
+                    onRefreshed.accept(g);
+                }
+            }
+        };
+        renderingPanel.addMouseListener(new MouseListener() {
             @Override
             public void mousePressed(MouseEvent event) {
                 ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.PRESSED);
-                addScreenTouchEvent(screenTouch);
+                sendMessage(screenTouch);
             }
 
             @Override
             public void mouseReleased(MouseEvent event) {
                 ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.RELEASED);
-                addScreenTouchEvent(screenTouch);
+                sendMessage(screenTouch);
             }
 
             @Override
             public void mouseClicked(MouseEvent event) {
                 ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.CLICKED);
-                addScreenTouchEvent(screenTouch);
+                sendMessage(screenTouch);
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                // useless
+                // ignored
             }
 
             @Override
             public void mouseExited(MouseEvent event) {
                 ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.EXITED);
-                addScreenTouchEvent(screenTouch);
+                sendMessage(screenTouch);
             }
         });
-        jFrame.addMouseMotionListener(new MouseMotionListener() {
+        renderingPanel.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent event) {
                 ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.DRAGGED);
-                addScreenTouchEvent(screenTouch);
+                sendMessage(screenTouch);
             }
 
             @Override
             public void mouseMoved(MouseEvent event) {
                 ScreenTouch screenTouch = createScreenTouch(event, 0, ScreenTouch.Action.MOVED);
-                addScreenTouchEvent(screenTouch);
+                sendMessage(screenTouch);
             }
         });
-        jFrame.addMouseWheelListener(event -> {
+        renderingPanel.addMouseWheelListener(event -> {
             ScreenTouch screenTouch = createScreenTouch(event, event.getWheelRotation(), ScreenTouch.Action.WHEEL);
-            addScreenTouchEvent(screenTouch);
+            sendMessage(screenTouch);
         });
+
+        jFrame.add(renderingPanel, BorderLayout.CENTER);
     }
 
     /**
-     * Helper function. Adds a new Key event to the global store.
+     * Helper function. Creates a new ScreenTouch object.
      */
 
-    private void addKeyEvent(Key key) {
-        // creates a new message
-        Message message = MessageFactory.create(key, null);
-        // adds the message to the global store
-        globalMessageStore.add(message);
-    }
-
-    /**
-     * Helper function. Adds a new ScreenTouch event to the global store.
-     */
-
-    private void addScreenTouchEvent(ScreenTouch screenTouch) {
-        // creates a new message
-        Message message = MessageFactory.create(screenTouch, null);
-        // adds the message to the global store
-        globalMessageStore.add(message);
-    }
-
-    /**
-     * Helper function. Returns a new ScreenTouch object.
-     */
-
-    private ScreenTouch createScreenTouch(MouseEvent mouseEvent, int wheelRotation, ScreenTouch.Action action) {
+    private static ScreenTouch createScreenTouch(MouseEvent mouseEvent,
+                                                 int wheelRotation, ScreenTouch.Action action) {
         IntFunction<ScreenTouch.Button> mapNativeMouseButton = button -> {
             switch (button) {
                 case 1:
@@ -177,14 +170,29 @@ public class WindowSwing implements Window {
 
         int x = mouseEvent.getX();
         int y = mouseEvent.getY();
-        int[] insets = getInsets();
-        int[] position = {x - insets[0], y - insets[1]};
         return new ScreenTouch(
                 action,
                 mapNativeMouseButton.apply(mouseEvent.getButton()),
-                position[0],
-                position[1],
-                wheelRotation);
+                x, y, wheelRotation
+        );
+    }
+
+    /**
+     * Refreshes this window.
+     */
+
+    protected void refresh(Consumer<Graphics> onRefreshed) {
+        this.onRefreshed = onRefreshed;
+        renderingPanel.repaint();
+    }
+
+    /**
+     * Helper method. Sends a new message with the given payload.
+     */
+
+    private void sendMessage(Object payload) {
+        Message message = MessageFactory.create(payload, null);
+        globalMessageStore.add(message);
     }
 
     /**
@@ -203,15 +211,7 @@ public class WindowSwing implements Window {
     }
 
     /**
-     * Helper function. Adds a new UI component to render.
-     */
-
-    protected void addUIComponent(Component component) {
-        jFrame.add(component);
-    }
-
-    /**
-     * Helper function. Destroys this Window.
+     * Helper method. Destroys this Window.
      */
 
     protected void destroy() {

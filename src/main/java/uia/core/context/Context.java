@@ -92,14 +92,14 @@ public interface Context {
     void setView(View view);
 
     /**
-     * Copy a String in the clipboard or paste a String from the clipboard
+     * Copies a string in the clipboard or pastes a string from the clipboard.
      *
-     * @param operation a not null {@link ClipboardOperation}
-     * @param str       a String to copy in the clipboard; it could be null
-     * @return null or the clipboard content
+     * @param operation        a not null {@link ClipboardOperation}
+     * @param stringToBeCopied a string to be copied in the clipboard; it could be null
+     * @return the content of the clipboard or null
      */
 
-    String clipboard(ClipboardOperation operation, String str);
+    String clipboard(ClipboardOperation operation, String stringToBeCopied);
 
     /**
      * @return the {@link Window} managed by this Context
