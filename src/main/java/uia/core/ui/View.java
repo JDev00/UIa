@@ -5,15 +5,41 @@ import uia.core.ui.primitives.Drawable;
 import uia.core.basement.*;
 
 /**
- * View ADT.
+ * A View is a complete UI object the user can interact with.
+ *
+ * <p><b>Identity</b>
  * <br>
- * A View is a special area on the screen with the user can interact with. Shortly, it is the basement for
- * every graphical widget built with UIa. From the architectural point of view, it is made up of two components:
+ * A View is uniquely identified by a unique ID assigned at the time of creation.
+ * Such an ID can be assigned automatically or by the user, depending on the
+ * specific implementation.
+ *
+ * <p><b>Relevant functionalities</b>
  * <ul>
- * <li>{@link Drawable} used to define the graphical aspects: geometry and style;</li>
- * <li>{@link Callback}s used to respond to an event when it is detected.</li>
+ *     <li>
+ *     Messages: each can send and/or read one {@link Message} at a time
+ *     respectively via the {@link View#sendMessage(Message)} and
+ *     {@link View#readMessage(Message)} methods. Messages can be sent to and received from views
+ *     regardless of their position in the graphical tree. This feature can be used to decouple views,
+ *     among other things.
+ *     </li>
+ *     <li>
+ *     InputConsumer: decides whether or not to consume the specific input that passes through the View.
+ *     <br>
+ *     <i>Example:</i>
+ *     <br>
+ *     Imagine ypu have two views, A and B. A lies on top of B. By consuming the screen touches of A,
+ *     B won't receive the screen touches that A received.
+ *     <br>
+ *     This feature is useful when hidden views need to receive the same input of
+ *     covering views received.
+ *     </li>
+ *     <li>
+ *     Events: View recognises a plethora of events. As a result of the event, an associated callback
+ *     is invoked. View supports callback registration for known events. Eventually, callbacks
+ *     can be defined and registered for new events. To manually trigger callbacks of a given class, the
+ *     {@link View#notifyCallbacks(Class, Object)} method must be used.
+ *     </li>
  * </ul>
- * <b>A View is identified by an ID assigned at declaration time.</b>
  */
 
 public interface View extends Callable, Drawable, Collidable {
