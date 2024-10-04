@@ -5,11 +5,19 @@ import uia.core.rendering.Graphics;
 import uia.core.ui.style.Style;
 
 /**
- * Drawable is designed to group together all the aspects that characterise a complex graphical object
- * that can be rendered on a {@link Graphics}.
+ * Drawable is the smallest UI object that can be rendered on the screen.
  */
 
 public interface Drawable {
+
+    /**
+     * Draws this Drawable on the screen.
+     *
+     * @param graphics a not null graphics where the Drawable is displayed
+     * @throws NullPointerException if {@code graphic == null}
+     */
+
+    void draw(Graphics graphics);
 
     /**
      * @return the Drawable style
@@ -22,15 +30,6 @@ public interface Drawable {
      */
 
     Geometry getGeometry();
-
-    /**
-     * Draws this Drawable on the specified Graphic
-     *
-     * @param graphics a not null {@link Graphics}
-     * @throws NullPointerException if {@code graphic == null}
-     */
-
-    void draw(Graphics graphics);
 
     /**
      * Returns the Drawable width. Note that width won't change as consequence of a rotation.
