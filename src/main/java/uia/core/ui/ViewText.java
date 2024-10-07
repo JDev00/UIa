@@ -1,20 +1,18 @@
 package uia.core.ui;
 
 /**
- * ViewText ADT.
- * <br>
  * A ViewText is a specialised View responsible for drawing text on the screen.
  */
 
 public interface ViewText extends View {
 
     /**
-     * Sets a description to display when no text is available.
+     * Sets a placeholder to display when no text is available.
      *
-     * @param description the description to be displayed; it could be null
+     * @param placeholder the placeholder to be displayed; it could be null
      */
 
-    void setDescription(String description);
+    void setPlaceholder(String placeholder);
 
     /**
      * Sets a text to be displayed.

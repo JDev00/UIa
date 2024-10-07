@@ -33,8 +33,8 @@ public final class ComponentText extends WrapperView implements ViewText {
 
     private final Transform clipTransform;
 
+    private String placeholder = "";
     private String text = "";
-    private String description = "";
 
     private final float[] textBounds = {0f, 0f, 0f, 0f, 0f};
     private int lines = 1;
@@ -76,8 +76,8 @@ public final class ComponentText extends WrapperView implements ViewText {
     }
 
     @Override
-    public void setDescription(String description) {
-        this.description = (description == null) ? "" : description;
+    public void setPlaceholder(String placeholder) {
+        this.placeholder = (placeholder == null) ? "" : placeholder;
     }
 
     @Override
@@ -195,7 +195,7 @@ public final class ComponentText extends WrapperView implements ViewText {
                     .setFont(style.getFont())
                     .setClip(clipTransform, geometry.vertices(), geometry.toArray());
 
-            String textToDisplay = !text.isEmpty() ? text : description;
+            String textToDisplay = !text.isEmpty() ? text : placeholder;
             int renderer = singleLine ? 0 : 1;
             textBounds[2] = textRenderer[renderer].draw(this, graphics,
                     textToDisplay,

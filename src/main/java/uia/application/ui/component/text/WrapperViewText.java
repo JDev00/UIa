@@ -4,7 +4,7 @@ import uia.application.ui.component.WrapperView;
 import uia.core.ui.ViewText;
 
 /**
- * WrapperViewText wraps a given ViewText implementation.
+ * WrapperViewText wraps a ViewText implementation.
  */
 
 public abstract class WrapperViewText extends WrapperView implements ViewText {
@@ -26,8 +26,8 @@ public abstract class WrapperViewText extends WrapperView implements ViewText {
     }
 
     @Override
-    public void setDescription(String description) {
-        viewText.setDescription(description);
+    public void setPlaceholder(String placeholder) {
+        viewText.setPlaceholder(placeholder);
     }
 
     @Override

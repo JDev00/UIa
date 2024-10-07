@@ -30,7 +30,7 @@ class ComponentsTest {
         ViewText editText = new UIEditText(
                 new Component("EDIT_TEXT", 0.25f, 0.15f, 0.4f, 0.1f)
         );
-        editText.setDescription("Edit me!");
+        editText.setPlaceholder("Edit me!");
         editText.getStyle()
                 .setTextAlignment(TextVerticalAlignment.CENTER)
                 .setBorderColor(ColorCollection.LIGHT_CORAL)
