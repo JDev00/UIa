@@ -31,8 +31,6 @@ import static java.lang.Math.min;
  */
 
 public final class Component implements View {
-    private View parent;
-
     private ColliderPolicy colliderPolicy = ColliderPolicy.SAT;
     private final Callable callable;
     private final Transform transform;
@@ -41,7 +39,6 @@ public final class Component implements View {
 
     private final String id;
     private final float[] expanse = {1f, 1f, 1f, 1f, 0.185f};
-    //private final float[] container;
     private final float[] dimension = new float[2];
 
     private int previousGeometryBuilderHashcode = -1;
@@ -58,8 +55,6 @@ public final class Component implements View {
         style = new Style()
                 .setDimension(width, height)
                 .setPosition(x, y);
-
-        //container = new float[]{x, y, width, height, 0f};
 
         callable = new CallbackStore(4);
 
@@ -114,22 +109,6 @@ public final class Component implements View {
     public Geometry getGeometry() {
         return geometry;
     }
-
-    /*@Override
-    public void setPosition(float x, float y) {
-        container[0] = x;
-        container[1] = y;
-    }
-
-    @Override
-    public void setDimension(float width, float height) {
-        container[2] = max(0, width);
-        container[3] = max(0, height);
-
-        if (parent != null) {
-            updateTransform(parent);
-        }
-    }*/
 
     @Override
     public void requestFocus(boolean request) {
@@ -332,8 +311,6 @@ public final class Component implements View {
 
     @Override
     public void update(View parent) {
-        this.parent = parent;
-
         if (visible) {
             updateAnimation();
             updateTransform(parent);
