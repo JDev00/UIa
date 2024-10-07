@@ -89,18 +89,6 @@ public final class ComponentHiddenRoot implements View {
         return null;
     }
 
-    /*@Override
-    public void setPosition(float x, float y) {
-        bounds[0] = x;
-        bounds[1] = y;
-    }
-
-    @Override
-    public void setDimension(float width, float height) {
-        bounds[2] = width;
-        bounds[3] = height;
-    }*/
-
     @Override
     public void update(View parent) {
         throw new UnsupportedOperationException(UNSUPPORTED_ERROR);
@@ -142,6 +130,6 @@ public final class ComponentHiddenRoot implements View {
 
     @Override
     public String getID() {
-        return "HIDDEN_ROOT";
+        return "hidden_root";
     }
 }
