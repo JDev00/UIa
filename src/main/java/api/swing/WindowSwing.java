@@ -32,19 +32,20 @@ public class WindowSwing implements Window {
     private final int[] screenSize = new int[2];
     private boolean focus = false;
 
-    public WindowSwing(int x, int y) {
-        screenSize[0] = x;
-        screenSize[1] = y;
+    public WindowSwing(int width, int height) {
+        screenSize[0] = width;
+        screenSize[1] = height;
 
         callable = new CallbackStore(10);
 
         jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        jFrame.setSize(x, y);
+        jFrame.setSize(width, height);
         jFrame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 Container container = jFrame.getContentPane();
+                System.out.println(jFrame.getHeight());
                 screenSize[0] = container.getWidth();
                 screenSize[1] = container.getHeight();
                 // notifies clients when window resizes

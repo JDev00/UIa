@@ -40,10 +40,10 @@ public class ContextSwing implements Context {
     private final InputEmulator inputEmulator;
     private final WindowSwing window;
 
-    public ContextSwing(int x, int y) {
+    public ContextSwing(int windowWidth, int windowHeight) {
         renderingEngine = new RenderingEngineSwing();
 
-        window = new WindowSwing(x, y);
+        window = new WindowSwing(windowWidth, windowHeight);
 
         MessageStore globalMessageStore = GlobalMessageStore.getInstance();
         inputEmulator = new EmulatedInput(globalMessageStore::add);
@@ -153,15 +153,15 @@ public class ContextSwing implements Context {
     }
 
     /**
-     * Create a new ContextSwing, make it visible and start it
+     * Creates a new ContextSwing, makes it visible and starts it.
      *
-     * @param width  the window width
-     * @param height the window height
-     * @return a new {@link ContextSwing}
+     * @param windowWidth  the window width in pixels
+     * @param windowHeight the window height in pixels
+     * @return a new {@link ContextSwing} instance
      */
 
-    public static Context createAndStart(int width, int height) {
-        Context context = new ContextSwing(width, height);
+    public static Context createAndStart(int windowWidth, int windowHeight) {
+        Context context = new ContextSwing(windowWidth, windowHeight);
         context.getWindow().setVisible(true);
         context.setLifecycleStage(LifecycleStage.RUNNING);
         return context;
