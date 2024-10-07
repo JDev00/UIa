@@ -32,17 +32,21 @@ public interface Drawable {
     Geometry getGeometry();
 
     /**
-     * Returns the Drawable width. Note that width won't change as consequence of a rotation.
+     * Returns the absolute width of the Drawable in pixels.
+     * The width measurement is not affected by rotation. This means
+     * that the width will be the same even when the Drawable is rotated.
      *
-     * @return the Drawable width
+     * @return the absolute width of the Drawable in pixels
      */
 
     float getWidth();
 
     /**
-     * Returns the Drawable height. Note that height won't change as consequence of a rotation.
+     * Returns the absolute height of the Drawable in pixels.
+     * The height measurement is not affected by rotation. This means
+     * that the height will be the same even when the Drawable is rotated.
      *
-     * @return the Drawable height
+     * @return the absolute height of the Drawable in pixels
      */
 
     float getHeight();
