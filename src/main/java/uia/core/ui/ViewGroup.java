@@ -5,21 +5,18 @@ import uia.core.basement.message.Message;
 import java.util.Objects;
 
 /**
- * ViewGroup ADT - ViewGroup is designed to manage a list of Views.
+ * The ViewGroup is responsible for managing a list of views.
+ *
+ * <p><b>Children management</b>
  * <br>
- * <br>
- * <b>Responsibilities</b>
- * <br>
- * A ViewGroup is responsible for managing its children, including their visibility, and sending
- * them the right messages.
- * <br>
- * <br>
- * <b>Children management</b>
- * <br>
- * ViewGroup isolates its children from the external graphical environment: this means that each child
- * is contained by its group and receives the information provided by it.
- * However, it is still possible to let a child communicate with the external environment by sending a message,
- * either from an external view or manually.
+ * ViewGroup isolates its children from the external environment. This means that each
+ * child is contained by its group and receives the information provided by it.
+ * <ul>
+ *     <li>
+ *     External communication: a child View does not communicate directly with
+ *     the outside world. However, messages can be used to let a child communicate.
+ *     </li>
+ * </ul>
  */
 
 public interface ViewGroup extends View, Iterable<View> {
