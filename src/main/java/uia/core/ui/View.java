@@ -16,18 +16,20 @@ import uia.core.basement.*;
  * <p><b>Relevant functionalities</b>
  * <ul>
  *     <li>
- *     Messages: each can send and/or read one {@link Message} at a time
- *     respectively via the {@link View#sendMessage(Message)} and
- *     {@link View#readMessage(Message)} methods. Messages can be sent to and received from views
- *     regardless of their position in the graphical tree. This feature can be used to decouple views,
- *     among other things.
+ *     Messages: each View can send and read one {@link Message} at a time
+ *     respectively via the {@link View#sendMessage(Message)} and {@link View#readMessage(Message)}
+ *     methods. In addition, when a View receives a message, the {@link uia.core.ui.callbacks.OnMessageReceived}
+ *     event is fired.
+ *     <br>
+ *     Messages can be sent to and received from views regardless of their position in
+ *     the graphical tree. This feature can be used to decouple views, among other things.
  *     </li>
  *     <li>
  *     InputConsumer: decides whether or not to consume the specific input that passes through the View.
  *     <br>
  *     <i>Example:</i>
  *     <br>
- *     Imagine ypu have two views, A and B. A lies on top of B. By consuming the screen touches of A,
+ *     Imagine you have two views, A and B. A lies on top of B. By consuming the screen touches of A,
  *     B won't receive the screen touches that A received.
  *     <br>
  *     This feature is useful when hidden views need to receive the same input of
@@ -52,7 +54,7 @@ public interface View extends Callable, Drawable, Collidable {
      *         desktop context, or screen touches on the mobile context)
      *     </li>
      *     <li>
-     *         KEY: allows the View to consume the received keyboard keys.
+     *         KEY: allows the View to consume the received keyboard keys
      *     </li>
      * </ul>
      */
