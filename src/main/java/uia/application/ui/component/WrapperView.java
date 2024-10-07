@@ -8,7 +8,7 @@ import uia.core.ui.style.Style;
 import uia.core.ui.View;
 
 /**
- * Helper class. Wraps a given View implementation.
+ * Helper class. Wraps a View implementation.
  */
 
 public abstract class WrapperView implements View {
@@ -19,7 +19,7 @@ public abstract class WrapperView implements View {
     }
 
     /**
-     * @return the attached {@link View}
+     * @return the wrapped {@link View}
      */
 
     @SuppressWarnings("unchecked")
@@ -80,16 +80,6 @@ public abstract class WrapperView implements View {
     @Override
     public void setColliderPolicy(ColliderPolicy policy) {
         view.setColliderPolicy(policy);
-    }
-
-    @Override
-    public void setPosition(float x, float y) {
-        view.setPosition(x, y);
-    }
-
-    @Override
-    public void setDimension(float width, float height) {
-        view.setDimension(width, height);
     }
 
     @Override

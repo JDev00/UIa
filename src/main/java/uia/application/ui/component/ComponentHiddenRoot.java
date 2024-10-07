@@ -18,6 +18,11 @@ public final class ComponentHiddenRoot implements View {
 
     private final float[] bounds = new float[5];
     private boolean focus = true;
+    private final Style style;
+
+    public ComponentHiddenRoot() {
+        style = new Style();
+    }
 
     @Override
     public long registerCallback(Callback<?> callback) {
@@ -76,7 +81,7 @@ public final class ComponentHiddenRoot implements View {
 
     @Override
     public Style getStyle() {
-        return null;
+        return style;
     }
 
     @Override
@@ -84,7 +89,7 @@ public final class ComponentHiddenRoot implements View {
         return null;
     }
 
-    @Override
+    /*@Override
     public void setPosition(float x, float y) {
         bounds[0] = x;
         bounds[1] = y;
@@ -94,7 +99,7 @@ public final class ComponentHiddenRoot implements View {
     public void setDimension(float width, float height) {
         bounds[2] = width;
         bounds[3] = height;
-    }
+    }*/
 
     @Override
     public void update(View parent) {
@@ -113,6 +118,10 @@ public final class ComponentHiddenRoot implements View {
 
     @Override
     public float[] getBounds() {
+        bounds[0] = style.getX();
+        bounds[1] = style.getY();
+        bounds[2] = style.getOffsetWidth();
+        bounds[3] = style.getOffsetHeight();
         return bounds;
     }
 

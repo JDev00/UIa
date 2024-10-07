@@ -146,7 +146,7 @@ class TestComponent {
         // setup
         float viewWidth = 0.5f;
         float viewHeight = 0.5f;
-        rootView.setDimension(viewWidth, viewHeight);
+        rootView.getStyle().setDimension(viewWidth, viewHeight);
         rootView.registerCallback((OnMouseExit) touches -> countAssertions[0]++);
 
         // act

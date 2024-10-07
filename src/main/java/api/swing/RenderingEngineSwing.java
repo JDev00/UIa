@@ -147,9 +147,10 @@ public class RenderingEngineSwing {
         if (view != null && !isFocused && rootView.isOnFocus()) {
             view.requestFocus(false);
         }
-        rootView.setPosition(bounds[0], bounds[1]);
-        rootView.setDimension(bounds[2], bounds[3]);
         rootView.requestFocus(isFocused);
+        rootView.getStyle()
+                .setDimension(bounds[2], bounds[3])
+                .setPosition(bounds[0], bounds[1]);
     }
 
     /**

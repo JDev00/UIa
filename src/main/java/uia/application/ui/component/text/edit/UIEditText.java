@@ -270,8 +270,11 @@ public class UIEditText extends WrapperViewText {
             float[] bounds = getBounds();
             float lineHeight = font.getLineHeight();
 
-            textCursor.setPosition(cursorPosition[0], cursorPosition[1]);
-            textCursor.setDimension(2f / bounds[2], lineHeight / bounds[3]);
+            //textCursor.setPosition(cursorPosition[0], cursorPosition[1]);
+            //textCursor.setDimension(2f / bounds[2], lineHeight / bounds[3]);
+            textCursor.getStyle()
+                    .setDimension(2f / bounds[2], lineHeight / bounds[3])
+                    .setPosition(cursorPosition[0], cursorPosition[1]);
             textCursor.update(this);
         }
     }

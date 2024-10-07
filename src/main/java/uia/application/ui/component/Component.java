@@ -41,7 +41,7 @@ public final class Component implements View {
 
     private final String id;
     private final float[] expanse = {1f, 1f, 1f, 1f, 0.185f};
-    private final float[] container;
+    //private final float[] container;
     private final float[] dimension = new float[2];
 
     private int previousGeometryBuilderHashcode = -1;
@@ -55,13 +55,15 @@ public final class Component implements View {
     public Component(String id, float x, float y, float width, float height) {
         this.id = id;
 
-        container = new float[]{x, y, width, height, 0f};
+        style = new Style()
+                .setDimension(width, height)
+                .setPosition(x, y);
+
+        //container = new float[]{x, y, width, height, 0f};
 
         callable = new CallbackStore(4);
 
         transform = new Transform();
-
-        style = new Style();
 
         geometry = GeometryCollection.rect(new Geometry());
     }
@@ -113,7 +115,7 @@ public final class Component implements View {
         return geometry;
     }
 
-    @Override
+    /*@Override
     public void setPosition(float x, float y) {
         container[0] = x;
         container[1] = y;
@@ -127,7 +129,7 @@ public final class Component implements View {
         if (parent != null) {
             updateTransform(parent);
         }
-    }
+    }*/
 
     @Override
     public void requestFocus(boolean request) {
@@ -260,12 +262,12 @@ public final class Component implements View {
         float[] bounds = parent.getBounds();
         float width = parent.getWidth();
         float height = parent.getHeight();
-        float xDist = width * (container[0] - 0.5f);
-        float yDist = height * (container[1] - 0.5f);
+        float xDist = width * (style.getX() - 0.5f);
+        float yDist = height * (style.getY() - 0.5f);
         float rot = bounds[4];
 
-        float componentWidth = container[2] * width;
-        float componentHeight = container[3] * height;
+        float componentWidth = style.getOffsetWidth() * width;
+        float componentHeight = style.getOffsetHeight() * height;
         float maxWidth = style.getMaxWidth();
         float minWidth = style.getMinWidth();
         float maxHeight = style.getMaxHeight();
