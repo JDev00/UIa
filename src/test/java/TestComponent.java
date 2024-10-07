@@ -44,8 +44,8 @@ class TestComponent {
     @Test
     void viewBoundsWidthAndHeightShouldBeDifferentAfterARotation() {
         // setup
-        float ROTATION = 2.145f;
-        rootView.getStyle().setRotation(ROTATION);
+        float expectedRotation = 2.145f;
+        rootView.getStyle().setRotation(expectedRotation);
         waitFor(100);
 
         // verify
@@ -57,36 +57,34 @@ class TestComponent {
         float expectedBoundsWidth = Collidable.colliderWidth(width, height, rotation);
         float expectedBoundsHeight = Collidable.colliderHeight(width, height, rotation);
 
-        assertEquals(ROTATION, rotation);
+        assertEquals(expectedRotation, rotation);
         assertEquals(expectedBoundsWidth, bounds[2]);
         assertEquals(expectedBoundsHeight, bounds[3]);
     }
 
     @Test
     void viewWidthAndHeightShouldNotChangeAfterARotation() {
-        float rotation = -2.141f;
-        float widthPreRotation = 702;
-        float heightPreRotation = 493;
-
         // setup
+        float rotation = -5.141f;
         rootView.getStyle().setRotation(rotation);
         waitFor(100);
 
         // verify
-        float width = rootView.getWidth();
-        float height = rootView.getHeight();
+        float widthPreRotation = 702;
+        float heightPreRotation = 493;
+        float componentWidth = rootView.getWidth();
+        float componentHeight = rootView.getHeight();
         float componentRotation = rootView.getBounds()[4];
 
         assertEquals(rotation, componentRotation);
-        assertEquals(widthPreRotation, width);
-        assertEquals(heightPreRotation, height);
+        assertEquals(widthPreRotation, componentWidth);
+        assertEquals(heightPreRotation, componentHeight);
     }
 
     @Test
     void clickingOnViewShouldGenerateAnEvent() {
-        int[] countAssertions = {0};
-
         // setup
+        int[] countAssertions = {0};
         rootView.registerCallback((OnClick) touches -> countAssertions[0]++);
 
         // act
