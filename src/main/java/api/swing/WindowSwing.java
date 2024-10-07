@@ -29,13 +29,11 @@ public class WindowSwing implements Window {
     private final JFrame jFrame;
     private final JPanel renderingPanel;
     private Consumer<Graphics> onRefreshed;
+
     private final int[] screenSize = new int[2];
     private boolean focus = false;
 
     public WindowSwing(int width, int height) {
-        screenSize[0] = width;
-        screenSize[1] = height;
-
         callable = new CallbackStore(10);
 
         jFrame = new JFrame();
@@ -45,7 +43,6 @@ public class WindowSwing implements Window {
             @Override
             public void componentResized(ComponentEvent e) {
                 Container container = jFrame.getContentPane();
-                System.out.println(jFrame.getHeight());
                 screenSize[0] = container.getWidth();
                 screenSize[1] = container.getHeight();
                 // notifies clients when window resizes
@@ -278,8 +275,6 @@ public class WindowSwing implements Window {
             throw new IllegalArgumentException("height must be greater than 200 pixels");
         }
 
-        screenSize[0] = width;
-        screenSize[1] = height;
         jFrame.setSize(width, height);
         return this;
     }

@@ -64,20 +64,20 @@ class TestComponent {
 
     @Test
     void viewWidthAndHeightShouldNotChangeAfterARotation() {
-        float ROTATION = -4.501f;
-        float widthPreRotation = 720;
-        float heightPreRotation = 540;
+        float rotation = -2.141f;
+        float widthPreRotation = 702;
+        float heightPreRotation = 493;
 
         // setup
-        rootView.getStyle().setRotation(ROTATION);
+        rootView.getStyle().setRotation(rotation);
         waitFor(100);
 
         // verify
         float width = rootView.getWidth();
         float height = rootView.getHeight();
-        float rotation = rootView.getBounds()[4];
+        float componentRotation = rootView.getBounds()[4];
 
-        assertEquals(ROTATION, rotation);
+        assertEquals(rotation, componentRotation);
         assertEquals(widthPreRotation, width);
         assertEquals(heightPreRotation, height);
     }
