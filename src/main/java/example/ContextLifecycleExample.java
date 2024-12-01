@@ -8,7 +8,7 @@ import uia.core.context.Context;
 import uia.core.ui.ViewText;
 import uia.core.ui.View;
 
-import api.swing.ContextSwing;
+import adaptor.swing.ContextSwing;
 
 /**
  * Demonstrative example. Closes the application programmatically

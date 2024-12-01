@@ -1,4 +1,4 @@
-package api.swing;
+package adaptor.swing;
 
 import uia.application.message.store.GlobalMessageStore;
 import uia.core.basement.message.MessageStore;

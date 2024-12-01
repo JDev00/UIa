@@ -9,7 +9,7 @@ import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.View;
 
-import api.swing.ContextSwing;
+import adaptor.swing.ContextSwing;
 
 /**
  * Collections of utilities for tests.

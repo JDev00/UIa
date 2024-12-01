@@ -11,7 +11,7 @@ import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.View;
 
-import api.swing.ContextSwing;
+import adaptor.swing.ContextSwing;
 
 /**
  * Demonstrative example. Shows a structured layout with hundreds of views.

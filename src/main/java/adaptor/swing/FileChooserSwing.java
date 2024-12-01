@@ -1,4 +1,4 @@
-package api.swing;
+package adaptor.swing;
 
 import java.awt.Color;
 import java.io.File;

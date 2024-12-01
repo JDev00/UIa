@@ -1,8 +1,8 @@
-package api.swing;
+package adaptor.swing;
 
 import uia.application.message.messagingSystem.MessagingSystem;
 import uia.application.ui.component.ComponentHiddenRoot;
-import api.swing.graphics.GraphicsAWT;
+import adaptor.swing.graphics.GraphicsAWT;
 import uia.core.rendering.Graphics;
 import uia.core.context.Context;
 import uia.utility.Timer;

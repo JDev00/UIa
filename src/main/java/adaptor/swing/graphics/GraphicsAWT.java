@@ -1,4 +1,4 @@
-package api.swing.graphics;
+package adaptor.swing.graphics;
 
 import uia.core.rendering.color.ColorCollection;
 import uia.core.rendering.color.Color;

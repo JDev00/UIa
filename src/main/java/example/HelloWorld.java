@@ -18,7 +18,7 @@ import uia.core.ui.ViewGroup;
 import uia.core.ui.ViewText;
 import uia.core.ui.View;
 
-import api.swing.ContextSwing;
+import adaptor.swing.ContextSwing;
 
 /**
  * Demonstrative example. Display a simple button that allows to show and hide a popup.
