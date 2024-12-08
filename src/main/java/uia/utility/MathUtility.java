@@ -3,13 +3,15 @@ package uia.utility;
 import static java.lang.Math.*;
 
 /**
- * MathUtility contains a set of math functions.
+ * MathUtility collects mathematical functions.
  */
 
 public final class MathUtility {
     public static final float PI = (float) java.lang.Math.PI;
     public static final float TWO_PI = 2 * PI;
     public static final float HALF_PI = PI / 2f;
+
+    private static final float DEG_TO_RAD = PI / 180.0f;
 
     private static final short SIZE = 3000;
     private static final float[] COS = new float[SIZE + 1];
@@ -117,8 +119,6 @@ public final class MathUtility {
         return (value - min) / (max - min);
     }
 
-    private static final float DEG_TO_RAD = PI / 180.0f;
-
     /**
      * Converts the specified degrees to radians
      *
@@ -133,12 +133,12 @@ public final class MathUtility {
     private static final float PRE = SIZE / TWO_PI;
 
     /**
-     * Maps the specified angle to an index used to access the correspondent
-     * cosine or sine value.
+     * Helper function. Maps the specified angle to an index used to access
+     * the correspondent cosine or sine value.
      * <br>
-     * Time required: T(1)
+     * Time complexity: T(1)
      * <br>
-     * Space required: O(1)
+     * Space complexity: O(1)
      *
      * @param radians the angle in radians
      * @return the index used to access the cached cosine or sine value
