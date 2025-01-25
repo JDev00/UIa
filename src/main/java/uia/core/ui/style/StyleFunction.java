@@ -4,6 +4,7 @@ package uia.core.ui.style;
  * StyleFunction is responsible for applying a list of changes to a Style object.
  */
 
+@FunctionalInterface
 public interface StyleFunction {
 
     /**

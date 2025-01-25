@@ -17,7 +17,7 @@ public interface Collidable {
      * <ul>
      *     <li>AABB (Axis-Aligned Bounding Boxes) is the simplest form of collision detection;</li>
      *     <li>CIRCLE (Circle collision) uses a circular collider to detect collisions;</li>
-     *     <li>SAT (Separating Axis Theorem) is a more powerful technique to accurately detect collisions.</li>
+     *     <li>SAT (Separating Axis Theorem) is a technique to accurately detect collisions.</li>
      * </ul>
      */
 
