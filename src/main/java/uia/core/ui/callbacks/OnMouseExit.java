@@ -8,5 +8,6 @@ import uia.core.basement.Callback;
  * It provides a null Object.
  */
 
+@FunctionalInterface
 public interface OnMouseExit extends Callback<Object> {
 }

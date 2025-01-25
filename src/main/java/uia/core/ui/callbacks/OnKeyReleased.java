@@ -9,5 +9,6 @@ import uia.core.ui.primitives.Key;
  * It provides the released {@link Key}.
  */
 
+@FunctionalInterface
 public interface OnKeyReleased extends Callback<Key> {
 }

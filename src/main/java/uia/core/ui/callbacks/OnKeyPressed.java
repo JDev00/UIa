@@ -9,5 +9,6 @@ import uia.core.ui.primitives.Key;
  * It provides the pressed {@link Key}.
  */
 
+@FunctionalInterface
 public interface OnKeyPressed extends Callback<Key> {
 }

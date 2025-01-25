@@ -9,5 +9,6 @@ import uia.core.basement.message.Message;
  * It provides a not null {@link Message}.
  */
 
+@FunctionalInterface
 public interface OnMessageReceived extends Callback<Message> {
 }

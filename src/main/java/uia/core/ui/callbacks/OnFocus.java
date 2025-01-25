@@ -8,5 +8,6 @@ import uia.core.basement.Callback;
  * It provides a Boolean whose value is True when focus is gained.
  */
 
+@FunctionalInterface
 public interface OnFocus extends Callback<Boolean> {
 }
