@@ -3,7 +3,8 @@ package uia.core.basement.message;
 /**
  * Message ADT.
  * <br>
- * Message is responsible for maintaining the information needed to deliver data to a recipient.
+ * Message is responsible for maintaining the information needed to
+ * deliver data to a recipient.
  */
 
 public interface Message {

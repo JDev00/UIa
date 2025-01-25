@@ -31,16 +31,16 @@ public class HelloWorld extends WrapperView {
     public HelloWorld() {
         // default components are based on the decorator pattern, so you need to pass the smallest UI unit
         // (in this example: Component).
-        // Here we will create a ComponentGroup that will allow us to easily manage a list of views.
+        // Here, a ComponentGroup is used to easily manage a list of views
         super(new ComponentGroup(
                 new Component("HELLO_WORLD", 0.5f, 0.5f, 1f, 1f))
         );
         getStyle().setBackgroundColor(ColorCollection.DARK_GRAY);
 
-        // uses a ViewText to create a simple button
+        // creates a button
         boolean[] isButtonEnabled = {false};
         ViewText button = createCustomButton(BUTTON_ID);
-        // now comes for the interesting part of the job: showing and hiding a View without creating dependencies.
+        // now comes for the interesting part of the job: showing and hiding a View without creating static dependencies.
         // when clicked, it sends a message to the popup.
         button.registerCallback((OnClick) touches -> {
             // changes the view state: enabled/disabled
@@ -58,7 +58,7 @@ public class HelloWorld extends WrapperView {
             button.setText(textToDisplay);
         });
 
-        // creates a simple popup.
+        // creates a popup
         View popup = createPopup(POPUP_ID);
         // adds a callback that will be invoked when a message, for this popup, is received
         popup.registerCallback((OnMessageReceived) receivedMessage -> {
@@ -72,7 +72,7 @@ public class HelloWorld extends WrapperView {
             popup.sendMessage(messageToSend);
         });
 
-        // add button and popup to the group
+        // adds button and popup to the root element
         ViewGroup.insert(getView(), button, popup);
     }
 
