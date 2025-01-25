@@ -3,15 +3,16 @@ package uia.core.basement;
 /**
  * Callback ADT.
  * <br>
- * A callback is a function that is called in response to an event.
+ * Function called in response to an event.
  */
 
+@FunctionalInterface
 public interface Callback<T> {
 
     /**
-     * Update this callback when the event happens
+     * Updates this callback when the event occurs.
      *
-     * @param object a not null Object
+     * @param object the event payload
      */
 
     void update(T object);
