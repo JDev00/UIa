@@ -118,16 +118,12 @@ public final class ComponentUtility {
      * <br>
      * Listeners are notified if:
      * <ul>
-     *     <li>
-     *         the message recipient is equal to the view ID;
-     *     </li>
-     *     <li>
-     *         the message recipient is null and the sender is not the recipient.
-     *     </li>
+     *     <li>the message recipient is equal to the view ID;</li>
+     *     <li>the message recipient is null and the sender is not the recipient.</li>
      * </ul>
      *
-     * @param view    a not null {@link View}
-     * @param message a {@link Message} to be notified
+     * @param view    the view to which the message should be delivered
+     * @param message the message to be delivered
      * @throws NullPointerException if {@code view == null || message == null}
      */
 
@@ -138,7 +134,10 @@ public final class ComponentUtility {
         String id = view.getID();
         String sender = message.getSender();
         String recipient = message.getRecipient();
-        if (Objects.equals(id, recipient) || (recipient == null && !id.equals(sender))) {
+
+        boolean isMessageTarget = Objects.equals(id, recipient);
+        boolean isBroadcastMessage = recipient == null && !Objects.equals(id, sender);
+        if (isMessageTarget || isBroadcastMessage) {
             view.notifyCallbacks(OnMessageReceived.class, message);
         }
     }
