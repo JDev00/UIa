@@ -1,7 +1,9 @@
 package uia.core.basement;
 
 /**
- * Callable is responsible for storing and notifying a list of {@link Callback}s.
+ * Callable ADT.
+ * <br>
+ * Callable is responsible for storing and notifying callback subscribers.
  */
 
 public interface Callable {
