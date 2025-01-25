@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 public class MessagingSystem {
-    public static final int MAX_MESSAGES_TO_PROCESS = 20000;
+    public static final int MAX_MESSAGES_TO_PROCESS = 25_000;
 
     private final MessageStore globalMessageStore = GlobalMessageStore.getInstance();
     private String lockedScreenTouchRecipient = null;
