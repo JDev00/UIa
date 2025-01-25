@@ -29,7 +29,7 @@ public interface Callable {
     void unregisterCallback(long callbackID);
 
     /**
-     * Notifies all callbacks of the specified type.
+     * Notifies clients who have subscribed to a callback of the specified type.
      *
      * @param type the {@link Callback} type
      * @param data the data to be sent to the clients via the callbacks
