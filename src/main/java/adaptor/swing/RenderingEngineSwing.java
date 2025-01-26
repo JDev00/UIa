@@ -185,8 +185,7 @@ public class RenderingEngineSwing {
      * @param isFocused      true if the window is focused
      */
 
-    public void draw(java.awt.Graphics graphics,
-                     float[] drawableBounds, boolean isFocused) {
+    public void draw(java.awt.Graphics graphics, float[] drawableBounds, boolean isFocused) {
         updateRootView(drawableBounds, isFocused);
 
         thirdPartyGraphics = (Graphics2D) graphics;
