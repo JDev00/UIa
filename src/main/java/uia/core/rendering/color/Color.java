@@ -146,10 +146,10 @@ public final class Color {
     }
 
     /**
-     * Converts the given hexadecimal number into a decimal number.
+     * Converts the given hexadecimal number to an RGBA color.
      *
      * @param hex a not null hexadecimal number
-     * @return the decimal representation of the given hexadecimal number
+     * @return the RGBA color
      * @throws IllegalArgumentException if the provided hex number is not valid
      */
 
