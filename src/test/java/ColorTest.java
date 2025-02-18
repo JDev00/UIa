@@ -36,6 +36,17 @@ class ColorTest {
     }
 
     @Test
+    void ColorShouldBeCreatedFromHexValueWithoutAlphaChannel() {
+        // setup
+        String hexColor = "#ff03C6";
+        Color color = Color.createColor(hexColor);
+
+        // verify
+        int[] expectedChannels = {255, 3, 198, 255};
+        assertArrayEquals(expectedChannels, color.getRGBA());
+    }
+
+    @Test
     void differentColorObjectsWithTheSameStateShouldHaveTheSameHashcode() {
         // setup
         Color color1 = Color.createColor("0x000000");

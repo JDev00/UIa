@@ -146,19 +146,35 @@ public final class Color {
     }
 
     /**
-     * @param hex a not null hexadecimal number with uppercase chars
-     * @return the decimal representation of the given hex
+     * Converts the given hexadecimal number into a decimal number.
+     *
+     * @param hex a not null hexadecimal number
+     * @return the decimal representation of the given hexadecimal number
+     * @throws IllegalArgumentException if the provided hex number is not valid
      */
 
-    private static int hexToDecimal(String hex) {
-        String digits = "0123456789ABCDEF";
-        int val = 0;
-        for (int i = 0; i < hex.length(); i++) {
-            char c = hex.charAt(i);
-            int d = digits.indexOf(c);
-            val = 16 * val + d;
+    private static int[] fromHexToRGBA(String hex) {
+        // 1. normalizes the hex number
+        String normalizedHex = hex
+                .replace("0x", "")
+                .replace("#", "")
+                .toLowerCase();
+        if (normalizedHex.length() == 6) {
+            normalizedHex += "ff";
         }
-        return val;
+
+        // 2. extracts the RGBA color
+        if (normalizedHex.length() == 8) {
+            int rawColor = Integer.parseUnsignedInt(normalizedHex, 16);
+            return new int[]{
+                    (rawColor >> 24) & 0xFF,
+                    (rawColor >> 16) & 0xFF,
+                    (rawColor >> 8) & 0xFF,
+                    rawColor & 0xFF
+            };
+        } else {
+            throw new IllegalArgumentException("Invalid hexadecimal number");
+        }
     }
 
     /**
@@ -171,26 +187,8 @@ public final class Color {
     public static Color createColor(String hex) {
         Color result = null;
         try {
-            hex = hex.replace("0x", "")
-                    .replace("#", "")
-                    .toUpperCase();
-            int length = hex.length();
-            int color = hexToDecimal(hex);
-
-            if (length == 6) {
-                result = createColor(
-                        ColorChannel.getChannelValue(color, ColorChannel.GREEN),
-                        ColorChannel.getChannelValue(color, ColorChannel.BLUE),
-                        ColorChannel.getChannelValue(color, ColorChannel.ALPHA)
-                );
-            } else if (length == 8) {
-                result = createColor(
-                        ColorChannel.getChannelValue(color, ColorChannel.RED),
-                        ColorChannel.getChannelValue(color, ColorChannel.GREEN),
-                        ColorChannel.getChannelValue(color, ColorChannel.BLUE),
-                        ColorChannel.getChannelValue(color, ColorChannel.ALPHA)
-                );
-            }
+            int[] rgba = fromHexToRGBA(hex);
+            result = createColor(rgba[0], rgba[1], rgba[2], rgba[3]);
         } catch (Exception ignored) {
             //
         }
