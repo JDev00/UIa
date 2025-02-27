@@ -1,4 +1,4 @@
-package uia.application.metrics.monitorable;
+package uia.application.resourcetracker.monitorable;
 
 /**
  * Monitorable ADT.

@@ -1,6 +1,6 @@
-package uia.application.metrics;
+package uia.application.resourcetracker;
 
-import uia.application.metrics.monitorable.Monitorable;
+import uia.application.resourcetracker.monitorable.Monitorable;
 
 import java.util.NoSuchElementException;
 import java.util.HashMap;

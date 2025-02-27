@@ -1,4 +1,4 @@
-package uia.application.metrics;
+package uia.application.resourcetracker;
 
 /**
  * Collection of known system properties.

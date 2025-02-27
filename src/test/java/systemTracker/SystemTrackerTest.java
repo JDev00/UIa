@@ -1,9 +1,9 @@
 package systemTracker;
 
-import uia.application.metrics.DefaultSystemProperties;
-import uia.application.metrics.monitorable.Monitorable;
-import uia.application.metrics.SystemProperty;
-import uia.application.metrics.SystemTracker;
+import uia.application.resourcetracker.DefaultSystemProperties;
+import uia.application.resourcetracker.monitorable.Monitorable;
+import uia.application.resourcetracker.SystemProperty;
+import uia.application.resourcetracker.SystemTracker;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
