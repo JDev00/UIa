@@ -133,7 +133,7 @@ public final class SystemTracker {
      * @return the unique SystemTracker instance
      */
 
-    static SystemTracker getInstance() {
+    public static SystemTracker getInstance() {
         return SYSTEM_TRACKER;
     }
 }
