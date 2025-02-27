@@ -1,4 +1,4 @@
-package uia.application.message.messagingSystem;
+package uia.application.message.messagingsystem;
 
 import uia.application.message.store.GlobalMessageStore;
 import uia.application.message.EventTouchScreenMessage;

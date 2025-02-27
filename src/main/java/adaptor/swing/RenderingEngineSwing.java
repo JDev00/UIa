@@ -1,6 +1,6 @@
 package adaptor.swing;
 
-import uia.application.message.messagingSystem.MessagingSystem;
+import uia.application.message.messagingsystem.MessagingSystem;
 import uia.application.ui.component.ComponentHiddenRoot;
 import adaptor.swing.graphics.GraphicsAWT;
 import uia.core.rendering.Graphics;
