@@ -1,7 +1,7 @@
 package uia.application.message.messagingsystem;
 
 import uia.application.message.store.GlobalMessageStore;
-import uia.application.message.EventTouchScreenMessage;
+import uia.application.message.screetouch.EventTouchScreenMessage;
 import uia.core.basement.message.MessageStore;
 import uia.core.basement.message.Message;
 import uia.core.ui.View;

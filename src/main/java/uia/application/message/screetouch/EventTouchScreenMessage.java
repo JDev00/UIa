@@ -1,4 +1,4 @@
-package uia.application.message;
+package uia.application.message.screetouch;
 
 import uia.core.ui.primitives.ScreenTouch;
 import uia.core.basement.message.Message;
