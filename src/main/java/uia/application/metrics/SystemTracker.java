@@ -1,5 +1,6 @@
 package uia.application.metrics;
 
+import uia.application.metrics.monitorable.SystemProperty;
 import uia.application.metrics.monitorable.Monitorable;
 
 import java.util.NoSuchElementException;
@@ -43,7 +44,7 @@ public final class SystemTracker {
 
     private void setupDefaultProperties() {
         for (DefaultSystemMetrics property : DefaultSystemMetrics.values()) {
-            defaultProperties.put(property.getID(), null);
+            defaultProperties.put(property.getID(), new SystemProperty<>());
         }
     }
 
