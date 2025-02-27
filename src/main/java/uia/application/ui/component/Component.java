@@ -2,7 +2,7 @@ package uia.application.ui.component;
 
 import uia.application.ui.component.utility.ComponentUtility;
 import uia.application.message.store.GlobalMessageStore;
-import uia.application.message.screetouch.EventTouchScreenMessage;
+import uia.application.message.screentouch.EventTouchScreenMessage;
 import uia.core.rendering.geometry.GeometryCollection;
 import uia.core.rendering.geometry.GeometryUtility;
 import uia.core.basement.message.MessageStore;

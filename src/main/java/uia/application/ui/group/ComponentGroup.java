@@ -1,6 +1,6 @@
 package uia.application.ui.group;
 
-import uia.application.message.screetouch.EventTouchScreenMessage;
+import uia.application.message.screentouch.EventTouchScreenMessage;
 import uia.application.ui.component.WrapperView;
 import uia.application.message.EventKeyMessage;
 import uia.core.rendering.geometry.Geometry;
