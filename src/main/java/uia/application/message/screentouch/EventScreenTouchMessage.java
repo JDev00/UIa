@@ -6,16 +6,16 @@ import uia.core.basement.message.Message;
 import java.util.Arrays;
 
 /**
- * EventTouchScreenMessage is a UIa framework message that carries
- * an array of {@link ScreenTouch} as payload.
+ * The EventScreenTouchMessage is a native message responsible for carrying
+ * a list of {@link ScreenTouch} as payload.
  */
 
-public final class EventTouchScreenMessage implements Message {
+public final class EventScreenTouchMessage implements Message {
     private final ScreenTouch[] screenTouches;
     private final String source;
     private final String recipient;
 
-    public EventTouchScreenMessage(String source, String recipient, ScreenTouch... screenTouches) {
+    public EventScreenTouchMessage(String source, String recipient, ScreenTouch... screenTouches) {
         this.screenTouches = screenTouches;
         this.recipient = recipient;
         this.source = source;
@@ -114,7 +114,7 @@ public final class EventTouchScreenMessage implements Message {
     }
 
     /**
-     * Lock {@link EventTouchScreenMessage} implementation.
+     * Lock {@link EventScreenTouchMessage} implementation.
      * The lock class is used to delivery a message to a specified recipient without constraints.
      */
 

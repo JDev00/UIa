@@ -1,8 +1,8 @@
 package uia.application.ui.component;
 
+import uia.application.message.screentouch.EventScreenTouchMessage;
 import uia.application.ui.component.utility.ComponentUtility;
 import uia.application.message.store.GlobalMessageStore;
-import uia.application.message.screentouch.EventTouchScreenMessage;
 import uia.core.rendering.geometry.GeometryCollection;
 import uia.core.rendering.geometry.GeometryUtility;
 import uia.core.basement.message.MessageStore;
@@ -212,14 +212,14 @@ public final class Component implements View {
 
     @Override
     public void readMessage(Message message) {
-        if (message instanceof EventTouchScreenMessage.Lock) {
+        if (message instanceof EventScreenTouchMessage.Lock) {
             if (id.equals(message.getRecipient())) {
                 ScreenTouch[] screenTouches = message.getPayload();
                 ScreenTouch[] localTouches = ComponentUtility.copyAndConsumeTouches(this, screenTouches);
                 // notifies listeners
                 notifyScreenTouchListeners(localTouches, screenTouches);
             }
-        } else if (message instanceof EventTouchScreenMessage) {
+        } else if (message instanceof EventScreenTouchMessage) {
             ScreenTouch[] screenTouches = message.getPayload();
             ScreenTouch[] localTouches = ComponentUtility.getAndConsumeTouchesOnViewArea(this, consumeScreenTouch, screenTouches);
             // notifies listeners

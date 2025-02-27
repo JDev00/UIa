@@ -1,6 +1,6 @@
 package uia.application.ui.group;
 
-import uia.application.message.screentouch.EventTouchScreenMessage;
+import uia.application.message.screentouch.EventScreenTouchMessage;
 import uia.application.ui.component.WrapperView;
 import uia.application.message.EventKeyMessage;
 import uia.core.rendering.geometry.Geometry;
@@ -72,7 +72,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
 
     @Override
     public void readMessage(Message message) {
-        if (message instanceof EventTouchScreenMessage) {
+        if (message instanceof EventScreenTouchMessage) {
             GroupUtility.dispatchScreenTouchMessageToChildren(this, message);
             super.readMessage(message);
         } else if (message instanceof EventKeyMessage) {
