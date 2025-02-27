@@ -65,7 +65,7 @@ public final class SystemMetrics {
 
     /**
      * Registers a new monitorable object. Once registered, its value
-     * will be accessed with {@link #getMetricsValue(int)} by using
+     * will be accessed with {@link #getMetricValue(int)} by using
      * the generated ID.
      *
      * @param monitorable a not duplicated monitorable to be registered
@@ -73,7 +73,7 @@ public final class SystemMetrics {
      * @throws IllegalArgumentException if the monitorable object is duplicated
      */
 
-    public <T> int registerMetrics(Monitorable<T> monitorable) {
+    public <T> int registerMetric(Monitorable<T> monitorable) {
         if (externalMetrics.containsValue(monitorable)) {
             throw new IllegalArgumentException("The monitorable is already registered");
         }
@@ -91,7 +91,7 @@ public final class SystemMetrics {
      * @throws NoSuchElementException if the metricID is not associated with a metric
      */
 
-    public SystemMetrics unregisterMetrics(int metricID) {
+    public SystemMetrics unregisterMetric(int metricID) {
         if (externalMetrics.remove(metricID) == null) {
             throw new NoSuchElementException("Metric with ID " + metricID + " does not exist");
         }
@@ -119,7 +119,7 @@ public final class SystemMetrics {
      * @throws NoSuchElementException if the metricID is not associated with a metric
      */
 
-    public <T> T getMetricsValue(int metricID) {
+    public <T> T getMetricValue(int metricID) {
         Monitorable<T> monitorable = getMetricByID(metricID);
         return monitorable.getValue();
     }
