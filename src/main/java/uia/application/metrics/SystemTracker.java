@@ -1,6 +1,5 @@
 package uia.application.metrics;
 
-import uia.application.metrics.monitorable.SystemProperty;
 import uia.application.metrics.monitorable.Monitorable;
 
 import java.util.NoSuchElementException;

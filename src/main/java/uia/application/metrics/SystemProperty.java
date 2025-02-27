@@ -1,4 +1,6 @@
-package uia.application.metrics.monitorable;
+package uia.application.metrics;
+
+import uia.application.metrics.monitorable.Monitorable;
 
 /**
  * Default implementation of {@link Monitorable}.
