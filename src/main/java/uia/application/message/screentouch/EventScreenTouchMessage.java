@@ -58,9 +58,7 @@ public final class EventScreenTouchMessage implements Message {
 
         @Override
         public String toString() {
-            return "RequestLock{" +
-                    "sender='" + sender + '\'' +
-                    '}';
+            return "RequestLock{sender='" + sender + "'}";
         }
 
         @Override
@@ -92,9 +90,7 @@ public final class EventScreenTouchMessage implements Message {
 
         @Override
         public String toString() {
-            return "Unlock{" +
-                    "sender='" + sender + '\'' +
-                    '}';
+            return "Unlock{sender='" + sender + "'}";
         }
 
         @Override

@@ -48,7 +48,7 @@ public class MessagingSystem {
 
         List<Message> messages = globalMessageStore.pop(maxMessagesToProcess);
         for (Message message : messages) {
-            // try to lock messages
+            // 1. message lock
             if (message instanceof EventScreenTouchMessage.RequestLock && lockedScreenTouchRecipient == null) {
                 lockedScreenTouchRecipient = message.getSender();
             } else if (message instanceof EventScreenTouchMessage.Unlock) {
@@ -56,6 +56,8 @@ public class MessagingSystem {
             } else if (lockedScreenTouchRecipient != null && message instanceof EventScreenTouchMessage) {
                 message = new EventScreenTouchMessage.Lock(lockedScreenTouchRecipient, message.getPayload());
             }
+
+            // 2. dispatches the message to the view
             view.readMessage(message);
         }
     }
