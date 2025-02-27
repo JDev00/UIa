@@ -1,5 +1,7 @@
 package uia.application.metrics;
 
+import uia.application.metrics.monitorable.Monitorable;
+
 import java.util.NoSuchElementException;
 import java.util.HashMap;
 import java.util.Map;
