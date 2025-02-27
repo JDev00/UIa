@@ -1,12 +1,15 @@
 package adaptor.swing;
 
 import uia.application.message.messagingsystem.MessagingSystem;
+import uia.application.resourcetracker.DefaultSystemProperties;
 import uia.application.ui.component.ComponentHiddenRoot;
-import adaptor.swing.graphics.GraphicsAWT;
+import uia.application.resourcetracker.SystemTracker;
 import uia.core.rendering.Graphics;
 import uia.core.context.Context;
 import uia.utility.Timer;
 import uia.core.ui.View;
+
+import adaptor.swing.graphics.GraphicsAWT;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -19,6 +22,8 @@ import java.awt.*;
  */
 
 public class RenderingEngineSwing {
+    private final SystemTracker tracker = SystemTracker.getInstance();
+
     private final List<Context.RenderingHint> renderingHints;
     private final MessagingSystem messagingSystem;
     private final Timer timer;
@@ -80,6 +85,9 @@ public class RenderingEngineSwing {
             lastFrameCount = frameCount;
             timer.reset();
         }
+
+        tracker.updatePropertyValue(DefaultSystemProperties.FRAME_COUNT.getID(), frameCount);
+        tracker.updatePropertyValue(DefaultSystemProperties.FPS.getID(), frameRate);
     }
 
     /**
