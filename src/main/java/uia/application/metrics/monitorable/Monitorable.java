@@ -4,7 +4,7 @@ package uia.application.metrics.monitorable;
  * Monitorable ADT.
  * <br>
  * Monitorable is responsible for monitoring a single value. It is intended to be
- * the basement for system metrics.
+ * the basement for system monitorable values.
  */
 
 public interface Monitorable<T> {
