@@ -10,11 +10,6 @@ import java.util.Map;
  */
 
 public final class SystemMetrics {
-    /**
-     * Collection of known metrics for SystemMetrics.
-     */
-    public enum DEFAULT_METRICS {FPS, FRAME_COUNT, CPU, RAM}
-
     private static final SystemMetrics SYSTEM_METRICS = new SystemMetrics();
     private static int seedID = 10;
 
@@ -45,7 +40,9 @@ public final class SystemMetrics {
      */
 
     private void setupDefaultMetrics() {
-        // TODO: to be implemented
+        for (DefaultSystemMetrics metric : DefaultSystemMetrics.values()) {
+            defaultMetrics.put(metric.getID(), null);
+        }
     }
 
     /**
@@ -56,11 +53,17 @@ public final class SystemMetrics {
 
     @SuppressWarnings("unchecked")
     private <T> Monitorable<T> getMetricByID(int metricID) {
-        Monitorable<T> monitorable = externalMetrics.get(metricID);
-        if (monitorable == null) {
+        // 1. searches for the metric among those registered
+        Monitorable<T> result = externalMetrics.get(metricID);
+        // 2. searches for the metric in the default ones
+        if (result == null) {
+            result = defaultMetrics.get(metricID);
+        }
+        // 3. no metric matches the ID
+        if (result == null) {
             throw new NoSuchElementException("Metric with ID " + metricID + " does not exist");
         }
-        return monitorable;
+        return result;
     }
 
     /**
