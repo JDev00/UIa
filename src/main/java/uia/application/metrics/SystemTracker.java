@@ -43,7 +43,7 @@ public final class SystemTracker {
      */
 
     private void setupDefaultProperties() {
-        for (DefaultSystemMetrics property : DefaultSystemMetrics.values()) {
+        for (DefaultSystemProperties property : DefaultSystemProperties.values()) {
             defaultProperties.put(property.getID(), new SystemProperty<>());
         }
     }

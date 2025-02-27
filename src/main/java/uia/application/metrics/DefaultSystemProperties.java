@@ -1,20 +1,20 @@
 package uia.application.metrics;
 
 /**
- * Collection of known metrics for the SystemMetrics.
+ * Collection of known system properties.
  */
 
-public enum DefaultSystemMetrics {
+public enum DefaultSystemProperties {
     FPS(0), FRAME_COUNT(1), CPU(2), RAM(3);
 
     private final int id;
 
-    DefaultSystemMetrics(int id) {
+    DefaultSystemProperties(int id) {
         this.id = id;
     }
 
     /**
-     * @return the ID this metric
+     * @return the property ID
      */
 
     public int getID() {
