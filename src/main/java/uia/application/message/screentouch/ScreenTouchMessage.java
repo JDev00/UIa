@@ -12,25 +12,25 @@ import java.util.Arrays;
 
 public final class ScreenTouchMessage implements Message {
     private final ScreenTouch[] screenTouches;
-    private final String source;
     private final String recipient;
+    private final String sender;
 
-    public ScreenTouchMessage(String source, String recipient, ScreenTouch... screenTouches) {
+    public ScreenTouchMessage(String sender, String recipient, ScreenTouch... screenTouches) {
         this.screenTouches = screenTouches;
         this.recipient = recipient;
-        this.source = source;
+        this.sender = sender;
     }
 
     @Override
     public String toString() {
         return "EventTouchScreenMessage{screenTouches=" + Arrays.toString(screenTouches) +
-                ", source='" + source + '\'' +
+                ", source='" + sender + '\'' +
                 ", recipient='" + recipient + "'}";
     }
 
     @Override
     public String getSender() {
-        return source;
+        return sender;
     }
 
     @Override
