@@ -1,6 +1,6 @@
 package uia.application.message;
 
-import uia.application.message.screentouch.EventScreenTouchMessage;
+import uia.application.message.screentouch.ScreenTouchMessage;
 import uia.core.ui.primitives.ScreenTouch;
 import uia.core.basement.message.Message;
 import uia.core.ui.primitives.Key;
@@ -31,9 +31,9 @@ public final class MessageFactory {
 
         Message result;
         if (payload instanceof ScreenTouch[]) {
-            result = new EventScreenTouchMessage(source, recipient, (ScreenTouch[]) payload);
+            result = new ScreenTouchMessage(source, recipient, (ScreenTouch[]) payload);
         } else if (payload instanceof ScreenTouch) {
-            result = new EventScreenTouchMessage(source, recipient, (ScreenTouch) payload);
+            result = new ScreenTouchMessage(source, recipient, (ScreenTouch) payload);
         } else if (payload instanceof Key) {
             result = new EventKeyMessage((Key) payload, source, recipient);
         } else {

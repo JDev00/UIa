@@ -10,12 +10,12 @@ import java.util.Arrays;
  * screen touches.
  */
 
-public final class EventScreenTouchMessage implements Message {
+public final class ScreenTouchMessage implements Message {
     private final ScreenTouch[] screenTouches;
     private final String source;
     private final String recipient;
 
-    public EventScreenTouchMessage(String source, String recipient, ScreenTouch... screenTouches) {
+    public ScreenTouchMessage(String source, String recipient, ScreenTouch... screenTouches) {
         this.screenTouches = screenTouches;
         this.recipient = recipient;
         this.source = source;

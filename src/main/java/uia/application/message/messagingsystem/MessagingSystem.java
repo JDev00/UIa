@@ -1,6 +1,6 @@
 package uia.application.message.messagingsystem;
 
-import uia.application.message.screentouch.EventScreenTouchMessage;
+import uia.application.message.screentouch.ScreenTouchMessage;
 import uia.application.message.store.GlobalMessageStore;
 import uia.core.basement.message.MessageStore;
 import uia.core.basement.message.Message;
@@ -49,12 +49,12 @@ public class MessagingSystem {
         List<Message> messages = globalMessageStore.pop(maxMessagesToProcess);
         for (Message message : messages) {
             // 1. message lock
-            if (message instanceof EventScreenTouchMessage.RequestLock && lockedScreenTouchRecipient == null) {
+            if (message instanceof ScreenTouchMessage.RequestLock && lockedScreenTouchRecipient == null) {
                 lockedScreenTouchRecipient = message.getSender();
-            } else if (message instanceof EventScreenTouchMessage.Unlock) {
+            } else if (message instanceof ScreenTouchMessage.Unlock) {
                 lockedScreenTouchRecipient = null;
-            } else if (lockedScreenTouchRecipient != null && message instanceof EventScreenTouchMessage) {
-                message = new EventScreenTouchMessage.Lock(lockedScreenTouchRecipient, message.getPayload());
+            } else if (lockedScreenTouchRecipient != null && message instanceof ScreenTouchMessage) {
+                message = new ScreenTouchMessage.Lock(lockedScreenTouchRecipient, message.getPayload());
             }
 
             // 2. dispatches the message to the view
