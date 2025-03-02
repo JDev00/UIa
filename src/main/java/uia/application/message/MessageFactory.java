@@ -38,7 +38,7 @@ public final class MessageFactory {
         } else if (payload instanceof Key) {
             result = new KeyMessage(sender, recipient, (Key) payload);
         } else {
-            result = new GenericMessage(payload, sender, recipient);
+            result = new GenericMessage(sender, recipient, payload);
         }
         return result;
     }

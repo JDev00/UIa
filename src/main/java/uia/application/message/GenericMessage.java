@@ -3,32 +3,28 @@ package uia.application.message;
 import uia.core.basement.message.Message;
 
 /**
- * UIa generic {@link Message} implementation.
+ * General purpose {@link Message} implementation.
  */
 
 public final class GenericMessage implements Message {
     private final String recipient;
-    private final Object message;
-    private final String source;
+    private final Object payload;
+    private final String sender;
 
-    public GenericMessage(Object message, String source, String recipient) {
+    public GenericMessage(String sender, String recipient, Object payload) {
         this.recipient = recipient;
-        this.message = message;
-        this.source = source;
+        this.payload = payload;
+        this.sender = sender;
     }
 
     @Override
     public String toString() {
-        return "GenericMessage{" +
-                "message=" + message +
-                ", source='" + source + '\'' +
-                ", recipient='" + recipient + '\'' +
-                '}';
+        return "GenericMessage{sender='" + sender + "' , recipient='" + recipient + "', payload=" + payload + '}';
     }
 
     @Override
     public String getSender() {
-        return source;
+        return sender;
     }
 
     @Override
@@ -39,6 +35,6 @@ public final class GenericMessage implements Message {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getPayload() {
-        return (T) message;
+        return (T) payload;
     }
 }
