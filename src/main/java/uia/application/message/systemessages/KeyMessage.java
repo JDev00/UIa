@@ -20,9 +20,7 @@ public final class KeyMessage implements Message {
 
     @Override
     public String toString() {
-        return "EventKeyMessage{key=" + key +
-                ", sender='" + sender + '\'' +
-                ", recipient='" + recipient + "'}";
+        return "KeyMessage{sender='" + sender + "', recipient='" + recipient + "', key='" + key + "'}";
     }
 
     @Override
