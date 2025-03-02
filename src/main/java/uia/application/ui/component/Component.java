@@ -1,6 +1,6 @@
 package uia.application.ui.component;
 
-import uia.application.message.screentouch.ScreenTouchMessage;
+import uia.application.message.systemessages.ScreenTouchMessage;
 import uia.application.ui.component.utility.ComponentUtility;
 import uia.application.message.store.GlobalMessageStore;
 import uia.core.rendering.geometry.GeometryCollection;

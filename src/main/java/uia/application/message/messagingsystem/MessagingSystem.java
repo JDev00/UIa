@@ -1,6 +1,6 @@
 package uia.application.message.messagingsystem;
 
-import uia.application.message.screentouch.ScreenTouchMessage;
+import uia.application.message.systemessages.ScreenTouchMessage;
 import uia.application.message.store.GlobalMessageStore;
 import uia.core.basement.message.MessageStore;
 import uia.core.basement.message.Message;
