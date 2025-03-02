@@ -3,10 +3,10 @@ package uia.application.ui.component;
 import uia.application.message.systemessages.ScreenTouchMessage;
 import uia.application.ui.component.utility.ComponentUtility;
 import uia.application.message.store.GlobalMessageStore;
+import uia.application.message.systemessages.KeyMessage;
 import uia.core.rendering.geometry.GeometryCollection;
 import uia.core.rendering.geometry.GeometryUtility;
 import uia.core.basement.message.MessageStore;
-import uia.application.message.systemessages.EventKeyMessage;
 import uia.application.events.CallbackStore;
 import uia.core.rendering.geometry.Geometry;
 import uia.core.ui.primitives.ScreenTouch;
@@ -224,7 +224,7 @@ public final class Component implements View {
             ScreenTouch[] localTouches = ComponentUtility.getAndConsumeTouchesOnViewArea(this, consumeScreenTouch, screenTouches);
             // notifies listeners
             notifyScreenTouchListeners(localTouches, screenTouches);
-        } else if (message instanceof EventKeyMessage) {
+        } else if (message instanceof KeyMessage) {
             ComponentUtility.notifyKeyListeners(this, message.getPayload(), consumeKey);
         } else {
             ComponentUtility.notifyMessageListeners(this, message);

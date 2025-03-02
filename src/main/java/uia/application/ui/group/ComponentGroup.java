@@ -1,8 +1,8 @@
 package uia.application.ui.group;
 
 import uia.application.message.systemessages.ScreenTouchMessage;
+import uia.application.message.systemessages.KeyMessage;
 import uia.application.ui.component.WrapperView;
-import uia.application.message.systemessages.EventKeyMessage;
 import uia.core.rendering.geometry.Geometry;
 import uia.core.basement.message.Message;
 import uia.application.ui.LayoutUtility;
@@ -75,7 +75,7 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
         if (message instanceof ScreenTouchMessage) {
             GroupUtility.dispatchScreenTouchMessageToChildren(this, message);
             super.readMessage(message);
-        } else if (message instanceof EventKeyMessage) {
+        } else if (message instanceof KeyMessage) {
             GroupUtility.dispatchKeyMessageToChildren(this, message);
             super.readMessage(message);
         } else {
