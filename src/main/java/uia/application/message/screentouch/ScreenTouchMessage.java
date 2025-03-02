@@ -23,11 +23,9 @@ public final class ScreenTouchMessage implements Message {
 
     @Override
     public String toString() {
-        return "EventTouchScreenMessage{" +
-                "screenTouches=" + Arrays.toString(screenTouches) +
+        return "EventTouchScreenMessage{screenTouches=" + Arrays.toString(screenTouches) +
                 ", source='" + source + '\'' +
-                ", recipient='" + recipient + '\'' +
-                '}';
+                ", recipient='" + recipient + "'}";
     }
 
     @Override
