@@ -6,8 +6,7 @@ import uia.core.basement.message.Message;
 import java.util.Arrays;
 
 /**
- * The EventScreenTouchMessage is a system message responsible for carrying
- * screen touches.
+ * The ScreenTouchMessage is a system message responsible for carrying screen touches.
  */
 
 public final class ScreenTouchMessage implements Message {
@@ -23,9 +22,8 @@ public final class ScreenTouchMessage implements Message {
 
     @Override
     public String toString() {
-        return "EventTouchScreenMessage{screenTouches=" + Arrays.toString(screenTouches) +
-                ", source='" + sender + '\'' +
-                ", recipient='" + recipient + "'}";
+        return "ScreenTouchMessage{source='" + sender + "', recipient='" + recipient
+                + "', payload='" + Arrays.toString(screenTouches) + "'}";
     }
 
     @Override
