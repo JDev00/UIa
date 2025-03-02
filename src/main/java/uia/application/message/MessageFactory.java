@@ -1,5 +1,6 @@
 package uia.application.message;
 
+import uia.application.message.systemessages.EventKeyMessage;
 import uia.application.message.systemessages.ScreenTouchMessage;
 import uia.core.ui.primitives.ScreenTouch;
 import uia.core.basement.message.Message;

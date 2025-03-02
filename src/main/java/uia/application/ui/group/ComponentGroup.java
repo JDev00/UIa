@@ -2,7 +2,7 @@ package uia.application.ui.group;
 
 import uia.application.message.systemessages.ScreenTouchMessage;
 import uia.application.ui.component.WrapperView;
-import uia.application.message.EventKeyMessage;
+import uia.application.message.systemessages.EventKeyMessage;
 import uia.core.rendering.geometry.Geometry;
 import uia.core.basement.message.Message;
 import uia.application.ui.LayoutUtility;

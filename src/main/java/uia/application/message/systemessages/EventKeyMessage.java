@@ -1,10 +1,10 @@
-package uia.application.message;
+package uia.application.message.systemessages;
 
 import uia.core.basement.message.Message;
 import uia.core.ui.primitives.Key;
 
 /**
- * EventKeyMessage is a UIa framework message that carries a {@link Key} as payload.
+ * EventKeyMessage is a system message responsible for carrying a single key.
  */
 
 public final class EventKeyMessage implements Message {
@@ -20,11 +20,9 @@ public final class EventKeyMessage implements Message {
 
     @Override
     public String toString() {
-        return "EventKeyMessage{" +
-                "key=" + key +
+        return "EventKeyMessage{key=" + key +
                 ", source='" + source + '\'' +
-                ", recipient='" + recipient + '\'' +
-                '}';
+                ", recipient='" + recipient + "'}";
     }
 
     @Override

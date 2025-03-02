@@ -6,7 +6,7 @@ import uia.application.message.store.GlobalMessageStore;
 import uia.core.rendering.geometry.GeometryCollection;
 import uia.core.rendering.geometry.GeometryUtility;
 import uia.core.basement.message.MessageStore;
-import uia.application.message.EventKeyMessage;
+import uia.application.message.systemessages.EventKeyMessage;
 import uia.application.events.CallbackStore;
 import uia.core.rendering.geometry.Geometry;
 import uia.core.ui.primitives.ScreenTouch;
