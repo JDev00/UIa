@@ -9,25 +9,25 @@ import uia.core.ui.primitives.Key;
 
 public final class KeyMessage implements Message {
     private final String recipient;
-    private final String source;
+    private final String sender;
     private final Key key;
 
-    public KeyMessage(Key key, String source, String recipient) {
+    public KeyMessage(String sender, String recipient, Key key) {
         this.recipient = recipient;
-        this.source = source;
+        this.sender = sender;
         this.key = key;
     }
 
     @Override
     public String toString() {
         return "EventKeyMessage{key=" + key +
-                ", source='" + source + '\'' +
+                ", sender='" + sender + '\'' +
                 ", recipient='" + recipient + "'}";
     }
 
     @Override
     public String getSender() {
-        return source;
+        return sender;
     }
 
     @Override

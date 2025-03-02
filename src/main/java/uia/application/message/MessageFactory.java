@@ -21,24 +21,24 @@ public final class MessageFactory {
      * Creates a new Message.
      *
      * @param payload   the payload of the message
-     * @param source    the sender of the message; it could be null
+     * @param sender    the sender of the message; it could be null
      * @param recipient the recipient of the message; it could be null
      * @return the created Message
      * @throws NullPointerException if {@code payload == null}
      */
 
-    public static Message create(Object payload, String source, String recipient) {
+    public static Message create(Object payload, String sender, String recipient) {
         Objects.requireNonNull(payload);
 
         Message result;
         if (payload instanceof ScreenTouch[]) {
-            result = new ScreenTouchMessage(source, recipient, (ScreenTouch[]) payload);
+            result = new ScreenTouchMessage(sender, recipient, (ScreenTouch[]) payload);
         } else if (payload instanceof ScreenTouch) {
-            result = new ScreenTouchMessage(source, recipient, (ScreenTouch) payload);
+            result = new ScreenTouchMessage(sender, recipient, (ScreenTouch) payload);
         } else if (payload instanceof Key) {
-            result = new KeyMessage((Key) payload, source, recipient);
+            result = new KeyMessage(sender, recipient, (Key) payload);
         } else {
-            result = new GenericMessage(payload, source, recipient);
+            result = new GenericMessage(payload, sender, recipient);
         }
         return result;
     }
