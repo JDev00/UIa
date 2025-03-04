@@ -17,7 +17,7 @@ class GlobalMessageStoreTest {
     GlobalMessageStore globalMessageStore = GlobalMessageStore.getInstance();
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         MessageStore messageStore = new ConcreteMessageStore();
         globalMessageStore.mount(messageStore);
     }

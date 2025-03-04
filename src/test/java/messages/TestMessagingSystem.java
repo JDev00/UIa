@@ -64,6 +64,7 @@ class TestMessagingSystem {
         dispatchMessages();
 
         // verify
+        waitUntil(() -> numberOfMessages == assertionsPassed[0], 50, 1_000);
         assertEquals(numberOfMessages, assertionsPassed[0]);
     }
 }

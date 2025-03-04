@@ -12,6 +12,8 @@ import uia.core.ui.View;
 
 import adaptor.swing.ContextSwing;
 
+import java.util.function.Supplier;
+
 /**
  * Collections of utilities for tests.
  */
@@ -33,6 +35,28 @@ public final class TestUtility {
         } catch (InterruptedException error) {
             error.printStackTrace();
         }
+    }
+
+    /**
+     * Waits until a specific condition is satisfied.
+     *
+     * @param condition   the condition to be satisfied
+     * @param retryPeriod the time between each evaluation
+     * @param timeout     the maximum time in milliseconds the condition is evaluated
+     * @throws RuntimeException if the condition is not met within the provided timeout
+     */
+
+    public static void waitUntil(Supplier<Boolean> condition, int retryPeriod, int timeout) {
+        long startTime = System.currentTimeMillis();
+
+        while (System.currentTimeMillis() - startTime < timeout) {
+            if (condition.get()) {
+                return;
+            }
+            waitFor(retryPeriod);
+        }
+
+        throw new RuntimeException("Timeout exceeded while waiting for condition.");
     }
 
     /**
