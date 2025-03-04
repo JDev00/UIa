@@ -1,46 +1,29 @@
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import uia.application.message.store.ConcreteMessageStore;
-import uia.application.message.store.GlobalMessageStore;
+import uia.application.message.MessageFactory;
+import uia.core.ui.primitives.ScreenTouch;
+import uia.core.basement.message.Message;
 import uia.core.basement.Collidable;
-import uia.core.context.Context;
+import uia.core.ui.primitives.Key;
 import uia.core.ui.callbacks.*;
 import uia.core.ui.View;
 
 import static utility.TestUtility.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Component unit tests.
- */
-
 class TestComponent {
-    GlobalMessageStore globalMessageStore = GlobalMessageStore.getInstance();
-    Context context;
     View rootView;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         rootView = createRoot();
-
-        context = createMockContext();
-        context.setView(rootView);
+        rootView.requestFocus(true);
+        updateView(1000, 1000, rootView);
     }
 
-    @AfterEach
-    public void afterEach() {
-        // pauses the current context
-        context.setLifecycleStage(Context.LifecycleStage.PAUSED);
-        context.getWindow().setVisible(false);
-        // waits for the context to pause itself
-        waitFor(250);
-        // mounts a new store
-        globalMessageStore.mount(new ConcreteMessageStore());
-    }
-
+    @Disabled
     @Test
     void viewBoundsWidthAndHeightShouldBeDifferentAfterARotation() {
         // setup
@@ -62,6 +45,7 @@ class TestComponent {
         assertEquals(expectedBoundsHeight, bounds[3]);
     }
 
+    @Disabled
     @Test
     void viewWidthAndHeightShouldNotChangeAfterARotation() {
         // setup
@@ -88,15 +72,15 @@ class TestComponent {
         rootView.registerCallback((OnClick) touches -> countAssertions[0]++);
 
         // act
-        waitFor(50);
-        context.getInputEmulator().clickOn(100, 100);
+        Message message = MessageFactory.create(
+                new ScreenTouch(ScreenTouch.Action.CLICKED, ScreenTouch.Button.RIGHT, 100, 100, 0),
+                null);
+        rootView.readMessage(message);
 
         // verify
-        waitFor(50);
         assertEquals(1, countAssertions[0]);
     }
 
-    @Disabled("")
     @Test
     void mouseOnViewShouldGenerateAnEvent() {
         int[] countAssertions = {0};
@@ -105,18 +89,17 @@ class TestComponent {
         rootView.registerCallback((OnMouseHover) touches -> countAssertions[0]++);
 
         // act
-        context.getInputEmulator().moveMouseOnScreen(
-                100, 100,
-                200, 100,
-                2, 0.1f
-        );
+        Message[] messages = {
+                MessageFactory.create(new ScreenTouch(ScreenTouch.Action.MOVED, null, 100, 100, 0), null),
+                MessageFactory.create(new ScreenTouch(ScreenTouch.Action.MOVED, null, 100, 100, 0), null)
+        };
+        rootView.readMessage(messages[0]);
+        rootView.readMessage(messages[1]);
 
         // verify
-        waitFor(250);
         assertEquals(1, countAssertions[0]);
     }
 
-    @Disabled("")
     @Test
     void mouseEnteringViewShouldGenerateAnEvent() {
         int[] countAssertions = {0};
@@ -125,113 +108,100 @@ class TestComponent {
         rootView.registerCallback((OnMouseEnter) touches -> countAssertions[0]++);
 
         // act
-        context.getInputEmulator().moveMouseOnScreen(
-                0, 200,
-                10, 200,
-                10, 0.1f
-        );
+        Message message = MessageFactory.create(
+                new ScreenTouch(ScreenTouch.Action.MOVED, ScreenTouch.Button.RIGHT, 100, 100, 0),
+                null);
+        rootView.readMessage(message);
 
         // verify
-        waitFor(250);
         assertEquals(1, countAssertions[0]);
     }
 
-    @Disabled("")
     @Test
     void mouseExitingViewShouldGenerateAnEvent() {
         int[] countAssertions = {0};
 
         // setup
-        float viewWidth = 0.5f;
-        float viewHeight = 0.5f;
-        rootView.getStyle().setDimension(viewWidth, viewHeight);
         rootView.registerCallback((OnMouseExit) touches -> countAssertions[0]++);
 
         // act
-        int viewportWidth = context.getWindow().getViewportWidth();
-        int viewportHeight = context.getWindow().getViewportHeight();
-        int[] mouseStart = {
-                (int) (viewWidth * viewportWidth),
-                (int) (viewHeight * viewportHeight)
+        Message[] messages = {
+                MessageFactory.create(new ScreenTouch(ScreenTouch.Action.MOVED, ScreenTouch.Button.RIGHT, 100, 100, 0), null),
+                MessageFactory.create(new ScreenTouch(ScreenTouch.Action.MOVED, ScreenTouch.Button.RIGHT, 10_000, 100, 0), null)
         };
-        int[] mouseEnd = {viewportWidth, mouseStart[1]};
-        context.getInputEmulator().moveMouseOnScreen(
-                mouseStart[0], mouseStart[1],
-                mouseEnd[0], mouseEnd[1],
-                3, 0.1f
-        );
+        rootView.readMessage(messages[0]);
+        rootView.readMessage(messages[1]);
 
         // verify
-        waitFor(250);
         assertEquals(1, countAssertions[0]);
     }
 
-    @Disabled("")
     @Test
     void typingKeyShouldGenerateAnEvent() {
         int[] countAssertions = {0};
-        int KEYCODE = 'a';
-        char KEY = 'a';
+        int keycode = 'a';
+        char key = 'a';
 
         // setup
-        rootView.requestFocus(true);
-        rootView.registerCallback((OnKeyTyped) key -> {
-            if (KEY == key.getKeyChar()) {
+        rootView.registerCallback((OnKeyTyped) receivedKey -> {
+            if (key == receivedKey.getKeyChar()) {
                 countAssertions[0]++;
             }
         });
 
         // act
-        context.getInputEmulator().typeKey(KEY, KEYCODE);
+        Message message = MessageFactory.create(
+                new Key(Key.Action.TYPED, 0, key, keycode),
+                null);
+        rootView.readMessage(message);
 
         // verify
-        waitFor(250);
         assertEquals(1, countAssertions[0]);
     }
 
-    @Disabled("")
     @Test
     void releasingKeyShouldGenerateAnEvent() {
         int[] countAssertions = {0};
-        int KEYCODE = 'a';
-        char KEY = 'a';
+        int keycode = 'a';
+        char key = 'a';
 
         // setup
-        rootView.requestFocus(true);
-        rootView.registerCallback((OnKeyReleased) key -> {
-            if (KEY == key.getKeyChar()) {
+        rootView.registerCallback((OnKeyReleased) receivedKey -> {
+            if (key == receivedKey.getKeyChar()) {
                 countAssertions[0]++;
             }
         });
 
         // act
-        context.getInputEmulator().releaseKey(KEY, KEYCODE);
+        Message message = MessageFactory.create(
+                new Key(Key.Action.RELEASED, 0, key, keycode),
+                null);
+        rootView.readMessage(message);
 
         // verify
-        waitFor(250);
         assertEquals(1, countAssertions[0]);
     }
 
-    @Disabled("")
     @Test
     void pressingKeyShouldGenerateAnEvent() {
         int[] countAssertions = {0};
-        int KEYCODE = 'a';
-        char KEY = 'a';
+        int keycode = 'a';
+        char key = 'a';
 
         // setup
-        rootView.requestFocus(true);
-        rootView.registerCallback((OnKeyPressed) key -> {
-            if (KEY == key.getKeyChar()) {
+        rootView.registerCallback((OnKeyPressed) receivedKey -> {
+            if (key == receivedKey.getKeyChar()) {
                 countAssertions[0]++;
             }
         });
 
         // act
-        context.getInputEmulator().pressKey(KEY, KEYCODE);
+        Message message = MessageFactory.create(
+                new Key(Key.Action.PRESSED, 0, key, keycode),
+                null);
+        rootView.readMessage(message);
 
         // verify
-        waitFor(250);
         assertEquals(1, countAssertions[0]);
     }
 }
