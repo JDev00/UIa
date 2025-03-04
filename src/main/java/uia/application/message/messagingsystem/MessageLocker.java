@@ -22,9 +22,9 @@ public class MessageLocker {
      * Locks the provided message type to the specified source. All messages
      * of this type will then only be processed by the provided source.
      *
-     * @param sourceID    the id of the source
-     * @param messageType the type of the message to locked
-     * @return true if the lock has been acquired; false if it was already acquired by someone else
+     * @param sourceID    the ID of the source that requested the lock on the message type
+     * @param messageType the type of the message to be locked
+     * @return true if the lock has been acquired; false if it has been already acquired by someone else
      */
 
     public boolean requestLockOn(String sourceID, Class<? extends Message> messageType) {
@@ -56,11 +56,14 @@ public class MessageLocker {
 
     /**
      * Creates a locked message.
+     *
+     * @param message the message to be locked
+     * @return a new locked message
      */
 
     public LockedMessage createLock(Message message) {
         if (message == null) {
-            throw new IllegalArgumentException("message in null, it could not be");
+            throw new IllegalArgumentException("a null message can't be locked");
         }
 
         Class<? extends Message> messageType = message.getClass();
