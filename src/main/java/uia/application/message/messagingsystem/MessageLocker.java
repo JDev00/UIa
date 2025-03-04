@@ -10,6 +10,8 @@ import java.util.Map;
  */
 
 public class MessageLocker {
+    private static final MessageLocker MESSAGE_LOCKER = new MessageLocker();
+
     private final Map<Class<? extends Message>, String> lockTable;
 
     private MessageLocker() {
@@ -41,14 +43,36 @@ public class MessageLocker {
      */
 
     public boolean unlock(Class<? extends Message> messageType) {
-        return true;
+        return lockTable.remove(messageType) != null;
     }
 
     /**
-     * Creates a lock message.
+     * @return true if the provided message is to be locked; false otherwise
      */
 
-    public Message createLock(Message message) {
-        return null;
+    public boolean isMessageToBeLocked(Message message) {
+        return lockTable.containsKey(message.getClass());
+    }
+
+    /**
+     * Creates a locked message.
+     */
+
+    public LockedMessage createLock(Message message) {
+        if (message == null) {
+            throw new IllegalArgumentException("message in null, it could not be");
+        }
+
+        Class<? extends Message> messageType = message.getClass();
+        String recipient = lockTable.get(messageType);
+        return new LockedMessage(recipient, message);
+    }
+
+    /**
+     * @return the unique instance of the {@link MessageLocker}
+     */
+
+    public static MessageLocker getInstance() {
+        return MESSAGE_LOCKER;
     }
 }
