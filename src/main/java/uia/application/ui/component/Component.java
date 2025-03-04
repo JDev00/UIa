@@ -1,6 +1,7 @@
 package uia.application.ui.component;
 
 import uia.application.message.systemessages.ScreenTouchMessage;
+import uia.application.message.messagingsystem.LockedMessage;
 import uia.application.ui.component.utility.ComponentUtility;
 import uia.application.message.store.GlobalMessageStore;
 import uia.application.message.systemessages.KeyMessage;
@@ -15,6 +16,7 @@ import uia.core.rendering.Transform;
 import uia.core.rendering.Graphics;
 import uia.core.basement.Callback;
 import uia.core.basement.Callable;
+import uia.core.ui.primitives.Key;
 import uia.core.ui.callbacks.*;
 import uia.core.ui.style.Style;
 import uia.core.ui.View;
@@ -23,8 +25,7 @@ import java.util.function.Consumer;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
+import static java.lang.Math.*;
 
 /**
  * UIa standard {@link View} implementation.
@@ -212,12 +213,23 @@ public final class Component implements View {
 
     @Override
     public void readMessage(Message message) {
-        if (message instanceof ScreenTouchMessage.Lock) {
-            if (id.equals(message.getRecipient())) {
-                ScreenTouch[] screenTouches = message.getPayload();
-                ScreenTouch[] localTouches = ComponentUtility.copyAndConsumeTouches(this, screenTouches);
-                // notifies listeners
-                notifyScreenTouchListeners(localTouches, screenTouches);
+        if (message instanceof LockedMessage) {
+            LockedMessage receivedMessage = (LockedMessage) message;
+            String messageRecipient = receivedMessage.getRecipient();
+            Message messagePayload = receivedMessage.getPayload();
+
+            if (id.equals(messageRecipient)) {
+                if (messagePayload instanceof ScreenTouchMessage) {
+                    ScreenTouch[] screenTouches = messagePayload.getPayload();
+                    ScreenTouch[] localTouches = ComponentUtility.copyAndConsumeTouches(this, screenTouches);
+                    // notifies listeners
+                    notifyScreenTouchListeners(localTouches, screenTouches);
+                } else if (messagePayload instanceof KeyMessage) {
+                    Key key = messagePayload.getPayload();
+                    ComponentUtility.notifyKeyListeners(this, key, consumeKey);
+                } else {
+                    ComponentUtility.notifyMessageListeners(this, message);
+                }
             }
         } else if (message instanceof ScreenTouchMessage) {
             ScreenTouch[] screenTouches = message.getPayload();

@@ -9,7 +9,7 @@ import java.util.Map;
  * The MessageLocker is responsible for handling the message locking lifecycle.
  */
 
-public class MessageLocker {
+public final class MessageLocker {
     private static final MessageLocker MESSAGE_LOCKER = new MessageLocker();
 
     private final Map<Class<? extends Message>, String> lockTable;
@@ -36,13 +36,13 @@ public class MessageLocker {
     }
 
     /**
-     * Unlocks the provided message type.
+     * Releases the lock on the provided message type.
      *
      * @param messageType the type of message to be unlocked
      * @return true if the type is unlocked, false otherwise
      */
 
-    public boolean unlock(Class<? extends Message> messageType) {
+    public boolean releaseLockOn(Class<? extends Message> messageType) {
         return lockTable.remove(messageType) != null;
     }
 
