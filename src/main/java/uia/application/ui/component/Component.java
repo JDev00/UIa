@@ -211,6 +211,8 @@ public final class Component implements View {
         }
     }
 
+    // TODO refactor this method
+
     @Override
     public void readMessage(Message message) {
         if (message instanceof LockedMessage) {
