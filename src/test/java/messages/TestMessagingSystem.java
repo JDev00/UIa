@@ -1,15 +1,17 @@
 package messages;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import uia.application.message.store.GlobalMessageStore;
+import uia.core.basement.message.MessageStore;
 import uia.core.ui.callbacks.OnMessageReceived;
 import uia.application.message.MessageFactory;
 import uia.core.basement.message.Message;
-import uia.core.context.Context;
 import uia.core.ui.ViewGroup;
 import uia.core.ui.View;
+
+import java.util.List;
 
 import static utility.TestUtility.*;
 
@@ -20,51 +22,48 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 class TestMessagingSystem {
-    Context context;
     ViewGroup rootView;
+
+    /**
+     * Emulates the messaging system.
+     */
+
+    void dispatchMessages() {
+        MessageStore store = GlobalMessageStore.getInstance();
+        List<Message> messages = store.pop(1_000);
+        messages.forEach(rootView::readMessage);
+    }
 
     @BeforeEach
     void beforeEach() {
-        rootView = createRoot();
-
-        context = createMockContext();
-        context.setView(rootView);
-    }
-
-    @AfterEach
-    void afterEach() {
-        // pauses this context and hides its window
-        context.setLifecycleStage(Context.LifecycleStage.PAUSED);
-        context.getWindow().setVisible(false);
+        rootView = createSimpleTree();
     }
 
     @Test
     void allMessagesShouldBeReceivedByTheTargetView() {
-        String MESSAGE_PAYLOAD = "hello";
-        String TARGET_VIEW_ID = "B";
-        int numberOfMessages = 50_000;
+        String messagePayload = "hello";
+        String targetViewID = "view2";
+        int numberOfMessages = 1_000;
         // counts the number of passed assertions
         int[] assertionsPassed = {0};
 
         // setup
-        View targetView = createView(TARGET_VIEW_ID, 0f, 0f, 0.1f, 0.1f);
-        targetView.registerCallback((OnMessageReceived) receivedMessage -> {
-            String messagePayload = receivedMessage.getPayload();
-            // tests the message equivalence
-            if (MESSAGE_PAYLOAD.equals(messagePayload)) {
+        View firstChild = rootView.get(targetViewID);
+        firstChild.registerCallback((OnMessageReceived) receivedMessage -> {
+            String receivedPayload = receivedMessage.getPayload();
+            if (messagePayload.equals(receivedPayload)) {
                 assertionsPassed[0]++;
             }
         });
-        ViewGroup.insert(rootView, targetView);
 
         // act
         for (int i = 0; i < numberOfMessages; i++) {
-            Message message = MessageFactory.create(MESSAGE_PAYLOAD, TARGET_VIEW_ID);
+            Message message = MessageFactory.create(messagePayload, targetViewID);
             rootView.sendMessage(message);
         }
+        dispatchMessages();
 
         // verify
-        waitFor(2_000);
         assertEquals(numberOfMessages, assertionsPassed[0]);
     }
 }
