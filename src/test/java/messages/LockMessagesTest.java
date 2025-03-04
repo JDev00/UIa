@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import uia.application.message.systemessages.ScreenTouchMessage;
 import uia.application.message.messagingsystem.MessageLocker;
-import uia.application.ui.component.ComponentHiddenRoot;
 import uia.application.message.GenericMessage;
 import uia.application.message.MessageFactory;
 import uia.core.ui.primitives.ScreenTouch;
@@ -48,18 +47,6 @@ class LockMessagesTest {
         rootView.readMessage(messageToSend);
     }
 
-    /**
-     * Helper method. Emulates the update of the root view.
-     */
-
-    void updateGraphicalRoot() {
-        View hiddenRoot = new ComponentHiddenRoot();
-        hiddenRoot.getStyle()
-                .setPosition(0, 0)
-                .setDimension(1000, 1000);
-        rootView.update(hiddenRoot);
-    }
-
     @BeforeEach
     void beforeEach() {
         // setup graphical tree
@@ -69,7 +56,7 @@ class LockMessagesTest {
         secondChild = rootView.get("view2");
         secondChild.setInputConsumer(View.InputConsumer.SCREEN_TOUCH, false);
 
-        updateGraphicalRoot();
+        updateView(1000, 1000, rootView);
     }
 
     @AfterEach

@@ -1,5 +1,6 @@
 package utility;
 
+import uia.application.ui.component.ComponentHiddenRoot;
 import uia.application.ui.component.text.ComponentText;
 import uia.core.rendering.color.ColorCollection;
 import uia.application.ui.group.ComponentGroup;
@@ -89,6 +90,18 @@ public final class TestUtility {
                 createView("view2", 0.25f, 0.5f, 0.5f, 1f)
         );
         return root;
+    }
+
+    /**
+     * Updates the provided view.
+     */
+
+    public static void updateView(int windowWidth, int windowHeight, View root) {
+        View hiddenRoot = new ComponentHiddenRoot();
+        hiddenRoot.getStyle()
+                .setPosition(0, 0)
+                .setDimension(windowWidth, windowHeight);
+        root.update(hiddenRoot);
     }
 
     /**
