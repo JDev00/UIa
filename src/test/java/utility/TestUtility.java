@@ -77,6 +77,21 @@ public final class TestUtility {
     }
 
     /**
+     * Creates a graphical tree with a root and two children (id1 = view1, id2 = view2).
+     *
+     * @return the graphical tree
+     */
+
+    public static ViewGroup createSimpleTree() {
+        ViewGroup root = createRoot();
+        ViewGroup.insert(root,
+                createView("view1", 0.25f, 0.5f, 0.5f, 1f),
+                createView("view2", 0.25f, 0.5f, 0.5f, 1f)
+        );
+        return root;
+    }
+
+    /**
      * Creates a new ComponentTracker.
      */
 

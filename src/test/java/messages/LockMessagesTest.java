@@ -63,12 +63,11 @@ class LockMessagesTest {
     @BeforeEach
     void beforeEach() {
         // setup graphical tree
-        rootView = createRoot();
-        firstChild = createView("view1", 0.25f, 0.5f, 0.5f, 1f);
+        rootView = createSimpleTree();
+        firstChild = rootView.get("view1");
         firstChild.setInputConsumer(View.InputConsumer.SCREEN_TOUCH, false);
-        secondChild = createView("view2", 0.25f, 0.5f, 0.5f, 1f);
+        secondChild = rootView.get("view2");
         secondChild.setInputConsumer(View.InputConsumer.SCREEN_TOUCH, false);
-        ViewGroup.insert(rootView, firstChild, secondChild);
 
         updateGraphicalRoot();
     }
