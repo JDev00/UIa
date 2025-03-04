@@ -71,7 +71,7 @@ public final class TestUtility {
      */
 
     public static ViewGroup createRoot() {
-        ViewGroup result = createViewGroup("ROOT_GROUP", 0.5f, 0.5f, 1f, 1f);
+        ViewGroup result = createViewGroup("root_group", 0.5f, 0.5f, 1f, 1f);
         result.getStyle().setBackgroundColor(ColorCollection.NAVY);
         return result;
     }
