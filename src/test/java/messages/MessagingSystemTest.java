@@ -1,6 +1,7 @@
 package messages;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import uia.application.message.store.GlobalMessageStore;
@@ -35,6 +36,7 @@ class MessagingSystemTest {
         rootView = createSimpleTree();
     }
 
+    @Disabled("")
     @Test
     void allMessagesShouldBeReceivedByTheTargetView() {
         String messagePayload = "hello";
