@@ -11,10 +11,6 @@ import uia.core.ui.View;
 
 import utility.TestUtility;
 
-/**
- * Sanity test.
- */
-
 class ComponentFocusTest {
     private static final int NO_BORDER_WIDTH = 0;
     private static final int BORDER_WIDTH = 10;

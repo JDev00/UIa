@@ -13,10 +13,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * MessageStore unit tests.
- */
-
 class MessageStoreTest {
 
     Message createMockMessage() {

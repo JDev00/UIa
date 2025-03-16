@@ -10,10 +10,6 @@ import uia.core.basement.Callback;
 import static org.junit.jupiter.api.Assertions.*;
 import static utility.TestUtility.waitFor;
 
-/**
- * Unit tests.
- */
-
 class CallbackStoreTest {
 
     @FunctionalInterface

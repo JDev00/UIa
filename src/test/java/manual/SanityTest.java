@@ -15,11 +15,7 @@ import utility.TestUtility;
 
 import static utility.TestUtility.*;
 
-/**
- * Sanity test.
- */
-
-class ComponentsTest {
+class SanityTest {
 
     /**
      * Creates the UIa concrete components.

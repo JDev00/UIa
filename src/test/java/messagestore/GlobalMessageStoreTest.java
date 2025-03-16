@@ -9,10 +9,6 @@ import uia.core.basement.message.MessageStore;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * GlobalMessageStore unit tests.
- */
-
 class GlobalMessageStoreTest {
     GlobalMessageStore globalMessageStore = GlobalMessageStore.getInstance();
 
