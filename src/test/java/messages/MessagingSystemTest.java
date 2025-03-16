@@ -17,11 +17,7 @@ import static utility.TestUtility.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * MessagingSystem unit tests.
- */
-
-class TestMessagingSystem {
+class MessagingSystemTest {
     ViewGroup rootView;
 
     /**
