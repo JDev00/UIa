@@ -1,12 +1,10 @@
+package ui;
+
 import org.junit.jupiter.api.Test;
 
 import uia.core.rendering.color.Color;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-/**
- * Color unit tests.
- */
 
 class ColorTest {
 

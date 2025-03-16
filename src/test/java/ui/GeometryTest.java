@@ -1,13 +1,11 @@
+package ui;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import uia.core.rendering.geometry.Geometry;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-/**
- * Geometry unit tests.
- */
 
 class GeometryTest {
     Geometry geometry = new Geometry();

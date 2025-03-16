@@ -1,14 +1,12 @@
+package ui;
+
 import org.junit.jupiter.api.Test;
 
 import uia.core.rendering.font.Font;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Font unit tests.
- */
-
-class TestFont {
+class FontTest {
 
     @Test
     void differentFontWithTheSameStateShouldHaveTheSameHashcode() {

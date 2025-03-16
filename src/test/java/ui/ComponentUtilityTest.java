@@ -1,3 +1,5 @@
+package ui;
+
 import org.junit.jupiter.api.Test;
 
 import uia.application.ui.component.utility.ComponentUtility;
@@ -9,22 +11,22 @@ import uia.core.ui.View;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * ComponentUtility unit tests.
- */
+class ComponentUtilityTest {
+    private String viewID = "1";
 
-class TestComponentUtility {
-    String VIEW_ID = "1";
+    /**
+     * Helper method. Creates a new View.
+     */
 
-    View createView() {
-        return new Component(VIEW_ID, 0f, 0f, 0f, 0f);
+    private View createView() {
+        return new Component(viewID, 0f, 0f, 0f, 0f);
     }
 
     @Test
     void messageShouldBeNotified() {
         // setup
         View view = createView();
-        Message message = MessageFactory.create("hello", VIEW_ID);
+        Message message = MessageFactory.create("hello", viewID);
 
         // verify
         view.registerCallback((OnMessageReceived) receivedMessage -> assertEquals(message, receivedMessage));

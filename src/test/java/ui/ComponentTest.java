@@ -1,3 +1,5 @@
+package ui;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -13,7 +15,7 @@ import uia.core.ui.View;
 import static utility.TestUtility.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestComponent {
+class ComponentTest {
     View rootView;
 
     @BeforeEach
