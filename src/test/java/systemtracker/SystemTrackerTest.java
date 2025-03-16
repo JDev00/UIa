@@ -1,4 +1,4 @@
-package systemTracker;
+package systemtracker;
 
 import uia.application.resourcetracker.DefaultSystemProperties;
 import uia.application.resourcetracker.monitorable.Monitorable;
