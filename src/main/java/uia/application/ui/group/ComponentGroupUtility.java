@@ -8,12 +8,12 @@ import uia.core.ui.ViewGroup;
 import java.util.Objects;
 
 /**
- * Collection of functions for ViewGroup components implementation.
+ * Collection of functions for ViewGroup implementation.
  */
 
-public final class GroupUtility {
+public final class ComponentGroupUtility {
 
-    private GroupUtility() {
+    private ComponentGroupUtility() {
     }
 
     /**

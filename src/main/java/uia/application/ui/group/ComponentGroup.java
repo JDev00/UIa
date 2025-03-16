@@ -73,14 +73,14 @@ public final class ComponentGroup extends WrapperView implements ViewGroup {
     @Override
     public void readMessage(Message message) {
         if (message instanceof ScreenTouchMessage) {
-            GroupUtility.dispatchScreenTouchMessageToChildren(this, message);
+            ComponentGroupUtility.dispatchScreenTouchMessageToChildren(this, message);
             super.readMessage(message);
         } else if (message instanceof KeyMessage) {
-            GroupUtility.dispatchKeyMessageToChildren(this, message);
+            ComponentGroupUtility.dispatchKeyMessageToChildren(this, message);
             super.readMessage(message);
         } else {
             super.readMessage(message);
-            GroupUtility.dispatchMessageToChildren(this, message);
+            ComponentGroupUtility.dispatchMessageToChildren(this, message);
         }
     }
 
