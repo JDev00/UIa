@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The MessageLocker is responsible for handling the message locking lifecycle.
+ * The MessageLocker is a service responsible for handling the
+ * message locking lifecycle.
  */
 
 public final class MessageLocker {
