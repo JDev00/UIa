@@ -1,13 +1,11 @@
 package ui;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import uia.application.message.MessageFactory;
 import uia.core.ui.primitives.ScreenTouch;
 import uia.core.basement.message.Message;
-import uia.core.basement.Collidable;
 import uia.core.ui.primitives.Key;
 import uia.core.ui.callbacks.*;
 import uia.core.ui.View;
@@ -22,49 +20,42 @@ class ComponentTest {
     void beforeEach() {
         rootView = createRoot();
         rootView.requestFocus(true);
-        updateView(1000, 1000, rootView);
+        updateView(1000, 720, rootView);
     }
 
-    @Disabled
     @Test
     void viewBoundsWidthAndHeightShouldBeDifferentAfterARotation() {
         // setup
         float expectedRotation = 2.145f;
         rootView.getStyle().setRotation(expectedRotation);
-        waitFor(100);
+        // updates the root view to apply the rotation
+        updateView(1000, 720, rootView);
 
         // verify
         float[] bounds = rootView.getBounds();
-        float width = rootView.getWidth();
-        float height = rootView.getHeight();
         float rotation = bounds[4];
 
-        float expectedBoundsWidth = Collidable.colliderWidth(width, height, rotation);
-        float expectedBoundsHeight = Collidable.colliderHeight(width, height, rotation);
-
         assertEquals(expectedRotation, rotation);
-        assertEquals(expectedBoundsWidth, bounds[2]);
-        assertEquals(expectedBoundsHeight, bounds[3]);
+        assertEquals(1147.5442f, bounds[2]);
+        assertEquals(1230.6841f, bounds[3]);
     }
 
-    @Disabled
     @Test
     void viewWidthAndHeightShouldNotChangeAfterARotation() {
         // setup
         float rotation = -5.141f;
         rootView.getStyle().setRotation(rotation);
-        waitFor(100);
+        // updates the root view to apply the rotation
+        updateView(1000, 720, rootView);
 
         // verify
-        float widthPreRotation = 702;
-        float heightPreRotation = 493;
-        float componentWidth = rootView.getWidth();
-        float componentHeight = rootView.getHeight();
+        float widthPreRotation = 1000;
+        float heightPreRotation = 720;
         float componentRotation = rootView.getBounds()[4];
 
         assertEquals(rotation, componentRotation);
-        assertEquals(widthPreRotation, componentWidth);
-        assertEquals(heightPreRotation, componentHeight);
+        assertEquals(widthPreRotation, rootView.getWidth());
+        assertEquals(heightPreRotation, rootView.getHeight());
     }
 
     @Test
