@@ -1,10 +1,16 @@
-UIa current version is 2.5.0
+UIa current version is 2.6.0
+
+################
+Version 2.6.0
+################
+
+* Revisions messages and message locking mechanism
 
 ################
 Version 2.5.0
 ################
 
-* Tracks system properties such as FPS and frame count
+* Tracks system resources such as FPS and frame count
 
 ################
 Version 2.4.0
